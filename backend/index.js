@@ -4,7 +4,7 @@ const path = require('path');
 const connection =require('./connection');
 
 //rutas
-//--const userRoute = require('./routes/user');
+const userRoute = require('./routes/usuario');
 
 //const path = require('path');
 
@@ -17,7 +17,7 @@ app.use(express.json());
 
 //--app.use('/uploads',express.static(path.resolve('uploads')));
 //rutas componentes
-//--app.use('/user',userRoute);
+app.use('/usuarios',userRoute);
 
 
 module.exports=app;
