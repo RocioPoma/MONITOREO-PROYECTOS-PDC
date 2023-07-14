@@ -3,7 +3,7 @@ const connection = require('../connection');
 const router = express.Router();
 var auth = require('../services/authentication');
 
-//agregar municipio
+//Listar municipio
 router.get('/get', (req, res) => {
     connection.query('SELECT * FROM MUNICIPIO', (err, results) => {
       if (err) {
