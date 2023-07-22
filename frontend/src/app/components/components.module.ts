@@ -12,6 +12,8 @@ import { CompontsRoutes } from './components.routing';
 import { ManageProyectoComponent } from './manage-proyecto/manage-proyecto.component';
 import { ManageCategoriaComponent } from './manage-categoria/manage-categoria.component';
 import { CategoriaComponent } from './dialog/categoria/categoria.component';
+import { ManageMunicipioComponent } from './manage-municipio/manage-municipio.component';
+import { ProyectoComponent } from './dialog/proyecto/proyecto.component';
 
 //import { MaterialModule } from '../shared/material-module';
 
@@ -23,7 +25,9 @@ import { CategoriaComponent } from './dialog/categoria/categoria.component';
     ConfirmationComponent,
     ManageProyectoComponent,
     ManageCategoriaComponent,
-    CategoriaComponent
+    CategoriaComponent,
+    ManageMunicipioComponent,
+    ProyectoComponent
   ],
   imports: [
     CommonModule,
