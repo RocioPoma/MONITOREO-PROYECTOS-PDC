@@ -1,0 +1,32 @@
+<mat-drawer-container class="example-container">
+    <mat-drawer mode="side" opened>
+      <!-- Contenido principal del menú -->
+      <mat-nav-list>
+        <h3 mat-subheader>Menú</h3>
+        <mat-list-item routerLink="/inicio" routerLinkActive="active">
+          <mat-icon>home</mat-icon>
+          <span>Inicio</span>
+        </mat-list-item>
+        <mat-list-item (click)="toggleSubmenu()">
+          <mat-icon>view_list</mat-icon>
+          <span>Submenús</span>
+          <mat-icon class="submenu-icon" [@rotateIcon]="isSubmenuOpen ? 'expanded' : 'collapsed'">expand_more</mat-icon>
+        </mat-list-item>
+        <div [@collapseSubmenu]="isSubmenuOpen ? 'expanded' : 'collapsed'">
+          <!-- Submenús -->
+          <mat-list>
+            <mat-list-item routerLink="/submenu1" routerLinkActive="active">
+              <span>Submenú 1</span>
+            </mat-list-item>
+            <mat-list-item routerLink="/submenu2" routerLinkActive="active">
+              <span>Submenú 2</span>
+            </mat-list-item>
+          </mat-list>
+        </div>
+      </mat-nav-list>
+    </mat-drawer>
+    <mat-drawer-content>
+      <!-- Contenido principal de la página -->
+      <router-outlet></router-outlet>
+    </mat-drawer-content>
+  </mat-drawer-container>

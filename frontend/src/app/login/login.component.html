@@ -1,0 +1,52 @@
+
+<mat-toolbar color="primary">
+  <mat-toolbar-row fxLayout="row">
+      <span class="title-center">Iniciar sesión</span>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="loginForm">
+      <div fxFlex fxLayout="column">
+          <mat-form-field appearance="fill" fxFlex>
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" required>
+              <mat-error *ngIf="loginForm.controls.email.touched && loginForm.controls.email.invalid">
+                  <span *ngIf="loginForm.controls.email.errors.required">Este campo es obligatorio.</span>
+                  <span *ngIf="loginForm.controls.email.errors.pattern">Este campo no es válido.</span>
+              </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" fxFlex>
+              <mat-label>Contareseña</mat-label>
+              <input matInput formControlName="password" type="password" required>
+              <mat-error *ngIf="loginForm.controls.password.touched && loginForm.controls.password.invalid">
+                  <span *ngIf="loginForm.controls.password.errors.required">Este campo es obligatorio.</span>
+                  <span *ngIf="loginForm.controls.password.errors.pattern">Este campo no es válido.</span>
+              </mat-error>
+          </mat-form-field>
+      </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button mat-raised-button color="primary" type="submit" (click)="handleSubmit()"
+  [disabled]="!(loginForm.valid && loginForm.dirty)">Iniciar</button>
+  <button mat-raised-button color="primary" mat-dialog-close>Cerrar</button>
+</mat-dialog-actions>
+
+
+
+
+
+<!--
+<h2>Login</h2>
+<mat-form-field>
+  <input matInput placeholder="Username" [(ngModel)]="username">
+</mat-form-field>
+<mat-form-field>
+  <input matInput type="password" placeholder="Password" [(ngModel)]="password">
+</mat-form-field>
+<button mat-button (click)="onLogin(username, password)">Login</button>
+<button mat-button (click)="onClose()">Cancelar</button>
+-->

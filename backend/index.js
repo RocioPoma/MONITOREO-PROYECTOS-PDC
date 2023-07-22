@@ -6,12 +6,12 @@ const connection =require('./connection');
 //rutas
 const userRoute = require('./routes/usuario');
 const MunicipioRoute = require('./routes/municipio');
-const Entidad_eje_Route = require('./routes/Entidad_Ejecutora');
-const Lineas_Estr_Route = require('./routes/Lineas_Estrategicas');
-const Lineas_Acc_Route = require('./routes/Lineas_Accion');
-const Acciones_est_Route = require('./routes/Acciones_estrategicas');
-const Indicador_Route = require('./routes/Indicador');
-const Categoria_Route = require('./routes/Categoria');
+const entidad_eje_Route = require('./routes/entidad_ejecutora');
+const lineas_estr_Route = require('./routes/lineas_estrategicas');
+const lineas_acc_Route = require('./routes/lineas_accion');
+const acciones_est_Route = require('./routes/Acciones_estrategicas');
+const indicador_Route = require('./routes/Indicador');
+const categoria_Route = require('./routes/Categoria');
 
 //const path = require('path');
 
@@ -26,12 +26,12 @@ app.use(express.json());
 //rutas componentes
 app.use('/usuarios',userRoute);
 app.use('/municipio',MunicipioRoute);
-app.use('/Entidad_eje',Entidad_eje_Route);
-app.use('/Lineas_estr',Lineas_Estr_Route);
-app.use('/Lineas_Acc',Lineas_Acc_Route);
-app.use('/Accion_est',Acciones_est_Route);
-app.use('/Indicador',Indicador_Route);
-app.use('/Categoria',Categoria_Route);
+app.use('/entidad_eje',entidad_eje_Route);
+app.use('/lineas_estr',lineas_estr_Route);
+app.use('/lineas_acc',lineas_acc_Route);
+app.use('/accion_est',acciones_est_Route);
+app.use('/indicador',indicador_Route);
+app.use('/categoria',categoria_Route);
 
 
 module.exports=app;
