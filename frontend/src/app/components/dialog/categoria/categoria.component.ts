@@ -26,8 +26,8 @@ export class CategoriaComponent {
 
   ngOnInit(): void {
     this.categoriaForm = this.formBuilder.group({
-      nombre: [null, [Validators.required]],
-      comunidad: [null, [Validators.required]]
+      nom_categoria: [null, [Validators.required]],
+      desc_categoria: [null, [Validators.required]]
     });
     if(this.dialogData.action ==='Edit') {
       this.dialogAction="Edit";

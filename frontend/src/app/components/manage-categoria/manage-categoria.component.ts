@@ -81,17 +81,17 @@ export class ManageCategoriaComponent {
   handleDeleteAction(values: any) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      message: ' eliminar al arbitro '+ values.nombre +' '+ values.ap_paterno
+      message: ' eliminar Categoria '+ values.nom_categoria
     };
     const dialogRef = this.dialog.open(ConfirmationComponent, dialogConfig);
     const sub = dialogRef.componentInstance.onEmitStatusChange.subscribe((response) => {
-      this.deleteArbitro(values.ci);
+      this.deleteCategoria(values.id_categoria);
       dialogRef.close();
     });
   }
 
-  deleteArbitro(ci: any) {
-    this.categoriaService.delete(ci).subscribe((response: any) => {
+  deleteCategoria(id_categoria: any) {
+    this.categoriaService.delete(id_categoria).subscribe((response: any) => {
       this.tableData();
       this.responseMessage = response?.message;
       this.snackbarService.openSnackBar(this.responseMessage, "success");
@@ -106,10 +106,10 @@ export class ManageCategoriaComponent {
     })
   }
 
-  onChange(status: any, ci: any) {
+  onChange(status: any, id_categoria: any) {
     var data = {
       status: status.toString(),
-      ci: ci
+      id_categoria: id_categoria
     }
     this.categoriaService.updateStatus(data).subscribe((response: any) => {
       this.tableData();

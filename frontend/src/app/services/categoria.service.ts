@@ -19,7 +19,7 @@ export class CategoriaService {
   //----------------------API PARA AGREGAR CATEGORÍA ------------------------------
   add(data: any) {
     return this.httpClient.post(this.url +
-      "/categoria/add/", data, {
+      "/categoria/create/", data, {
       headers: new HttpHeaders().set('Content-Type', "application/json")
     });
   }
