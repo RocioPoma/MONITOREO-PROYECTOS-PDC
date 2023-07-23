@@ -14,6 +14,7 @@ import { ManageCategoriaComponent } from './manage-categoria/manage-categoria.co
 import { CategoriaComponent } from './dialog/categoria/categoria.component';
 import { ManageMunicipioComponent } from './manage-municipio/manage-municipio.component';
 import { ProyectoComponent } from './dialog/proyecto/proyecto.component';
+import { MunicipioComponent } from './dialog/municipio/municipio.component';
 
 //import { MaterialModule } from '../shared/material-module';
 
@@ -27,7 +28,8 @@ import { ProyectoComponent } from './dialog/proyecto/proyecto.component';
     ManageCategoriaComponent,
     CategoriaComponent,
     ManageMunicipioComponent,
-    ProyectoComponent
+    ProyectoComponent,
+    MunicipioComponent
   ],
   imports: [
     CommonModule,

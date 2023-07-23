@@ -46,10 +46,10 @@ router.get('/get', (req, res) => {
   });
 
 //modificar municipio
-router.put('/update/:id', (req, res) => {
-    const { id } = req.params;
-    const { nombre_municipio, estado } = req.body;
-    connection.query('UPDATE MUNICIPIO SET nombre_municipio = ?, estado = ? WHERE id_municipio = ?', [nombre_municipio, estado, id], (err) => {
+   router.patch('/update', (req, res) => {
+    let municipio = req.body;
+    //console.log(municipio);
+    connection.query('UPDATE MUNICIPIO SET nombre_municipio = ?, estado = ? WHERE id_municipio = ?', [municipio.nombre_municipio, municipio.estado, municipio.id_municipio], (err) => {
       if (err) {
         console.error(err);
         res.status(500).json({ message: 'Hubo un error al actualizar el municipio' });
@@ -57,8 +57,8 @@ router.put('/update/:id', (req, res) => {
         res.json({ message: 'Municipio actualizado correctamente' });
       }
     });
-  });
-
+  }); 
+//borrar municipio
   router.delete('/delete/:id', (req, res) => {
     const { id } = req.params;
     connection.query('DELETE FROM MUNICIPIO WHERE id_municipio = ?', [id], (err) => {
@@ -70,5 +70,22 @@ router.put('/update/:id', (req, res) => {
       }
     });
   });
+
+//status municipio
+router.patch('/updateStatus',(req,res)=>{
+  let user =req.body;
+  var query = "update municipio set estado=? where id_municipio=?";
+  connection.query(query,[user.estado,user.id_municipio],(err,results)=>{
+      if(!err){
+          if(results.affectedRows == 0){
+              return res.status(404).json({message:"El usuario  no existe"});
+          }
+          return res.status(200).json({message:"Actualización Estado de usuario con éxito"});
+      }
+      else{
+          return res.status(500).json(err);
+      }
+  })
+})
 
 module.exports = router;

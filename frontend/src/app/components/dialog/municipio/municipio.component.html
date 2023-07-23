@@ -1,0 +1,29 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row fxLayout="row">
+        <span class="title-center">{{action}} Municipio </span>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="municipioForm">
+        <div fxFlex fxLayout="column">
+            <div fxLayout="row wrap">
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="nombre_municipio" required>
+                    <mat-error *ngIf="municipioForm.controls.nombre_municipio.touched && municipioForm.controls.nombre_municipio.invalid">
+                        <span *ngIf="municipioForm.controls.nombre_municipio.errors.required">Este campo es obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>
+
+             
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" type="submit" (click)="handleSubmit()"
+        [disabled]="![municipioForm.valid && municipioForm.dirty]">{{action}}</button>
+        <button mat-raised-button color="primary" mat-dialog-close>Cancelar</button>
+</mat-dialog-actions>

@@ -1,1 +1,154 @@
-<p>proyecto works!</p>
+<mat-toolbar color="primary">
+    <mat-toolbar-row fxLayout="row">
+        <span class="title-center">{{action}} Proyecto/Accion</span>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="proyectoForm">
+        <div fxFlex fxLayout="column">
+            <span class="title-center">INFORMACION GENERAL</span>
+            <div fxLayout="row wrap">
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Tipologia</mat-label>
+                    <mat-select>
+                      <mat-option *ngFor="let food of foods" [value]="food.value">
+                        {{food.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Nombre proyecto/accion</mat-label>
+                    <input matInput formControlName="nombre_municipio" required>
+                    <mat-error *ngIf="proyectoForm.controls.nombre_municipio.touched && proyectoForm.controls.nombre_municipio.invalid">
+                        <span *ngIf="proyectoForm.controls.nombre_municipio.errors.required">Este campo es obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>             
+            </div>
+
+            <div fxLayout="row wrap">
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Categorizacion</mat-label>
+                    <mat-select>
+                      <mat-option *ngFor="let food of foods" [value]="food.value">
+                        {{food.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-form-field>
+                        <mat-label>Fecha inicio</mat-label>
+                        <input matInput [matDatepicker]="picker">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>                
+                </mat-form-field>  
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-form-field>
+                        <mat-label>Fecha Fin</mat-label>
+                        <input matInput [matDatepicker]="picker">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>                
+                </mat-form-field>             
+            </div>
+            <mat-toolbar-row fxLayout="row">
+                <span class="title-center">LOCALIZACION</span>
+            </mat-toolbar-row>
+            <div fxLayout="row wrap">
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>CUENCA</mat-label>
+                    <mat-select>
+                      <mat-option *ngFor="let food of foods" [value]="food.value">
+                        {{food.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>MUNICIPIO</mat-label>
+                    <mat-select>
+                      <mat-option *ngFor="let food of foods" [value]="food.value">
+                        {{food.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Coordenada x</mat-label>
+                    <input matInput formControlName="nombre_municipio" required>
+                    <mat-error *ngIf="proyectoForm.controls.nombre_municipio.touched && proyectoForm.controls.nombre_municipio.invalid">
+                        <span *ngIf="proyectoForm.controls.nombre_municipio.errors.required">Este campo es obligatorio.</span>
+                    </mat-error>
+                </mat-form-field> 
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Coordenada y</mat-label>
+                    <input matInput formControlName="nombre_municipio" required>
+                    <mat-error *ngIf="proyectoForm.controls.nombre_municipio.touched && proyectoForm.controls.nombre_municipio.invalid">
+                        <span *ngIf="proyectoForm.controls.nombre_municipio.errors.required">Este campo es obligatorio.</span>
+                    </mat-error>
+                </mat-form-field> 
+                
+            </div>
+            <div fxLayout="row wrap">
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Area</mat-label>
+                    <mat-select>
+                      <mat-option *ngFor="let food of foods" [value]="food.value">
+                        {{food.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Comunidad/ciudad</mat-label>
+                    <input matInput formControlName="nombre_municipio" required>
+                    <mat-error *ngIf="proyectoForm.controls.nombre_municipio.touched && proyectoForm.controls.nombre_municipio.invalid">
+                        <span *ngIf="proyectoForm.controls.nombre_municipio.errors.required">Este campo es obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>                
+                
+            </div>
+            <span class="title-center">ALCANCE</span>
+            <div fxLayout="row wrap">
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Cantidad</mat-label>
+                    <input matInput formControlName="nombre_municipio" required>
+                    <mat-error *ngIf="proyectoForm.controls.nombre_municipio.touched && proyectoForm.controls.nombre_municipio.invalid">
+                        <span *ngIf="proyectoForm.controls.nombre_municipio.errors.required">Este campo es obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>   
+                
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Unidad</mat-label>
+                    <mat-select>
+                    <mat-option *ngFor="let food of foods" [value]="food.value">
+                        {{food.viewValue}}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Hombres</mat-label>
+                    <input matInput formControlName="nombre_municipio" required>
+                    <mat-error *ngIf="proyectoForm.controls.nombre_municipio.touched && proyectoForm.controls.nombre_municipio.invalid">
+                        <span *ngIf="proyectoForm.controls.nombre_municipio.errors.required">Este campo es obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>  
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Coa Y</mat-label>
+                    <input matInput formControlName="nombre_municipio" required>
+                    <mat-error *ngIf="proyectoForm.controls.nombre_municipio.touched && proyectoForm.controls.nombre_municipio.invalid">
+                        <span *ngIf="proyectoForm.controls.nombre_municipio.errors.required">Este campo es obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>             
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" type="submit" (click)="handleSubmit()"
+        [disabled]="![proyectoForm.valid && proyectoForm.dirty]">{{action}}</button>
+        <button mat-raised-button color="primary" mat-dialog-close>Cancelar</button>
+</mat-dialog-actions>

@@ -6,6 +6,7 @@ import { RouteGuardService } from './services/route-guard.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ManageProyectoComponent } from './components/manage-proyecto/manage-proyecto.component';
 import { ManageCategoriaComponent } from './components/manage-categoria/manage-categoria.component';
+import { ManageMunicipioComponent} from './components/manage-municipio/manage-municipio.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -13,6 +14,7 @@ const routes: Routes = [
    /**Para pruebas**/
  { path:'pproyecto',component:ManageProyectoComponent},
  { path:'categoria',component:ManageCategoriaComponent},
+ { path:'municipio',component:ManageMunicipioComponent},
 
    /**Fin Pruebas**/
 
