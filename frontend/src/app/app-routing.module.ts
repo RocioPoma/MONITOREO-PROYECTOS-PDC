@@ -15,6 +15,8 @@ const routes: Routes = [
  { path:'pproyecto',component:ManageProyectoComponent},
  { path:'categoria',component:ManageCategoriaComponent},
  { path:'municipio',component:ManageMunicipioComponent},
+ { path:'layout', component:LayoutsComponent},
+ { path:'dashboard',component: DashboardComponent},
 
    /**Fin Pruebas**/
 

@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
 
   handleSubmit() {
     this.dialogRef.close();
-    this.router.navigate(['/proyecto']);
+    this.router.navigate(['/pproyecto']);
   }
 
 

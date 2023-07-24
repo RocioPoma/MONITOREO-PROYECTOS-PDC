@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 //para login
 import { MatDialog } from '@angular/material/dialog';
-import {LoginComponent} from '../login/login.component';
+import { LoginComponent } from '../login/login.component';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +10,7 @@ import {LoginComponent} from '../login/login.component';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog) { }
 
   openLoginDialog(): void {
     const dialogRef = this.dialog.open(LoginComponent);

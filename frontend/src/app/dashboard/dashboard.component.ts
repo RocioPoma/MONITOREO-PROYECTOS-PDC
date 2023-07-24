@@ -22,6 +22,7 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 
 })
 export class DashboardComponent {
+
     isSubmenuOpen: boolean = false;
 
       toggleSubmenu(): void {
