@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./layouts.component.scss']
 })
 export class LayoutsComponent {
+  
 
   mobileQuery: MediaQueryList;
   usuario: any;

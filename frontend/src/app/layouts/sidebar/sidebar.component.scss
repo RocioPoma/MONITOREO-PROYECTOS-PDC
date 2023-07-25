@@ -1,0 +1,20 @@
+
+/* Estilo para centrar la palabra "Home" */
+.mat-expansion-panel-header .mat-content {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Estilo para ajustar el espacio entre el icono y el texto */
+  .mat-expansion-panel-header mat-icon {
+    margin-right: 8px; /* Puedes ajustar el valor según tus preferencias */
+    
+  }
+  .mat-expansion-panel-header span {
+    font-size: 15px; /* Puedes ajustar el tamaño de fuente según tus preferencias */
+  }
+  
+  
+  
+  
+  

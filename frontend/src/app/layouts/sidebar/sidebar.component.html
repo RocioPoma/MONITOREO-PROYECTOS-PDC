@@ -1,5 +1,5 @@
 
-<mat-nav-list appAccordion>
+<!-- <mat-nav-list appAccordion>
     <mat-list-item appAcordionLink  routerLinkActive="selected">
     <a hrefappAcordionToggle>
         <mat-icon>home</mat-icon>
@@ -7,7 +7,36 @@
         <span fxFlex></span>
     </a>
 </mat-list-item>
-</mat-nav-list>
+</mat-nav-list> -->
+
+<!-- <mat-nav-list>    
+    <mat-expansion-panel [class.mat-elevation-z0]="true">
+        <mat-expansion-panel-header>
+            <mat-icon>home</mat-icon> 
+            <span>Home</span>
+            <span fxFlex></span>
+        </mat-expansion-panel-header>        
+        <mat-nav-list>
+            <a mat-list-item routerLink="#">
+                <mat-icon>apple</mat-icon><span>iOS</span>
+            </a>
+            <a mat-list-item routerLink="#">
+                <mat-icon>android</mat-icon><span>Android</span>
+            </a>
+        </mat-nav-list>        
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [class.mat-elevation-z0]="true">
+        <mat-expansion-panel-header>
+            Frameworks
+        </mat-expansion-panel-header>
+        <mat-nav-list>
+            <a mat-list-item routerLink="#">Spring</a>
+            <a mat-list-item routerLink="#">Hibernate</a>
+            <a mat-list-item routerLink="#">Struts</a>
+        </mat-nav-list>
+    </mat-expansion-panel>
+</mat-nav-list> -->
 
 <!--
     <mat-nav-list appAccordion>
@@ -22,3 +51,34 @@
 </mat-list-item>
 </mat-nav-list>
 -->
+<!-- app.component.html -->
+
+<mat-nav-list appAccordion>
+    <ng-container *ngFor="let menuItem of menuItems">
+      <ng-container *ngIf="!menuItem.submenus; else submenuTemplate">     
+        <mat-list-item >    
+             <a mat-list-item>                
+               
+                <span>{{ menuItem.title }}</span>
+              </a>
+        </mat-list-item>
+      </ng-container>
+      <ng-template #submenuTemplate>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-icon>{{ menuItem.icon }}</mat-icon>            
+            <span>{{ menuItem.title }}</span>
+          </mat-expansion-panel-header>
+          <mat-list>
+            <mat-list-item *ngFor="let submenuItem of menuItem.submenus" >
+              <a mat-list-item >{{ submenuItem.title }}</a>
+            </mat-list-item>
+          </mat-list>
+        </mat-expansion-panel>
+      </ng-template>
+      
+    </ng-container>
+  </mat-nav-list>
+
+  <!-- app.component.html -->
+

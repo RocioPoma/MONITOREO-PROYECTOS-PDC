@@ -3,6 +3,13 @@ import { MediaMatcher } from '@angular/cdk/layout';
 //import jwt_decode from "jwt-decode";
 //import { MenuItems } from 'src/app/shared/menu-items';
 
+interface MenuItem {
+  title: string;
+  icon?: string;
+  link?: string;
+  submenus?: MenuItem[];
+}
+
 
 @Component({
   selector: 'app-sidebar',
@@ -10,6 +17,127 @@ import { MediaMatcher } from '@angular/cdk/layout';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent  implements OnDestroy{
+//array
+menuItems: MenuItem[] = [
+  {
+    title: 'Home',
+    icon: 'home',
+    submenus: [      
+      {
+        title: 'Acción 1',
+        link: '/accion1'
+      },
+      {
+        title: 'Acción 2',
+        link: '/accion2'
+      }
+    ]
+  },
+  {
+    title: 'Usuarios',
+    icon: 'group',
+    submenus: [
+      {
+        title: 'Proyecto 1',
+        link: '/proyecto1'
+      },
+      {
+        title: 'Proyecto 2',
+        link: '/proyecto2'
+      }
+    ]
+  },
+  {
+    title: 'Proyectos/acciones',
+    icon: 'home',
+    submenus: [
+      {
+        title: 'Proyecto 1',
+        link: '/proyecto1'
+      },
+      {
+        title: 'Proyecto 2',
+        link: '/proyecto2'
+      },
+      {
+        title: 'Acción 1',
+        link: '/accion1'
+      },
+      {
+        title: 'Acción 2',
+        link: '/accion2'
+      }
+    ]
+  },
+  {
+    title: 'Seguimiento/proy',
+    icon: 'article',
+    submenus: [
+      {
+        title: 'Proyecto 1',
+        link: '/proyecto1'
+      },
+      {
+        title: 'Proyecto 2',
+        link: '/proyecto2'
+      },
+      {
+        title: 'Acción 1',
+        link: '/accion1'
+      },
+      {
+        title: 'Acción 2',
+        link: '/accion2'
+      }
+    ]
+  },  {
+    title: 'reportes',
+    icon: 'assessment',
+    submenus: [
+      {
+        title: 'Proyecto 1',
+        link: '/proyecto1'
+      },
+      {
+        title: 'Proyecto 2',
+        link: '/proyecto2'
+      },
+      {
+        title: 'Acción 1',
+        link: '/accion1'
+      },
+      {
+        title: 'Acción 2',
+        link: '/accion2'
+      }
+    ]
+  },
+  {
+    title: 'Configuracion',
+    icon: 'settings',
+    submenus: [
+      {
+        title: 'Proyecto 1',
+        link: '/proyecto1'
+      },
+      {
+        title: 'Proyecto 2',
+        link: '/proyecto2'
+      },
+      {
+        title: 'Acción 1',
+        link: '/accion1'
+      },
+      {
+        title: 'Acción 2',
+        link: '/accion2'
+      }
+    ]
+  }
+
+];
+//array
+
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
