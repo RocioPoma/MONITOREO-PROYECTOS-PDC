@@ -1,0 +1,37 @@
+table {
+  width: 100%;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td,
+th {
+  width: 25%;
+}
+
+h3 {
+  text-align: center;
+}
+
+.acciones {
+  display: flex;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  margin-right: 10px;
+  /* Puedes ajustar el espacio entre los iconos y el slide-toggle */
+}
+
+.btn-registrar {
+  float: right;
+  margin-bottom: 17px;
+}

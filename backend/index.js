@@ -12,7 +12,7 @@ const lineas_acc_Route = require('./routes/lineas_accion');
 const acciones_est_Route = require('./routes/Acciones_estrategicas');
 const indicador_Route = require('./routes/Indicador');
 const categoria_Route = require('./routes/Categoria');
-const proyectos_Route = require('./routes/Proyectos');
+const proyectos_Route = require('./routes/proyectos');
 
 //const path = require('path');
 
@@ -33,7 +33,7 @@ app.use('/lineas_acc',lineas_acc_Route);
 app.use('/accion_est',acciones_est_Route);
 app.use('/indicador',indicador_Route);
 app.use('/categoria',categoria_Route);
-app.use('/proyectos',proyectos_Route);
+app.use('/proyecto',proyectos_Route);
 
 
 module.exports=app;

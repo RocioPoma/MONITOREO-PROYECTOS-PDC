@@ -22,31 +22,30 @@ const routes: Routes = [
 
 
   {
-    path: 'proyecto', component: LayoutsComponent,
-
-    //component: LayoutsComponent,
-   
+    path: 'layout1', component: LayoutsComponent,
     children: [
+      /*
       {
         path: '',
         redirectTo: '/proyecto/dashboard',
         pathMatch: 'full',
-      },
+      },*/
       {
         path: '',
         loadChildren:
           () => import('./components/components.module').then(m => m.ComponentsModule),
         canActivate: [RouteGuardService],
         data: {
-          expectedRole: ['admin', 'user']
+          expectedRole: ['']
         }
       },
+      
       {
         path: 'dashboard',
         loadChildren: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent),
         canActivate: [RouteGuardService],
         data: {
-          expectedRole: ['admin', 'user']
+          expectedRole: ['']
         }
       }
     ]

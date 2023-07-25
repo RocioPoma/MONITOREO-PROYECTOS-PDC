@@ -26,7 +26,7 @@ import { MatSort } from '@angular/material/sort';
   //imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule],
 })
 export class ManageProyectoComponent  {
-  displayedColumns: string[] = ['id', 'name', 'progress', 'fruit'];
+  displayedColumns: string[] = ['Nro', 'NombreProyecto', 'FechaInicio', 'FechaFin','NombreMunicipio','NombreCuenca','NombreCategoria','NombreTipologia','Acciones'];
   dataSource: any;
   responseMessage: any;
 
@@ -90,7 +90,7 @@ export class ManageProyectoComponent  {
     })
   }
 
- /*  handleEditAction(values: any) {
+   handleEditAction(values: any) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       action: 'Edit',     
@@ -98,7 +98,7 @@ export class ManageProyectoComponent  {
     }
    
     dialogConfig.width = "700px";
-    const dialogRef = this.dialog.open(MunicipioComponent, dialogConfig);
+    const dialogRef = this.dialog.open(ProyectoComponent, dialogConfig);
     this.router.events.subscribe(() => {
       dialogRef.close();
     });
@@ -120,7 +120,7 @@ export class ManageProyectoComponent  {
   }
 
   deleteCategoria(id_municipio: any) {
-    this.MunicipioServices.delete(id_municipio).subscribe((response: any) => {
+    this.ProyectoServices.delete(id_municipio).subscribe((response: any) => {
       this.tableData();
       this.responseMessage = response?.message;
       this.snackbarService.openSnackBar(this.responseMessage, "success");
@@ -142,7 +142,7 @@ export class ManageProyectoComponent  {
       id_municipio: id_municipio
     }
     
-    this.MunicipioServices.updateStatus(data).subscribe((response: any) => {
+    this.ProyectoServices.updateStatus(data).subscribe((response: any) => {
       this.tableData();
       this.responseMessage = response?.message;
       this.snackbarService.openSnackBar(this.responseMessage, "success");
@@ -155,7 +155,7 @@ export class ManageProyectoComponent  {
       }
       this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
     })
-  } */
+  } 
 
 
 

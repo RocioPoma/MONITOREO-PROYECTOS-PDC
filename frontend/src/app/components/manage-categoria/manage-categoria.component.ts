@@ -1,22 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { CategoriaService } from 'src/app/services/categoria.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { GlobalCostants } from 'src/app/shared/global-constants';
 import { CategoriaComponent } from '../dialog/categoria/categoria.component';
 import { ConfirmationComponent } from '../dialog/confirmation/confirmation.component';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-manage-categoria',
   templateUrl: './manage-categoria.component.html',
-  styleUrls: ['./manage-categoria.component.scss']
+  styleUrls: ['./manage-categoria.component.scss'],
+  //imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule],
 })
 export class ManageCategoriaComponent {
   displayedColumns: string[] = ['numero', 'nombre', 'descripcion', 'acciones']; 
   dataSource: any;
   responseMessage: any;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private categoriaService: CategoriaService,
     private dialog: MatDialog,
@@ -30,6 +38,8 @@ export class ManageCategoriaComponent {
   tableData() {
     this.categoriaService.getCategoria().subscribe((response: any) => {
       this.dataSource = new MatTableDataSource(response);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     }, (error: any) => {
       if (error.error?.message) {
         this.responseMessage = error.error?.message;
@@ -41,11 +51,22 @@ export class ManageCategoriaComponent {
     })
   }
 
+   //--------------------------------Paginador -------------------------------------
+   ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
   //---------------------------------Fitrador----------------------------------------------------
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
+
+ 
 
   handleAddAction() {
     const dialogConfig = new MatDialogConfig();

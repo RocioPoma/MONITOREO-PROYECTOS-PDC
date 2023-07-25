@@ -53,21 +53,10 @@ menuItems: MenuItem[] = [
     submenus: [
       {
         title: 'Proyecto 1',
-        link: '/proyecto1'
-      },
-      {
-        title: 'Proyecto 2',
-        link: '/proyecto2'
-      },
-      {
-        title: 'Acción 1',
-        link: '/accion1'
-      },
-      {
-        title: 'Acción 2',
-        link: '/accion2'
+        link: '/proyecto'
       }
     ]
+   
   },
   {
     title: 'Seguimiento/proy',

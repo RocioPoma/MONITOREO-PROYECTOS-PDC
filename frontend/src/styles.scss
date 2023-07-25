@@ -1,13 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 
+/*TEMA GLOBAL*/
 @import './assets/styles/themes.scss';
+/*FIN TEMA GLOBAL*/
+
 @import './assets/styles/variable.scss';
 @import './assets/styles/app.scss';
 //@import './assets/styles/header.scss';
 @import './assets/styles/pages.scss';
 @import './assets/styles/responsive.scss';
-//@import './assets/styles/sidebar.scss';
-//@import './assets/styles/icons/material-design-iconic-font/css/materialdesignicons.min.css';
+@import './assets/styles/sidebar.scss';
+@import './assets/styles/icons/material-design-iconic-font/css/materialdesignicons.min.css';
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

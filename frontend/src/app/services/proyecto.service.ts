@@ -13,7 +13,7 @@ export class ProyectoService {
   
   //----------------------API PARA LISTAR CATEGORÍA ------------------------------
   getProyecto() {
-    return this.httpClient.get(this.url + "/proyecto/get/")
+    return this.httpClient.get(this.url + "/proyecto/get")
   }
 
   //----------------------API PARA AGREGAR CATEGORÍA ------------------------------

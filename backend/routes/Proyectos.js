@@ -5,7 +5,29 @@ var auth = require('../services/authentication');
 
 // Ruta para obtener todos los proyectos
 router.get('/get', (req, res) => {
-    const sql = 'SELECT * FROM PROYECTO';
+    const sql = 
+    'SELECT '
+        +'P.nom_proyecto AS NombreProyecto, '
+        +'P.fecha_inicio AS FechaInicio, '
+        +'P.fecha_fin AS FechaFin, '
+        +'M.nombre_municipio AS NombreMunicipio, '
+        +'C.nom_cuenca AS NombreCuenca, '
+        +'CAT.nom_categoria AS NombreCategoria, '
+        +'TIP.nom_tipologia AS NombreTipologia '
+    +'FROM '
+       +' PROYECTO AS P '
+    +'JOIN '
+        +'PROYECTO_CIUDAD_O_COMUNIDAD AS PCOC ON P.id_proyecto = PCOC.id_proyecto '
+    +'JOIN '
+        +'CIUDAD_O_COMUNIDAD AS CC ON PCOC.id_ciudad_comunidad = CC.id '
+    +'JOIN '
+        +'MUNICIPIO AS M ON CC.id_municipio = M.id_municipio '
+    +'JOIN '
+        +'CUENCA AS C ON P.id_cuenca = C.id_cuenca '
+    +'JOIN '
+        +'CATEGORIA AS CAT ON P.id_categoria = CAT.id_categoria '
+    +'JOIN '
+        +'TIPOLOGIA AS TIP ON P.id_tipologia = TIP.id_tipologia ';
     connection.query(sql, (err, result) => {
       if (err) throw err;
       res.json(result);
