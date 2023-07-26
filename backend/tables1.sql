@@ -131,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `INDICADOR` (
   `nombre_indicador` VARCHAR(255) NULL,
   `desc_indicador` VARCHAR(255) NULL,
   `estado` VARCHAR(10) NULL,
-  `id_medicion` INT NOT NULL,
+  `id_unidad_medicion` INT NOT NULL,
   `id_pdes` INT NOT NULL,
   `id_ndc` INT NOT NULL,
   `id_pprh` INT NOT NULL,

@@ -12,7 +12,7 @@ const lineas_acc_Route = require('./routes/lineas_accion');
 const acciones_est_Route = require('./routes/Acciones_estrategicas');
 const indicador_Route = require('./routes/Indicador');
 const categoria_Route = require('./routes/Categoria');
-const proyectos_Route = require('./routes/proyectos');
+const proyectos_Route = require('./routes/Proyectos');
 
 //const path = require('path');
 

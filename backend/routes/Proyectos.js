@@ -46,9 +46,9 @@ router.get('/get', (req, res) => {
   
   // Ruta para crear un nuevo proyecto
   router.post('/create', (req, res) => {
-    const { nom_proyecto, fecha_inicio, fecha_fin, area, coordenada_x, coordenada_y, CATEGORIA_id_categoria, TIPOLOGIA_id_tipologia, INDICADOR_id_indicador, ACCIONES_ESTRATEGICAS_id_acciones_estrategicas, estado } = req.body;
-    const sql = 'INSERT INTO PROYECTO (nom_proyecto, fecha_inicio, fecha_fin, area, coordenada_x, coordenada_y, CATEGORIA_id_categoria, TIPOLOGIA_id_tipologia, INDICADOR_id_indicador, ACCIONES_ESTRATEGICAS_id_acciones_estrategicas, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-    connection.query(sql, [nom_proyecto, fecha_inicio, fecha_fin, area, coordenada_x, coordenada_y, CATEGORIA_id_categoria, TIPOLOGIA_id_tipologia, INDICADOR_id_indicador, ACCIONES_ESTRATEGICAS_id_acciones_estrategicas, estado], (err, result) => {
+    const { nom_proyecto, fecha_inicio, fecha_fin, area, coordenada_x, coordenada_y, id_categoria, id_tipologia, id_indicador, id_acciones_estrategicas, estado,fecha_registro ,id_cuenca} = req.body;
+    const sql = 'INSERT INTO PROYECTO (nom_proyecto, fecha_inicio, fecha_fin, area, coordenada_x, coordenada_y, id_categoria, id_tipologia, id_indicador, id_accion_estrategica, estado,fecha_registro,id_cuenca) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    connection.query(sql, [nom_proyecto, fecha_inicio, fecha_fin, area, coordenada_x, coordenada_y, id_categoria, id_tipologia, id_indicador, id_acciones_estrategicas, estado,fecha_registro,id_cuenca], (err, result) => {
       if (err) throw err;
       res.status(201).json({ message: 'Proyecto creado correctamente' });
     });

@@ -11,17 +11,17 @@
             <div fxLayout="row wrap">
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Tipologia</mat-label>
-                    <mat-select>
-                      <mat-option *ngFor="let food of foods" [value]="food.value">
+                    <mat-select formControlName="tipologia" required>
+                      <mat-option *ngFor="let food of tip" [value]="food.value">
                         {{food.viewValue}}
                       </mat-option>
                     </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Nombre proyecto/accion</mat-label>
-                    <input matInput formControlName="nombre_municipio" required>
-                    <mat-error *ngIf="proyectoForm.controls.nombre_municipio.touched && proyectoForm.controls.nombre_municipio.invalid">
-                        <span *ngIf="proyectoForm.controls.nombre_municipio.errors.required">Este campo es obligatorio.</span>
+                    <input matInput formControlName="nom_proyecto" required>
+                    <mat-error *ngIf="proyectoForm.controls.nom_proyecto.touched && proyectoForm.controls.nom_proyecto.invalid">
+                        <span *ngIf="proyectoForm.controls.nom_proyecto.errors.required">Este campo es obligatorio.</span>
                     </mat-error>
                 </mat-form-field>             
             </div>
@@ -29,30 +29,29 @@
             <div fxLayout="row wrap">
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Categorizacion</mat-label>
-                    <mat-select>
+                    <mat-select formControlName="categorizacion" required>
                       <mat-option *ngFor="let food of foods" [value]="food.value">
                         {{food.viewValue}}
                       </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field appearance="fill" fxFlex>
-                    <mat-form-field>
-                        <mat-label>Fecha inicio</mat-label>
-                        <input matInput [matDatepicker]="picker">
-                        <mat-hint>MM/DD/YYYY</mat-hint>
-                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                      </mat-form-field>                
-                </mat-form-field>  
-                <mat-form-field appearance="fill" fxFlex>
-                    <mat-form-field>
-                        <mat-label>Fecha Fin</mat-label>
-                        <input matInput [matDatepicker]="picker">
-                        <mat-hint>MM/DD/YYYY</mat-hint>
-                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                      </mat-form-field>                
-                </mat-form-field>             
+
+                <mat-form-field>
+                    <mat-label>fecha inicio</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="fecha_inicio">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+
+                  <mat-form-field>
+                    <mat-label>fecha fin</mat-label>
+                    <input matInput [matDatepicker]="picker2" formControlName="fecha_fin">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                  </mat-form-field>
+
             </div>
             <mat-toolbar-row fxLayout="row">
                 <span class="title-center">LOCALIZACION</span>
@@ -60,32 +59,32 @@
             <div fxLayout="row wrap">
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>CUENCA</mat-label>
-                    <mat-select>
-                      <mat-option *ngFor="let food of foods" [value]="food.value">
+                    <mat-select formControlName="cuenca" required>
+                      <mat-option *ngFor="let food of cuenca" [value]="food.value">
                         {{food.viewValue}}
                       </mat-option>
                     </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>MUNICIPIO</mat-label>
-                    <mat-select>
-                      <mat-option *ngFor="let food of foods" [value]="food.value">
+                    <mat-select formControlName="municipio" required>
+                      <mat-option *ngFor="let food of municipio" [value]="food.value">
                         {{food.viewValue}}
                       </mat-option>
                     </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Coordenada x</mat-label>
-                    <input matInput formControlName="nombre_municipio" required>
-                    <mat-error *ngIf="proyectoForm.controls.nombre_municipio.touched && proyectoForm.controls.nombre_municipio.invalid">
-                        <span *ngIf="proyectoForm.controls.nombre_municipio.errors.required">Este campo es obligatorio.</span>
+                    <input type="number" matInput formControlName="coordenada_x" required>
+                    <mat-error *ngIf="proyectoForm.controls.coordenada_x.touched && proyectoForm.controls.coordenada_x.invalid">
+                        <span *ngIf="proyectoForm.controls.coordenada_x.errors.required">Este campo es obligatorio.</span>
                     </mat-error>
                 </mat-form-field> 
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Coordenada y</mat-label>
-                    <input matInput formControlName="nombre_municipio" required>
-                    <mat-error *ngIf="proyectoForm.controls.nombre_municipio.touched && proyectoForm.controls.nombre_municipio.invalid">
-                        <span *ngIf="proyectoForm.controls.nombre_municipio.errors.required">Este campo es obligatorio.</span>
+                    <input type="number" matInput formControlName="coordenada_y" required>
+                    <mat-error *ngIf="proyectoForm.controls.coordenada_y.touched && proyectoForm.controls.coordenada_y.invalid">
+                        <span *ngIf="proyectoForm.controls.coordenada_y.errors.required">Este campo es obligatorio.</span>
                     </mat-error>
                 </mat-form-field> 
                 
@@ -93,8 +92,8 @@
             <div fxLayout="row wrap">
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Area</mat-label>
-                    <mat-select>
-                      <mat-option *ngFor="let food of foods" [value]="food.value">
+                    <mat-select formControlName="area" required>
+                      <mat-option *ngFor="let food of area" [value]="food.value">
                         {{food.viewValue}}
                       </mat-option>
                     </mat-select>
@@ -102,9 +101,9 @@
                 
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Comunidad/ciudad</mat-label>
-                    <input matInput formControlName="nombre_municipio" required>
-                    <mat-error *ngIf="proyectoForm.controls.nombre_municipio.touched && proyectoForm.controls.nombre_municipio.invalid">
-                        <span *ngIf="proyectoForm.controls.nombre_municipio.errors.required">Este campo es obligatorio.</span>
+                    <input matInput formControlName="comunidad_ciudad" required>
+                    <mat-error *ngIf="proyectoForm.controls.comunidad_ciudad.touched && proyectoForm.controls.comunidad_ciudad.invalid">
+                        <span *ngIf="proyectoForm.controls.comunidad_ciudad.errors.required">Este campo es obligatorio.</span>
                     </mat-error>
                 </mat-form-field>                
                 
@@ -113,33 +112,33 @@
             <div fxLayout="row wrap">
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Cantidad</mat-label>
-                    <input matInput formControlName="nombre_municipio" required>
-                    <mat-error *ngIf="proyectoForm.controls.nombre_municipio.touched && proyectoForm.controls.nombre_municipio.invalid">
-                        <span *ngIf="proyectoForm.controls.nombre_municipio.errors.required">Este campo es obligatorio.</span>
+                    <input type="number" matInput formControlName="cantidad" required>
+                    <mat-error *ngIf="proyectoForm.controls.cantidad.touched && proyectoForm.controls.cantidad.invalid">
+                        <span *ngIf="proyectoForm.controls.cantidad.errors.required">Este campo es obligatorio.</span>
                     </mat-error>
                 </mat-form-field>   
                 
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Unidad</mat-label>
                     <mat-select>
-                    <mat-option *ngFor="let food of foods" [value]="food.value">
-                        {{food.viewValue}}
+                    <mat-option *ngFor="let cat of cat" [value]="cat.value">
+                        {{cat.viewValue}}
                     </mat-option>
                     </mat-select>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Hombres</mat-label>
-                    <input matInput formControlName="nombre_municipio" required>
-                    <mat-error *ngIf="proyectoForm.controls.nombre_municipio.touched && proyectoForm.controls.nombre_municipio.invalid">
-                        <span *ngIf="proyectoForm.controls.nombre_municipio.errors.required">Este campo es obligatorio.</span>
+                    <input type="number" matInput formControlName="hombres" required>
+                    <mat-error *ngIf="proyectoForm.controls.hombres.touched && proyectoForm.controls.hombres.invalid">
+                        <span *ngIf="proyectoForm.controls.hombres.errors.required">Este campo es obligatorio.</span>
                     </mat-error>
                 </mat-form-field>  
                 <mat-form-field appearance="fill" fxFlex>
-                    <mat-label>Coa Y</mat-label>
-                    <input matInput formControlName="nombre_municipio" required>
-                    <mat-error *ngIf="proyectoForm.controls.nombre_municipio.touched && proyectoForm.controls.nombre_municipio.invalid">
-                        <span *ngIf="proyectoForm.controls.nombre_municipio.errors.required">Este campo es obligatorio.</span>
+                    <mat-label>mujeres</mat-label>
+                    <input type="number" matInput formControlName="mujeres" required>
+                    <mat-error *ngIf="proyectoForm.controls.mujeres.touched && proyectoForm.controls.mujeres.invalid">
+                        <span *ngIf="proyectoForm.controls.mujeres.errors.required">Este campo es obligatorio.</span>
                     </mat-error>
                 </mat-form-field>             
             </div>

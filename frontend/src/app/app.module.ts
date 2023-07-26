@@ -16,7 +16,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { SharedModule } from './shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 //import { HomeComponent } from './home/home/home.component';
-
+//importamos pipe para fecha
+import { DatePipe } from '@angular/common';
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,6 +27,7 @@ import { HttpClientModule } from '@angular/common/http';
     SidebarComponent,
     LoginComponent,
     DashboardComponent,
+    
   ],
   imports: [
    
@@ -39,7 +41,7 @@ import { HttpClientModule } from '@angular/common/http';
     SharedModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
