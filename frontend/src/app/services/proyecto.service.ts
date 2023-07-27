@@ -11,12 +11,12 @@ export class ProyectoService {
   constructor(private httpClient: HttpClient) { }
 
   
-  //----------------------API PARA LISTAR CATEGORÍA ------------------------------
+  //----------------------API PARA LISTAR PROYECTOS ------------------------------
   getProyecto() {
     return this.httpClient.get(this.url + "/proyecto/get")
   }
 
-  //----------------------API PARA AGREGAR CATEGORÍA ------------------------------
+  //----------------------API PARA AGREGAR PROYECTO ------------------------------
   add(data: any) {
     return this.httpClient.post(this.url +
       "/proyecto/create/", data, {
@@ -24,7 +24,7 @@ export class ProyectoService {
     });
   }
 
-  //----------------------API PARA EDITAR CATEGORÍA ------------------------------
+  //----------------------API PARA EDITAR PROYECTO ------------------------------
   update(data: any) {
     return this.httpClient.patch(this.url +
       "/municipio/update/", data, {
@@ -33,10 +33,10 @@ export class ProyectoService {
   }
 
  
-  //----------------------API PARA ELIMINAR CATEGORÍA ------------------------------
+  //----------------------API PARA ELIMINAR PROYECTO ------------------------------
   delete(id: any) {
     return this.httpClient.delete(this.url +
-      "/municipio/delete/" + id, {
+      "/proyecto/delete/" + id, {
       headers: new HttpHeaders().set('Content-Type', "application/json")
     });
   }
@@ -44,8 +44,14 @@ export class ProyectoService {
   //----------------------API PARA ACTUALIZAR ESTADO -------------------------
   updateStatus(data: any) {
     return this.httpClient.patch(this.url +
-      "/municipio/updateStatus/", data, {
+      "/proyecto/updateStatus/", data, {
       headers: new HttpHeaders().set('Content-Type', "application/json")
     });
   }
+
+   //----------------------API PARA LISTAR PROYECTOS ------------------------------
+   getTipologia() {
+    return this.httpClient.get(this.url + "/proyecto/get_tipologia")
+  }
+
 }

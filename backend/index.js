@@ -11,8 +11,11 @@ const lineas_estr_Route = require('./routes/lineas_estrategicas');
 const lineas_acc_Route = require('./routes/lineas_accion');
 const acciones_est_Route = require('./routes/Acciones_estrategicas');
 const indicador_Route = require('./routes/Indicador');
-const categoria_Route = require('./routes/Categoria');
+const categoria_Route = require('./routes/categoria');
 const proyectos_Route = require('./routes/Proyectos');
+const comunidad_Route=require('./routes/ciudad_o_comunidad');
+const cuenca_Route=require('./routes/cuenca');
+const unidad_Route=require('./routes/unidad_medicion')
 
 //const path = require('path');
 
@@ -34,6 +37,8 @@ app.use('/accion_est',acciones_est_Route);
 app.use('/indicador',indicador_Route);
 app.use('/categoria',categoria_Route);
 app.use('/proyecto',proyectos_Route);
-
+app.use('/comunidad',comunidad_Route);
+app.use('/cuenca',cuenca_Route);
+app.use('/unidad',unidad_Route);
 
 module.exports=app;
