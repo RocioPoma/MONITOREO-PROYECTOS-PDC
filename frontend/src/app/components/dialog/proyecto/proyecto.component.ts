@@ -32,7 +32,7 @@ interface cat {
 })
 export class ProyectoComponent {
   onAddCategoria = new EventEmitter();
-  onEditCategoria = new EventEmitter();
+  onEditProyecto = new EventEmitter();
   proyectoForm: any = FormGroup;
   dialogAction: any = "Add";
   action: any = "Registrar";
@@ -75,12 +75,12 @@ export class ProyectoComponent {
     this.fechaActual = new Date();
 
     // Convierte la fecha a string en formato "dd-MM-yyyy" 
-    this.fechaActualString = this.datePipe.transform(this.fechaActual, 'dd-MM-yyyy');
+    this.fechaActualString = this.datePipe.transform(this.fechaActual, 'yyyy-MM-dd');
 
   }
 
   ngOnInit(): void {
-    console.log(this.fechaActualString);
+   // console.log(this.fechaActualString);
     this.proyectoForm = this.formBuilder.group({
       tipologia: [null, [Validators.required]],
       categoria: [null, [Validators.required]],
@@ -115,7 +115,7 @@ export class ProyectoComponent {
 
   handleSubmit() {
     if (this.dialogAction === 'Edit') {
-      // this.edit();
+      this.edit();
     }
     else {
       this.add();
@@ -227,8 +227,12 @@ export class ProyectoComponent {
 
   add() {
     var formData = this.proyectoForm.value;
-    this.finicio = this.datePipe.transform(formData.fecha_inicio, 'dd-MM-yyyy')
-    this.ffin = this.datePipe.transform(formData.fecha_fin, 'dd-MM-yyyy')
+    this.finicio = this.datePipe.transform(formData.fecha_inicio, 'yyyy-MM-dd')
+    this.ffin = this.datePipe.transform(formData.fecha_fin, 'yyyy-MM-dd')
+   /*  console.log(this.finicio.toISOString());
+    console.log(this.ffin.toISOString()); */
+    console.log(this.fechaActualString);
+
     var data = {
       nom_proyecto: formData.nom_proyecto,
       fecha_inicio: this.finicio,
@@ -265,6 +269,45 @@ export class ProyectoComponent {
       }
       this.snackbarService.openSnackBar(this.responseMessage,GlobalCostants.error);
     }) 
+  }
+
+  edit(){
+    var formData = this.proyectoForm.value;
+    console.log(this.proyectoForm.value);
+    var data ={
+      nom_proyecto: formData.NombreProyecto,
+      fecha_inicio: this.finicio,
+      fecha_fin: this.ffin,
+      fecha_registro: this.fechaActualString,
+      area: formData.area,
+      coordenada_x: formData.coordenada_x,
+      coordenada_y: formData.coordenada_y,
+      cantidad: formData.cantidad,
+      hombres: formData.hombres,
+      mujeres: formData.mujeres,
+      id_categoria: formData.categoria,
+      id_tipologia: formData.tipologia,
+      id_indicador: null,
+      id_cuenca: formData.cuenca,
+      id_accion_estrategica: null,
+      estado: 'true',
+      id_comunidad:formData.comunidad_ciudad
+    }
+    this.ProyectoService.update(data).subscribe((response:any)=>{
+      this.dialogRef.close();
+      this.onEditProyecto.emit();
+      this.responseMessage = response.message;
+      this.snackbarService.openSnackBar(this.responseMessage,"success");
+    },(error:any)=>{
+      this.dialogRef.close();
+      if(error.error?.message){
+        this.responseMessage = error.error?.message;
+      }
+      else{
+        this.responseMessage = GlobalCostants.genericError;
+      }
+      this.snackbarService.openSnackBar(this.responseMessage,GlobalCostants.error);
+    })
   }
 
 }

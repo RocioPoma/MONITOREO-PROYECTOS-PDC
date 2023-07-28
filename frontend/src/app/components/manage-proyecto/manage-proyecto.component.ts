@@ -91,6 +91,7 @@ export class ManageProyectoComponent  {
   }
 
    handleEditAction(values: any) {
+    
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       action: 'Edit',     
@@ -102,25 +103,26 @@ export class ManageProyectoComponent  {
     this.router.events.subscribe(() => {
       dialogRef.close();
     });
-    const sub = dialogRef.componentInstance.onEditCategoria.subscribe((response) => {
-      this.tableData();
+    const sub = dialogRef.componentInstance.onEditProyecto.subscribe((response) => {
+      this.tableData();     
     })
   }
  
   handleDeleteAction(values: any) {
+    //console.log(values);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      message: ' eliminar Categoria '+ values.nombre_municipio
+      message: ' eliminar proyecto '+ values.NombreProyecto
     };
     const dialogRef = this.dialog.open(ConfirmationComponent, dialogConfig);
     const sub = dialogRef.componentInstance.onEmitStatusChange.subscribe((response) => {
-      this.deleteCategoria(values.id_municipio);
+      this.deleteProyecto(values.id_proyecto);
       dialogRef.close();
     });
   }
 
-  deleteCategoria(id_municipio: any) {
-    this.ProyectoServices.delete(id_municipio).subscribe((response: any) => {
+  deleteProyecto(id_proyecto: any) {
+    this.ProyectoServices.delete(id_proyecto).subscribe((response: any) => {
       this.tableData();
       this.responseMessage = response?.message;
       this.snackbarService.openSnackBar(this.responseMessage, "success");
@@ -135,11 +137,11 @@ export class ManageProyectoComponent  {
     })
   }
 
-  onChange(status: any, id_municipio: any) {
+  onChange(status: any, id_proyecto: any) {
     
     var data = {
       estado: status.toString(),
-      id_municipio: id_municipio
+      id_proyecto: id_proyecto
     }
     
     this.ProyectoServices.updateStatus(data).subscribe((response: any) => {

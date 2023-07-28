@@ -85,6 +85,7 @@ export class ManageMunicipioComponent  {
   }
 
   handleEditAction(values: any) {
+    console.log(values);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       action: 'Edit',     
