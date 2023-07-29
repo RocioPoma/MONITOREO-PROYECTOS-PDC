@@ -97,7 +97,7 @@ export class ManageProyectoComponent  {
       action: 'Edit',     
       data: values
     }
-   
+   console.log(values);
     dialogConfig.width = "700px";
     const dialogRef = this.dialog.open(ProyectoComponent, dialogConfig);
     this.router.events.subscribe(() => {
@@ -109,7 +109,7 @@ export class ManageProyectoComponent  {
   }
  
   handleDeleteAction(values: any) {
-    //console.log(values);
+    console.log(values);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       message: ' eliminar proyecto '+ values.NombreProyecto

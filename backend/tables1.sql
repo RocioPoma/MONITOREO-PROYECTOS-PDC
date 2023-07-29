@@ -212,12 +212,12 @@ CREATE TABLE IF NOT EXISTS `ENTIDAD_FINANCIERA` (
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `ALCANCE` (
-  `id_alcance` INT NOT NULL AUTO_INCREMENT,
-  `cantidad` DECIMAL NULL,
+  
+  `cantidad` DECIMAL,
   `id_unidad_medicion` INT NOT NULL,
   `id_proyecto` INT NOT NULL,
-  `id_categoria` INT NOT NULL,
-  PRIMARY KEY (`id_alcance`),
+  
+  PRIMARY KEY (`id_unidad_medicion`,`id_proyecto`),
   FOREIGN KEY (`id_unidad_medicion`) REFERENCES `UNIDAD_MEDICION` (`id_unidad_medicion`),
   FOREIGN KEY (`id_proyecto`) REFERENCES `PROYECTO` (`id_proyecto`)
 )

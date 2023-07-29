@@ -82,22 +82,22 @@ export class ProyectoComponent {
   ngOnInit(): void {
    // console.log(this.fechaActualString);
     this.proyectoForm = this.formBuilder.group({
-      tipologia: [null, [Validators.required]],
-      categoria: [null, [Validators.required]],
+      id_tipologia: [null, [Validators.required]],
+      id_categoria: [null, [Validators.required]],
       nom_proyecto: [null, [Validators.required]],
       fecha_inicio: [null, [Validators.required]],
       fecha_fin: [null, [Validators.required]],
       fecha_registro: [null, [Validators.required]],
       area: [null, [Validators.required]],
-      cuenca: [null, [Validators.required]],
+      id_cuenca: [null, [Validators.required]],
       coordenada_x: [null, [Validators.required]],
       coordenada_y: [null, [Validators.required]],
       estado: [null, [Validators.required]],
       mujeres: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
       hombres: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
       cantidad: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
-      comunidad_ciudad: [null, [Validators.required]],
-      municipio: [null, [Validators.required]]
+      id_ciudad_comunidad: [null, [Validators.required]],
+      id_municipio: [null, [Validators.required]]
 
     });
     if (this.dialogData.action === 'Edit') {
@@ -244,13 +244,13 @@ export class ProyectoComponent {
       cantidad: formData.cantidad,
       hombres: formData.hombres,
       mujeres: formData.mujeres,
-      id_categoria: formData.categoria,
-      id_tipologia: formData.tipologia,
+      id_categoria: formData.id_categoria,
+      id_tipologia: formData.id_tipologia,
       id_indicador: null,
-      id_cuenca: formData.cuenca,
+      id_cuenca: formData.id_cuenca,
       id_accion_estrategica: null,
       estado: 'true',
-      id_comunidad:formData.comunidad_ciudad
+      id_ciudad_comunidad:formData.id_ciudad_comunidad
       //municipio: formData.municipio
     }
     console.log(data);
@@ -285,13 +285,13 @@ export class ProyectoComponent {
       cantidad: formData.cantidad,
       hombres: formData.hombres,
       mujeres: formData.mujeres,
-      id_categoria: formData.categoria,
-      id_tipologia: formData.tipologia,
+      id_categoria: formData.id_categoria,
+      id_tipologia: formData.id_tipologia,
       id_indicador: null,
-      id_cuenca: formData.cuenca,
+      id_cuenca: formData.id_cuenca,
       id_accion_estrategica: null,
       estado: 'true',
-      id_comunidad:formData.comunidad_ciudad
+      id_ciudad_comunidad:formData.id_ciudad_comunidad
     }
     this.ProyectoService.update(data).subscribe((response:any)=>{
       this.dialogRef.close();

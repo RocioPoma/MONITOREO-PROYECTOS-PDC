@@ -11,7 +11,7 @@
             <div fxLayout="row wrap">
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Tipologia</mat-label>
-                    <mat-select formControlName="tipologia" required>
+                    <mat-select formControlName="id_tipologia" required>
                         <mat-option *ngFor="let tipologia of tipologia" [value]="tipologia.id_tipologia">
                             {{tipologia.nom_tipologia}}
                         </mat-option>
@@ -31,7 +31,7 @@
             <div fxLayout="row wrap">
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Categorizacion</mat-label>
-                    <mat-select formControlName="categoria" required>
+                    <mat-select formControlName="id_categoria" required>
                         <mat-option *ngFor="let categoria of categoria" [value]="categoria.id_categoria">
                             {{categoria.nom_categoria}}
                         </mat-option>
@@ -60,7 +60,7 @@
             <div fxLayout="row wrap">
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Cuenca</mat-label>
-                    <mat-select formControlName="cuenca" required>
+                    <mat-select formControlName="id_cuenca" required>
                         <mat-option *ngFor="let cuenca of cuenca" [value]="cuenca.id_cuenca">
                             {{cuenca.nom_cuenca}}
                         </mat-option>
@@ -68,7 +68,7 @@
                 </mat-form-field>
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Municipio</mat-label>
-                    <mat-select formControlName="municipio" (selectionChange)="getComunidad($event.value)" required>
+                    <mat-select formControlName="id_municipio" (selectionChange)="getComunidad($event.value)" required>
                         <mat-option *ngFor="let municipio of municipio" [value]="municipio.id_municipio">
                             {{municipio.nombre_municipio}}
                         </mat-option>
@@ -116,8 +116,8 @@
 
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Comunidad/ciudad</mat-label>
-                    <mat-select formControlName="comunidad_ciudad" required>
-                        <mat-option *ngFor="let comunidad of comunidad" [value]="comunidad.id">
+                    <mat-select formControlName="id_ciudad_comunidad" required>
+                        <mat-option *ngFor="let comunidad of comunidad" [value]="comunidad.id_ciudad_comunidad">
                             {{comunidad.nombre}}
                         </mat-option>
                     </mat-select>
@@ -136,7 +136,7 @@
 
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Unidad</mat-label>
-                    <mat-select>
+                    <mat-select >
                         <mat-option *ngFor="let unidad of unidad" [value]="unidad.id_unidad_medicion">
                             {{unidad.nom_unidad}}
                         </mat-option>

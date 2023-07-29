@@ -7,6 +7,7 @@ var auth = require('../services/authentication');
 router.get('/get', (req, res) => {
   const sql =
     'SELECT '
+    
     + 'P.id_proyecto,'
     + 'P.nom_proyecto, '
     + 'P.fecha_inicio, '
@@ -23,14 +24,17 @@ router.get('/get', (req, res) => {
     + 'P.cantidad, '
     + 'P.hombres, '
     + 'P.mujeres, '
-    + 'P.id_accion_estrategica, '
     + 'P.nom_proyecto AS NombreProyecto, '
     + 'P.fecha_inicio AS FechaInicio, '
     + 'P.fecha_fin AS FechaFin, '
     + 'M.nombre_municipio AS NombreMunicipio, '
+    + 'M.id_municipio,'
     + 'C.nom_cuenca AS NombreCuenca, '
     + 'CAT.nom_categoria AS NombreCategoria, '
-    + 'TIP.nom_tipologia AS NombreTipologia '
+    + 'TIP.nom_tipologia AS NombreTipologia, '
+    + 'CC.id, '
+    + 'CC.nombre, '
+    + 'PCOC.id_ciudad_comunidad '
     + 'FROM '
     + ' PROYECTO AS P '
     + 'JOIN '
@@ -81,8 +85,8 @@ router.post('/create', (req, res) => {
     res.status(201).json({ message: 'Proyecto creado correctamente' });
   });
 
-  console.log(proyecto.id_comunidad);
-  llamarId(proyecto.id_comunidad);
+  console.log(proyecto.id_ciudad_comunidad);
+  llamarId(proyecto.id_ciudad_comunidad);
 
 });
 
@@ -134,12 +138,22 @@ router.patch('/activar/:id', (req, res) => {
 // Ruta para eliminar un proyecto
 router.delete('/delete/:id', (req, res) => {
   const { id } = req.params;
+  eliminarProyectoComunidad(req.params.id); 
   const sql = 'DELETE FROM PROYECTO WHERE id_proyecto = ?';
   connection.query(sql, id, (err, result) => {
     if (err) throw err;
     res.json({ message: 'Proyecto eliminado correctamente' });
   });
 });
+
+//funcion
+function eliminarProyectoComunidad(id) {
+  const sql = 'DELETE FROM proyecto_ciudad_o_comunidad WHERE id_proyecto = ?';
+  connection.query(sql, id, (err, result) => { 
+    console.log(result);
+  });
+}
+
 
 //----------------OTROS SERVICIOS--------------------
 //ruta para obtener tipología
