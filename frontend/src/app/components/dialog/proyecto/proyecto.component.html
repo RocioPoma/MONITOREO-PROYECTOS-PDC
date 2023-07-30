@@ -98,8 +98,8 @@
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Area</mat-label>
                     <mat-select formControlName="area" required>
-                        <mat-option *ngFor="let area of area" [value]="area.value">
-                            {{area.viewValue}}
+                        <mat-option *ngFor="let area of area" [value]="area">
+                            {{area}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -117,7 +117,7 @@
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Comunidad/ciudad</mat-label>
                     <mat-select formControlName="id_ciudad_comunidad" required>
-                        <mat-option *ngFor="let comunidad of comunidad" [value]="comunidad.id_ciudad_comunidad">
+                        <mat-option *ngFor="let comunidad of comunidad" [value]="comunidad.id">
                             {{comunidad.nombre}}
                         </mat-option>
                     </mat-select>

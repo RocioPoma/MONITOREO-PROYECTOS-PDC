@@ -14,16 +14,11 @@ import { MunicipioService } from 'src/app/services/municipio.service';
 import { ComunidadService } from 'src/app/services/comunidad.service';
 import { UnidadMedicionService } from 'src/app/services/unidad-medicion.service';
 
-//interfaces para ejemplo luego se cambiara a servicios
+//interface para area
 interface area {
   value: string;
   viewValue: string;
 }
-interface cat {
-  value: string;
-  viewValue: string;
-}
-
 
 @Component({
   selector: 'app-proyecto',
@@ -38,13 +33,15 @@ export class ProyectoComponent {
   action: any = "Registrar";
   responseMessage: any;
 
-
+/*
   area: area[] = [
     { value: 'urbana', viewValue: 'Urbana' },
     { value: 'periurbana', viewValue: 'Periurbana' },
     { value: 'rural', viewValue: 'Rural' },
     { value: 'rural y urbano', viewValue: 'Rural y Urbano' },
-  ];
+  ];*/
+
+  area = ['Urbana', 'Periurbana','Rural','Rural y Urbano'];
 
   //Pra almacenar los datos de servicios
   tipologia: any = [];
@@ -104,6 +101,7 @@ export class ProyectoComponent {
       this.dialogAction = "Edit";
       this.action = "Actualizar";
       this.proyectoForm.patchValue(this.dialogData.data);
+      console.log(this.dialogData.data);
     }
     this.getTipologia();
     this.getCategoria();
