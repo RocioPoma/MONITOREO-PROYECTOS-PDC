@@ -5,7 +5,7 @@ var auth = require('../services/authentication');
 
 //list 
 router.get('/get', (req, res) => {
-    connection.query('SELECT * FROM LINEAS_ESTRATEGICAS', (err, results) => {
+    connection.query('SELECT * FROM LINEA_ESTRATEGICA', (err, results) => {
       if (err) {
         console.error(err);
         res.status(500).json({ message: 'Hubo un error al obtener los LINEAS_ESTRATEGICAS' });
@@ -19,7 +19,7 @@ router.get('/get', (req, res) => {
 router.put('/update/:id', (req, res) => {
     const { id } = req.params;
     const { descripcion } = req.body;
-    connection.query('UPDATE LINEAS_ESTRATEGICAS SET descripcion = ? WHERE id_linea_estrategica = ?', [descripcion, id], (err) => {
+    connection.query('UPDATE LINEA_ESTRATEGICA SET descripcion = ? WHERE id_linea_estrategica = ?', [descripcion, id], (err) => {
       if (err) {
         console.error(err);
         res.status(500).json({ message: 'Hubo un error al editar la línea estratégica' });

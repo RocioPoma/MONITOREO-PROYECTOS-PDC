@@ -33,6 +33,7 @@ import { NgModule } from '@angular/core';
  import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
  import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
  
+ 
  import { CdkTableModule } from '@angular/cdk/table';
  import { CdkAccordionModule } from '@angular/cdk/accordion';
  import { A11yModule } from '@angular/cdk/a11y';
@@ -43,6 +44,9 @@ import { NgModule } from '@angular/core';
  import { PortalModule } from '@angular/cdk/portal';
 
  import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+ 
+
+ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 
  
@@ -93,7 +97,8 @@ import { NgModule } from '@angular/core';
          OverlayModule,
          PlatformModule,
          PortalModule,
-         BrowserAnimationsModule
+         BrowserAnimationsModule,
+         NgxMatSelectSearchModule
      ]
  })
  export class MaterialModule { }

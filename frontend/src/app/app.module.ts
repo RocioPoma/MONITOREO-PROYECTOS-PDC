@@ -18,6 +18,8 @@ import { HttpClientModule } from '@angular/common/http';
 //import { HomeComponent } from './home/home/home.component';
 //importamos pipe para fecha
 import { DatePipe } from '@angular/common';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +41,7 @@ import { DatePipe } from '@angular/common';
     ReactiveFormsModule,
     FlexLayoutModule,
     SharedModule,
-    HttpClientModule,
+    HttpClientModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]
