@@ -46,16 +46,6 @@ export class ProyectoComponent implements OnInit {
   responseMessage: any;
 
 
-
-
-  /*
-    area: area[] = [
-      { value: 'urbana', viewValue: 'Urbana' },
-      { value: 'periurbana', viewValue: 'Periurbana' },
-      { value: 'rural', viewValue: 'Rural' },
-      { value: 'rural y urbano', viewValue: 'Rural y Urbano' },
-    ];*/
-
   area = ['Urbana', 'Periurbana', 'Rural', 'Rural y Urbano'];
 
   //Pra almacenar los datos de servicios
@@ -66,6 +56,8 @@ export class ProyectoComponent implements OnInit {
   comunidad: any = [];
   unidad: any = [];
   LineaEstrategica: LineaEstrategica[] = [];
+  LineDeAccion:any = [];
+  AccionEstrategica: any = [];
 
   //variables para fecha
   fechaActual: Date | undefined;
@@ -114,6 +106,14 @@ export class ProyectoComponent implements OnInit {
 
   ngOnInit(): void {
     // console.log(this.fechaActualString);
+    this.getTipologia();
+    this.getCategoria();
+    this.getCuenca();
+    this.getMunicipio();
+    this.getUnidad();
+    this.getComunidad(1);
+    
+
     this.proyectoForm = this.formBuilder.group({
       id_tipologia: [null, [Validators.required]],
       id_categoria: [null, [Validators.required]],
@@ -139,17 +139,12 @@ export class ProyectoComponent implements OnInit {
       this.dialogAction = "Edit";
       this.action = "Actualizar";
       this.proyectoForm.patchValue(this.dialogData.data);
-      console.log(this.dialogData.data);
+      this.getComunidad(this.dialogData.data.id_municipio);
+
+      //console.log(this.dialogData.data);
     }
 
-    this.getTipologia();
-    this.getCategoria();
-    this.getCuenca();
-    this.getMunicipio();
-    this.getUnidad();
-    this.getComunidad(1);
-    this.getLineaEstrategicas();
-
+   
     //------select especial
     // Escuchar los cambios en el filtro para el select
     /* this.proyectoForm.controls.lineaEstrategica.valueChanges
@@ -166,9 +161,7 @@ export class ProyectoComponent implements OnInit {
       );
       
       //---------------------------------------aqui el filtro
-
-
-    
+ 
   }
   //----------------------------select especial
   /* ngAfterViewInit() {
@@ -201,14 +194,9 @@ export class ProyectoComponent implements OnInit {
   } */
   //----------------------------select especial
 
-
-
   //------------------------------Forma 2
 
   //------------------------------Forma 2
-
-
-
 
 
   handleSubmit() {
@@ -225,7 +213,7 @@ export class ProyectoComponent implements OnInit {
   getTipologia() {
     this.ProyectoService.getTipologia().subscribe((response: any) => {
       this.tipologia = response;
-      this.LineaEstrategica = response;
+     // this.LineaEstrategica = response;
     }, (error: any) => {
       if (error.error?.message) {
         this.responseMessage = error.error?.message;
@@ -258,6 +246,7 @@ export class ProyectoComponent implements OnInit {
   getCuenca() {
     this.CuencaServise.getCuenca().subscribe((response: any) => {
       this.cuenca = response;
+      this.getLineaEstrategicas();
     }, (error: any) => {
       if (error.error?.message) {
         this.responseMessage = error.error?.message;
@@ -344,10 +333,25 @@ export class ProyectoComponent implements OnInit {
 
     });
   }
+
+    //------------------- OBTENEMOS LINEA DE ACCION POR ID DE LINEA_ESTRATEGICA
+    getLineaDeAcci(id_municipio: any) {
+      this.ComunidadServise.getComunidad(id_municipio).subscribe((response: any) => {
+        this.comunidad = response;
+      }, (error: any) => {
+        if (error.error?.message) {
+          this.responseMessage = error.error?.message;
+        }
+        else {
+          this.responseMessage = GlobalCostants.genericError;
+        }
+        this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+  
+      });
+    }
   //----------------------obtenerLineasEstrategicas
-  //------------------- OBTENEMOS COMUNIDAD
-  getLineaDeAccion(id_LineaEstrategia: any) {
-    console.log(id_LineaEstrategia);
+   getLineaDeAccion(id_LineaEstrategia: any) {
+    console.log("Id Linea Estrategica "+id_LineaEstrategia);
     
     /* this.ComunidadServise.getComunidad(id_municipio).subscribe((response: any) => {
       this.comunidad = response;

@@ -7,7 +7,7 @@
 <mat-dialog-content class="mat-typography">
     <form [formGroup]="proyectoForm">
         <div fxFlex fxLayout="column">
-            <span>INFORMACION GENERAL</span>
+            <span class="subTitle">INFORMACION GENERAL</span>
             <div fxLayout="row wrap">
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Tipologia</mat-label>
@@ -55,12 +55,12 @@
                 </mat-form-field>
             </div>
 
-            <span>LOCALIZACION</span>
+            <span class="subTitle">LOCALIZACION</span>
 
             <div fxLayout="row wrap">
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Cuenca</mat-label>
-                    <mat-select formControlName="id_cuenca"  (selectionChange)="onCuencaSelected($event)" required>
+                    <mat-select formControlName="id_cuenca" (selectionChange)="onCuencaSelected($event)" required>
                         <mat-option *ngFor="let cuenca of cuenca" [value]="cuenca.id_cuenca">
                             {{cuenca.nom_cuenca}}
                         </mat-option>
@@ -103,16 +103,8 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <!--
-                <mat-form-field appearance="fill" fxFlex>
-                    <mat-label>Comunidad/ciudad</mat-label>
-                    <input matInput formControlName="comunidad_ciudad" required>
-                    <mat-error
-                        *ngIf="proyectoForm.controls.comunidad_ciudad.touched && proyectoForm.controls.comunidad_ciudad.invalid">
-                        <span *ngIf="proyectoForm.controls.comunidad_ciudad.errors.required">Este campo es
-                            obligatorio.</span>
-                    </mat-error>
-                </mat-form-field>-->
+               
+
 
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Comunidad/ciudad</mat-label>
@@ -123,8 +115,9 @@
                     </mat-select>
                 </mat-form-field>
 
+                
             </div>
-            <span>ALCANCE</span>
+            <span class="subTitle">ALCANCE</span>
             <div fxLayout="row wrap">
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Cantidad</mat-label>
@@ -136,7 +129,7 @@
 
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Unidad</mat-label>
-                    <mat-select >
+                    <mat-select>
                         <mat-option *ngFor="let unidad of unidad" [value]="unidad.id_unidad_medicion">
                             {{unidad.nom_unidad}}
                         </mat-option>
@@ -158,11 +151,16 @@
                     </mat-error>
                 </mat-form-field>
             </div>
-            <div>
-                <div *ngIf="showAdditionalSelects">
+
+            <span class="subTitle">ADJUNTO</span>
+
+            <div *ngIf="showAdditionalSelects">
+                <span class="subTitle1">ALINEAMIENTO DE ACCIONES ESTRATÉGICAS (PDC) </span>
+                <div>
                     <div *ngIf="showSelector1">
                         <!-- Aquí el primer selector adicional -->
-                       <!--  <mat-form-field>
+                        <!--
+                         <mat-form-field>
                             <mat-select formControlName="lineaEstrategica" placeholder="Bank" >
                               <mat-option>
                                 <ngx-mat-select-search [formControl]="proyectoForm.controls.lineaEstrategica"></ngx-mat-select-search>
@@ -172,35 +170,82 @@
                               </mat-option>
                             </mat-select>
                           </mat-form-field> -->
-
-                          <mat-form-field class="example-full-width">
-                            <mat-label>Number</mat-label>
-                            <input type="text"
-                                   placeholder="Pick one"
-                                   aria-label="Number"
-                                   matInput
-                                   [formControl]="myControl"
-                                   [matAutocomplete]="auto">
-                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="getLineaDeAccion($event.option)">
-                              <mat-option *ngFor="let option of filteredOptions | async" [value]="option.descripcion">
-                                {{option.id_linea_estrategica}} {{option.descripcion}}
-                              </mat-option>
+                        <mat-form-field class="example-full-width" fxFlex>
+                            <mat-label>Línea Estratégica (LE)</mat-label>
+                            <input type="text" aria-label="Number" matInput [formControl]="myControl"
+                                [matAutocomplete]="auto">
+                            <mat-autocomplete #auto="matAutocomplete"
+                                (optionSelected)="getLineaDeAccion($event.option.value)">
+                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option.descripcion">
+                                    {{option.id_linea_estrategica}} {{option.descripcion}}
+                                </mat-option>
                             </mat-autocomplete>
-                          </mat-form-field>
+                        </mat-form-field>
                         <!-- ... -->
                     </div>
                     <div *ngIf="showSelector2">
-                        <!-- Aquí el segundo selector adicional -->
-                        <!-- ... -->
+                        <mat-form-field class="example-full-width" fxFlex>
+                            <mat-label>Linea de Acción (LA)</mat-label>
+                            <input type="text" aria-label="Number" matInput [formControl]="myControl"
+                                [matAutocomplete]="auto">
+                            <mat-autocomplete #auto="matAutocomplete"
+                                (optionSelected)="getLineaDeAccion($event.option)">
+                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option.descripcion">
+                                    {{option.id_linea_estrategica}} {{option.descripcion}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
                     </div>
                     <div *ngIf="showSelector3">
-                        <!-- Aquí el tercer selector adicional -->
-                      
+                        <mat-form-field class="example-full-width" fxFlex>
+                            <mat-label>Acción Estratégica (AE)</mat-label>
+                            <input type="text" aria-label="Number" matInput [formControl]="myControl"
+                                [matAutocomplete]="auto">
+                            <mat-autocomplete #auto="matAutocomplete"
+                                (optionSelected)="getLineaDeAccion($event.option)">
+                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option.descripcion">
+                                    {{option.id_linea_estrategica}} {{option.descripcion}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <span class="subTitle1">ALINEAMIENTO DE INDICADOR (PDC)</span>
+                <div>
+                    <div *ngIf="showSelector1">
+                        <mat-form-field class="example-full-width" fxFlex>
+                            <mat-label>Indicador</mat-label>
+                            <input type="text" aria-label="Number" matInput [formControl]="myControl"
+                                [matAutocomplete]="auto">
+                            <mat-autocomplete #auto="matAutocomplete"
+                                (optionSelected)="getLineaDeAccion($event.option)">
+                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option.descripcion">
+                                    {{option.id_linea_estrategica}} {{option.descripcion}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
                         <!-- ... -->
                     </div>
                 </div>
+                <div fxLayout="row wrap">
+                    <mat-form-field appearance="fill" >
+                        <mat-label>Cantidad</mat-label>
+                        <input matInput formControlName="nom_proyecto" required>
+                        <mat-error
+                            *ngIf="proyectoForm.controls.nom_proyecto.touched && proyectoForm.controls.nom_proyecto.invalid">
+                            <span *ngIf="proyectoForm.controls.nom_proyecto.errors.required">Este campo es
+                                obligatorio.</span>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" >
+                        <mat-label>Unidad</mat-label>
+                        <input matInput formControlName="nom_proyecto" required>
+                    </mat-form-field>
+                </div>
+
+
             </div>
-                   
         </div>
     </form>
 </mat-dialog-content>
