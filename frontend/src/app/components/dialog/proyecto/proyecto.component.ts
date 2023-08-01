@@ -20,6 +20,7 @@ import { MatSelect } from '@angular/material/select';
 import { Observable, ReplaySubject, Subject, map, startWith, take, takeUntil } from 'rxjs';
 import { LineasEstrategicasService } from 'src/app/services/lineas-estrategicas.service';
 
+import { Bank, BANKS } from './data';
 
 //interface para area
 interface area {
@@ -27,7 +28,7 @@ interface area {
   viewValue: string;
 }
 
-interface LineaEstrategica {
+interface LineasEstrategica {
   id_linea_estrategica: number;
   descripcion: string;
 }
@@ -37,7 +38,7 @@ interface LineaEstrategica {
   templateUrl: './proyecto.component.html',
   styleUrls: ['./proyecto.component.scss']
 })
-export class ProyectoComponent implements OnInit {
+export class ProyectoComponent implements OnInit , AfterViewInit, OnDestroy {
   onAddCategoria = new EventEmitter();
   onEditProyecto = new EventEmitter();
   proyectoForm: any = FormGroup;
@@ -55,7 +56,7 @@ export class ProyectoComponent implements OnInit {
   municipio: any = [];
   comunidad: any = [];
   unidad: any = [];
-  LineaEstrategica: LineaEstrategica[] = [];
+  LineaEstrategica: LineasEstrategica[] = [];
   LineDeAccion:any = [];
   AccionEstrategica: any = [];
 
@@ -72,16 +73,29 @@ export class ProyectoComponent implements OnInit {
   showSelector3 = false;
   //---------------------------------------------------------------------------variables para select especial
 
-  /* protected lineaEstrategica: LineaEstrategica[] = [];
-  public filteredLineasEstrategicas: ReplaySubject<LineaEstrategica[]> = new ReplaySubject<LineaEstrategica[]>(1);
-   @ViewChild('singleSelect') singleSelect!: MatSelect; 
-  private _onDestroy = new Subject<void>(); 
-  */
+
+   /** control for the selected bank */
+   public LineasEstCtrl: FormControl = new FormControl();
+ 
+   /** control for the MatSelect filter keyword */
+   public LineasEstFilterCtrl: FormControl = new FormControl();
+ 
+   /** list of banks filtered by search keyword */
+   public filteredLineasEst: ReplaySubject<LineasEstrategica[]> = new ReplaySubject<LineasEstrategica[]>(1);
+ 
+   @ViewChild('singleSelect', { static: true }) singleSelect!: MatSelect;
+ 
+   /** Subject that emits when the component has been destroyed. */
+   protected _onDestroy = new Subject<void>();
+
+
+
+
   //---------------------------------------------------------------------------variables para select especial
 
   //filteredOptions!: Observable<string[]>;
-  filteredOptions!: Observable<LineaEstrategica[]>;
-  myControl = new FormControl('');
+ /*  filteredOptions!: Observable<LineaEstrategica[]>;
+  myControl = new FormControl(''); */
 
 
   constructor(@Inject(MAT_DIALOG_DATA) public dialogData: any,
@@ -105,6 +119,7 @@ export class ProyectoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.setInitialValue();
     // console.log(this.fechaActualString);
     this.getTipologia();
     this.getCategoria();
@@ -112,7 +127,7 @@ export class ProyectoComponent implements OnInit {
     this.getMunicipio();
     this.getUnidad();
     this.getComunidad(1);
-    
+    this.getLineaEstrategicas();
 
     this.proyectoForm = this.formBuilder.group({
       id_tipologia: [null, [Validators.required]],
@@ -132,7 +147,7 @@ export class ProyectoComponent implements OnInit {
       id_ciudad_comunidad: [null, [Validators.required]],
       id_municipio: [null, [Validators.required]],
       //nuevos casillas      
-      lineaEstrategica: ['', [Validators.required]],
+      bankCtrl: ['', [Validators.required]],
       lineaEstrategicaSearch: ['', [Validators.required]]
     });
     if (this.dialogData.action === 'Edit') {
@@ -140,8 +155,7 @@ export class ProyectoComponent implements OnInit {
       this.action = "Actualizar";
       this.proyectoForm.patchValue(this.dialogData.data);
       this.getComunidad(this.dialogData.data.id_municipio);
-
-      //console.log(this.dialogData.data);
+     
     }
 
    
@@ -155,48 +169,33 @@ export class ProyectoComponent implements OnInit {
     //------select especial
 
       //---------------------------------------aqui el filtro
-      this.filteredOptions = this.myControl.valueChanges.pipe(
+      /* this.filteredOptions = this.myControl.valueChanges.pipe(
         startWith(''),        
         map(value => this._filter(value || ''))
       );
-      
+       */
       //---------------------------------------aqui el filtro
+
+
+      
+                  //---------------------------------------------------------------------------
+                    // set initial selection                   
+                    this.LineasEstCtrl.setValue(this.LineaEstrategica[10]);
+
+                    // load the initial bank list
+                    this.filteredLineasEst.next(this.LineaEstrategica.slice());
+
+                    // listen for search field value changes
+                    this.LineasEstFilterCtrl.valueChanges
+                      .pipe(takeUntil(this._onDestroy))
+                      .subscribe(() => {
+                        this.filterBanks();
+                });
+                //---------------------------------------------------------------------------
+             
+              
+  }
  
-  }
-  //----------------------------select especial
-  /* ngAfterViewInit() {
-    this.setInitialValue();
-  }
-
-  ngOnDestroy() {
-    this._onDestroy.next();
-    this._onDestroy.complete();
-  }
-
-  protected setInitialValue() {
-    this.filteredLineasEstrategicas
-      .pipe(take(1), takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.singleSelect.compareWith = (a: LineaEstrategica, b: LineaEstrategica) => a && b && a.id_linea_estrategia === b.id_linea_estrategia;
-      });
-  }
-
-  protected filterLineasEstrategicas() {
-    const search = this.proyectoForm.controls.lineaEstrategica.value;
-    if (!search) {
-      this.filteredLineasEstrategicas.next(this.lineaEstrategica.slice());
-      return;
-    }
-
-    this.filteredLineasEstrategicas.next(
-      this.lineaEstrategica.filter((linea) => linea.descripcion.toLowerCase().indexOf(search.toLowerCase()) > -1)
-    );
-  } */
-  //----------------------------select especial
-
-  //------------------------------Forma 2
-
-  //------------------------------Forma 2
 
 
   handleSubmit() {
@@ -246,7 +245,7 @@ export class ProyectoComponent implements OnInit {
   getCuenca() {
     this.CuencaServise.getCuenca().subscribe((response: any) => {
       this.cuenca = response;
-      this.getLineaEstrategicas();
+      //this.getLineaEstrategicas();
     }, (error: any) => {
       if (error.error?.message) {
         this.responseMessage = error.error?.message;
@@ -316,10 +315,10 @@ export class ProyectoComponent implements OnInit {
   //--------------------------nuevo get para los selects
   //----------------------obtenerLineasEstrategicas
   getLineaEstrategicas() {
-
     this.LineasEstrategicasService.getLineasEstrategicas().subscribe((response: any) => {
-      this.LineaEstrategica = response;
-      console.log(response);
+      this.LineaEstrategica = response;      
+      //console.log(this.LineaEstrategica);
+      
       //this.filteredLineasEstrategicas.next(response.slice());
      
     }, (error: any) => {
@@ -477,14 +476,60 @@ export class ProyectoComponent implements OnInit {
 
   //forma2 de busqeuda
   
-  private _filter(value: string): LineaEstrategica[]{
+ /*  private _filter(value: string): LineasEstrategica[]{
     console.log(value);
     const filterValue = value.toLowerCase();    
     return this.LineaEstrategica
     .filter(option => option.descripcion.toLowerCase().includes(filterValue))
   
+  } */
+
+
+  //----------------------------------------------------busqueda 1
+  ngAfterViewInit() {
+    //this.setInitialValue();
   }
 
+  ngOnDestroy() {
+    this._onDestroy.next();
+    this._onDestroy.complete();
+  }
 
+  /**
+   * Sets the initial value after the filteredBanks are loaded initially
+   */
+  protected setInitialValue() {
+    //console.log(this.filteredLineasEst);
+    this.filteredLineasEst
+      .pipe(take(1), takeUntil(this._onDestroy))
+      .subscribe(() => {
+        // setting the compareWith property to a comparison function
+        // triggers initializing the selection according to the initial value of
+        // the form control (i.e. _initializeSelection())
+        // this needs to be done after the filteredBanks are loaded initially
+        // and after the mat-option elements are available
+        this.singleSelect.compareWith = (a: LineasEstrategica, b: LineasEstrategica) => a && b && a.id_linea_estrategica === b.id_linea_estrategica;
+      });
+  }
+
+  protected filterBanks() {
+    if (!this.LineaEstrategica) {
+      return;
+    }
+    // get the search keyword
+    let search = this.LineasEstFilterCtrl.value;
+    if (!search) {
+      this.filteredLineasEst.next(this.LineaEstrategica.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the banks
+    this.filteredLineasEst.next(
+      this.LineaEstrategica.filter(bank => bank.descripcion.toLowerCase().indexOf(search) > -1)
+    );
+  }
+
+  //----------------------------------------------------busqueda 1
 
 }

@@ -159,18 +159,19 @@
                 <div>
                     <div *ngIf="showSelector1">
                         <!-- Aquí el primer selector adicional -->
-                        <!--
-                         <mat-form-field>
-                            <mat-select formControlName="lineaEstrategica" placeholder="Bank" >
-                              <mat-option>
-                                <ngx-mat-select-search [formControl]="proyectoForm.controls.lineaEstrategica"></ngx-mat-select-search>
-                              </mat-option>
-                              <mat-option *ngFor="let linea of filteredLineasEstrategicas | async" [value]="linea.id_linea_estrategia"  >
-                                {{linea.descripcion}}
+                        
+                        <mat-form-field>
+                            <mat-select [formControl]="LineasEstCtrl" placeholder="Lines Estrategicas" #singleSelect (selectionChange)="getLineaDeAccion($event.value.id_linea_estrategica)">
+                              <mat-option >
+                                <ngx-mat-select-search [formControl]="LineasEstFilterCtrl" ></ngx-mat-select-search>
+                              </mat-option>                        
+                              <mat-option *ngFor="let bank of filteredLineasEst | async" [value]="bank">
+                                {{bank.descripcion}}
                               </mat-option>
                             </mat-select>
-                          </mat-form-field> -->
-                        <mat-form-field class="example-full-width" fxFlex>
+                          </mat-form-field>
+
+                       <!--  <mat-form-field class="example-full-width" fxFlex>
                             <mat-label>Línea Estratégica (LE)</mat-label>
                             <input type="text" aria-label="Number" matInput [formControl]="myControl"
                                 [matAutocomplete]="auto">
@@ -180,11 +181,11 @@
                                     {{option.id_linea_estrategica}} {{option.descripcion}}
                                 </mat-option>
                             </mat-autocomplete>
-                        </mat-form-field>
+                        </mat-form-field> -->
                         <!-- ... -->
                     </div>
                     <div *ngIf="showSelector2">
-                        <mat-form-field class="example-full-width" fxFlex>
+                        <!-- <mat-form-field class="example-full-width" fxFlex>
                             <mat-label>Linea de Acción (LA)</mat-label>
                             <input type="text" aria-label="Number" matInput [formControl]="myControl"
                                 [matAutocomplete]="auto">
@@ -194,10 +195,10 @@
                                     {{option.id_linea_estrategica}} {{option.descripcion}}
                                 </mat-option>
                             </mat-autocomplete>
-                        </mat-form-field>
+                        </mat-form-field> -->
                     </div>
                     <div *ngIf="showSelector3">
-                        <mat-form-field class="example-full-width" fxFlex>
+                      <!--   <mat-form-field class="example-full-width" fxFlex>
                             <mat-label>Acción Estratégica (AE)</mat-label>
                             <input type="text" aria-label="Number" matInput [formControl]="myControl"
                                 [matAutocomplete]="auto">
@@ -207,14 +208,14 @@
                                     {{option.id_linea_estrategica}} {{option.descripcion}}
                                 </mat-option>
                             </mat-autocomplete>
-                        </mat-form-field>
+                        </mat-form-field> -->
                     </div>
                 </div>
 
                 <span class="subTitle1">ALINEAMIENTO DE INDICADOR (PDC)</span>
                 <div>
                     <div *ngIf="showSelector1">
-                        <mat-form-field class="example-full-width" fxFlex>
+                        <!-- <mat-form-field class="example-full-width" fxFlex>
                             <mat-label>Indicador</mat-label>
                             <input type="text" aria-label="Number" matInput [formControl]="myControl"
                                 [matAutocomplete]="auto">
@@ -224,7 +225,7 @@
                                     {{option.id_linea_estrategica}} {{option.descripcion}}
                                 </mat-option>
                             </mat-autocomplete>
-                        </mat-form-field>
+                        </mat-form-field> -->
                         <!-- ... -->
                     </div>
                 </div>
