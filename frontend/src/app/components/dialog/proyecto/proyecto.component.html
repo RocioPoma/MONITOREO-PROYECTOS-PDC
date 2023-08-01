@@ -103,7 +103,7 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-               
+
 
 
                 <mat-form-field appearance="fill" fxFlex>
@@ -115,7 +115,7 @@
                     </mat-select>
                 </mat-form-field>
 
-                
+
             </div>
             <span class="subTitle">ALCANCE</span>
             <div fxLayout="row wrap">
@@ -129,7 +129,7 @@
 
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Unidad</mat-label>
-                    <mat-select>
+                    <mat-select formControlName="id_unidad_medicion">
                         <mat-option *ngFor="let unidad of unidad" [value]="unidad.id_unidad_medicion">
                             {{unidad.nom_unidad}}
                         </mat-option>
@@ -154,61 +154,77 @@
 
             <span class="subTitle">ADJUNTO</span>
 
+
+            <!--Fin Prueba-->
+
             <div *ngIf="showAdditionalSelects">
                 <span class="subTitle1">ALINEAMIENTO DE ACCIONES ESTRATÉGICAS (PDC) </span>
                 <div>
                     <div *ngIf="showSelector1">
-                        <!-- Aquí el primer selector adicional -->
-                        
-                        <mat-form-field>
-                            <mat-select [formControl]="LineasEstCtrl" placeholder="Lines Estrategicas" #singleSelect (selectionChange)="getLineaDeAccion($event.value.id_linea_estrategica)">
-                              <mat-option >
-                                <ngx-mat-select-search [formControl]="LineasEstFilterCtrl" ></ngx-mat-select-search>
-                              </mat-option>                        
-                              <mat-option *ngFor="let bank of filteredLineasEst | async" [value]="bank">
-                                {{bank.descripcion}}
-                              </mat-option>
-                            </mat-select>
-                          </mat-form-field>
 
-                       <!--  <mat-form-field class="example-full-width" fxFlex>
-                            <mat-label>Línea Estratégica (LE)</mat-label>
-                            <input type="text" aria-label="Number" matInput [formControl]="myControl"
-                                [matAutocomplete]="auto">
-                            <mat-autocomplete #auto="matAutocomplete"
-                                (optionSelected)="getLineaDeAccion($event.option.value)">
-                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option.descripcion">
-                                    {{option.id_linea_estrategica}} {{option.descripcion}}
+                        <!--vigente-->
+                        <!--
+                        <mat-form-field>
+                            <mat-select [formControl]="LineasEstCtrl" placeholder="Lineas Estrategicas" #singleSelect
+                                (selectionChange)="getLineaDeAccion($event.value.id_linea_estrategica)">
+                                <mat-option>
+                                    <ngx-mat-select-search [formControl]="LineasEstFilterCtrl"></ngx-mat-select-search>
                                 </mat-option>
-                            </mat-autocomplete>
-                        </mat-form-field> -->
-                        <!-- ... -->
+                                <mat-option *ngFor="let bank of filteredLineasEst | async" [value]="bank">
+                                    {{bank.descripcion}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        -->
+
+                        <!--
+                             <mat-form-field fxFlex>
+                            <mat-label>Línea Estratégica (LE)</mat-label>
+                            <mat-select [formControl]="selectedOptionControl"
+                                (selectionChange)="getLineaDeAccion($event.value.id_linea_estrategica)">
+                                <mat-option><ngx-mat-select-search [formControl]="searchLineaEstrategica"
+                                        placeholderLabel="Buscar opción"></ngx-mat-select-search></mat-option>
+                                <mat-option *ngFor="let option of filterLineaEstrategica" [value]="option">
+                                    {{ option.descripcion }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        -->
+
+                        <mat-form-field fxFlex>
+                            <mat-label>Línea Estratégica (LE)</mat-label>
+                            <mat-select (selectionChange)="getLineaDeAccion($event.value.id_linea_estrategica)">
+                                <mat-option><ngx-mat-select-search [formControl]="searchLineaEstrategica"
+                                        placeholderLabel="Buscar opción"></ngx-mat-select-search></mat-option>
+                                <mat-option *ngFor="let option of filterLineaEstrategica" [value]="option">
+                                    {{ option.descripcion }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                     <div *ngIf="showSelector2">
-                        <!-- <mat-form-field class="example-full-width" fxFlex>
-                            <mat-label>Linea de Acción (LA)</mat-label>
-                            <input type="text" aria-label="Number" matInput [formControl]="myControl"
-                                [matAutocomplete]="auto">
-                            <mat-autocomplete #auto="matAutocomplete"
-                                (optionSelected)="getLineaDeAccion($event.option)">
-                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option.descripcion">
-                                    {{option.id_linea_estrategica}} {{option.descripcion}}
+                        <mat-form-field fxFlex>
+                            <mat-label>Línea de Acción (LA)</mat-label>
+                            <mat-select (selectionChange)="getAccionEstrategica($event.value.id_linea_accion)">
+                                <mat-option><ngx-mat-select-search [formControl]="searchLineaDeAccion"
+                                        placeholderLabel="Buscar opción"></ngx-mat-select-search></mat-option>
+                                <mat-option *ngFor="let option of filterLineaDeAccion" [value]="option">
+                                    {{ option.descripcion }}
                                 </mat-option>
-                            </mat-autocomplete>
-                        </mat-form-field> -->
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                     <div *ngIf="showSelector3">
-                      <!--   <mat-form-field class="example-full-width" fxFlex>
+                        <mat-form-field fxFlex>
                             <mat-label>Acción Estratégica (AE)</mat-label>
-                            <input type="text" aria-label="Number" matInput [formControl]="myControl"
-                                [matAutocomplete]="auto">
-                            <mat-autocomplete #auto="matAutocomplete"
-                                (optionSelected)="getLineaDeAccion($event.option)">
-                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option.descripcion">
-                                    {{option.id_linea_estrategica}} {{option.descripcion}}
+                            <mat-select formControlName="id_accion_estrategica">
+                                <mat-option><ngx-mat-select-search [formControl]="searchAccionEstrategica"
+                                        placeholderLabel="Buscar opción"></ngx-mat-select-search></mat-option>
+                                <mat-option *ngFor="let option of filterAccionEstrategica" [value]="option.id_accion_estrategica">
+                                    {{ option.descripcion }}
                                 </mat-option>
-                            </mat-autocomplete>
-                        </mat-form-field> -->
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
 
@@ -227,25 +243,35 @@
                             </mat-autocomplete>
                         </mat-form-field> -->
                         <!-- ... -->
+                        <mat-form-field fxFlex>
+                            <mat-label>Indicador</mat-label>
+                            <mat-select formControlName="id_indicador">
+                                <mat-option><ngx-mat-select-search [formControl]="searchIndicador"
+                                        placeholderLabel="Buscar opción"></ngx-mat-select-search></mat-option>
+                                <mat-option *ngFor="let option of filterIndicador" [value]="option.id_indicador">
+                                    {{option.id_indicador}}.- {{ option.nombre_indicador }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
                 <div fxLayout="row wrap">
-                    <mat-form-field appearance="fill" >
+                    <mat-form-field appearance="fill">
                         <mat-label>Cantidad</mat-label>
-                        <input matInput formControlName="nom_proyecto" required>
+                        <input matInput >
                         <mat-error
                             *ngIf="proyectoForm.controls.nom_proyecto.touched && proyectoForm.controls.nom_proyecto.invalid">
                             <span *ngIf="proyectoForm.controls.nom_proyecto.errors.required">Este campo es
                                 obligatorio.</span>
                         </mat-error>
                     </mat-form-field>
-                    <mat-form-field appearance="fill" >
+                    <!--
+                    <mat-form-field appearance="fill">
                         <mat-label>Unidad</mat-label>
                         <input matInput formControlName="nom_proyecto" required>
                     </mat-form-field>
+                    -->
                 </div>
-
-
             </div>
         </div>
     </form>

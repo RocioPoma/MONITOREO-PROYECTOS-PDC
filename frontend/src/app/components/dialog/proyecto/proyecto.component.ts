@@ -21,6 +21,7 @@ import { Observable, ReplaySubject, Subject, map, startWith, take, takeUntil } f
 import { LineasEstrategicasService } from 'src/app/services/lineas-estrategicas.service';
 
 import { Bank, BANKS } from './data';
+import { IndicadorService } from 'src/app/services/indicador.service';
 
 //interface para area
 interface area {
@@ -38,7 +39,7 @@ interface LineasEstrategica {
   templateUrl: './proyecto.component.html',
   styleUrls: ['./proyecto.component.scss']
 })
-export class ProyectoComponent implements OnInit , AfterViewInit, OnDestroy {
+export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
   onAddCategoria = new EventEmitter();
   onEditProyecto = new EventEmitter();
   proyectoForm: any = FormGroup;
@@ -56,9 +57,32 @@ export class ProyectoComponent implements OnInit , AfterViewInit, OnDestroy {
   municipio: any = [];
   comunidad: any = [];
   unidad: any = [];
-  LineaEstrategica: LineasEstrategica[] = [];
-  LineDeAccion:any = [];
-  AccionEstrategica: any = [];
+  LineaEstrategica: any[] = [];
+  LineaDeAccion: any[] = [];
+  AccionEstrategica: any[] = [];
+  indicador: any[] = [];
+
+  //-----Para filtrar LineaEstrategica
+  filterLineaEstrategica: any[] = [];
+  //selectedOptionControl = new FormControl();
+  searchLineaEstrategica = new FormControl();
+
+  //-----Para filtrar LineaDeAccion
+  filterLineaDeAccion: any[] = [];
+  searchLineaDeAccion = new FormControl();
+
+  //-----Para filtrar AccionEstrategica
+  filterAccionEstrategica: any[] = [];
+  searchAccionEstrategica = new FormControl();
+
+  //-----Para filtrar Indicador
+  filterIndicador: any[] = [];
+  searchIndicador = new FormControl();
+
+
+
+
+  //Fin prueba
 
   //variables para fecha
   fechaActual: Date | undefined;
@@ -74,39 +98,35 @@ export class ProyectoComponent implements OnInit , AfterViewInit, OnDestroy {
   //---------------------------------------------------------------------------variables para select especial
 
 
-   /** control for the selected bank */
-   public LineasEstCtrl: FormControl = new FormControl();
- 
-   /** control for the MatSelect filter keyword */
-   public LineasEstFilterCtrl: FormControl = new FormControl();
- 
-   /** list of banks filtered by search keyword */
-   public filteredLineasEst: ReplaySubject<LineasEstrategica[]> = new ReplaySubject<LineasEstrategica[]>(1);
- 
-   @ViewChild('singleSelect', { static: true }) singleSelect!: MatSelect;
- 
-   /** Subject that emits when the component has been destroyed. */
-   protected _onDestroy = new Subject<void>();
+  /** control for the selected bank */
+  public LineasEstCtrl: FormControl = new FormControl();
+
+  /** control for the MatSelect filter keyword */
+  public LineasEstFilterCtrl: FormControl = new FormControl();
+
+  /** list of banks filtered by search keyword */
+  public filteredLineasEst: ReplaySubject<LineasEstrategica[]> = new ReplaySubject<LineasEstrategica[]>(1);
+
+  @ViewChild('singleSelect', { static: true }) singleSelect!: MatSelect;
+
+  /** Subject that emits when the component has been destroyed. */
+  protected _onDestroy = new Subject<void>();
 
 
 
 
   //---------------------------------------------------------------------------variables para select especial
 
-  //filteredOptions!: Observable<string[]>;
- /*  filteredOptions!: Observable<LineaEstrategica[]>;
-  myControl = new FormControl(''); */
-
-
   constructor(@Inject(MAT_DIALOG_DATA) public dialogData: any,
     private formBuilder: FormBuilder,
     private ProyectoService: ProyectoService,
-    private CategoriaServise: CategoriaService,
-    private CuencaServise: CuencaService,
-    private MunicipioServise: MunicipioService,
+    private CategoriaService: CategoriaService,
+    private CuencaService: CuencaService,
+    private MunicipioService: MunicipioService,
     private LineasEstrategicasService: LineasEstrategicasService,
-    private ComunidadServise: ComunidadService,
-    private UnidadServise: UnidadMedicionService,
+    private ComunidadService: ComunidadService,
+    private UnidadService: UnidadMedicionService,
+    private IndicadorService: IndicadorService,
     private dialogRef: MatDialogRef<ProyectoComponent>,
     private snackbarService: SnackbarService,
     private datePipe: DatePipe
@@ -116,6 +136,9 @@ export class ProyectoComponent implements OnInit , AfterViewInit, OnDestroy {
     // Convierte la fecha a string en formato "dd-MM-yyyy" 
     this.fechaActualString = this.datePipe.transform(this.fechaActual, 'yyyy-MM-dd');
 
+    //--- Filtrar Select -----
+
+    //--- Fin Filtrar Select -----
   }
 
   ngOnInit(): void {
@@ -128,6 +151,7 @@ export class ProyectoComponent implements OnInit , AfterViewInit, OnDestroy {
     this.getUnidad();
     this.getComunidad(1);
     this.getLineaEstrategicas();
+    this.getIndicador();
 
     this.proyectoForm = this.formBuilder.group({
       id_tipologia: [null, [Validators.required]],
@@ -146,56 +170,65 @@ export class ProyectoComponent implements OnInit , AfterViewInit, OnDestroy {
       cantidad: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
       id_ciudad_comunidad: [null, [Validators.required]],
       id_municipio: [null, [Validators.required]],
-      //nuevos casillas      
-      bankCtrl: ['', [Validators.required]],
-      lineaEstrategicaSearch: ['', [Validators.required]]
+      //nuevos casillas  
+      id_unidad_medicion:[null, [Validators.required]],
+      id_accion_estrategica: [null, [Validators.required]],
+      id_indicador: [null, [Validators.required]]
+
     });
     if (this.dialogData.action === 'Edit') {
       this.dialogAction = "Edit";
       this.action = "Actualizar";
       this.proyectoForm.patchValue(this.dialogData.data);
       this.getComunidad(this.dialogData.data.id_municipio);
-     
     }
 
-   
-    //------select especial
-    // Escuchar los cambios en el filtro para el select
-    /* this.proyectoForm.controls.lineaEstrategica.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterLineasEstrategicas();
-      }); */
-    //------select especial
 
-      //---------------------------------------aqui el filtro
-      /* this.filteredOptions = this.myControl.valueChanges.pipe(
-        startWith(''),        
-        map(value => this._filter(value || ''))
-      );
-       */
-      //---------------------------------------aqui el filtro
+    //---------- Filtrar Select -------------------------
+    this.searchLineaEstrategica.valueChanges.subscribe(searchTerm => {
+      this.filterOptions(searchTerm);
+    });
 
+    this.searchLineaDeAccion.valueChanges.subscribe(searchTerm => {
+      this.filterOptionsLineaDeAccion(searchTerm);
+    });
 
-      
-                  //---------------------------------------------------------------------------
-                    // set initial selection                   
-                    this.LineasEstCtrl.setValue(this.LineaEstrategica[10]);
+    this.searchAccionEstrategica.valueChanges.subscribe(searchTerm => {
+      this.filterOptionsAccionEstrategica(searchTerm);
+    });
 
-                    // load the initial bank list
-                    this.filteredLineasEst.next(this.LineaEstrategica.slice());
-
-                    // listen for search field value changes
-                    this.LineasEstFilterCtrl.valueChanges
-                      .pipe(takeUntil(this._onDestroy))
-                      .subscribe(() => {
-                        this.filterBanks();
-                });
-                //---------------------------------------------------------------------------
-             
-              
+    this.searchIndicador.valueChanges.subscribe(searchTerm => {
+      this.filterOptionsIndicador(searchTerm);
+    });
+    //---------- Fin Filtrar Select--------------------
   }
- 
+
+
+  //---------- Filtrar Select -------------------------
+  filterOptions(searchTerm: string): void {
+    this.filterLineaEstrategica = this.LineaEstrategica.filter(option =>
+      option.descripcion.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }
+
+  filterOptionsLineaDeAccion(searchTerm: string): void {
+    this.filterLineaDeAccion = this.LineaDeAccion.filter(option =>
+      option.descripcion.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }
+
+  filterOptionsAccionEstrategica(searchTerm: string): void {
+    this.filterAccionEstrategica = this.AccionEstrategica.filter(option =>
+      option.descripcion.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }
+
+  filterOptionsIndicador(searchTerm: string): void {
+    this.filterIndicador = this.indicador.filter(option =>
+      option.nombre_indicador.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }
+  //---------- Fin Filtrar Select--------------------
 
 
   handleSubmit() {
@@ -212,7 +245,6 @@ export class ProyectoComponent implements OnInit , AfterViewInit, OnDestroy {
   getTipologia() {
     this.ProyectoService.getTipologia().subscribe((response: any) => {
       this.tipologia = response;
-     // this.LineaEstrategica = response;
     }, (error: any) => {
       if (error.error?.message) {
         this.responseMessage = error.error?.message;
@@ -227,7 +259,7 @@ export class ProyectoComponent implements OnInit , AfterViewInit, OnDestroy {
 
   //------------------- OBTENEMOS CATEGORIA
   getCategoria() {
-    this.CategoriaServise.getCategoria().subscribe((response: any) => {
+    this.CategoriaService.getCategoria().subscribe((response: any) => {
       this.categoria = response;
     }, (error: any) => {
       if (error.error?.message) {
@@ -243,9 +275,8 @@ export class ProyectoComponent implements OnInit , AfterViewInit, OnDestroy {
 
   //------------------- OBTENEMOS CUENCA
   getCuenca() {
-    this.CuencaServise.getCuenca().subscribe((response: any) => {
+    this.CuencaService.getCuenca().subscribe((response: any) => {
       this.cuenca = response;
-      //this.getLineaEstrategicas();
     }, (error: any) => {
       if (error.error?.message) {
         this.responseMessage = error.error?.message;
@@ -260,7 +291,7 @@ export class ProyectoComponent implements OnInit , AfterViewInit, OnDestroy {
 
   //------------------- OBTENEMOS MUNICIPIO
   getMunicipio() {
-    this.MunicipioServise.getMunicipio().subscribe((response: any) => {
+    this.MunicipioService.getMunicipio().subscribe((response: any) => {
       this.municipio = response;
     }, (error: any) => {
       if (error.error?.message) {
@@ -276,7 +307,7 @@ export class ProyectoComponent implements OnInit , AfterViewInit, OnDestroy {
 
   //------------------- OBTENEMOS UNIDAD
   getUnidad() {
-    this.UnidadServise.getUnidad().subscribe((response: any) => {
+    this.UnidadService.getUnidad().subscribe((response: any) => {
       this.unidad = response;
     }, (error: any) => {
       if (error.error?.message) {
@@ -292,7 +323,7 @@ export class ProyectoComponent implements OnInit , AfterViewInit, OnDestroy {
 
   //------------------- OBTENEMOS COMUNIDAD
   getComunidad(id_municipio: any) {
-    this.ComunidadServise.getComunidad(id_municipio).subscribe((response: any) => {
+    this.ComunidadService.getComunidad(id_municipio).subscribe((response: any) => {
       this.comunidad = response;
     }, (error: any) => {
       if (error.error?.message) {
@@ -305,22 +336,17 @@ export class ProyectoComponent implements OnInit , AfterViewInit, OnDestroy {
 
     });
   }
-  /*------Fin Servicios Extras--*/
 
   /*------Obtenemos Comunidades de un municipio */
   changeMunicipio(id_municipio: any) {
     console.log("Id del municipio", id_municipio);
   }
 
-  //--------------------------nuevo get para los selects
-  //----------------------obtenerLineasEstrategicas
+  //------------------- OBTENEMOS LINEA ESTRATEGICA
   getLineaEstrategicas() {
     this.LineasEstrategicasService.getLineasEstrategicas().subscribe((response: any) => {
-      this.LineaEstrategica = response;      
-      //console.log(this.LineaEstrategica);
-      
-      //this.filteredLineasEstrategicas.next(response.slice());
-     
+      this.LineaEstrategica = response;
+      this.filterLineaEstrategica = response;
     }, (error: any) => {
       if (error.error?.message) {
         this.responseMessage = error.error?.message;
@@ -333,27 +359,12 @@ export class ProyectoComponent implements OnInit , AfterViewInit, OnDestroy {
     });
   }
 
-    //------------------- OBTENEMOS LINEA DE ACCION POR ID DE LINEA_ESTRATEGICA
-    getLineaDeAcci(id_municipio: any) {
-      this.ComunidadServise.getComunidad(id_municipio).subscribe((response: any) => {
-        this.comunidad = response;
-      }, (error: any) => {
-        if (error.error?.message) {
-          this.responseMessage = error.error?.message;
-        }
-        else {
-          this.responseMessage = GlobalCostants.genericError;
-        }
-        this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
-  
-      });
-    }
-  //----------------------obtenerLineasEstrategicas
-   getLineaDeAccion(id_LineaEstrategia: any) {
-    console.log("Id Linea Estrategica "+id_LineaEstrategia);
-    
-    /* this.ComunidadServise.getComunidad(id_municipio).subscribe((response: any) => {
-      this.comunidad = response;
+  //------------------- OBTENEMOS LINEA DE ACCION segun id_linea_estrategica
+  getLineaDeAccion(id_linea_estrategica: any) {
+    console.log("Id Linea Estrategica " + id_linea_estrategica);
+    this.LineasEstrategicasService.getLineaDeAccion(id_linea_estrategica).subscribe((response: any) => {
+      this.LineaDeAccion = response;
+      this.filterLineaDeAccion = response;
     }, (error: any) => {
       if (error.error?.message) {
         this.responseMessage = error.error?.message;
@@ -363,10 +374,44 @@ export class ProyectoComponent implements OnInit , AfterViewInit, OnDestroy {
       }
       this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
 
-    }); */
+    });
   }
+
+  //------------------- OBTENEMOS ACCION ESTRATEGICA segun id_linea_accion
+  getAccionEstrategica(id_linea_accion: any) {
+    console.log("Id Linea de accion " + id_linea_accion);
+    this.LineasEstrategicasService.getAccionEstrategica(id_linea_accion).subscribe((response: any) => {
+      this.AccionEstrategica = response;
+      this.filterAccionEstrategica = response;
+    }, (error: any) => {
+      if (error.error?.message) {
+        this.responseMessage = error.error?.message;
+      }
+      else {
+        this.responseMessage = GlobalCostants.genericError;
+      }
+      this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+    });
+  }
+
+  //------------------- OBTENEMOS INDICADOR
+  getIndicador() {
+    this.IndicadorService.getIndicador().subscribe((response: any) => {
+      this.indicador = response;
+      this.filterIndicador = response;
+    }, (error: any) => {
+      if (error.error?.message) {
+        this.responseMessage = error.error?.message;
+      }
+      else {
+        this.responseMessage = GlobalCostants.genericError;
+      }
+      this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+
+    });
+  }
+
   /*------Fin Servicios Extras--*/
-  //--------------------------nuevo get 
 
 
   add() {
@@ -374,7 +419,7 @@ export class ProyectoComponent implements OnInit , AfterViewInit, OnDestroy {
     this.finicio = this.datePipe.transform(formData.fecha_inicio, 'yyyy-MM-dd')
     this.ffin = this.datePipe.transform(formData.fecha_fin, 'yyyy-MM-dd')
     /*  console.log(this.finicio.toISOString());
-     console.log(this.ffin.toISOString()); */
+     console.log(this.ffin.toISOString()); D */
     console.log(this.fechaActualString);
 
     var data = {
@@ -390,9 +435,10 @@ export class ProyectoComponent implements OnInit , AfterViewInit, OnDestroy {
       mujeres: formData.mujeres,
       id_categoria: formData.id_categoria,
       id_tipologia: formData.id_tipologia,
-      id_indicador: null,
+      id_unidad_medicion:formData.id_unidad_medicion,
+      id_indicador: formData.id_indicador,
       id_cuenca: formData.id_cuenca,
-      id_accion_estrategica: null,
+      id_accion_estrategica: formData.id_accion_estrategica,
       estado: 'true',
       id_ciudad_comunidad: formData.id_ciudad_comunidad
       //municipio: formData.municipio
@@ -475,14 +521,14 @@ export class ProyectoComponent implements OnInit , AfterViewInit, OnDestroy {
 
 
   //forma2 de busqeuda
-  
- /*  private _filter(value: string): LineasEstrategica[]{
-    console.log(value);
-    const filterValue = value.toLowerCase();    
-    return this.LineaEstrategica
-    .filter(option => option.descripcion.toLowerCase().includes(filterValue))
-  
-  } */
+
+  /*  private _filter(value: string): LineasEstrategica[]{
+     console.log(value);
+     const filterValue = value.toLowerCase();    
+     return this.LineaEstrategica
+     .filter(option => option.descripcion.toLowerCase().includes(filterValue))
+   
+   } */
 
 
   //----------------------------------------------------busqueda 1
@@ -508,7 +554,7 @@ export class ProyectoComponent implements OnInit , AfterViewInit, OnDestroy {
         // the form control (i.e. _initializeSelection())
         // this needs to be done after the filteredBanks are loaded initially
         // and after the mat-option elements are available
-        this.singleSelect.compareWith = (a: LineasEstrategica, b: LineasEstrategica) => a && b && a.id_linea_estrategica === b.id_linea_estrategica;
+        //this.singleSelect.compareWith = (a: LineasEstrategica, b: LineasEstrategica) => a && b && a.id_linea_estrategica === b.id_linea_estrategica;
       });
   }
 

@@ -19,7 +19,7 @@ export class ProyectoService {
   //----------------------API PARA AGREGAR PROYECTO ------------------------------
   add(data: any) {
     return this.httpClient.post(this.url +
-      "/proyecto/create/", data, {
+      "/proyecto/add/", data, {
       headers: new HttpHeaders().set('Content-Type', "application/json")
     });
   }

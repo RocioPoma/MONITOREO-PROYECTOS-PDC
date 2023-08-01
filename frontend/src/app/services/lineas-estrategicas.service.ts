@@ -11,9 +11,18 @@ export class LineasEstrategicasService {
 
   constructor(private httpClient: HttpClient) { }
 
-  //----------------------API PARA LISTAR COMUNIDADES O CIUDADES DE UN MUNICIPIO -------- se utilizo 
+  //----------------------API PARA LISTAR LINEA ESTRATEICA-------- se utilizo 
   getLineasEstrategicas() {
     return this.httpClient.get(this.url + "/lineas_estr/get/");
   }
 
+   //----------------------API PARA LISTAR LINEA DE ACCION SEGUN id_linea_estrategica -------- se utilizo 
+   getLineaDeAccion(id_linea_estrategica: any) {
+    return this.httpClient.get(this.url + "/lineas_acc/getByIdLineaEstrategica/" + id_linea_estrategica);
+  }
+
+  //----------------------API PARA LISTAR ACCION ESTRATEGICA SEGUN id_linea_accion -------- se utilizo 
+  getAccionEstrategica(id_linea_accion: any) {
+    return this.httpClient.get(this.url + "/accion_est/getByIdLineaDeAccion/" + id_linea_accion);
+  }
 }

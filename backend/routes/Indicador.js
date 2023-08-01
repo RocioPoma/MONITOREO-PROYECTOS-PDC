@@ -3,6 +3,18 @@ const connection = require('../connection');
 const router = express.Router();
 var auth = require('../services/authentication');
 
+// Ruta para obtener lista indicadores
+router.get('/get', (req, res) => {
+  connection.query('SELECT * FROM INDICADOR', (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Hubo un error al obtener los INDICADORES' });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
 // Ruta para editar un indicador
 router.put('/indicadores/:id', (req, res) => {
     const id = req.params.id;

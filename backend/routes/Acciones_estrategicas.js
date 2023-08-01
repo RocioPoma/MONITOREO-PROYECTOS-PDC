@@ -16,7 +16,7 @@ router.get('/get', (req, res) => {
 });
 
 //obtener acciones estratégicas por id de LineaDeAccion
-router.get('/getByIdLineaDeAcción/:id_linea_accion', (req, res) => {
+router.get('/getByIdLineaDeAccion/:id_linea_accion', (req, res) => {
   const id_linea_accion = req.params.id_linea_accion;
   var query = 'SELECT AE.* FROM ACCION_ESTRATEGICA AE WHERE id_linea_accion=?';
   connection.query(query, [id_linea_accion], (err, results) => {
