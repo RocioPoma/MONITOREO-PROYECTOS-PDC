@@ -3,16 +3,22 @@ const connection = require('../connection');
 const router = express.Router();
 var auth = require('../services/authentication');
 
+//----------para archivos-----------------------------------------------------------------------------
+const multer = require('../libs/multer');
+const fs = require('fs');
+//-----------------------------------------------------------------------------------------------------
+
+
 // Ruta para obtener todos los proyectos
 router.get('/get', (req, res) => {
   const sql =
     'SELECT '
-    
+
     + 'P.id_proyecto,'
     + 'P.nom_proyecto, '
     + 'P.fecha_inicio, '
-    + 'P.fecha_fin, '    
-    + 'P.fecha_registro, '    
+    + 'P.fecha_fin, '
+    + 'P.fecha_registro, '
     + 'P.area, '
     + 'P.coordenada_x, '
     + 'P.coordenada_y, '
@@ -90,49 +96,76 @@ router.post('/create', (req, res) => {
 
 });
 
-router.post('/add', (req, res) => {
+router.post('/add', multer.single('documento'), (req, res) => {
+  const file = req.file;
   let proyecto = req.body;
-  datos = {
-    nom_proyecto: proyecto.nom_proyecto,
-    fecha_inicio: proyecto.fecha_inicio,
-    fecha_fin: proyecto.fecha_fin,
-    fecha_registro: proyecto.fecha_registro,
-    area: proyecto.area,
-    coordenada_x: proyecto.coordenada_x,
-    coordenada_y: proyecto.coordenada_y,
-    cantidad: proyecto.cantidad,
-    hombres:proyecto.hombres ,
-    mujeres: proyecto.mujeres,
-    id_categoria: proyecto.id_categoria,
-    id_tipologia: proyecto.id_tipologia,
-    id_indicador: proyecto.id_indicador,
-    id_cuenca:proyecto.id_cuenca ,
-    id_accion_estrategica: proyecto.id_accion_estrategica,
-    estado: proyecto.estado
-
-}
-console.log(datos);
-connection.query('INSERT INTO PROYECTO  SET ?', [datos], (err, results) => {
-  if (!err) {
+  let datos = {};
+  if (!file) {
+    datos = {
+      nom_proyecto: proyecto.nom_proyecto,
+      fecha_inicio: proyecto.fecha_inicio,
+      fecha_fin: proyecto.fecha_fin,
+      fecha_registro: proyecto.fecha_registro,
+      area: proyecto.area,
+      coordenada_x: proyecto.coordenada_x,
+      coordenada_y: proyecto.coordenada_y,
+      cantidad: proyecto.cantidad,
+      hombres: proyecto.hombres,
+      mujeres: proyecto.mujeres,
+      id_categoria: proyecto.id_categoria,
+      id_tipologia: proyecto.id_tipologia,
+      id_indicador: proyecto.id_indicador,
+      id_cuenca: proyecto.id_cuenca,
+      id_accion_estrategica: proyecto.id_accion_estrategica,
+      estado: proyecto.estado,
+      documento:''
+  
+    }
+  }else{
+    datos = {
+      nom_proyecto: proyecto.nom_proyecto,
+      fecha_inicio: proyecto.fecha_inicio,
+      fecha_fin: proyecto.fecha_fin,
+      fecha_registro: proyecto.fecha_registro,
+      area: proyecto.area,
+      coordenada_x: proyecto.coordenada_x,
+      coordenada_y: proyecto.coordenada_y,
+      cantidad: proyecto.cantidad,
+      hombres: proyecto.hombres,
+      mujeres: proyecto.mujeres,
+      id_categoria: proyecto.id_categoria,
+      id_tipologia: proyecto.id_tipologia,
+      id_indicador: proyecto.id_indicador,
+      id_cuenca: proyecto.id_cuenca,
+      id_accion_estrategica: proyecto.id_accion_estrategica,
+      estado: proyecto.estado,
+      documento:req.file.filename
+  
+    }
+  }
+  
+  console.log(datos);
+  connection.query('INSERT INTO PROYECTO  SET ?', [datos], (err, results) => {
+    if (!err) {
       return res.status(200).json({ message: "Proyecto agregado con exito" });
-  }
-  else {
+    }
+    else {
       return res.status(500).json(err);
-  }
-});
+    }
+  });
 
   console.log(proyecto.id_ciudad_comunidad);
-  llamarUltimoRegistroProyecto(proyecto.id_ciudad_comunidad,proyecto.id_unidad_medicion,proyecto.cantidad);
+  llamarUltimoRegistroProyecto(proyecto.id_ciudad_comunidad, proyecto.id_unidad_medicion, proyecto.cantidad);
 
 });
 
-function llamarUltimoRegistroProyecto(id_comunidad,id_unidad,cantidad) {
+function llamarUltimoRegistroProyecto(id_comunidad, id_unidad, cantidad) {
   let id_proyecto;
   connection.query('select id_proyecto from proyecto order by id_proyecto desc limit 1', (err, rows) => {
     //console.log(rows[0].id_proyecto);
     id_proyecto = rows[0].id_proyecto;
     add_proyecto_comunidad(id_proyecto, id_comunidad);
-    add_proyecto_unidad(id_proyecto,id_unidad,cantidad)
+    add_proyecto_unidad(id_proyecto, id_unidad, cantidad)
 
   });
 }
@@ -143,19 +176,19 @@ function add_proyecto_comunidad(id_proyecto, id_comunidad) {
     id_ciudad_comunidad: id_comunidad
   }
   connection.query('insert into proyecto_ciudad_o_comunidad set ?', [datos], (err, results) => {
-   // console.log('Agregado.!!!')
+    // console.log('Agregado.!!!')
   });
 }
 
-function add_proyecto_unidad(id_proyecto, id_unidad,cantidad) {
+function add_proyecto_unidad(id_proyecto, id_unidad, cantidad) {
   datos = {
-    cantidad:cantidad,
+    cantidad: cantidad,
     id_unidad_medicion: id_unidad,
     id_proyecto: id_proyecto
   }
   //console.log(datos);
   connection.query('insert into alcance set ?', [datos], (err, results) => {
-   // console.log('Agregado.!!!')
+    // console.log('Agregado.!!!')
   });
 }
 
@@ -185,7 +218,7 @@ router.patch('/activar/:id', (req, res) => {
 // Ruta para eliminar un proyecto
 router.delete('/delete/:id', (req, res) => {
   const { id } = req.params;
-  eliminarProyectoComunidad(req.params.id); 
+  eliminarProyectoComunidad(req.params.id);
   const sql = 'DELETE FROM PROYECTO WHERE id_proyecto = ?';
   connection.query(sql, id, (err, result) => {
     if (err) throw err;
@@ -196,7 +229,7 @@ router.delete('/delete/:id', (req, res) => {
 //funcion
 function eliminarProyectoComunidad(id) {
   const sql = 'DELETE FROM proyecto_ciudad_o_comunidad WHERE id_proyecto = ?';
-  connection.query(sql, id, (err, result) => { 
+  connection.query(sql, id, (err, result) => {
     console.log(result);
   });
 }

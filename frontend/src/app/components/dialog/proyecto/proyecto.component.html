@@ -153,6 +153,11 @@
             </div>
 
             <span class="subTitle">ADJUNTO</span>
+            <div class="radio_buton" appearance="fill" fxFlex>
+                <mat-label>Documento</mat-label><br>
+                <input (change)="selectFile($event)" formControlName="documento"
+                    class="form-control-file" type="file">
+            </div>
 
 
             <!--Fin Prueba-->

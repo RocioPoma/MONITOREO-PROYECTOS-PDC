@@ -23,6 +23,7 @@ import { LineasEstrategicasService } from 'src/app/services/lineas-estrategicas.
 import { Bank, BANKS } from './data';
 import { IndicadorService } from 'src/app/services/indicador.service';
 
+import { DomSanitizer } from '@angular/platform-browser';
 //interface para area
 interface area {
   value: string;
@@ -46,7 +47,9 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
   dialogAction: any = "Add";
   action: any = "Registrar";
   responseMessage: any;
-
+  file!: File;
+  photoSelected!: ArrayBuffer | string | null;
+  image = '';
 
   area = ['Urbana', 'Periurbana', 'Rural', 'Rural y Urbano'];
 
@@ -119,6 +122,7 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(@Inject(MAT_DIALOG_DATA) public dialogData: any,
     private formBuilder: FormBuilder,
+    private _sanitizer: DomSanitizer,
     private ProyectoService: ProyectoService,
     private CategoriaService: CategoriaService,
     private CuencaService: CuencaService,
@@ -173,7 +177,8 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
       //nuevos casillas  
       id_unidad_medicion:[null, [Validators.required]],
       id_accion_estrategica: [null, [Validators.required]],
-      id_indicador: [null, [Validators.required]]
+      id_indicador: [null, [Validators.required]],
+      documento: [null]
 
     });
     if (this.dialogData.action === 'Edit') {
@@ -230,6 +235,19 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   //---------- Fin Filtrar Select--------------------
 
+  //--------------------------- SELECCIONAMOS ARCHIVO PARA MOSTRARLO EN EL MODAL ------------------
+  selectFile(event: any): any {
+    this._sanitizer.bypassSecurityTrustStyle(event.target.files);
+    if (event.target.files && event.target.files[0]) {
+      this.file = (<File>event.target.files[0]);
+      //image preview
+      
+      const reader = new FileReader();
+      reader.onload = e => this.photoSelected = reader.result;
+      
+      reader.readAsDataURL(this.file);
+    }
+  }
 
   handleSubmit() {
     if (this.dialogAction === 'Edit') {
@@ -481,7 +499,8 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
       id_cuenca: formData.id_cuenca,
       id_accion_estrategica: null,
       estado: 'true',
-      id_ciudad_comunidad: formData.id_ciudad_comunidad
+      id_ciudad_comunidad: formData.id_ciudad_comunidad,
+      documento:formData.documento
     }
     this.ProyectoService.update(data).subscribe((response: any) => {
       this.dialogRef.close();
