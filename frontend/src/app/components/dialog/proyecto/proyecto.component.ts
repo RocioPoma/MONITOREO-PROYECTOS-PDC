@@ -55,12 +55,13 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
   categoria: any = [];
   cuenca: any = [];
   municipio: any = [];
-  comunidad: any = [];
+  comunidad: any[] = [];
   unidad: any = [];
   LineaEstrategica: any[] = [];
   LineaDeAccion: any[] = [];
   AccionEstrategica: any[] = [];
   indicador: any[] = [];
+  comunidades:any[]=[];
 
   //-----Para filtrar LineaEstrategica
   filterLineaEstrategica: any[] = [];
@@ -78,6 +79,13 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
   //-----Para filtrar Indicador
   filterIndicador: any[] = [];
   searchIndicador = new FormControl();
+
+
+    //-----Para filtrar municipio
+    filterComunidad: any[] = [];
+    searchComunidad = new FormControl();
+  /** control for the selected bank for multi-selection */
+  public ComunidadMultiCtrl: FormControl = new FormControl();
 
 
 
@@ -98,15 +106,7 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
   //---------------------------------------------------------------------------variables para select especial
 
 
-  /** control for the selected bank */
-  public LineasEstCtrl: FormControl = new FormControl();
-
-  /** control for the MatSelect filter keyword */
-  public LineasEstFilterCtrl: FormControl = new FormControl();
-
-  /** list of banks filtered by search keyword */
-  public filteredLineasEst: ReplaySubject<LineasEstrategica[]> = new ReplaySubject<LineasEstrategica[]>(1);
-
+  
   @ViewChild('singleSelect', { static: true }) singleSelect!: MatSelect;
 
   /** Subject that emits when the component has been destroyed. */
@@ -136,13 +136,11 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
     // Convierte la fecha a string en formato "dd-MM-yyyy" 
     this.fechaActualString = this.datePipe.transform(this.fechaActual, 'yyyy-MM-dd');
 
-    //--- Filtrar Select -----
-
-    //--- Fin Filtrar Select -----
+  
   }
 
   ngOnInit(): void {
-    this.setInitialValue();
+    
     // console.log(this.fechaActualString);
     this.getTipologia();
     this.getCategoria();
@@ -200,6 +198,10 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
     this.searchIndicador.valueChanges.subscribe(searchTerm => {
       this.filterOptionsIndicador(searchTerm);
     });
+
+    this.searchComunidad.valueChanges.subscribe(searchTerm => {
+      this.filterOptionsComunidad(searchTerm);
+    });
     //---------- Fin Filtrar Select--------------------
   }
 
@@ -226,6 +228,12 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
   filterOptionsIndicador(searchTerm: string): void {
     this.filterIndicador = this.indicador.filter(option =>
       option.nombre_indicador.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }
+
+  filterOptionsComunidad(searchTerm: string): void {
+    this.filterComunidad = this.comunidad.filter(option =>
+      option.nombre.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }
   //---------- Fin Filtrar Select--------------------
@@ -440,11 +448,11 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
       id_cuenca: formData.id_cuenca,
       id_accion_estrategica: formData.id_accion_estrategica,
       estado: 'true',
-      id_ciudad_comunidad: formData.id_ciudad_comunidad
-      //municipio: formData.municipio
+      id_ciudad_comunidad: this.comunidades
+      
     }
     console.log(data);
-    this.ProyectoService.add(data).subscribe((response: any) => {
+   /*  this.ProyectoService.add(data).subscribe((response: any) => {
       this.dialogRef.close();
       this.onAddCategoria.emit();
       this.responseMessage = response.message;
@@ -458,7 +466,7 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.responseMessage = GlobalCostants.genericError;
       }
       this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
-    })
+    }) */
   }
 
   edit() {
@@ -481,7 +489,7 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
       id_cuenca: formData.id_cuenca,
       id_accion_estrategica: null,
       estado: 'true',
-      id_ciudad_comunidad: formData.id_ciudad_comunidad
+      id_ciudad_comunidad: this.comunidades
     }
     this.ProyectoService.update(data).subscribe((response: any) => {
       this.dialogRef.close();
@@ -541,39 +549,12 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
     this._onDestroy.complete();
   }
 
-  /**
-   * Sets the initial value after the filteredBanks are loaded initially
-   */
-  protected setInitialValue() {
-    //console.log(this.filteredLineasEst);
-    this.filteredLineasEst
-      .pipe(take(1), takeUntil(this._onDestroy))
-      .subscribe(() => {
-        // setting the compareWith property to a comparison function
-        // triggers initializing the selection according to the initial value of
-        // the form control (i.e. _initializeSelection())
-        // this needs to be done after the filteredBanks are loaded initially
-        // and after the mat-option elements are available
-        //this.singleSelect.compareWith = (a: LineasEstrategica, b: LineasEstrategica) => a && b && a.id_linea_estrategica === b.id_linea_estrategica;
-      });
-  }
+ 
 
-  protected filterBanks() {
-    if (!this.LineaEstrategica) {
-      return;
-    }
-    // get the search keyword
-    let search = this.LineasEstFilterCtrl.value;
-    if (!search) {
-      this.filteredLineasEst.next(this.LineaEstrategica.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the banks
-    this.filteredLineasEst.next(
-      this.LineaEstrategica.filter(bank => bank.descripcion.toLowerCase().indexOf(search) > -1)
-    );
+  getcomunidades(data: any) {
+    console.log(data);
+    this.comunidades=data;
+    
   }
 
   //----------------------------------------------------busqueda 1

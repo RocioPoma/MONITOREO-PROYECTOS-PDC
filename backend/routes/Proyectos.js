@@ -193,6 +193,37 @@ router.delete('/delete/:id', (req, res) => {
   });
 });
 
+//----------------------------------------------/otra forma de borrar
+// Agrega esta nueva ruta para eliminar un proyecto por su ID
+router.delete('/dele/:id_proyecto', (req, res) => {
+  const id_proyecto = req.params.id_proyecto;
+
+  // Primero, eliminamos los registros en la tabla "proyecto_ciudad_o_comunidad"
+  connection.query('DELETE FROM proyecto_ciudad_o_comunidad WHERE id_proyecto = ?', [id_proyecto], (err, results) => {
+    if (err) {
+      return res.status(500).json(err);
+    }
+
+    // A continuación, eliminamos los registros en la tabla "alcance"
+    connection.query('DELETE FROM alcance WHERE id_proyecto = ?', [id_proyecto], (err, results) => {
+      if (err) {
+        return res.status(500).json(err);
+      }
+
+      // Finalmente, eliminamos el proyecto de la tabla "PROYECTO"
+      connection.query('DELETE FROM PROYECTO WHERE id_proyecto = ?', [id_proyecto], (err, results) => {
+        if (err) {
+          return res.status(500).json(err);
+        }
+
+        return res.status(200).json({ message: "Proyecto eliminado con éxito" });
+      });
+    });
+  });
+});
+//----------------------------------------------/otra forma de borrar
+
+
 //funcion
 function eliminarProyectoComunidad(id) {
   const sql = 'DELETE FROM proyecto_ciudad_o_comunidad WHERE id_proyecto = ?';

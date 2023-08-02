@@ -36,7 +36,7 @@ export class ProyectoService {
   //----------------------API PARA ELIMINAR PROYECTO ------------------------------
   delete(id: any) {
     return this.httpClient.delete(this.url +
-      "/proyecto/delete/" + id, {
+      "/proyecto/dele/" + id, {
       headers: new HttpHeaders().set('Content-Type', "application/json")
     });
   }
