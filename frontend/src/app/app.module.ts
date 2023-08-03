@@ -19,6 +19,9 @@ import { HttpClientModule } from '@angular/common/http';
 //importamos pipe para fecha
 import { DatePipe } from '@angular/common';
 
+//para los diagramas
+import { HighchartsChartModule } from "highcharts-angular";
+
 
 @NgModule({
   declarations: [
