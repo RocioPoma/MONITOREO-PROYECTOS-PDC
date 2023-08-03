@@ -15,7 +15,7 @@ import { ComunidadService } from 'src/app/services/comunidad.service';
 import { UnidadMedicionService } from 'src/app/services/unidad-medicion.service';
 
 
-//importamos para searc selected
+//importamos para search selected
 import { MatSelect } from '@angular/material/select';
 import { Observable, ReplaySubject, Subject, map, startWith, take, takeUntil } from 'rxjs';
 import { LineasEstrategicasService } from 'src/app/services/lineas-estrategicas.service';
@@ -47,9 +47,17 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
   dialogAction: any = "Add";
   action: any = "Registrar";
   responseMessage: any;
+ 
+
+  //Pra cargar archivo
   file!: File;
   photoSelected!: ArrayBuffer | string | null;
+
+  fileSelected!: ArrayBuffer | string | null;
   image = '';
+  //opcion 2
+  selectedFile!: File;
+  selectedFileName!: string;
 
   area = ['Urbana', 'Periurbana', 'Rural', 'Rural y Urbano'];
 
@@ -64,7 +72,7 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
   LineaDeAccion: any[] = [];
   AccionEstrategica: any[] = [];
   indicador: any[] = [];
-  comunidades:any[]=[];
+  comunidades: any[] = [];
 
   //-----Para filtrar LineaEstrategica
   filterLineaEstrategica: any[] = [];
@@ -84,9 +92,9 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
   searchIndicador = new FormControl();
 
 
-    //-----Para filtrar municipio
-    filterComunidad: any[] = [];
-    searchComunidad = new FormControl();
+  //-----Para filtrar municipio
+  filterComunidad: any[] = [];
+  searchComunidad = new FormControl();
   /** control for the selected bank for multi-selection */
   public ComunidadMultiCtrl: FormControl = new FormControl();
 
@@ -109,7 +117,7 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
   //---------------------------------------------------------------------------variables para select especial
 
 
-  
+
   @ViewChild('singleSelect', { static: true }) singleSelect!: MatSelect;
 
   /** Subject that emits when the component has been destroyed. */
@@ -140,11 +148,11 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
     // Convierte la fecha a string en formato "dd-MM-yyyy" 
     this.fechaActualString = this.datePipe.transform(this.fechaActual, 'yyyy-MM-dd');
 
-  
+
   }
 
   ngOnInit(): void {
-    
+
     // console.log(this.fechaActualString);
     this.getTipologia();
     this.getCategoria();
@@ -173,7 +181,7 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
       id_ciudad_comunidad: [null, [Validators.required]],
       id_municipio: [null, [Validators.required]],
       //nuevos casillas  
-      id_unidad_medicion:[null, [Validators.required]],
+      id_unidad_medicion: [null, [Validators.required]],
       id_accion_estrategica: [null, [Validators.required]],
       id_indicador: [null, [Validators.required]],
       documento: [null]
@@ -243,30 +251,39 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   //---------- Fin Filtrar Select--------------------
 
-  //--------------------------- SELECCIONAMOS ARCHIVO PARA MOSTRARLO EN EL MODAL ------------------
+  //--------------- SELECCIONAR ARCHIVO ------------------
   selectFile(event: any): any {
     this._sanitizer.bypassSecurityTrustStyle(event.target.files);
     if (event.target.files && event.target.files[0]) {
       this.file = (<File>event.target.files[0]);
       //image preview
-      
       const reader = new FileReader();
-      reader.onload = e => this.photoSelected = reader.result;
-      
+      reader.onload = e => this.fileSelected = reader.result;
+
       reader.readAsDataURL(this.file);
     }
   }
+
+  //opcion2
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+    this.selectedFileName = this.selectedFile?.name || '';
+  }
+
+  //fin opcion 2
+  //------------- FIN SELECCIONAR ARCHIVO ---------------------
 
   handleSubmit() {
     if (this.dialogAction === 'Edit') {
       this.edit();
     }
     else {
-      this.add();
+      this.add1();
     }
   }
 
-  /*------Servicios Extras-------*/
+
+  /*---------------------INICIO SERVICIOS ESTRAS --------------*/
   //------------------- OBTENEMOS TIPOLOGIA
   getTipologia() {
     this.ProyectoService.getTipologia().subscribe((response: any) => {
@@ -437,14 +454,81 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  getcomunidades(data: any) {
+    console.log(data);
+    this.comunidades = data;
+
+  }
+
   /*------Fin Servicios Extras--*/
 
 
   add() {
+    const fd = new FormData();
     var formData = this.proyectoForm.value;
     this.finicio = this.datePipe.transform(formData.fecha_inicio, 'yyyy-MM-dd')
     this.ffin = this.datePipe.transform(formData.fecha_fin, 'yyyy-MM-dd')
-    /*  console.log(this.finicio.toISOString());
+
+    fd.append('nom_proyecto',formData.nom_proyecto),
+    fd.append('fecha_inicio',this.finicio),
+    fd.append('fecha_fin',this.ffin),
+    fd.append('fecha_registro',formData.fecha_registro),
+    fd.append('area',formData.area),
+    fd.append('coordenada_x',formData.coordenada_x),
+    fd.append('coordenada_y',formData.coordenada_y),
+    fd.append('cantidad',formData.cantidad),
+    fd.append('hombres',formData.hombres),
+    fd.append('mujeres',formData.mujeres),
+    fd.append('id_categoria',formData.id_categoria),
+    fd.append('id_tipologia',formData.id_tipologia),
+    fd.append('id_unidad_medicion',formData.id_unidad_medicion),
+    fd.append('id_indicador',formData.id_indicador),
+    fd.append('id_cuenca',formData.id_cuenca),
+    fd.append('id_accion_estrategica',formData.id_accion_estrategica),
+    fd.append('estado',formData.estado),
+    fd.append('id_ciudad_comunidad',JSON.stringify(this.comunidades)),
+    fd.append("file",this.selectedFile, this.selectedFile.name);
+   // console.log(this.fechaActualString);
+
+   console.log("FD: "+fd);
+
+    this.ProyectoService.add(fd).subscribe((response: any) => {
+      this.dialogRef.close();
+      this.onAddCategoria.emit();
+      this.responseMessage = response.message;
+      this.snackbarService.openSnackBar(this.responseMessage, "success");
+    }, (error: any) => {
+      this.dialogRef.close();
+      if (error.error?.message) {
+        this.responseMessage = error.error?.message;
+      }
+      else {
+        this.responseMessage = GlobalCostants.genericError;
+      }
+      this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+    })
+    /*  this.ProyectoService.add(data).subscribe((response: any) => {
+       this.dialogRef.close();
+       this.onAddCategoria.emit();
+       this.responseMessage = response.message;
+       this.snackbarService.openSnackBar(this.responseMessage, "success");
+     }, (error: any) => {
+       this.dialogRef.close();
+       if (error.error?.message) {
+         this.responseMessage = error.error?.message;
+       }
+       else {
+         this.responseMessage = GlobalCostants.genericError;
+       }
+       this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+     }) */
+  }
+
+  add1() {
+    var formData = this.proyectoForm.value;
+    this.finicio = this.datePipe.transform(formData.fecha_inicio, 'yyyy-MM-dd')
+    this.ffin = this.datePipe.transform(formData.fecha_fin, 'yyyy-MM-dd')
+    /*console.log(this.finicio.toISOString());
      console.log(this.ffin.toISOString()); D */
     console.log(this.fechaActualString);
 
@@ -461,16 +545,16 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
       mujeres: formData.mujeres,
       id_categoria: formData.id_categoria,
       id_tipologia: formData.id_tipologia,
-      id_unidad_medicion:formData.id_unidad_medicion,
+      id_unidad_medicion: formData.id_unidad_medicion,
       id_indicador: formData.id_indicador,
       id_cuenca: formData.id_cuenca,
       id_accion_estrategica: formData.id_accion_estrategica,
       estado: 'true',
-      id_ciudad_comunidad: this.comunidades
-      
+      id_ciudad_comunidad: JSON.stringify(this.comunidades),
     }
     console.log(data);
-   /*  this.ProyectoService.add(data).subscribe((response: any) => {
+
+    this.ProyectoService.add1(data, this.file).subscribe((response: any) => {
       this.dialogRef.close();
       this.onAddCategoria.emit();
       this.responseMessage = response.message;
@@ -484,7 +568,22 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.responseMessage = GlobalCostants.genericError;
       }
       this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
-    }) */
+    })
+    /*  this.ProyectoService.add(data).subscribe((response: any) => {
+       this.dialogRef.close();
+       this.onAddCategoria.emit();
+       this.responseMessage = response.message;
+       this.snackbarService.openSnackBar(this.responseMessage, "success");
+     }, (error: any) => {
+       this.dialogRef.close();
+       if (error.error?.message) {
+         this.responseMessage = error.error?.message;
+       }
+       else {
+         this.responseMessage = GlobalCostants.genericError;
+       }
+       this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+     }) */
   }
 
   edit() {
@@ -507,7 +606,7 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
       id_cuenca: formData.id_cuenca,
       id_accion_estrategica: null,
       estado: 'true',
-      id_ciudad_comunidad: this.comunidades
+      id_ciudad_comunidad: this.comunidades //Enviamos un objeto de comunidades
     }
     this.ProyectoService.update(data).subscribe((response: any) => {
       this.dialogRef.close();
@@ -545,18 +644,6 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-
-  //forma2 de busqeuda
-
-  /*  private _filter(value: string): LineasEstrategica[]{
-     console.log(value);
-     const filterValue = value.toLowerCase();    
-     return this.LineaEstrategica
-     .filter(option => option.descripcion.toLowerCase().includes(filterValue))
-   
-   } */
-
-
   //----------------------------------------------------busqueda 1
   ngAfterViewInit() {
     //this.setInitialValue();
@@ -567,14 +654,5 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
     this._onDestroy.complete();
   }
 
- 
-
-  getcomunidades(data: any) {
-    console.log(data);
-    this.comunidades=data;
-    
-  }
-
-  //----------------------------------------------------busqueda 1
 
 }
