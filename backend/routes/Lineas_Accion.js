@@ -45,7 +45,7 @@ router.put('/update/:id', (req, res) => {
 
 
 //habilitar y deshabilitar
-// Habilitar una línea de acción por ID
+//Habilitar una línea de acción por ID
 router.put('/activa/:id', (req, res) => {
   const { id } = req.params;
   connection.query('UPDATE LINEA_DE_ACCION SET estado = 1 WHERE id_linea_accion = ?', [id], (err) => {

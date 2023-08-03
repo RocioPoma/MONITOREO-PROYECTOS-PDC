@@ -4,7 +4,8 @@ const router = express.Router();
 var auth = require('../services/authentication');
 
 //----------para archivos-----------------------------------------------------------------------------
-const multer = require('../libs/multer');
+multer = require('../libs/multer');
+//const multer = require('multer');
 const fs = require('fs');
 //-----------------------------------------------------------------------------------------------------
 
@@ -100,6 +101,14 @@ router.post('/add', multer.single('documento'), (req, res) => {
   const file = req.file;
   let proyecto = req.body;
   let datos = {};
+  let proy={};
+  proy=req.body;
+  //const nombreArchivo = req.file.filename;
+  //console.log('Nombre del archivo ', nombreArchivo);
+
+ console.log(proyecto);
+ console.log(proy);
+
   if (!file) {
     datos = {
       nom_proyecto: proyecto.nom_proyecto,
@@ -118,10 +127,11 @@ router.post('/add', multer.single('documento'), (req, res) => {
       id_cuenca: proyecto.id_cuenca,
       id_accion_estrategica: proyecto.id_accion_estrategica,
       estado: proyecto.estado,
-      documento:''
-  
+      documento: ''
+
     }
-  }else{
+  } else {
+    console.log('Con archivo')
     datos = {
       nom_proyecto: proyecto.nom_proyecto,
       fecha_inicio: proyecto.fecha_inicio,
@@ -139,12 +149,18 @@ router.post('/add', multer.single('documento'), (req, res) => {
       id_cuenca: proyecto.id_cuenca,
       id_accion_estrategica: proyecto.id_accion_estrategica,
       estado: proyecto.estado,
-      documento:req.file.filename
-  
+      documento: req.file.filename
+
     }
   }
-  
+
+
   console.log(datos);
+  console.log(proyecto.id_ciudad_comunidad);
+  console.log(JSON.parse(proyecto.id_ciudad_comunidad).length)
+
+ 
+  /*
   connection.query('INSERT INTO PROYECTO  SET ?', [datos], (err, results) => {
     if (!err) {
       return res.status(200).json({ message: "Proyecto agregado con exito" });
@@ -156,7 +172,7 @@ router.post('/add', multer.single('documento'), (req, res) => {
 
   console.log(proyecto.id_ciudad_comunidad);
   llamarUltimoRegistroProyecto(proyecto.id_ciudad_comunidad, proyecto.id_unidad_medicion, proyecto.cantidad);
-
+*/
 });
 
 function llamarUltimoRegistroProyecto(id_comunidad, id_unidad, cantidad) {
