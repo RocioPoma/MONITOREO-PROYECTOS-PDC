@@ -15,6 +15,9 @@ import { CategoriaComponent } from './dialog/categoria/categoria.component';
 import { ManageMunicipioComponent } from './manage-municipio/manage-municipio.component';
 import { ProyectoComponent } from './dialog/proyecto/proyecto.component';
 import { MunicipioComponent } from './dialog/municipio/municipio.component';
+import { NosotrosComponent } from './opcionesMenu/nosotros/nosotros.component';
+import { ReportesComponent } from './opcionesMenu/reportes/reportes.component';
+import { BasedeDatosComponent } from './opcionesMenu/basede-datos/basede-datos.component';
 
 //import { MaterialModule } from '../shared/material-module';
 
@@ -29,7 +32,10 @@ import { MunicipioComponent } from './dialog/municipio/municipio.component';
     CategoriaComponent,
     ManageMunicipioComponent,
     ProyectoComponent,
-    MunicipioComponent
+    MunicipioComponent,
+    NosotrosComponent,
+    ReportesComponent,
+    BasedeDatosComponent
   ],
   imports: [
     CommonModule,
