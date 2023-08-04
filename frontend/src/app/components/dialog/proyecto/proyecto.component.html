@@ -135,7 +135,13 @@
                 </mat-form-field>
             </div>
 
-            <span class="subTitle">ALCANCE</span>
+            <div fxLayout="row" fxGap="8px" class="subTitle-container">
+                <span class="subTitle" style="margin-right: 4.7cm;">ALCANCE</span>
+                <mat-icon class="btn-icon" style="margin-right: 8px;" (click)="addInput()"
+                    color="primary">add_circle</mat-icon>
+                <mat-icon class="btn-icon" (click)="removeInput()">remove_circle</mat-icon>
+            </div>
+
             <div fxLayout="row wrap">
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Cantidad</mat-label>
@@ -168,12 +174,43 @@
                         <span *ngIf="proyectoForm.controls.mujeres.errors.required">Este campo es obligatorio.</span>
                     </mat-error>
                 </mat-form-field>
+
+
+            </div>
+            <div>
+                <!--Aregar y quitar campos de Input-->
+
+
+                <div *ngFor="let input of inputs; let i = index" fxLayout="row wrap">
+                    <mat-form-field appearance="fill" fxFlex>
+                        <mat-label>Cantidad {{i + 1}}</mat-label>
+                        <input matInput [(ngModel)]="input.cantidad" formControlName="mujeres">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" fxFlex>
+                        <mat-label>Unidad</mat-label>
+                        <mat-select formControlName="id_unidad_medicion">
+                            <mat-option *ngFor="let unidad of unidad" [value]="unidad.id_unidad_medicion">
+                                {{unidad.nom_unidad}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div fxFlex></div>
+                    <div fxFlex></div>
+                    <!--
+                     <mat-form-field appearance="fill" fxFlex>
+                         <mat-label>Unidad {{i + 1}}</mat-label>
+                         <input matInput [(ngModel)]="input.unidad" formControlName="mujeres">
+                     </mat-form-field>
+                     -->
+
+                </div>
+                <!---->
             </div>
 
-            <div  appearance="fill" fxFlex>
-                <mat-label>Convocatoria</mat-label><br>
-                <input (change)="selectFile($event)" formControlName="documento"
-                    class="form-control-file" type="file">
+            <div fxLayout="row" fxGap="8px" class="subTitle-container">
+                <span class="subTitle" style="margin-right: 4.7cm;">ADJUNTO</span>
+                <input (change)="selectFile($event)" formControlName="documento" class="form-control-file" type="file">
+
             </div>
             <!--
             <span class="subTitle">ADJUNTO</span>
@@ -182,7 +219,7 @@
                 <input (change)="selectFile($event)" formControlName="documento" class="form-control-file" type="file">
             </div>
         -->
-    
+
             <!--
             <div>
                 <input type="file" (change)="onFileSelected($event)" style="display: none;" #fileInput>
@@ -196,8 +233,10 @@
 
             <!--Fin Prueba-->
 
-            <div *ngIf="showAdditionalSelects">
-                <span class="subTitle1">ALINEAMIENTO DE ACCIONES ESTRATÉGICAS (PDC) </span>
+            <div *ngIf="showAdditionalSelects" style="margin-top: 0.5cm;">
+                <div fxLayout="row" fxGap="8px" class="subTitle-container">
+                    <span class="subTitle" style="margin-right: 4.7cm;">ALINEAMIENTO DE ACCIONES ESTRATÉGICAS (PDC)</span>
+                </div>
                 <div>
                     <div *ngIf="showSelector1">
 
@@ -268,7 +307,9 @@
                     </div>
                 </div>
 
-                <span class="subTitle1">ALINEAMIENTO DE INDICADOR (PDC)</span>
+                <div fxLayout="row" fxGap="8px" class="subTitle-container">
+                    <span class="subTitle" style="margin-right: 4.7cm;">ALINEAMIENTO DE INDICADOR (PDC)</span>
+                </div>
                 <div>
                     <div *ngIf="showSelector1">
                         <!-- <mat-form-field class="example-full-width" fxFlex>

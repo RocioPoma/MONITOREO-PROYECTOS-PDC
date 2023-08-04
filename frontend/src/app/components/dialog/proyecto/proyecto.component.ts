@@ -47,7 +47,7 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
   dialogAction: any = "Add";
   action: any = "Registrar";
   responseMessage: any;
- 
+
 
   //Pra cargar archivo
   file!: File;
@@ -95,10 +95,12 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
   //-----Para filtrar municipio
   filterComunidad: any[] = [];
   searchComunidad = new FormControl();
-  /** control for the selected bank for multi-selection */
+
+
   public ComunidadMultiCtrl: FormControl = new FormControl();
 
-
+  //----Para agregar y quitar campos de Input
+  inputs: { cantidad: string; unidad: any }[] = [];
 
 
   //Fin prueba
@@ -282,6 +284,17 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  //----------- PARA AGREGAR CAMPOS INPUT
+  addInput() {
+    this.inputs.push({ cantidad: '', unidad: '' });
+  }
+  
+  //----------- PARA QUITAR CAMPOS INPUT
+  removeInput() {
+    if (this.inputs.length > 0) {
+      this.inputs.pop();
+    }
+  }
 
   /*---------------------INICIO SERVICIOS ESTRAS --------------*/
   //------------------- OBTENEMOS TIPOLOGIA
@@ -469,28 +482,28 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
     this.finicio = this.datePipe.transform(formData.fecha_inicio, 'yyyy-MM-dd')
     this.ffin = this.datePipe.transform(formData.fecha_fin, 'yyyy-MM-dd')
 
-    fd.append('nom_proyecto',formData.nom_proyecto),
-    fd.append('fecha_inicio',this.finicio),
-    fd.append('fecha_fin',this.ffin),
-    fd.append('fecha_registro',formData.fecha_registro),
-    fd.append('area',formData.area),
-    fd.append('coordenada_x',formData.coordenada_x),
-    fd.append('coordenada_y',formData.coordenada_y),
-    fd.append('cantidad',formData.cantidad),
-    fd.append('hombres',formData.hombres),
-    fd.append('mujeres',formData.mujeres),
-    fd.append('id_categoria',formData.id_categoria),
-    fd.append('id_tipologia',formData.id_tipologia),
-    fd.append('id_unidad_medicion',formData.id_unidad_medicion),
-    fd.append('id_indicador',formData.id_indicador),
-    fd.append('id_cuenca',formData.id_cuenca),
-    fd.append('id_accion_estrategica',formData.id_accion_estrategica),
-    fd.append('estado',formData.estado),
-    fd.append('id_ciudad_comunidad',JSON.stringify(this.comunidades)),
-    fd.append("file",this.selectedFile, this.selectedFile.name);
-   // console.log(this.fechaActualString);
+    fd.append('nom_proyecto', formData.nom_proyecto),
+      fd.append('fecha_inicio', this.finicio),
+      fd.append('fecha_fin', this.ffin),
+      fd.append('fecha_registro', formData.fecha_registro),
+      fd.append('area', formData.area),
+      fd.append('coordenada_x', formData.coordenada_x),
+      fd.append('coordenada_y', formData.coordenada_y),
+      fd.append('cantidad', formData.cantidad),
+      fd.append('hombres', formData.hombres),
+      fd.append('mujeres', formData.mujeres),
+      fd.append('id_categoria', formData.id_categoria),
+      fd.append('id_tipologia', formData.id_tipologia),
+      fd.append('id_unidad_medicion', formData.id_unidad_medicion),
+      fd.append('id_indicador', formData.id_indicador),
+      fd.append('id_cuenca', formData.id_cuenca),
+      fd.append('id_accion_estrategica', formData.id_accion_estrategica),
+      fd.append('estado', formData.estado),
+      fd.append('id_ciudad_comunidad', JSON.stringify(this.comunidades)),
+      fd.append("file", this.selectedFile, this.selectedFile.name);
+    // console.log(this.fechaActualString);
 
-   console.log("FD: "+fd);
+    console.log("FD: " + fd);
 
     this.ProyectoService.add(fd).subscribe((response: any) => {
       this.dialogRef.close();
@@ -507,21 +520,7 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
     })
-    /*  this.ProyectoService.add(data).subscribe((response: any) => {
-       this.dialogRef.close();
-       this.onAddCategoria.emit();
-       this.responseMessage = response.message;
-       this.snackbarService.openSnackBar(this.responseMessage, "success");
-     }, (error: any) => {
-       this.dialogRef.close();
-       if (error.error?.message) {
-         this.responseMessage = error.error?.message;
-       }
-       else {
-         this.responseMessage = GlobalCostants.genericError;
-       }
-       this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
-     }) */
+
   }
 
   add1() {
