@@ -104,8 +104,10 @@ router.delete('/delete/:ci',auth.authenticateToken, (req, res) => {
 //---------------- LOGIN ------------------------
 router.post('/login',(req,res)=>{
     const user =req.body;
-    query = "select nombre,email,contraseña,rol,estado from usuario where email=?";
+    query = "select nombre,email,password,rol,estado from usuario where email=?";
+  
     connection.query(query,[user.email],(err,results)=>{
+      console.log(results);
         if(!err){
             if(results.length <= 0 || results[0].password != user.password){
                 return res.status(401).json({message:"Nombre de usuario o contraseña incorrecta"});
@@ -115,7 +117,7 @@ router.post('/login',(req,res)=>{
             }
             else if(results[0].password==user.password){
                 //GUARDAMOS CIFRADO LA CONTRASENA
-                const data={ nombre: results[0].nombre}
+                const data = { nombre: results[0].nombre, estado: results[0].estado,rol: results[0].rol };               
                 const response ={ email: results[0].email, rol: results[0].rol}
                 const accessToken = jwt.sign(response,process.env.ACCESS_TOKEN,{ expiresIn: '8h'})
                 res.status(200).json({ token: accessToken, data:data});
