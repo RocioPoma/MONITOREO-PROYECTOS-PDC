@@ -40,7 +40,7 @@ interface LineasEstrategica {
   templateUrl: './proyecto.component.html',
   styleUrls: ['./proyecto.component.scss']
 })
-export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProyectoComponent implements OnInit {
   onAddCategoria = new EventEmitter();
   onEditProyecto = new EventEmitter();
   proyectoForm: any = FormGroup;
@@ -49,19 +49,13 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
   responseMessage: any;
 
 
-  //Pra cargar archivo
+  //-------Para cargar archivo
   file!: File;
-  photoSelected!: ArrayBuffer | string | null;
-
   fileSelected!: ArrayBuffer | string | null;
-  image = '';
-  //opcion 2
-  selectedFile!: File;
-  selectedFileName!: string;
 
   area = ['Urbana', 'Periurbana', 'Rural', 'Rural y Urbano'];
 
-  //Pra almacenar los datos de servicios
+  //-------Para almacenar los datos de servicios
   tipologia: any = [];
   categoria: any = [];
   cuenca: any = [];
@@ -74,61 +68,51 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
   indicador: any[] = [];
   comunidades: any[] = [];
 
-  //-----Para filtrar LineaEstrategica
+  //-------Para filtrar LineaEstrategica
   filterLineaEstrategica: any[] = [];
-  //selectedOptionControl = new FormControl();
+  //-------selectedOptionControl = new FormControl();
   searchLineaEstrategica = new FormControl();
 
-  //-----Para filtrar LineaDeAccion
+  //-------Para filtrar LineaDeAccion
   filterLineaDeAccion: any[] = [];
   searchLineaDeAccion = new FormControl();
 
-  //-----Para filtrar AccionEstrategica
+  //-------Para filtrar AccionEstrategica
   filterAccionEstrategica: any[] = [];
   searchAccionEstrategica = new FormControl();
 
-  //-----Para filtrar Indicador
+  //-------Para filtrar Indicador
   filterIndicador: any[] = [];
   searchIndicador = new FormControl();
 
 
-  //-----Para filtrar municipio
+  //-------Para filtrar municipio
   filterComunidad: any[] = [];
   searchComunidad = new FormControl();
 
 
   public ComunidadMultiCtrl: FormControl = new FormControl();
 
-  //----Para agregar y quitar campos de Input
-  inputs: { cantidad: string; unidad: any }[] = [];
+  //-------Para agregar y quitar campos de Input
+  alcances: { cantidad: any; unidad: any }[] = [];
 
-
-  //Fin prueba
-
-  //variables para fecha
+  //-------variables para fecha
   fechaActual: Date | undefined;
   fechaActualString: any;
   finicio: any;
   ffin: any;
 
-  //--------------------selectiones
+  //--------------------selections
   showAdditionalSelects = false;
   showSelector1 = false;
   showSelector2 = false;
   showSelector3 = false;
   //---------------------------------------------------------------------------variables para select especial
-
-
-
   @ViewChild('singleSelect', { static: true }) singleSelect!: MatSelect;
 
   /** Subject that emits when the component has been destroyed. */
   protected _onDestroy = new Subject<void>();
 
-
-
-
-  //---------------------------------------------------------------------------variables para select especial
 
   constructor(@Inject(MAT_DIALOG_DATA) public dialogData: any,
     private formBuilder: FormBuilder,
@@ -149,7 +133,6 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Convierte la fecha a string en formato "dd-MM-yyyy" 
     this.fechaActualString = this.datePipe.transform(this.fechaActual, 'yyyy-MM-dd');
-
 
   }
 
@@ -186,8 +169,10 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
       id_unidad_medicion: [null, [Validators.required]],
       id_accion_estrategica: [null, [Validators.required]],
       id_indicador: [null, [Validators.required]],
-      documento: [null]
-
+      documento: [null],
+      //para alcance
+      alcance_cantidad: [null, [Validators.required]],
+      alcance_id_unidad_medicion: [null, [Validators.required]],
     });
     if (this.dialogData.action === 'Edit') {
       this.dialogAction = "Edit";
@@ -218,6 +203,16 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.filterOptionsComunidad(searchTerm);
     });
     //---------- Fin Filtrar Select--------------------
+  }
+
+  //------------- PARA LLAMAR A LA FUNCION (GREGAR O EDITAR) ---------------------
+  handleSubmit() {
+    if (this.dialogAction === 'Edit') {
+      this.edit();
+    }
+    else {
+      this.add();
+    }
   }
 
 
@@ -251,49 +246,36 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
       option.nombre.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }
-  //---------- Fin Filtrar Select--------------------
+  //--------------- Fin Filtrar Select--------------------
 
   //--------------- SELECCIONAR ARCHIVO ------------------
   selectFile(event: any): any {
     this._sanitizer.bypassSecurityTrustStyle(event.target.files);
     if (event.target.files && event.target.files[0]) {
       this.file = (<File>event.target.files[0]);
-      //image preview
+      //File preview
       const reader = new FileReader();
       reader.onload = e => this.fileSelected = reader.result;
 
       reader.readAsDataURL(this.file);
     }
   }
-
-  //opcion2
-  onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0];
-    this.selectedFileName = this.selectedFile?.name || '';
-  }
-
-  //fin opcion 2
   //------------- FIN SELECCIONAR ARCHIVO ---------------------
 
-  handleSubmit() {
-    if (this.dialogAction === 'Edit') {
-      this.edit();
-    }
-    else {
-      this.add1();
-    }
+
+  //----------- PARA AGREGAR CAMPOS INPUT (CANTIDAD Y UNIDAD)
+  addInput() {
+    this.alcances.push({ cantidad: '', unidad: '' });
   }
 
-  //----------- PARA AGREGAR CAMPOS INPUT
-  addInput() {
-    this.inputs.push({ cantidad: '', unidad: '' });
-  }
-  
-  //----------- PARA QUITAR CAMPOS INPUT
+  //----------- PARA QUITAR CAMPOS INPUT(CANTIDAD Y UNIDAD)
   removeInput() {
-    if (this.inputs.length > 0) {
-      this.inputs.pop();
+    if (this.alcances.length > 0) {
+      this.alcances.pop();
     }
+  }
+  mostrarDatos() {
+    console.log(this.alcances);
   }
 
   /*---------------------INICIO SERVICIOS ESTRAS --------------*/
@@ -472,63 +454,14 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
     this.comunidades = data;
 
   }
+  /*------ Fin Servicios Extras ------*/
 
-  /*------Fin Servicios Extras--*/
 
-
+  //------------------- AGREGAR PROYECTO
   add() {
-    const fd = new FormData();
     var formData = this.proyectoForm.value;
     this.finicio = this.datePipe.transform(formData.fecha_inicio, 'yyyy-MM-dd')
     this.ffin = this.datePipe.transform(formData.fecha_fin, 'yyyy-MM-dd')
-
-    fd.append('nom_proyecto', formData.nom_proyecto),
-      fd.append('fecha_inicio', this.finicio),
-      fd.append('fecha_fin', this.ffin),
-      fd.append('fecha_registro', formData.fecha_registro),
-      fd.append('area', formData.area),
-      fd.append('coordenada_x', formData.coordenada_x),
-      fd.append('coordenada_y', formData.coordenada_y),
-      fd.append('cantidad', formData.cantidad),
-      fd.append('hombres', formData.hombres),
-      fd.append('mujeres', formData.mujeres),
-      fd.append('id_categoria', formData.id_categoria),
-      fd.append('id_tipologia', formData.id_tipologia),
-      fd.append('id_unidad_medicion', formData.id_unidad_medicion),
-      fd.append('id_indicador', formData.id_indicador),
-      fd.append('id_cuenca', formData.id_cuenca),
-      fd.append('id_accion_estrategica', formData.id_accion_estrategica),
-      fd.append('estado', formData.estado),
-      fd.append('id_ciudad_comunidad', JSON.stringify(this.comunidades)),
-      fd.append("file", this.selectedFile, this.selectedFile.name);
-    // console.log(this.fechaActualString);
-
-    console.log("FD: " + fd);
-
-    this.ProyectoService.add(fd).subscribe((response: any) => {
-      this.dialogRef.close();
-      this.onAddCategoria.emit();
-      this.responseMessage = response.message;
-      this.snackbarService.openSnackBar(this.responseMessage, "success");
-    }, (error: any) => {
-      this.dialogRef.close();
-      if (error.error?.message) {
-        this.responseMessage = error.error?.message;
-      }
-      else {
-        this.responseMessage = GlobalCostants.genericError;
-      }
-      this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
-    })
-
-  }
-
-  add1() {
-    var formData = this.proyectoForm.value;
-    this.finicio = this.datePipe.transform(formData.fecha_inicio, 'yyyy-MM-dd')
-    this.ffin = this.datePipe.transform(formData.fecha_fin, 'yyyy-MM-dd')
-    /*console.log(this.finicio.toISOString());
-     console.log(this.ffin.toISOString()); D */
     console.log(this.fechaActualString);
 
     var data = {
@@ -549,8 +482,10 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
       id_cuenca: formData.id_cuenca,
       id_accion_estrategica: formData.id_accion_estrategica,
       estado: 'true',
-      id_ciudad_comunidad: JSON.stringify(this.comunidades),
+      id_ciudad_comunidad: JSON.stringify(this.comunidades), //Enviamos un objeto de comunidades
+      alcance: JSON.stringify(this.alcances) //Enviamos un objeto de alcances
     }
+
     console.log(data);
 
     this.ProyectoService.add1(data, this.file).subscribe((response: any) => {
@@ -568,23 +503,9 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
     })
-    /*  this.ProyectoService.add(data).subscribe((response: any) => {
-       this.dialogRef.close();
-       this.onAddCategoria.emit();
-       this.responseMessage = response.message;
-       this.snackbarService.openSnackBar(this.responseMessage, "success");
-     }, (error: any) => {
-       this.dialogRef.close();
-       if (error.error?.message) {
-         this.responseMessage = error.error?.message;
-       }
-       else {
-         this.responseMessage = GlobalCostants.genericError;
-       }
-       this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
-     }) */
   }
 
+  //------------------- EDITAR
   edit() {
     var formData = this.proyectoForm.value;
     console.log(this.proyectoForm.value);
@@ -642,16 +563,5 @@ export class ProyectoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.showSelector3 = false;
     }
   }
-
-  //----------------------------------------------------busqueda 1
-  ngAfterViewInit() {
-    //this.setInitialValue();
-  }
-
-  ngOnDestroy() {
-    this._onDestroy.next();
-    this._onDestroy.complete();
-  }
-
 
 }

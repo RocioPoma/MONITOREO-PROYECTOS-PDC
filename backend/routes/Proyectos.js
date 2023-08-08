@@ -101,13 +101,12 @@ router.post('/add', multer.single('documento'), (req, res) => {
   const file = req.file;
   let proyecto = req.body;
   let datos = {};
-  let proy={};
-  proy=req.body;
-  //const nombreArchivo = req.file.filename;
-  //console.log('Nombre del archivo ', nombreArchivo);
+  let proy = {};
+  proy = req.body;
 
- console.log(proyecto);
- console.log(proy);
+  const ObjetId_ciudad_comunidad = JSON.parse(proyecto.id_ciudad_comunidad) //Datos comunidad en formato JSON, (id, nombre, id_municipio)
+  const ObjetAlcance = JSON.parse(proyecto.alcance) //Datos en formato JSON, con campos (cantidad, unidad que equivale a 'id_unidad_medicion')
+
 
   if (!file) {
     datos = {
@@ -150,17 +149,15 @@ router.post('/add', multer.single('documento'), (req, res) => {
       id_accion_estrategica: proyecto.id_accion_estrategica,
       estado: proyecto.estado,
       documento: req.file.filename
-
     }
   }
 
-
   console.log(datos);
-  console.log(proyecto.id_ciudad_comunidad);
-  console.log(JSON.parse(proyecto.id_ciudad_comunidad).length)
+  console.log(ObjetId_ciudad_comunidad);
+  console.log(ObjetAlcance);
 
- 
-  /*
+
+  
   connection.query('INSERT INTO PROYECTO  SET ?', [datos], (err, results) => {
     if (!err) {
       return res.status(200).json({ message: "Proyecto agregado con exito" });
@@ -170,41 +167,59 @@ router.post('/add', multer.single('documento'), (req, res) => {
     }
   });
 
-  console.log(proyecto.id_ciudad_comunidad);
-  llamarUltimoRegistroProyecto(proyecto.id_ciudad_comunidad, proyecto.id_unidad_medicion, proyecto.cantidad);
-*/
+  //console.log(proyecto.id_ciudad_comunidad);
+  //ObtenerIdUltimoRegistroProyecto(proyecto.id_ciudad_comunidad, proyecto.id_unidad_medicion, proyecto.cantidad);
+
+  ObtenerIdUltimoRegistroProyecto(ObjetId_ciudad_comunidad, ObjetAlcance, proyecto.id_unidad_medicion, proyecto.cantidad);
 });
 
-function llamarUltimoRegistroProyecto(id_comunidad, id_unidad, cantidad) {
+function ObtenerIdUltimoRegistroProyecto(ObjetId_ciudad_comunidad, ObjetAlcance, id_unidad_medicion, cantidad) {
   let id_proyecto;
   connection.query('select id_proyecto from proyecto order by id_proyecto desc limit 1', (err, rows) => {
-    //console.log(rows[0].id_proyecto);
     id_proyecto = rows[0].id_proyecto;
-    add_proyecto_comunidad(id_proyecto, id_comunidad);
-    add_proyecto_unidad(id_proyecto, id_unidad, cantidad)
 
+    add_proyecto_comunidad(id_proyecto, ObjetId_ciudad_comunidad); //para agregar a la tabla (proyecto_ciudad_o_comunidad)
+    add_alcance(id_proyecto, ObjetAlcance, id_unidad_medicion, cantidad); //para agregar a la tabla (alcance) que es  la relacion de las tablas (Proyecto y unidad_medicion)
+    //la variable (alcance) es un array de objetos en formato JSON que tiene los atributos (cantidad, unidad)
   });
 }
 
-function add_proyecto_comunidad(id_proyecto, id_comunidad) {
-  datos = {
-    id_proyecto: id_proyecto,
-    id_ciudad_comunidad: id_comunidad
-  }
-  connection.query('insert into proyecto_ciudad_o_comunidad set ?', [datos], (err, results) => {
-    // console.log('Agregado.!!!')
+function add_proyecto_comunidad(id_proyecto, ObjetId_ciudad_comunidad) {
+
+  const query = "INSERT INTO proyecto_ciudad_o_comunidad (id_proyecto, id_ciudad_comunidad) VALUES (?, ?)";
+  ObjetId_ciudad_comunidad.forEach((proyecto_comunidad) => {
+    console.log('id_proyecto: ' + id_proyecto + '  id_ciudad_comunidad: ' + proyecto_comunidad.id);
+    connection.query(query, [id_proyecto, proyecto_comunidad.id], (err, results) => {
+      if (!err) {
+        console.log('Proyecto_ciudad_comunidad inserted successfully: ', proyecto_comunidad.id);
+      } else {
+        console.error('Error inserting Proyecto_ciudad_comunidad: ', err);
+      }
+    });
   });
 }
 
-function add_proyecto_unidad(id_proyecto, id_unidad, cantidad) {
+function add_alcance(id_proyecto, ObjetAlcance, id_unidad_medicion, cantidad) {
   datos = {
     cantidad: cantidad,
-    id_unidad_medicion: id_unidad,
+    id_unidad_medicion: id_unidad_medicion,
     id_proyecto: id_proyecto
   }
   //console.log(datos);
-  connection.query('insert into alcance set ?', [datos], (err, results) => {
+  connection.query('INSERT INTO ALCANCE  set ?', [datos], (err, results) => {
     // console.log('Agregado.!!!')
+  });
+
+  const query = "INSERT INTO ALCANCE (cantidad, id_unidad_medicion,id_proyecto) VALUES (?, ?,?)";
+  ObjetAlcance.forEach((alcance) => {
+    //console.log('id_proyecto: ' + id_proyecto + '  id_ciudad_comunidad: ' + proyecto_comunidad.id);
+    connection.query(query, [alcance.cantidad,alcance.unidad,id_proyecto], (err, results) => {
+      if (!err) {
+        console.log('id proyecto: '+id_proyecto+' cantidad: '+alcance.cantidad+' id_unidad: '+alcance.unidad);
+      } else {
+        console.error('Error inserting Proyecto_ciudad_comunidad: ', err);
+      }
+    });
   });
 }
 
