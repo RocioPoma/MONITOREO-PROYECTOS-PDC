@@ -18,6 +18,7 @@ import { MunicipioComponent } from './dialog/municipio/municipio.component';
 import { NosotrosComponent } from './opcionesMenu/nosotros/nosotros.component';
 import { ReportesComponent } from './opcionesMenu/reportes/reportes.component';
 import { BasedeDatosComponent } from './opcionesMenu/basede-datos/basede-datos.component';
+import { SeguimientoProyectoComponent } from './dialog/seguimiento-proyecto/seguimiento-proyecto.component';
 
 //import { MaterialModule } from '../shared/material-module';
 
@@ -35,7 +36,8 @@ import { BasedeDatosComponent } from './opcionesMenu/basede-datos/basede-datos.c
     MunicipioComponent,
     NosotrosComponent,
     ReportesComponent,
-    BasedeDatosComponent
+    BasedeDatosComponent,
+    SeguimientoProyectoComponent
   ],
   imports: [
     CommonModule,

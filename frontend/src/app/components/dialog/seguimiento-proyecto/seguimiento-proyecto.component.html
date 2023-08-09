@@ -1,0 +1,118 @@
+<!--
+<mat-toolbar color="primary">
+    <mat-toolbar-row fxLayout="row">
+        <span class="title-center">{{action}} Proyecto/Accion</span>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="seguimientoForm1">
+        <div fxFlex fxLayout="column">
+            <span class="subTitle">INFORMACION GENERAL</span>
+
+            <div fxLayout="row wrap">
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Entidad ejecutora</mat-label>
+                    <mat-select formControlName="id_entidad_ejecutora" required>
+                        <mat-option *ngFor="let item of EntidadEjecutora" [value]="item.id_entidad_ejecutora">
+                            {{item.nom_entidad_ejecutora}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Fuente de información</mat-label>
+                    <input matInput formControlName="fuente_informacion" required>
+                    <mat-error
+                        *ngIf="seguimientoForm1.controls.fuente_informacion.touched && proyectoForm.controls.fuente_informacion.invalid">
+                        <span *ngIf="seguimientoForm1.controls.fuente_informacion.errors.required">Este campo es
+                            obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row wrap">
+                <mat-form-field fxFlex>
+                    <mat-label>fecha registro</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="fecha_registro">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Etapa</mat-label>
+                    <mat-select formControlName="id_etapa" required>
+                        <mat-option *ngFor="let etapa of Etapa" [value]="etapa.id_etapa">
+                            {{etapa.nombre_etapa}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+
+            <div fxLayout="row" fxGap="8px" class="subTitle-container">
+                <span class="subTitle" style="margin-right: 4.7cm;">ALCANCE</span>
+                <mat-icon class="btn-icon" style="margin-right: 8px;" (click)="addInput()"
+                    color="primary">add_circle</mat-icon>
+                <mat-icon class="btn-icon" (click)="removeInput()">remove_circle</mat-icon>
+            </div>
+
+            <div fxLayout="row wrap">
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Entidad financiera</mat-label>
+                    <mat-select formControlName="id_entidad_financiera">
+                        <mat-option *ngFor="let item of EntidadFinanciera" [value]="item.id_entidad_financiera">
+                            {{item.nombre_entidad_financiera}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Monto inicial</mat-label>
+                    <input type="number" matInput formControlName="monto_inicial" required>
+                    <mat-error *ngIf="seguimientoForm1.controls.monto_inicial.touched && proyectoForm.controls.monto_inicial.invalid">
+                        <span *ngIf="seguimientoForm1.controls.monto_inicial.errors.required">Este campo es obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Monto Final</mat-label>
+                    <input type="number" matInput formControlName="monto_final" required>
+                </mat-form-field>
+            </div>
+            <div> -->
+                <!--Aregar y quitar campos de Input-->
+                <!--
+                <div *ngFor="let input of Financiamiento; let i = index" fxLayout="row wrap">
+                    <mat-form-field appearance="fill" fxFlex>
+                        <mat-label>Entidad financiera</mat-label>
+                        <mat-select [(ngModel)]="input.entidad_financiera" formControlName="financiamiento">
+                            <mat-option *ngFor="let item of EntidadFinanciera" [value]="item.id_entidad_financiera">
+                                {{item.nombre_entidad_financiera}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="fill" fxFlex>
+                        <mat-label>Monto inicial {{i + 1}}</mat-label>
+                        <input matInput [(ngModel)]="input.monto_inicial" formControlName="monto_inicial">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" fxFlex>
+                        <mat-label>Monto Final {{i + 1}}</mat-label>
+                        <input matInput [(ngModel)]="input.monto_final" formControlName="monto_final">
+                    </mat-form-field>
+                </div> -->
+                <!---->
+                <!--
+            </div>
+            
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" type="submit" (click)="handleSubmit()"
+        [disabled]="![seguimientoForm1.valid && seguimientoForm1.dirty]">{{action}}</button>
+    <button mat-raised-button color="primary" mat-dialog-close>Cancelar</button>
+</mat-dialog-actions>-->

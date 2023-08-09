@@ -9,11 +9,12 @@ import { SnackbarService } from 'src/app/services/snackbar.service';
 //globales constants
 import { GlobalCostants } from 'src/app/shared/global-constants';
 //dialogMunicipio
-import { ProyectoComponent } from  "../dialog/proyecto/proyecto.component";
+import { ProyectoComponent } from "../dialog/proyecto/proyecto.component";
 //confirmation
 import { ConfirmationComponent } from "../dialog/confirmation/confirmation.component";
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { MunicipioService } from 'src/app/services/municipio.service';
 
 
 
@@ -22,13 +23,16 @@ import { MatSort } from '@angular/material/sort';
   selector: 'app-manage-proyecto',
   templateUrl: './manage-proyecto.component.html',
   styleUrls: ['./manage-proyecto.component.scss'],
- // standalone: true,
+  // standalone: true,
   //imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule],
 })
-export class ManageProyectoComponent  {
-  displayedColumns: string[] = ['Nro', 'NombreProyecto', 'FechaInicio', 'FechaFin','NombreMunicipio','NombreCuenca','NombreCategoria','NombreTipologia','Acciones'];
+export class ManageProyectoComponent {
+  displayedColumns: string[] = ['Nro', 'NombreProyecto', 'FechaInicio', 'FechaFin', 'NombreMunicipio', 'NombreCuenca', 'NombreCategoria', 'NombreTipologia', 'documento', 'seguimiento', 'estado', 'Acciones'];
   dataSource: any;
   responseMessage: any;
+  municipios: any = [];
+
+  apiResponse: any = []; //para filtrar con el select
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -36,35 +40,54 @@ export class ManageProyectoComponent  {
 
   constructor(
     private ProyectoServices: ProyectoService,
+    private MunicipioService: MunicipioService,
     private dialog: MatDialog,
     private snackbarService: SnackbarService,
     private router: Router
-  ) {}
-  
+  ) { }
 
 
-    ngOnInit(): void {
-      this.tableData();   
-     
-    } 
-   
 
-    tableData() {
-      this.ProyectoServices.getProyecto().subscribe((response: any) => {
-        this.dataSource = new MatTableDataSource(response);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      }, (error: any) => {
-        if (error.error?.message) {
-          this.responseMessage = error.error?.message;
-        }
-        else {
-          this.responseMessage = GlobalCostants.genericError;
-        }
-        this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
-      })
-    }
-    //---------------------------------Fitrador----------------------------------------------------
+  ngOnInit(): void {
+    this.tableData();
+    this.getMunicipio();
+
+  }
+
+
+  tableData() {
+    this.ProyectoServices.getProyecto().subscribe((response: any) => {
+      this.dataSource = new MatTableDataSource(response);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    }, (error: any) => {
+      if (error.error?.message) {
+        this.responseMessage = error.error?.message;
+      }
+      else {
+        this.responseMessage = GlobalCostants.genericError;
+      }
+      this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+    })
+  }
+
+  //------------------- OBTENEMOS MUNICIPIO
+  getMunicipio() {
+    this.MunicipioService.getMunicipio().subscribe((response: any) => {
+      this.municipios = response;
+    }, (error: any) => {
+      if (error.error?.message) {
+        this.responseMessage = error.error?.message;
+      }
+      else {
+        this.responseMessage = GlobalCostants.genericError;
+      }
+      this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+
+    });
+  }
+
+  //---------------------------------Fitrador----------------------------------------------------
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -73,6 +96,27 @@ export class ManageProyectoComponent  {
       this.dataSource.paginator.firstPage();
     }
   }
+
+  applyMunicipioFilter(filterValue: string) {
+    filterValue = filterValue.trim().toLowerCase();
+    this.dataSource.filterPredicate = (data: any, filter: string) => data.NombreMunicipio.trim().toLowerCase() === filter;
+    this.dataSource.filter = filterValue;
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+  /*
+  filterSelection($event: any) {
+    let filterData = _.filtar(this.apiResponse, (item) => {
+      return item.NombreMunicipio.toLowerCase() == $event.value.toLowerCase();
+    })
+    if ($event.value == 'Todos') {
+      this.tableData();
+    } else {
+      this.dataSource = new MatTableDataSource(filterData);
+    }
+  }*/
 
 
   handleAddAction() {
@@ -85,34 +129,34 @@ export class ManageProyectoComponent  {
     this.router.events.subscribe(() => {
       dialogRef.close();
     });
-    const sub = dialogRef.componentInstance.onAddCategoria.subscribe((response) => {
+    const sub = dialogRef.componentInstance.onAddProyecto.subscribe((response) => {
       this.tableData();
     })
   }
 
-   handleEditAction(values: any) {
-    
+  handleEditAction(values: any) {
+
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      action: 'Edit',     
+      action: 'Edit',
       data: values
     }
-   console.log(values);
+    console.log(values);
     dialogConfig.width = "700px";
     const dialogRef = this.dialog.open(ProyectoComponent, dialogConfig);
     this.router.events.subscribe(() => {
       dialogRef.close();
     });
     const sub = dialogRef.componentInstance.onEditProyecto.subscribe((response) => {
-      this.tableData();     
+      this.tableData();
     })
   }
- 
+
   handleDeleteAction(values: any) {
     console.log(values);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      message: ' eliminar proyecto '+ values.NombreProyecto
+      message: ' eliminar proyecto ' + values.NombreProyecto
     };
     const dialogRef = this.dialog.open(ConfirmationComponent, dialogConfig);
     const sub = dialogRef.componentInstance.onEmitStatusChange.subscribe((response) => {
@@ -138,12 +182,12 @@ export class ManageProyectoComponent  {
   }
 
   onChange(status: any, id_proyecto: any) {
-    
+
     var data = {
       estado: status.toString(),
       id_proyecto: id_proyecto
     }
-    
+
     this.ProyectoServices.updateStatus(data).subscribe((response: any) => {
       this.tableData();
       this.responseMessage = response?.message;
@@ -157,7 +201,7 @@ export class ManageProyectoComponent  {
       }
       this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
     })
-  } 
+  }
 
 
 

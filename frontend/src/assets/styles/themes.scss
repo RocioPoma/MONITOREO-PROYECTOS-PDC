@@ -6,7 +6,7 @@ $light-theme:mat.define-light-theme(
     (
         color:(
             primary:mat.define-palette(mat.$green-palette,600),
-            accent:mat.define-palette(mat.$teal-palette,500),
+            accent:mat.define-palette(mat.$grey-palette,500),
             warn: mat.define-palette(mat.$red-palette),
         ),
         typography: mat.define-typography-config(),

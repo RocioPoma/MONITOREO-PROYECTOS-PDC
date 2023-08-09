@@ -41,7 +41,7 @@ interface LineasEstrategica {
   styleUrls: ['./proyecto.component.scss']
 })
 export class ProyectoComponent implements OnInit {
-  onAddCategoria = new EventEmitter();
+  onAddProyecto = new EventEmitter();
   onEditProyecto = new EventEmitter();
   proyectoForm: any = FormGroup;
   dialogAction: any = "Add";
@@ -81,7 +81,7 @@ export class ProyectoComponent implements OnInit {
   filterAccionEstrategica: any[] = [];
   searchAccionEstrategica = new FormControl();
 
-  //-------Para filtrar Indicador
+  //-------Para filtrar Indicadormuni
   filterIndicador: any[] = [];
   searchIndicador = new FormControl();
 
@@ -490,7 +490,7 @@ export class ProyectoComponent implements OnInit {
 
     this.ProyectoService.add1(data, this.file).subscribe((response: any) => {
       this.dialogRef.close();
-      this.onAddCategoria.emit();
+      this.onAddProyecto.emit();
       this.responseMessage = response.message;
       this.snackbarService.openSnackBar(this.responseMessage, "success");
     }, (error: any) => {

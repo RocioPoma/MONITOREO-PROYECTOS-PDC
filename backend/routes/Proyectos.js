@@ -5,7 +5,6 @@ var auth = require('../services/authentication');
 
 //----------para archivos-----------------------------------------------------------------------------
 multer = require('../libs/multer');
-//const multer = require('multer');
 const fs = require('fs');
 //-----------------------------------------------------------------------------------------------------
 
@@ -17,9 +16,9 @@ router.get('/get', (req, res) => {
 
     + 'P.id_proyecto,'
     + 'P.nom_proyecto, '
-    + 'P.fecha_inicio, '
-    + 'P.fecha_fin, '
-    + 'P.fecha_registro, '
+    + "DATE_FORMAT(P.fecha_inicio, '%d-%m-%Y') as fecha_inicio, "
+    + "DATE_FORMAT(P.fecha_fin, '%d-%m-%Y') as fecha_fin, "
+    + "DATE_FORMAT(P.fecha_registro, '%d-%m-%Y') as fecha_registro, "
     + 'P.area, '
     + 'P.coordenada_x, '
     + 'P.coordenada_y, '
@@ -31,17 +30,11 @@ router.get('/get', (req, res) => {
     + 'P.cantidad, '
     + 'P.hombres, '
     + 'P.mujeres, '
-    + 'P.nom_proyecto AS NombreProyecto, '
-    + 'P.fecha_inicio AS FechaInicio, '
-    + 'P.fecha_fin AS FechaFin, '
     + 'M.nombre_municipio AS NombreMunicipio, '
     + 'M.id_municipio,'
     + 'C.nom_cuenca AS NombreCuenca, '
     + 'CAT.nom_categoria AS NombreCategoria, '
-    + 'TIP.nom_tipologia AS NombreTipologia, '
-    + 'CC.id, '
-    + 'CC.nombre, '
-    + 'PCOC.id_ciudad_comunidad '
+    + 'TIP.nom_tipologia AS NombreTipologia '
     + 'FROM '
     + ' PROYECTO AS P '
     + 'JOIN '
@@ -55,7 +48,8 @@ router.get('/get', (req, res) => {
     + 'JOIN '
     + 'CATEGORIA AS CAT ON P.id_categoria = CAT.id_categoria '
     + 'JOIN '
-    + 'TIPOLOGIA AS TIP ON P.id_tipologia = TIP.id_tipologia ';
+    + 'TIPOLOGIA AS TIP ON P.id_tipologia = TIP.id_tipologia '
+    + ' GROUP BY P.id_proyecto';
   connection.query(sql, (err, result) => {
     if (err) throw err;
     res.json(result);
