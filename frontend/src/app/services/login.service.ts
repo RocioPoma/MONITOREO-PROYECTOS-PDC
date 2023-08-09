@@ -9,6 +9,7 @@ export class LoginService {
   private rol: string ="";
   private nombre: string="";
   url = environment.apiUrl;
+  private authToken: string | null = null;
 
 
 
@@ -21,6 +22,14 @@ export class LoginService {
     // Realiza una solicitud POST al servidor para obtener el token de autenticación
     const credentials = { email, password };
     return this.http.post<any>(this.url+"/usuarios/login", credentials);  
+  }
+ 
+  setAuthToken(token: string): void {
+    this.authToken = token;
+  }
+
+  getAuthToken(): string | null {
+    return this.authToken;
   }
   ////-------------------------------------nombre y rol 
   

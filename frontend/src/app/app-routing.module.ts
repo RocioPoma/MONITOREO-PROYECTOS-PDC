@@ -10,6 +10,7 @@ import { ManageMunicipioComponent} from './components/manage-municipio/manage-mu
 import { NosotrosComponent } from "./components/opcionesMenu/nosotros/nosotros.component";
 import { ReportesComponent } from "./components/opcionesMenu/reportes/reportes.component";
 import { BasedeDatosComponent} from "./components/opcionesMenu/basede-datos/basede-datos.component";
+import { AuthGuard } from './guards/auth.guard';
 
 
 const routes: Routes = [
@@ -18,14 +19,14 @@ const routes: Routes = [
     path: '', // Ruta para el HomeComponent
     component: HomeComponent,
     children: [
-      { path: 'nosotros', component: NosotrosComponent }, // Rutas secundarias para Nosotros, Reportes, Base de Datos y Otros
-     { path: 'reportes', component: ReportesComponent },
-      { path: 'bd', component: BasedeDatosComponent }
+        { path: 'nosotros', component: NosotrosComponent }, // Rutas secundarias para Nosotros, Reportes, Base de Datos y Otros
+        { path: 'reportes', component: ReportesComponent },
+        { path: 'bd', component: BasedeDatosComponent }
     ]
   },
   //{ path: 'proyecto', component: DashboardComponent},
    /**Para pruebas**/
- { path:'pproyecto',component:ManageProyectoComponent},
+ { path:'pproyecto',component:ManageProyectoComponent, canActivate: [AuthGuard] },
  { path:'categoria',component:ManageCategoriaComponent},
  { path:'municipio',component:ManageMunicipioComponent},
  { path:'layout', component:LayoutsComponent},

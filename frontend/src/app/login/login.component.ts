@@ -48,6 +48,7 @@ export class LoginComponent implements OnInit {
         this.userService.setNombre(response.data.nombre);
         console.log(response);
         console.log('Token:', response.token);
+        this.userService.setAuthToken(response.token);
         this.router.navigate(['/layout']);
       },
       (error) => {
