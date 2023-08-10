@@ -15,6 +15,7 @@ import { ConfirmationComponent } from "../dialog/confirmation/confirmation.compo
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MunicipioService } from 'src/app/services/municipio.service';
+import { SeguimientoProyectoComponent } from '../dialog/seguimiento-proyecto/seguimiento-proyecto.component';
 
 
 
@@ -134,8 +135,8 @@ export class ManageProyectoComponent {
     })
   }
 
+  //------------ LLAMA AL MODAL PARA EDITAR
   handleEditAction(values: any) {
-
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       action: 'Edit',
@@ -148,6 +149,24 @@ export class ManageProyectoComponent {
       dialogRef.close();
     });
     const sub = dialogRef.componentInstance.onEditProyecto.subscribe((response) => {
+      this.tableData();
+    })
+  }
+
+   //------------ LLAMA AL MODAL PARA EL SEGUIMIENTO DE PROYECTO
+   handleSeguimientoAction(values: any) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      action: 'seguimiento',
+      data: values
+    }
+    console.log(values);
+    dialogConfig.width = "600px";
+    const dialogRef = this.dialog.open(SeguimientoProyectoComponent, dialogConfig);
+    this.router.events.subscribe(() => {
+      dialogRef.close();
+    });
+    const sub = dialogRef.componentInstance.onAddSeguimiento.subscribe((response) => {
       this.tableData();
     })
   }

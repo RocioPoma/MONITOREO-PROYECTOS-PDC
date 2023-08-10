@@ -1,24 +1,25 @@
-.mat-typography mat-form-field + mat-form-field {
-    margin-left: 8px;
-  }
-
-  .title-center {
-    flex: 1 1 auto;
-    text-align: center;
+.mat-typography mat-form-field+mat-form-field {
+  margin-left: 8px;
 }
 
-.subTitle{
+.title-center {
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+.subTitle {
   //background-color: aqua;
   margin-bottom: 6px;
   margin-left: 2px;
 }
 
-.subTitle1{
+.subTitle1 {
   background-color: aqua;
   margin-bottom: 160px;
   margin-left: 2px;
 }
 
 .btn-icon:hover {
-  cursor: pointer; /* Cambia el cursor a la mano */
+  cursor: pointer;
+  /* Cambia el cursor a la mano */
 }

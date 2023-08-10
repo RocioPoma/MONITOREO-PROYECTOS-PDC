@@ -237,9 +237,9 @@ ENGINE = InnoDB;
 -- Table `ETAPA`
 CREATE TABLE IF NOT EXISTS `ETAPA` (
   `id_etapa` INT NOT null AUTO_INCREMENT,
-  `nom_etapa` VARCHAR(45) NULL,
-  `peso_etapa` DECIMAL(10,2) NULL,
-  `desc_etapa` VARCHAR(255) NULL,
+  `nombre_etapa` VARCHAR(45) NULL,
+  `peso_etapa` INT,
+  `descripcion_etapa` VARCHAR(255) NULL,
   `id_tipologia` INT NOT NULL,
   PRIMARY KEY (`id_etapa`),
   FOREIGN KEY (`id_tipologia`) REFERENCES `TIPOLOGIA` (`id_tipologia`)

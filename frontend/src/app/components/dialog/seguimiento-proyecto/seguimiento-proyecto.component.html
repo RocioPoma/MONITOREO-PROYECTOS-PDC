@@ -1,9 +1,14 @@
-<!--
-<mat-toolbar color="primary">
+<!--<mat-toolbar color="primary">
     <mat-toolbar-row fxLayout="row">
-        <span class="title-center">{{action}} Proyecto/Accion</span>
+        <span class="title-center">{{action}}</span>
     </mat-toolbar-row>
-</mat-toolbar>
+</mat-toolbar>-->
+
+<div class="titleForm">
+    <span class="accion">{{action}}:</span>
+    <p class="nomProy">{{nombreProyecto}}</p>
+</div>
+
 
 <mat-dialog-content class="mat-typography">
     <form [formGroup]="seguimientoForm1">
@@ -24,7 +29,7 @@
                     <mat-label>Fuente de información</mat-label>
                     <input matInput formControlName="fuente_informacion" required>
                     <mat-error
-                        *ngIf="seguimientoForm1.controls.fuente_informacion.touched && proyectoForm.controls.fuente_informacion.invalid">
+                        *ngIf="seguimientoForm1.controls.fuente_informacion.touched && seguimientoForm1.controls.fuente_informacion.invalid">
                         <span *ngIf="seguimientoForm1.controls.fuente_informacion.errors.required">Este campo es
                             obligatorio.</span>
                     </mat-error>
@@ -62,7 +67,7 @@
                     <mat-label>Entidad financiera</mat-label>
                     <mat-select formControlName="id_entidad_financiera">
                         <mat-option *ngFor="let item of EntidadFinanciera" [value]="item.id_entidad_financiera">
-                            {{item.nombre_entidad_financiera}}
+                            {{item.nom_entidad_financiera}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -70,8 +75,10 @@
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Monto inicial</mat-label>
                     <input type="number" matInput formControlName="monto_inicial" required>
-                    <mat-error *ngIf="seguimientoForm1.controls.monto_inicial.touched && proyectoForm.controls.monto_inicial.invalid">
-                        <span *ngIf="seguimientoForm1.controls.monto_inicial.errors.required">Este campo es obligatorio.</span>
+                    <mat-error
+                        *ngIf="seguimientoForm1.controls.monto_inicial.touched && seguimientoForm1.controls.monto_inicial.invalid">
+                        <span *ngIf="seguimientoForm1.controls.monto_inicial.errors.required">Este campo es
+                            obligatorio.</span>
                     </mat-error>
                 </mat-form-field>
 
@@ -80,9 +87,9 @@
                     <input type="number" matInput formControlName="monto_final" required>
                 </mat-form-field>
             </div>
-            <div> -->
+            <div>
                 <!--Aregar y quitar campos de Input-->
-                <!--
+
                 <div *ngFor="let input of Financiamiento; let i = index" fxLayout="row wrap">
                     <mat-form-field appearance="fill" fxFlex>
                         <mat-label>Entidad financiera</mat-label>
@@ -92,7 +99,7 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-                    
+
                     <mat-form-field appearance="fill" fxFlex>
                         <mat-label>Monto inicial {{i + 1}}</mat-label>
                         <input matInput [(ngModel)]="input.monto_inicial" formControlName="monto_inicial">
@@ -102,11 +109,11 @@
                         <mat-label>Monto Final {{i + 1}}</mat-label>
                         <input matInput [(ngModel)]="input.monto_final" formControlName="monto_final">
                     </mat-form-field>
-                </div> -->
+                </div>
                 <!---->
-                <!--
+
             </div>
-            
+
         </div>
     </form>
 </mat-dialog-content>
@@ -115,4 +122,4 @@
     <button mat-raised-button color="primary" type="submit" (click)="handleSubmit()"
         [disabled]="![seguimientoForm1.valid && seguimientoForm1.dirty]">{{action}}</button>
     <button mat-raised-button color="primary" mat-dialog-close>Cancelar</button>
-</mat-dialog-actions>-->
+</mat-dialog-actions>
