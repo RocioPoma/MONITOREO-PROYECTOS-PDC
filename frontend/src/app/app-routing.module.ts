@@ -24,22 +24,33 @@ const routes: Routes = [
       { path: 'bd', component: BasedeDatosComponent }
     ]
   },
-  //{ path: 'proyecto', component: DashboardComponent},
-  /**Para pruebas**/
-  { path: 'pproyecto', component: ManageProyectoComponent },
-  { path: 'proyecto', component: ManageProyectoComponent, canActivate: [AuthGuard] },
-  { path: 'categoria', component: ManageCategoriaComponent },
-  { path: 'municipio', component: ManageMunicipioComponent },
-  { path: 'layout', component: LayoutsComponent },
+      //{ path: 'proyecto', component: DashboardComponent},
+      /**Para pruebas**/
+      /* { path: 'pproyecto', component: ManageProyectoComponent },
+      { path: 'proyecto', component: ManageProyectoComponent, canActivate: [AuthGuard] },
+    */
+
   { path: 'dashboard', component: DashboardComponent },
   /**Fin Pruebas**/
 
 
 
+  { path: 'layout', component: LayoutsComponent,
+  children:[
+    { path: 'pproyecto', component: ManageProyectoComponent },
+    { path: 'categoria', component: ManageCategoriaComponent },
+    { path: 'municipio', component: ManageMunicipioComponent },
+
+    
+
+    ] 
+  },
 
   {
     path: 'layout1', component: LayoutsComponent,
     children: [
+
+      
       /*
       {
         path: '',
@@ -67,6 +78,10 @@ const routes: Routes = [
 
     ]
   },
+
+
+
+  
   { path: '**', component: HomeComponent }
 ];
 

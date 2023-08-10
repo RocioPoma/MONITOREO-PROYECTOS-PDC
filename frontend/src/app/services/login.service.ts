@@ -8,6 +8,8 @@ import { environment } from 'src/environments/environment';
 export class LoginService {
   private rol: string ="";
   private nombre: string="";
+  private ap: string="";
+  private am: string="";
   url = environment.apiUrl;
   private authToken: string | null = null;
 
@@ -51,6 +53,26 @@ export class LoginService {
 
   getNombre() {
     return this.nombre;
+  }
+
+  setAp(ap: string) {
+    this.ap = ap;
+     // Guardar en el almacenamiento local
+     localStorage.setItem('ap_paterno', ap);
+  }
+
+  getAp() {
+    return this.ap;
+  }
+
+  setAm(am: string) {
+    this.am = am;
+     // Guardar en el almacenamiento local
+     localStorage.setItem('ap_materno', am);
+  }
+
+  getAm() {
+    return this.am;
   }
   ////-------------------------------------nombre y rol 
 

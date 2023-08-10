@@ -1,5 +1,6 @@
 import { Component,OnDestroy,ChangeDetectorRef } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
+import { Router } from '@angular/router';
 //import jwt_decode from "jwt-decode";
 //import { MenuItems } from 'src/app/shared/menu-items';
 
@@ -54,7 +55,7 @@ menuItems: MenuItem[] = [
     submenus: [
       {
         title: 'Proyecto 1',
-        link: '/proyecto'
+        link: '/pproyecto'
       }
     ]
    
@@ -107,12 +108,12 @@ menuItems: MenuItem[] = [
     icon: 'settings',
     submenus: [
       {
-        title: 'Proyecto 1',
-        link: '/proyecto1'
+        title: 'municipio',
+        link: '/municipio'
       },
       {
-        title: 'Proyecto 2',
-        link: '/proyecto2'
+        title: 'categoria',
+        link: '/categoria'
       },
       {
         title: 'Acción 1',
@@ -151,7 +152,7 @@ menuItems2: MenuItem[] = [
     submenus: [
       {
         title: 'Proyecto 1',
-        link: '/proyecto'
+        link: '/pproyecto'
       }
     ]
    
@@ -190,6 +191,7 @@ menuItems2: MenuItem[] = [
   constructor(//private campeonatoService: CampeonatoService,
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
+    private router: Router,
     //public menuItems:MenuItems,
     //public campeonatoItems:CampeonatoItems
    
@@ -215,9 +217,16 @@ menuItems2: MenuItem[] = [
     } else {
       this.menuItems = this.menuItems2;
     }
-      }
+  }
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
+
+
+  navigateTo(route: string) {
+    //console.log(route);
+    this.router.navigate([`/${route}`]);
+  }
+
 }

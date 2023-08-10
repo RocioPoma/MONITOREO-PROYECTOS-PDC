@@ -57,7 +57,7 @@
     <ng-container *ngIf="!menuItem.submenus; else submenuTemplate">
 
       <mat-list-item>
-        <a mat-list-item [routerLink]="['/proyecto/',menuItem.link]">
+        <a mat-list-item [routerLink]="['/',menuItem.link]">
           <mat-icon>{{ menuItem.icon }}</mat-icon>
           <span>{{ menuItem.title }}</span>
         </a>
@@ -71,7 +71,7 @@
         </mat-expansion-panel-header>
         <mat-list>
           <mat-list-item *ngFor="let submenuItem of menuItem.submenus">
-            <a mat-list-item [routerLink]="['/proyecto',submenuItem.link]">{{ submenuItem.title }}</a>
+            <a mat-list-item (click)="navigateTo('/layout' + submenuItem.link)" >{{ submenuItem.title }}</a>
           </mat-list-item>
         </mat-list>
       </mat-expansion-panel>

@@ -17,6 +17,8 @@ export class LayoutsComponent {
 
   mobileQuery: MediaQueryList;
   usuario: any;
+  ap:any;
+  am:any;
   rol: any;
   private _mobileQueryListener: () => void;
 
@@ -38,9 +40,13 @@ export class LayoutsComponent {
   ngOnInit() {
  
     const nombreString = localStorage.getItem('nombre');
+    const ApString = localStorage.getItem('ap_paterno');
+    const AmString = localStorage.getItem('ap_materno');
     const rolString = localStorage.getItem('rol');
 
     this.usuario = nombreString? (nombreString): null;
+    this.ap = ApString ? (ApString ): null;
+    this.am = AmString? (AmString): null;
     this.rol = rolString? (rolString): null;
     //this.usuario = this.activeR.snapshot.paramMap.get('xnom');
     console.log('Usuario: ' + localStorage.getItem('nombre'))

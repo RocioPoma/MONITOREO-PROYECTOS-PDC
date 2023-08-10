@@ -46,6 +46,8 @@ export class LoginComponent implements OnInit {
         // Maneja la respuesta del servidor aquí (por ejemplo, almacena el token en el almacenamiento local)
         this.userService.setRol(response.data.rol);
         this.userService.setNombre(response.data.nombre);
+        this.userService.setAp(response.data.ap_paterno);
+        this.userService.setAm(response.data.ap_materno);
         console.log(response);
         console.log('Token:', response.token);
         this.userService.setAuthToken(response.token);
@@ -69,11 +71,11 @@ export class LoginComponent implements OnInit {
   }
 
 
-  ejecutar( cro: Router, xnombre: string) {
+ /*  ejecutar( cro: Router, xnombre: string) {
     cro.navigate([{ outlets: { pie: ['proyecto/pie/', xnombre] } }]);
     
   }
-
+ */
 /*
   username: any;
   password: any;
