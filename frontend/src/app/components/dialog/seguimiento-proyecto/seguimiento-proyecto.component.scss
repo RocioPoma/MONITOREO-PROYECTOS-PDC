@@ -1,0 +1,32 @@
+.mat-typography mat-form-field+mat-form-field {
+    margin-left: 8px;
+}
+
+.titleForm {
+    text-align: center;
+    color: aliceblue;
+    background-color:forestgreen;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    //padding-bottom: 2px;
+}
+
+.accion {
+   // background-color: black;
+    font-weight: bold;
+    padding-bottom: -10px;
+}
+.nomProy{
+    font-size: 14px;
+    //background-color: aqua;
+    padding-bottom: 10px;
+
+}
+
+ mat-select {
+    font-size: 12px;
+}
+input{
+    font-size: 12px;
+}
