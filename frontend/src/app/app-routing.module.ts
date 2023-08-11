@@ -11,10 +11,10 @@ import { NosotrosComponent } from "./components/opcionesMenu/nosotros/nosotros.c
 import { ReportesComponent } from "./components/opcionesMenu/reportes/reportes.component";
 import { BasedeDatosComponent } from "./components/opcionesMenu/basede-datos/basede-datos.component";
 import { AuthGuard } from './guards/auth.guard';
-
+import { ManageGestionUsuarioComponent } from "./components/manage-gestion-usuario/manage-gestion-usuario.component";
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: HomeComponent},
   {
     path: '', // Ruta para el HomeComponent
     component: HomeComponent,
@@ -23,12 +23,7 @@ const routes: Routes = [
       { path: 'reportes', component: ReportesComponent },
       { path: 'bd', component: BasedeDatosComponent }
     ]
-  },
-      //{ path: 'proyecto', component: DashboardComponent},
-      /**Para pruebas**/
-      /* { path: 'pproyecto', component: ManageProyectoComponent },
-      { path: 'proyecto', component: ManageProyectoComponent, canActivate: [AuthGuard] },
-    */
+  },  
 
   { path: 'dashboard', component: DashboardComponent },
   /**Fin Pruebas**/
@@ -39,14 +34,12 @@ const routes: Routes = [
   children:[
     { path: 'pproyecto', component: ManageProyectoComponent },
     { path: 'categoria', component: ManageCategoriaComponent },
-    { path: 'municipio', component: ManageMunicipioComponent },
-
-    
-
+    { path: 'gestionusuario', component: ManageGestionUsuarioComponent },
+    { path: 'municipio', component: ManageMunicipioComponent }
     ] 
   },
-
-  {
+/* 
+   {
     path: 'layout1', component: LayoutsComponent,
     children: [
 
@@ -56,7 +49,7 @@ const routes: Routes = [
         path: '',
         redirectTo: '/proyecto/dashboard',
         pathMatch: 'full',
-      },*/
+      },
       {
         path: '',
         loadChildren:
@@ -76,10 +69,35 @@ const routes: Routes = [
         }
       },
 
-    ]
-  },
+      ]
+    },  */
 
 
+    {
+      path: '',
+      loadChildren:
+        () => import('./components/components.module').then(m => m.ComponentsModule),
+      canActivate: [RouteGuardService],
+      data: {
+        expectedRole: ['']
+      }
+    },
+    {
+      path: '',
+      loadChildren: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent),
+      canActivate: [RouteGuardService],
+      data: {
+        expectedRole: ['']
+      }
+    },
+    {
+      path: '',
+      loadChildren: () => import('./shared/material.module').then(m => m.MaterialModule),
+      canActivate: [RouteGuardService],
+      data: {
+        expectedRole: ['']
+      }
+    },
 
   
   { path: '**', component: HomeComponent }

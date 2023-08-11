@@ -40,12 +40,16 @@ menuItems: MenuItem[] = [
     icon: 'group',
     submenus: [
       {
-        title: 'Proyecto 1',
-        link: '/proyecto1'
+        title: 'Gestion Usuario',
+        link: '/gestionusuario'
       },
       {
-        title: 'Proyecto 2',
-        link: '/proyecto2'
+        title: 'Gestion Roles',
+        link: '/p'
+      },
+      {
+        title: 'Gestion Procesos',
+        link: '/p'
       }
     ]
   },

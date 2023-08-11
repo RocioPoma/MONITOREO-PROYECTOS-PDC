@@ -33,6 +33,14 @@ export class LoginService {
   getAuthToken(): string | null {
     return this.authToken;
   }
+
+  //--------------------salir de usaurio-
+  logout() {
+    // Eliminar el token almacenado
+    localStorage.removeItem('token');
+    
+  }
+
   ////-------------------------------------nombre y rol 
   
   setRol(rol: string) {

@@ -19,6 +19,8 @@ import { NosotrosComponent } from './opcionesMenu/nosotros/nosotros.component';
 import { ReportesComponent } from './opcionesMenu/reportes/reportes.component';
 import { BasedeDatosComponent } from './opcionesMenu/basede-datos/basede-datos.component';
 import { SeguimientoProyectoComponent } from './dialog/seguimiento-proyecto/seguimiento-proyecto.component';
+import { GestionusuarioComponent } from './dialog/gestionusuario/gestionusuario.component';
+import { ManageGestionUsuarioComponent } from './manage-gestion-usuario/manage-gestion-usuario.component';
 
 //import { MaterialModule } from '../shared/material-module';
 
@@ -37,7 +39,9 @@ import { SeguimientoProyectoComponent } from './dialog/seguimiento-proyecto/segu
     NosotrosComponent,
     ReportesComponent,
     BasedeDatosComponent,
-    SeguimientoProyectoComponent
+    SeguimientoProyectoComponent,
+    GestionusuarioComponent,
+    ManageGestionUsuarioComponent
   ],
   imports: [
     CommonModule,

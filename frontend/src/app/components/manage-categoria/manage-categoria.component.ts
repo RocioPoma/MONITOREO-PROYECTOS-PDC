@@ -51,11 +51,11 @@ export class ManageCategoriaComponent {
     })
   }
 
-   //--------------------------------Paginador -------------------------------------
+ /*   //--------------------------------Paginador -------------------------------------
    ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-  }
+  }*/
   //---------------------------------Fitrador----------------------------------------------------
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -64,7 +64,7 @@ export class ManageCategoriaComponent {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
-  }
+  } 
 
  
 
