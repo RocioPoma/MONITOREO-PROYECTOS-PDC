@@ -1,1 +1,36 @@
-<p>gestionusuario works!</p>
+<mat-toolbar color="primary">
+    <mat-toolbar-row fxLayout="row">
+        <span class="title-center">{{action}} Categoría</span>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="categoriaForm">
+        <div fxFlex fxLayout="column">
+            <div fxLayout="row wrap">
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="nom_categoria" required>
+                    <mat-error *ngIf="categoriaForm.controls.nom_categoria.touched && categoriaForm.controls.nom_categoria.invalid">
+                        <span *ngIf="categoriaForm.controls.nom_categoria.errors.required">Este campo es obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Descripción</mat-label>
+                    <input matInput formControlName="desc_categoria" required>
+                    <mat-error *ngIf="categoriaForm.controls.desc_categoria.touched && categoriaForm.controls.desc_categoria.invalid">
+                        <span *ngIf="categoriaForm.controls.desc_categoria.errors.required">Este campo es obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" type="submit" (click)="handleSubmit()"
+        [disabled]="![categoriaForm.valid && categoriaForm.dirty]">{{action}}</button>
+        <button mat-raised-button color="primary" mat-dialog-close>Cancelar</button>
+</mat-dialog-actions>
+

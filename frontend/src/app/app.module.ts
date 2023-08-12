@@ -14,10 +14,13 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SharedModule } from './shared/shared.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule,HTTP_INTERCEPTORS } from '@angular/common/http';
 //import { HomeComponent } from './home/home/home.component';
 //importamos pipe para fecha
 import { DatePipe } from '@angular/common';
+//interceptores
+import { TokenInterceptor } from './interceptores/token.interceptor'; // Asegúrate de ajustar la ruta
+
 
 //para los diagramas
 import { HighchartsChartModule } from "highcharts-angular";
@@ -46,7 +49,10 @@ import { HighchartsChartModule } from "highcharts-angular";
     SharedModule,
     HttpClientModule
   ],
-  providers: [DatePipe],
+  providers: [
+    DatePipe,
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
