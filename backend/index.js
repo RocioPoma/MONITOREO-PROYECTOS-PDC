@@ -18,6 +18,7 @@ const unidad_Route=require('./routes/unidad_medicion');
 const entidad_eje_Route = require('./routes/entidad_ejecutora');
 const entidad_financiera_Route = require('./routes/entidad_financiera');
 const seguimiento_proyecto_Route=require('./routes/seguimiento_proyecto');
+const entidad_Route=require('./routes/Entidad');
 
 
 //const path = require('path');
@@ -45,5 +46,6 @@ app.use('/unidad',unidad_Route);
 app.use('/entidad_eje',entidad_eje_Route);
 app.use('/entidad_financiera',entidad_financiera_Route);
 app.use('/seguimiento_proyecto',seguimiento_proyecto_Route);
+app.use('/entidad',entidad_Route);
 
 module.exports=app;

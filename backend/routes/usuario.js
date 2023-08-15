@@ -35,22 +35,23 @@ router.get('/buscar/:ci',auth.authenticateToken, (req, res) => {
 
 //crear usuario
 router.post('/create/',auth.authenticateToken, (req, res) => {
-    const { ci, nombre, ap_paterno, ap_materno, contraseña, email, telefono, genero, rol, estado, MUNICIPIO_id_municipio } = req.body;
-    connection.query('INSERT INTO USUARIO (ci, nombre, ap_paterno, ap_materno, contraseña, email, telefono, genero, rol, estado, MUNICIPIO_id_municipio) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [ci, nombre, ap_paterno, ap_materno, contraseña, email, telefono, genero, rol, estado, MUNICIPIO_id_municipio], (err, results) => {
-      if (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Hubo un error al crear el usuario' });
-      } else {
-        res.json({ ci, nombre, ap_paterno, ap_materno, contraseña, email, telefono, genero, rol, estado, MUNICIPIO_id_municipio });
+  console.log(req.body);
+    const { ci, nombre, ap_paterno, ap_materno, password, email, telefono, genero, rol, estado, id_entidad,fecha_nacimiento,fecha_registro } = req.body;
+    connection.query('INSERT INTO USUARIO (ci, nombre, ap_paterno, ap_materno, password, email, telefono, genero, rol, estado, id_entidad,fecha_nacimiento,fecha_registro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [ci, nombre, ap_paterno, ap_materno, password, email, telefono, genero, rol, estado,id_entidad,fecha_nacimiento,fecha_registro ], (err, results) => {
+      if (!err) {
+        return res.status(200).json({ message: "Usuario agregado con exito" });
+      }
+      else {
+        return res.status(500).json(err);
       }
     });
   });
 
 //actualizar usuario
-router.put('/update/:ci', auth.authenticateToken,(req, res) => {
-    const { ci } = req.params;
-    const { nombre, ap_paterno, ap_materno, contraseña, email, telefono, genero, rol, estado, MUNICIPIO_id_municipio } = req.body;
-    connection.query('UPDATE USUARIO SET nombre = ?, ap_paterno = ?, ap_materno = ?, contraseña = ?, email = ?, telefono = ?, genero = ?, rol = ?, estado = ?, MUNICIPIO_id_municipio = ? WHERE ci = ?', [nombre, ap_paterno, ap_materno, contraseña, email, telefono, genero, rol, estado, MUNICIPIO_id_municipio, ci], (err) => {
+router.put('/update/', auth.authenticateToken,(req, res) => {
+    
+    const {ci, nombre, ap_paterno, ap_materno, password, email, telefono, genero, rol, estado, id_entidad,fecha_nacimiento,fecha_registro } = req.body;
+    connection.query('UPDATE USUARIO SET nombre = ?, ap_paterno = ?, ap_materno = ?, password = ?, email = ?, telefono = ?, genero = ?, rol = ?, estado = ?, id_entidad = ?,fecha_nacimiento = ?,fecha_registro= ? WHERE ci = ?', [nombre, ap_paterno, ap_materno, password, email, telefono, genero, rol, estado,id_entidad,fecha_nacimiento,fecha_registro, ci], (err) => {
       if (err) {
         console.error(err);
         res.status(500).json({ message: 'Hubo un error al actualizar el usuario' });

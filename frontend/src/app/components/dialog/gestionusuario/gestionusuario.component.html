@@ -1,26 +1,106 @@
 <mat-toolbar color="primary">
     <mat-toolbar-row fxLayout="row">
-        <span class="title-center">{{action}} Categoría</span>
+        <span class="title-center">{{action}} Usuario</span>
     </mat-toolbar-row>
 </mat-toolbar>
 
 <mat-dialog-content class="mat-typography">
-    <form [formGroup]="categoriaForm">
+    <form [formGroup]="usuarioForm">
         <div fxFlex fxLayout="column">
-            <div fxLayout="row wrap">
+            <span class="subTitle">Registro</span>
+            <div fxLayout="row wrap" >
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Nombre</mat-label>
-                    <input matInput formControlName="nom_categoria" required>
-                    <mat-error *ngIf="categoriaForm.controls.nom_categoria.touched && categoriaForm.controls.nom_categoria.invalid">
-                        <span *ngIf="categoriaForm.controls.nom_categoria.errors.required">Este campo es obligatorio.</span>
+                    <input matInput formControlName="nombre" required>
+                    <mat-error *ngIf="usuarioForm.controls.nombre.touched && usuarioForm.controls.nombre.invalid">
+                        <span *ngIf="usuarioForm.controls.nombre.errors.required">Este campo es obligatorio.</span>
                     </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" fxFlex>
-                    <mat-label>Descripción</mat-label>
-                    <input matInput formControlName="desc_categoria" required>
-                    <mat-error *ngIf="categoriaForm.controls.desc_categoria.touched && categoriaForm.controls.desc_categoria.invalid">
-                        <span *ngIf="categoriaForm.controls.desc_categoria.errors.required">Este campo es obligatorio.</span>
+                    <mat-label>Apellido paterno</mat-label>
+                    <input matInput formControlName="ap_paterno" required>
+                    <mat-error *ngIf="usuarioForm.controls.ap_paterno.touched && usuarioForm.controls.ap_paterno.invalid">
+                        <span *ngIf="usuarioForm.controls.ap_paterno.errors.required">Este campo es obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Apellido materno</mat-label>
+                    <input matInput formControlName="ap_materno" required>
+                    <mat-error *ngIf="usuarioForm.controls.ap_materno.touched && usuarioForm.controls.ap_materno.invalid">
+                        <span *ngIf="usuarioForm.controls.ap_materno.errors.required">Este campo es obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row wrap">
+
+                <mat-form-field fxFlex>
+                    <mat-label>fecha Nacimiento</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="fecha_nacimiento">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Ci</mat-label>
+                    <input type="number" matInput formControlName="ci" required>
+                    <mat-error *ngIf="usuarioForm.controls.ci.touched && usuarioForm.controls.ci.invalid">
+                        <span *ngIf="usuarioForm.controls.ci.errors.required">Este campo es obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>             
+
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Telefono</mat-label>
+                    <input type="number" matInput formControlName="telefono" required>
+                    <mat-error *ngIf="usuarioForm.controls.telefono.touched && usuarioForm.controls.telefono.invalid">
+                        <span *ngIf="usuarioForm.controls.telefono.errors.required">Este campo es obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row wrap">
+                
+                <!-- rol -->
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Rol</mat-label>
+                    <mat-select formControlName="rol" required>
+                        <mat-option value="Admin">Administrador</mat-option>
+                        <mat-option value="Usuario">Usuario</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <!-- genero  -->
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>genero</mat-label>
+                    <mat-select formControlName="genero" required>
+                      <mat-option value="Masculino">Masculino</mat-option>
+                      <mat-option value="Femenino">Femenino</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                <!-- entiedad -->
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Entidad</mat-label>
+                    <mat-select formControlName="entidad" required>
+                        <mat-option *ngFor="let tipologia of entidad" [value]="tipologia.id_entidad">
+                            {{tipologia.nombre_entidad}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row wrap">
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Email(Usuario)</mat-label>
+                    <input type="email" matInput formControlName="email" required>
+                    <mat-error *ngIf="usuarioForm.controls.email.touched && usuarioForm.controls.email.invalid">
+                        <span *ngIf="usuarioForm.controls.email.errors.required">Este campo es obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Contraseña</mat-label>
+                    <input type="password" matInput formControlName="password" required>
+                    <mat-error *ngIf="usuarioForm.controls.password.touched && usuarioForm.controls.password.invalid">
+                        <span *ngIf="usuarioForm.controls.password.errors.required">Este campo es obligatorio.</span>
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -30,7 +110,7 @@
 
 <mat-dialog-actions align="center">
     <button mat-raised-button color="primary" type="submit" (click)="handleSubmit()"
-        [disabled]="![categoriaForm.valid && categoriaForm.dirty]">{{action}}</button>
+        [disabled]="![usuarioForm.valid && usuarioForm.dirty]">{{action}}</button>
         <button mat-raised-button color="primary" mat-dialog-close>Cancelar</button>
 </mat-dialog-actions>
 

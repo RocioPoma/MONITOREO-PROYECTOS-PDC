@@ -20,15 +20,15 @@ export class UsuarioService {
   //----------------------API PARA AGREGAR CATEGORÍA ------------------------------
   add(data: any) {
     return this.httpClient.post(this.url +
-      "/municipio/create/", data, {
+      "/usuarios/create/", data, {
       headers: new HttpHeaders().set('Content-Type', "application/json")
     });
   }
 
   //----------------------API PARA EDITAR CATEGORÍA ------------------------------
   update(data: any) {
-    return this.httpClient.patch(this.url +
-      "/municipio/update/", data, {
+    return this.httpClient.put(this.url +
+      "/usuarios/update/", data, {
       headers: new HttpHeaders().set('Content-Type', "application/json")
     });
   }
@@ -37,7 +37,7 @@ export class UsuarioService {
   //----------------------API PARA ELIMINAR CATEGORÍA ------------------------------
   delete(id: any) {
     return this.httpClient.delete(this.url +
-      "/municipio/delete/" + id, {
+      "/usuarios/delete/" + id, {
       headers: new HttpHeaders().set('Content-Type', "application/json")
     });
   }

@@ -9,6 +9,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 import { GlobalCostants } from 'src/app/shared/global-constants';
 import { GestionusuarioComponent} from 'src/app/components/dialog/gestionusuario/gestionusuario.component';
 import { ConfirmationComponent } from '../dialog/confirmation/confirmation.component';
+import { EntidadService } from 'src/app/services/entidad.service';
 
 @Component({
   selector: 'app-manage-gestion-usuario',
@@ -18,7 +19,9 @@ import { ConfirmationComponent } from '../dialog/confirmation/confirmation.compo
 export class ManageGestionUsuarioComponent {
   displayedColumns: string[] = ['numero', 'Foto', 'Nombre', 'Rol', 'Fecha', 'Accion']; 
   dataSource: any;
+  entidad: any;
   responseMessage: any;
+  
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -27,15 +30,19 @@ export class ManageGestionUsuarioComponent {
   constructor(private usuarioService: UsuarioService,
     private dialog: MatDialog,
     private snackbarService: SnackbarService,
-    private router: Router) { }
+    private router: Router,
+    private entidadServices: EntidadService
+    ) { }
  
   ngOnInit(): void {
     this.tableData();
+    this.entidades();  
+    
   }
 
   tableData() {
     this.usuarioService.getusuario().subscribe((response: any) => {
-      console.log(response);
+      //console.log(response);
       this.dataSource = new MatTableDataSource(response);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -47,6 +54,13 @@ export class ManageGestionUsuarioComponent {
         this.responseMessage = GlobalCostants.genericError;
       }
       this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+    })
+  }
+
+  entidades() {
+    this.entidadServices.GetEntidades().subscribe((response: any) => {
+      console.log(response);
+      this.entidad=response;    
     })
   }
 
@@ -70,7 +84,7 @@ handleAddAction() {
   this.router.events.subscribe(() => {
     dialogRef.close();
   });
-  const sub = dialogRef.componentInstance.onAddCategoria.subscribe((response) => {
+  const sub = dialogRef.componentInstance.onAddUser.subscribe((response) => {
     this.tableData();
   })
 }
@@ -86,7 +100,7 @@ handleEditAction(values: any) {
   this.router.events.subscribe(() => {
     dialogRef.close();
   });
-  const sub = dialogRef.componentInstance.onEditCategoria.subscribe((response) => {
+  const sub = dialogRef.componentInstance.onEditUser.subscribe((response) => {
     this.tableData();
   })
 }
@@ -94,17 +108,17 @@ handleEditAction(values: any) {
 handleDeleteAction(values: any) {
   const dialogConfig = new MatDialogConfig();
   dialogConfig.data = {
-    message: ' eliminar Categoria '+ values.nom_categoria
+    message: ' eliminar Usuario '+ values.nombre
   };
   const dialogRef = this.dialog.open(ConfirmationComponent, dialogConfig);
   const sub = dialogRef.componentInstance.onEmitStatusChange.subscribe((response) => {
-    this.deleteCategoria(values.id_categoria);
+    this.deleteUser(values.ci);
     dialogRef.close();
   });
 }
 
-deleteCategoria(id_categoria: any) {
-  this.usuarioService.delete(id_categoria).subscribe((response: any) => {
+deleteUser(id_User: any) {
+  this.usuarioService.delete(id_User).subscribe((response: any) => {
     this.tableData();
     this.responseMessage = response?.message;
     this.snackbarService.openSnackBar(this.responseMessage, "success");
@@ -119,27 +133,23 @@ deleteCategoria(id_categoria: any) {
   })
 }
 
-onChange(status: any, id_categoria: any) {
+onChange(status: any, id_usuario: any) {
   var data = {
     status: status.toString(),
-    id_categoria: id_categoria
+    id_usuario: id_usuario
   }
   this.usuarioService.updateStatus(data).subscribe((response: any) => {
     this.tableData();
     this.responseMessage = response?.message;
     this.snackbarService.openSnackBar(this.responseMessage, "success");
   }, (error: any) => {
-    if (error.error?.message) {
-      this.responseMessage = error.error?.message;
+        if (error.error?.message) {
+          this.responseMessage = error.error?.message;
+        }
+        else {
+          this.responseMessage = GlobalCostants.genericError;
+        }
+        this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+      })
     }
-    else {
-      this.responseMessage = GlobalCostants.genericError;
-    }
-    this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
-  })
-}
-
-
-
-
 }
