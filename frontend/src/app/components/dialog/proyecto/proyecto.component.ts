@@ -24,6 +24,7 @@ import { Bank, BANKS } from './data';
 import { IndicadorService } from 'src/app/services/indicador.service';
 
 import { DomSanitizer } from '@angular/platform-browser';
+import { DateAdapter } from '@angular/material/core';
 //interface para area
 interface area {
   value: string;
@@ -127,11 +128,13 @@ export class ProyectoComponent implements OnInit {
     private IndicadorService: IndicadorService,
     private dialogRef: MatDialogRef<ProyectoComponent>,
     private snackbarService: SnackbarService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private dateAdapter: DateAdapter<Date>
   ) {
     this.fechaActual = new Date();
-
-    // Convierte la fecha a string en formato "dd-MM-yyyy" 
+    //Convierte la fecha en formato //dd/MM/yyyy
+    this.dateAdapter.setLocale('en-GB'); //dd/MM/yyyy
+    // Convierte la fecha actual a string en formato "dd-MM-yyyy" 
     this.fechaActualString = this.datePipe.transform(this.fechaActual, 'yyyy-MM-dd');
 
   }
@@ -177,7 +180,9 @@ export class ProyectoComponent implements OnInit {
     if (this.dialogData.action === 'Edit') {
       this.dialogAction = "Edit";
       this.action = "Actualizar";
+      this.showSelectors(true);
       this.proyectoForm.patchValue(this.dialogData.data);
+      console.log(this.dialogData.data)
       this.getComunidad(this.dialogData.data.id_municipio);
     }
 
@@ -546,22 +551,23 @@ export class ProyectoComponent implements OnInit {
   }
   //selectores
   onCuencaSelected(event: any) {
+    console.log('Event')
     console.log(event.value);
     const selectedValue = event.value;
     // Aquí puedes poner la lógica para determinar cuándo mostrar los selectores adicionales.
     // Por ejemplo, si el valor seleccionado es "opcion1", muestras los tres selectores adicionales.
     if (selectedValue === 1) {
-      this.showAdditionalSelects = true;
-      this.showSelector1 = true;
-      this.showSelector2 = true;
-      this.showSelector3 = true;
+      this.showSelectors(true);
     } else {
       // Si el valor seleccionado es diferente, ocultas los selectores adicionales.
-      this.showAdditionalSelects = false;
-      this.showSelector1 = false;
-      this.showSelector2 = false;
-      this.showSelector3 = false;
+      this.showSelectors(false);
     }
   }
+  showSelectors(status:boolean){
+    this.showAdditionalSelects = status;
+    this.showSelector1 = status;
+    this.showSelector2 = status;
+    this.showSelector3 = status;
 
+  }
 }

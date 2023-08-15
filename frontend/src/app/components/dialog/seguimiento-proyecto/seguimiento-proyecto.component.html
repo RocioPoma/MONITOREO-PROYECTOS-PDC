@@ -89,13 +89,12 @@
             </div>
             <div>
                 <!--Aregar y quitar campos de Input-->
-
                 <div *ngFor="let input of Financiamiento; let i = index" fxLayout="row wrap">
                     <mat-form-field appearance="fill" fxFlex>
                         <mat-label>Entidad financiera</mat-label>
                         <mat-select [(ngModel)]="input.entidad_financiera" formControlName="financiamiento">
                             <mat-option *ngFor="let item of EntidadFinanciera" [value]="item.id_entidad_financiera">
-                                {{item.nombre_entidad_financiera}}
+                                {{item.nom_entidad_financiera}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -111,9 +110,11 @@
                     </mat-form-field>
                 </div>
                 <!---->
-
             </div>
-
+            
+            <div fxLayout="row" fxGap="8px" class="subTitle-container">
+                <span class="subTitle" style="margin-right: 4.7cm;">ALINEAMIENTO DE INDICADOR (PDC)</span>
+            </div>
         </div>
     </form>
 </mat-dialog-content>
