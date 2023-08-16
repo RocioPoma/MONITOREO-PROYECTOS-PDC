@@ -2,6 +2,9 @@
 .table-wrapper {
     overflow-x: auto;
 }
+table{
+    width: 100%;
+}
 
 @media screen and (max-width: 600px) {
     .mat-table {
@@ -69,28 +72,3 @@ mat-form-field {
     padding: 5px;
 }
 
-.img {
-    background-size: cover;
-    border-radius: 50%;
-    margin: 0 auto;
-}
-
-
-
-
-//para las opciones
-
-.icon-group {
-    display: flex;
-    align-items: center;
-   // gap: 10px; /* Espacio entre los iconos */
-}
-
-/* Asegurar que los botones y los iconos tengan el mismo tamaño */
-.icon-group button {
-   
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}

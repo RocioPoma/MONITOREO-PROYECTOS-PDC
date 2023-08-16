@@ -139,8 +139,8 @@ router.post('/login',(req,res)=>{
 router.patch('/updateStatus',(req,res)=>{
   let user =req.body;
   console.log(user);
-  var query = "update usuario set estado=? where id_usuario=?";
-  connection.query(query,[user.estado,user.id_usuario],(err,results)=>{
+  var query = "update usuario set estado=? where ci=?";
+  connection.query(query,[user.estado,user.ci],(err,results)=>{
       if(!err){
           if(results.affectedRows == 0){
               return res.status(404).json({message:"El usuario  no existe"});

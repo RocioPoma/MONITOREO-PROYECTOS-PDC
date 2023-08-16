@@ -90,9 +90,13 @@ export class ProyectoComponent implements OnInit {
   //-------Para filtrar municipio
   filterComunidad: any[] = [];
   searchComunidad = new FormControl();
+  selectedComunidadesControl = new FormControl();
+  isDropdownOpen = false;
 
 
-  public ComunidadMultiCtrl: FormControl = new FormControl();
+  ComunidadMultiCtrl = new FormControl();
+  //prueba
+  
 
   //-------Para agregar y quitar campos de Input
   alcances: { cantidad: any; unidad: any }[] = [];
@@ -170,6 +174,8 @@ export class ProyectoComponent implements OnInit {
       id_municipio: [null, [Validators.required]],
       //nuevos casillas  
       id_unidad_medicion: [null, [Validators.required]],
+      id_linea_estrategica: [null],
+      id_linea_accion:[null],
       id_accion_estrategica: [null, [Validators.required]],
       id_indicador: [null, [Validators.required]],
       documento: [null],
@@ -182,6 +188,11 @@ export class ProyectoComponent implements OnInit {
       this.action = "Actualizar";
       this.showSelectors(true);
       this.proyectoForm.patchValue(this.dialogData.data);
+      //
+      // this.proyectoForm.id_ciudad_comunidad=this.dialogData.comunidades;
+      // this.proyectoForm.id_accion_estrategica=this.dialogData.accion_estrategica;
+      // this.proyectoForm.id_indicador=this.dialogData.a
+      //
       console.log(this.dialogData.data)
       this.getComunidad(this.dialogData.data.id_municipio);
     }
@@ -204,6 +215,7 @@ export class ProyectoComponent implements OnInit {
       this.filterOptionsIndicador(searchTerm);
     });
 
+    
     this.searchComunidad.valueChanges.subscribe(searchTerm => {
       this.filterOptionsComunidad(searchTerm);
     });
@@ -368,6 +380,7 @@ export class ProyectoComponent implements OnInit {
   getComunidad(id_municipio: any) {
     this.ComunidadService.getComunidad(id_municipio).subscribe((response: any) => {
       this.comunidad = response;
+      
     }, (error: any) => {
       if (error.error?.message) {
         this.responseMessage = error.error?.message;
@@ -454,12 +467,18 @@ export class ProyectoComponent implements OnInit {
     });
   }
 
-  getcomunidades(data: any) {
+  onComunidadesSelectionChange(data: any) {
     console.log(data);
     this.comunidades = data;
+    // Actualizar el filtro
+    this.searchComunidad.setValue('');
 
   }
   /*------ Fin Servicios Extras ------*/
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
 
 
   //------------------- AGREGAR PROYECTO
@@ -563,7 +582,7 @@ export class ProyectoComponent implements OnInit {
       this.showSelectors(false);
     }
   }
-  showSelectors(status:boolean){
+  showSelectors(status: boolean) {
     this.showAdditionalSelects = status;
     this.showSelector1 = status;
     this.showSelector2 = status;

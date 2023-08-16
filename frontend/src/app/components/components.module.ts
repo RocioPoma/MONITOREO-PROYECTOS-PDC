@@ -25,6 +25,7 @@ import { ManageEntidadEjecutoraComponent } from './manage-entidad-ejecutora/mana
 import { ManageEntidadUOrganizacionComponent } from './manage-entidad-u-organizacion/manage-entidad-u-organizacion.component';
 import { EntidadEjecutoraComponent } from './dialog/entidad-ejecutora/entidad-ejecutora.component';
 import { EntidadOrganizacionComponent } from './dialog/entidad-organizacion/entidad-organizacion.component';
+import { AppComponent } from '../app.component';
 
 //import { MaterialModule } from '../shared/material-module';
 
@@ -61,5 +62,6 @@ import { EntidadOrganizacionComponent } from './dialog/entidad-organizacion/enti
     FlexLayoutModule,
     CdkTableModule
   ]
+ // bootstrap: [AppComponent]
 })
 export class ComponentsModule { }

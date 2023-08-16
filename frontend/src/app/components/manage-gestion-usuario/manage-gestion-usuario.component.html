@@ -11,26 +11,10 @@
             <input matInput (keyup)="applyFilter($event)" placeholder="Ex. prueba" #input>
         </mat-form-field>
     
-    <!--     <mat-form-field fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
-            <mat-label>Nombre Municipio</mat-label>
-            <mat-select (selectionChange)="applyMunicipioFilter($event.value)">
-                <mat-option value="">Todos</mat-option>
-                <mat-option *ngFor="let municipio of municipios" [value]="municipio.nombre_municipio">{{ municipio.nombre_municipio }}</mat-option>
-            </mat-select>
-        </mat-form-field> -->
-    
-     <!--    <mat-form-field fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
-            <mat-label>Filtrar por ...</mat-label>
-            <mat-select (selectionChange)="applyMunicipioFilter($event.value)">
-                <mat-option value="">Todos</mat-option>
-                <mat-option *ngFor="let municipio of municipios" [value]="municipio.nombre_municipio">{{ municipio.nombre_municipio }}</mat-option>
-            </mat-select>
-        </mat-form-field> -->
     
         <div fxFlex="100%" fxFlex.gt-sm="33.33%"></div>
         <div fxFlex="100%" fxFlex.gt-sm="33.33%"></div>
     
-       <!-- <button  mat-stroked-button color="primary" class="padding">REGISTRAR</button>-->
         <button fxFlex.gt-sm="10%"  mat-flat-button color="primary" class="padding" (click)="handleAddAction()">Registrar</button>
     </div>
 <div>
@@ -64,18 +48,22 @@
                     <td mat-cell *matCellDef="let element"> {{element.fecha_registro | date}} </td>
                 </ng-container>
         
-                <ng-container matColumnDef="Accion">
+                <ng-container matColumnDef="acciones">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Acciones</th>
-                    <td  mat-cell *matCellDef="let element" class="action-link">
-                        <button mat-icon-button color="primary" matTooltip="Edit" (click)="handleEditAction(element)">
-                            <mat-icon>edit</mat-icon>
-                        </button>
-                        <button mat-icon-button color="primary" matTooltip="Delete" (click)="handleDeleteAction(element)">
-                            <mat-icon>delete</mat-icon>
-                        </button>
-                        <mat-slide-toggle color="primary" (change)="onChange($event.checked, element.ci)"
-                            matTooltip="Activar o Desactivar Categoría" [checked]="element.estado">
-                        </mat-slide-toggle>
+                    <td mat-cell *matCellDef="let element" class="action-link">
+                        <div class="d-flex align-items-center">
+                            <button color="primary" mat-icon-button matTooltip="Edit"
+                                (click)="handleEditAction(element)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button color="primary" mat-icon-button matTooltip="Delete"
+                                (click)="handleDeleteAction(element)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                            <mat-slide-toggle color="primary"
+                                (change)="onChange($event.checked, element.ci)"
+                                matTooltip="Activar o Desactivar" [checked]="element.estado"></mat-slide-toggle>
+                        </div>
                     </td>
                 </ng-container>
         

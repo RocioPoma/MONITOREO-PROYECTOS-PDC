@@ -41,7 +41,7 @@
                 <mat-form-field fxFlex>
                     <mat-label>fecha inicio</mat-label>
                     <input matInput [matDatepicker]="picker" formControlName="fecha_inicio">
-                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-hint>DD/MM/YYYY</mat-hint>
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
@@ -49,7 +49,7 @@
                 <mat-form-field fxFlex>
                     <mat-label>fecha fin</mat-label>
                     <input matInput [matDatepicker]="picker2" formControlName="fecha_fin">
-                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-hint>DD/MM/YYYY</mat-hint>
                     <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2></mat-datepicker>
                 </mat-form-field>
@@ -107,8 +107,6 @@
                     </mat-select>
                 </mat-form-field>
 
-
-
                 <!--    <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Comunidad/ciudad</mat-label>
                     <mat-select formControlName="id_ciudad_comunidad" required>
@@ -119,12 +117,12 @@
                 </mat-form-field> -->
 
 
-
-                <!-- prueba de comunidad -->
+                <!-- comunidad -->
+                <!-- 
                 <mat-form-field fxFlex>
                     <mat-label>Comunidad/ciudad</mat-label>
-                    <mat-select [formControl]="ComunidadMultiCtrl" [multiple]="true" #multiSelect
-                        (selectionChange)="getcomunidades($event.value)">
+                    <mat-select [formControl]="ComunidadMultiCtrl" [multiple]="true" 
+                        (selectionChange)="onComunidadesSelectionChange($event.value)">
                         <mat-option placeholderLabel="Buscar opción">
                             <ngx-mat-select-search [formControl]="searchComunidad"></ngx-mat-select-search>
                         </mat-option>
@@ -132,7 +130,23 @@
                             {{ option.nombre }}
                         </mat-option>
                     </mat-select>
+                </mat-form-field> -->
+                <!---->
+        
+                <mat-form-field>
+                    <mat-label>Selecciona Comunidades</mat-label>
+                    <mat-select [formControl]="selectedComunidadesControl" [multiple]="true"
+                        (selectionChange)="onComunidadesSelectionChange($event)">
+                        <mat-option >
+                            <ngx-mat-select-search [formControl]="searchComunidad"  placeholderLabel="Buscar opción"></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let comunidad of comunidad" [value]="comunidad">
+                            {{ comunidad.nombre }}
+                        </mat-option>
+                    </mat-select>
                 </mat-form-field>
+        
+                <!---->
             </div>
 
             <div fxLayout="row" fxGap="8px" class="subTitle-container">
@@ -193,12 +207,12 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <div  appearance="fill" fxFlex></div>
-                    <div  appearance="fill"  fxFlex></div>
+                    <div appearance="fill" fxFlex></div>
+                    <div appearance="fill" fxFlex></div>
                 </div>
                 <!---->
             </div>
-            
+
             <!--
             <button mat-button color="primary" (click)="mostrarDatos()">Mostrar Datos</button>
             -->
@@ -248,10 +262,11 @@
 
                         <mat-form-field fxFlex>
                             <mat-label>Línea Estratégica (LE)</mat-label>
-                            <mat-select (selectionChange)="getLineaDeAccion($event.value.id_linea_estrategica)">
+                            <mat-select (selectionChange)="getLineaDeAccion($event.value)">
                                 <mat-option><ngx-mat-select-search [formControl]="searchLineaEstrategica"
                                         placeholderLabel="Buscar opción"></ngx-mat-select-search></mat-option>
-                                <mat-option *ngFor="let option of filterLineaEstrategica" [value]="option">
+                                <mat-option *ngFor="let option of filterLineaEstrategica"
+                                    [value]="option.id_linea_estrategica">
                                     {{ option.descripcion }}
                                 </mat-option>
                             </mat-select>
@@ -260,10 +275,10 @@
                     <div *ngIf="showSelector2">
                         <mat-form-field fxFlex>
                             <mat-label>Línea de Acción (LA)</mat-label>
-                            <mat-select (selectionChange)="getAccionEstrategica($event.value.id_linea_accion)">
+                            <mat-select (selectionChange)="getAccionEstrategica($event.value)">
                                 <mat-option><ngx-mat-select-search [formControl]="searchLineaDeAccion"
                                         placeholderLabel="Buscar opción"></ngx-mat-select-search></mat-option>
-                                <mat-option *ngFor="let option of filterLineaDeAccion" [value]="option">
+                                <mat-option *ngFor="let option of filterLineaDeAccion" [value]="option.id_linea_accion">
                                     {{ option.descripcion }}
                                 </mat-option>
                             </mat-select>

@@ -44,15 +44,21 @@ router.put('/update/:id', (req, res) => {
 });
 
 // Ruta para habilitar o deshabilitar una categoría
-router.patch('/habilitar/:id', (req, res) => {
-  const { id } = req.params;
-  const { estado } = req.body;
-  const sql = 'UPDATE CATEGORIA SET estado = ? WHERE id_categoria = ?';
-  connection.query(sql, [estado, id], (err, result) => {
-    if (err) throw err;
-    res.json({ message: 'Estado de categoría actualizado correctamente' });
-  });
-});
+router.patch('/updateStatus',(req,res)=>{
+  let categoria =req.body;
+  var query = "update categoria set estado=? where id_categoria=?";
+  connection.query(query,[categoria.estado,categoria.id_categoria],(err,results)=>{
+      if(!err){
+          if(results.affectedRows == 0){
+              return res.status(404).json({message:"La categoria no existe"});
+          }
+          return res.status(200).json({message:"Actualización Estado de categoría con éxito"});
+      }
+      else{
+          return res.status(500).json(err);
+      }
+  })
+})
 
 // Ruta para eliminar una categoría
 router.delete('/delete/:id', (req, res) => {

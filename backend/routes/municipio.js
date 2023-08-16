@@ -71,11 +71,11 @@ router.get('/get', (req, res) => {
     });
   });
 
-//status usuario
+//estado municipio activar o desactivar
 router.patch('/updateStatus',(req,res)=>{
-  let user =req.body;
+  let municipio =req.body;
   var query = "update municipio set estado=? where id_municipio=?";
-  connection.query(query,[user.estado,user.id_municipio],(err,results)=>{
+  connection.query(query,[municipio.estado,municipio.id_municipio],(err,results)=>{
       if(!err){
           if(results.affectedRows == 0){
               return res.status(404).json({message:"El municipio  no existe"});
