@@ -133,10 +133,10 @@ deleteUser(id_User: any) {
   })
 }
 
-onChange(status: any, id_usuario: any) {
+onChange(status: any, ci: any) {
   var data = {
     estado: status.toString(),
-    id_usuario: id_usuario
+    ci: ci
   }
  //console.log(data);
   this.usuarioService.updateStatus(data).subscribe((response: any) => {

@@ -112,11 +112,11 @@ menuItems: MenuItem[] = [
     icon: 'settings',
     submenus: [
       {
-        title: 'municipio',
+        title: 'Gestión municipio',
         link: '/municipio'
       },
       {
-        title: 'categoria',
+        title: 'Gestión categoria',
         link: '/categoria'
       },
       {
@@ -124,8 +124,12 @@ menuItems: MenuItem[] = [
         link: '/entidad-ejecutora'
       },
       {
-        title: 'Entidad U organizacion',
+        title: 'Entidad/organizacion',
         link: '/entidad-organizacion'
+      },
+      {
+        title: 'ADM Indicador',
+        link: '/indicador'
       }
     ]
   }

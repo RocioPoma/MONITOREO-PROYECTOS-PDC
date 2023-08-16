@@ -23,7 +23,7 @@
                 <table mat-table [dataSource]="dataSource" matSort style="table-layout: auto; width: 100%;">
 
                     <ng-container matColumnDef="numero">
-                        <th mat-header-cell *matHeaderCellDef  mat-sort-header> No.</th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> No.</th>
                         <td mat-cell *matCellDef="let element; index as i "> {{i+1}} </td>
                     </ng-container>
 
@@ -35,18 +35,21 @@
                     <ng-container matColumnDef="acciones">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Acciones</th>
                         <td mat-cell *matCellDef="let element" class="action-link">
-                          <div class="d-flex align-items-center">
-                            <button color="primary" mat-icon-button matTooltip="Edit" (click)="handleEditAction(element)">
-                              <mat-icon>edit</mat-icon>
-                            </button>
-                            <button color="primary" mat-icon-button matTooltip="Delete" (click)="handleDeleteAction(element)">
-                              <mat-icon>delete</mat-icon>
-                            </button>
-                            <mat-slide-toggle color="primary" (change)="onChange($event.checked, element.id_municipio)" matTooltip="Activar o Desactivar"
-                              [checked]="element.estado"></mat-slide-toggle>
-                          </div>
+                            <div class="d-flex align-items-center">
+                                <button color="primary" mat-icon-button matTooltip="Edit"
+                                    (click)="handleEditAction(element)">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <button color="primary" mat-icon-button matTooltip="Delete"
+                                    (click)="handleDeleteAction(element)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                                <mat-slide-toggle color="primary"
+                                    (change)="onChange($event.checked, element.id_municipio)"
+                                    matTooltip="Activar o Desactivar" [checked]="element.estado"></mat-slide-toggle>
+                            </div>
                         </td>
-                      </ng-container>
+                    </ng-container>
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

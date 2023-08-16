@@ -129,7 +129,7 @@ export class ManageCategoriaComponent {
 
   onChange(status: any, id_categoria: any) {
     var data = {
-      status: status.toString(),
+      estado: status.toString(),
       id_categoria: id_categoria
     }
     this.categoriaService.updateStatus(data).subscribe((response: any) => {
