@@ -53,7 +53,7 @@ export class GestionusuarioComponent {
       genero: [null, [Validators.required]],
       rol: [null, [Validators.required]],
       estado: [null, [Validators.required]],
-      entidad: [null, [Validators.required]],
+      id_entidad: [null, [Validators.required]],
       ci: [null, [Validators.required]]
       
     });
@@ -61,13 +61,14 @@ export class GestionusuarioComponent {
       this.dialogAction="Edit";
       this.action ="Actualizar";
       this.usuarioForm.patchValue(this.dialogData.data);
+      console.log(this.dialogData.data);
     }
   }
 
   //llama a la entidades existentes
   entidades() {
     this.entidadServices.GetEntidades().subscribe((response: any) => {
-      console.log(response);
+     
       this.entidad=response;    
     })
   }
@@ -97,7 +98,7 @@ export class GestionusuarioComponent {
       genero: formData.genero,
       rol: formData.rol,
       estado: 1,
-      id_entidad: formData.entidad,
+      id_entidad: formData.id_entidad,
       ci: formData.ci
     }
     console.log(data);
@@ -120,19 +121,21 @@ export class GestionusuarioComponent {
 
   edit(){
     var formData = this.usuarioForm.value;
+    this.fnac = this.datePipe.transform(formData.fecha_nacimiento, 'yyyy-MM-dd');
+    this.fechaActualString = this.datePipe.transform(formData.fecha_registro, 'yyyy-MM-dd');
     var data ={
-   nombre: formData.nombre,
+      nombre: formData.nombre,
       ap_paterno: formData.ap_paterno,
       ap_materno: formData.ap_materno,
-      fecha_nacimiento: formData.fecha_nacimiento,
-      fecha_registro: formData.fecha_registro,
+      fecha_nacimiento: this.fnac,
+      fecha_registro:  this.fechaActualString,
       password: formData.password,
       email: formData.email,
       telefono: formData.telefono,
       genero: formData.genero,
       rol: formData.rol,
       estado: formData.estado,
-      id_entidad: formData.entidad,
+      id_entidad: formData.id_entidad,
       ci: formData.ci
     }
      this.usuarioService.update(data).subscribe((response:any)=>{

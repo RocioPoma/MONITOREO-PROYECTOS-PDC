@@ -55,7 +55,6 @@
 <mat-nav-list appAccordion>
   <ng-container *ngFor="let menuItem of menuItems">
     <ng-container *ngIf="!menuItem.submenus; else submenuTemplate">
-
       <mat-list-item>
         <a mat-list-item [routerLink]="['/',menuItem.link]">
           <mat-icon>{{ menuItem.icon }}</mat-icon>
@@ -64,14 +63,20 @@
       </mat-list-item>
     </ng-container>
     <ng-template #submenuTemplate>
-      <mat-expansion-panel>
+      <mat-expansion-panel >
         <mat-expansion-panel-header>
+      
           <mat-icon>{{ menuItem.icon }}</mat-icon>
           <span>{{ menuItem.title }}</span>
+        
         </mat-expansion-panel-header>
-        <mat-list>
-          <mat-list-item *ngFor="let submenuItem of menuItem.submenus">
-            <a mat-list-item (click)="navigateTo('/layout' + submenuItem.link)" >{{ submenuItem.title }}</a>
+        <mat-list >
+          <mat-list-item  *ngFor="let submenuItem of menuItem.submenus">
+
+            <a mat-menu-item  (click)="navigateTo('/layout' + submenuItem.link)" >
+              {{ submenuItem.title }}
+            </a >
+            
           </mat-list-item>
         </mat-list>
       </mat-expansion-panel>

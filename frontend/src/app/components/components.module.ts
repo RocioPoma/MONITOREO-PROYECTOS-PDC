@@ -21,6 +21,10 @@ import { BasedeDatosComponent } from './opcionesMenu/basede-datos/basede-datos.c
 import { SeguimientoProyectoComponent } from './dialog/seguimiento-proyecto/seguimiento-proyecto.component';
 import { GestionusuarioComponent } from './dialog/gestionusuario/gestionusuario.component';
 import { ManageGestionUsuarioComponent } from './manage-gestion-usuario/manage-gestion-usuario.component';
+import { ManageEntidadEjecutoraComponent } from './manage-entidad-ejecutora/manage-entidad-ejecutora.component';
+import { ManageEntidadUOrganizacionComponent } from './manage-entidad-u-organizacion/manage-entidad-u-organizacion.component';
+import { EntidadEjecutoraComponent } from './dialog/entidad-ejecutora/entidad-ejecutora.component';
+import { EntidadOrganizacionComponent } from './dialog/entidad-organizacion/entidad-organizacion.component';
 
 //import { MaterialModule } from '../shared/material-module';
 
@@ -41,7 +45,11 @@ import { ManageGestionUsuarioComponent } from './manage-gestion-usuario/manage-g
     BasedeDatosComponent,
     SeguimientoProyectoComponent,
     GestionusuarioComponent,
-    ManageGestionUsuarioComponent
+    ManageGestionUsuarioComponent,
+    ManageEntidadEjecutoraComponent,
+    ManageEntidadUOrganizacionComponent,
+    EntidadEjecutoraComponent,
+    EntidadOrganizacionComponent
   ],
   imports: [
     CommonModule,

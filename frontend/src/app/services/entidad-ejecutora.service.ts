@@ -22,5 +22,29 @@ export class EntidadEjecutoraService {
       headers: new HttpHeaders().set('Content-Type', "application/json")
     });
   }
+//----------------------API PARA EDITAR CATEGORÍA ------------------------------
+update(data: any) {
+  return this.httpClient.put(this.url +
+    "/entidad_eje/update/", data, {
+    headers: new HttpHeaders().set('Content-Type', "application/json")
+  });
+}
+
+
+//----------------------API PARA ELIMINAR CATEGORÍA ------------------------------
+delete(id: any) {
+  return this.httpClient.delete(this.url +
+    "/entidad_eje/delete/" + id, {
+    headers: new HttpHeaders().set('Content-Type', "application/json")
+  });
+}
+
+//----------------------API PARA ACTUALIZAR ESTADO -------------------------
+updateStatus(data: any) {
+  return this.httpClient.patch(this.url +
+    "/entidad_eje/updateStatus/", data, {
+    headers: new HttpHeaders().set('Content-Type', "application/json")
+  });
+}
 
 }

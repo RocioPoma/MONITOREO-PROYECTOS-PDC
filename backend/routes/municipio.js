@@ -71,16 +71,16 @@ router.get('/get', (req, res) => {
     });
   });
 
-//status municipio
+//status usuario
 router.patch('/updateStatus',(req,res)=>{
   let user =req.body;
   var query = "update municipio set estado=? where id_municipio=?";
   connection.query(query,[user.estado,user.id_municipio],(err,results)=>{
       if(!err){
           if(results.affectedRows == 0){
-              return res.status(404).json({message:"El usuario  no existe"});
+              return res.status(404).json({message:"El municipio  no existe"});
           }
-          return res.status(200).json({message:"Actualización Estado de usuario con éxito"});
+          return res.status(200).json({message:"Actualización Estado de municipio con éxito"});
       }
       else{
           return res.status(500).json(err);

@@ -75,6 +75,8 @@ router.delete('/delete/:ci',auth.authenticateToken, (req, res) => {
   });
 
 
+
+
  /*  router.post('/signup',(req,res)=>{
     let user= req.body;
     query ="select email,password,role,status from user where email=?"
@@ -133,5 +135,22 @@ router.post('/login',(req,res)=>{
     })
 })
 
+//status user
+router.patch('/updateStatus',(req,res)=>{
+  let user =req.body;
+  console.log(user);
+  var query = "update usuario set estado=? where id_usuario=?";
+  connection.query(query,[user.estado,user.id_usuario],(err,results)=>{
+      if(!err){
+          if(results.affectedRows == 0){
+              return res.status(404).json({message:"El usuario  no existe"});
+          }
+          return res.status(200).json({message:"Actualización Estado de usuario con éxito"});
+      }
+      else{
+          return res.status(500).json(err);
+      }
+  })
+})
 
 module.exports = router;

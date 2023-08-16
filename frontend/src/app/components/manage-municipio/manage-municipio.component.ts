@@ -136,7 +136,7 @@ export class ManageMunicipioComponent  {
       estado: status.toString(),
       id_municipio: id_municipio
     }
-    
+    console.log(data);
     this.MunicipioServices.updateStatus(data).subscribe((response: any) => {
       this.tableData();
       this.responseMessage = response?.message;

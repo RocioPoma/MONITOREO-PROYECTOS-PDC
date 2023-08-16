@@ -135,9 +135,10 @@ deleteUser(id_User: any) {
 
 onChange(status: any, id_usuario: any) {
   var data = {
-    status: status.toString(),
+    estado: status.toString(),
     id_usuario: id_usuario
   }
+ //console.log(data);
   this.usuarioService.updateStatus(data).subscribe((response: any) => {
     this.tableData();
     this.responseMessage = response?.message;

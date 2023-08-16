@@ -45,7 +45,7 @@ export class UsuarioService {
   //----------------------API PARA ACTUALIZAR ESTADO -------------------------
   updateStatus(data: any) {
     return this.httpClient.patch(this.url +
-      "/municipio/updateStatus/", data, {
+      "/usuarios/updateStatus/", data, {
       headers: new HttpHeaders().set('Content-Type', "application/json")
     });
   }

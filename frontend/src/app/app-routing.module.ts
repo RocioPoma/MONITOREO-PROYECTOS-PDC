@@ -12,6 +12,8 @@ import { ReportesComponent } from "./components/opcionesMenu/reportes/reportes.c
 import { BasedeDatosComponent } from "./components/opcionesMenu/basede-datos/basede-datos.component";
 import { AuthGuard } from './guards/auth.guard';
 import { ManageGestionUsuarioComponent } from "./components/manage-gestion-usuario/manage-gestion-usuario.component";
+import { ManageEntidadEjecutoraComponent} from "./components/manage-entidad-ejecutora/manage-entidad-ejecutora.component";
+import { ManageEntidadUOrganizacionComponent } from "./components/manage-entidad-u-organizacion/manage-entidad-u-organizacion.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent},
@@ -35,7 +37,9 @@ const routes: Routes = [
     { path: 'pproyecto', component: ManageProyectoComponent },
     { path: 'categoria', component: ManageCategoriaComponent },
     { path: 'gestionusuario', component: ManageGestionUsuarioComponent },
-    { path: 'municipio', component: ManageMunicipioComponent }
+    { path: 'municipio', component: ManageMunicipioComponent },
+    { path: 'entidad-ejecutora', component: ManageEntidadEjecutoraComponent },
+    { path: 'entidad-organizacion', component: ManageEntidadUOrganizacionComponent }
     ] 
   },
 /* 

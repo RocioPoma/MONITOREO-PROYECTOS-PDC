@@ -80,7 +80,7 @@
                 <!-- entiedad -->
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Entidad</mat-label>
-                    <mat-select formControlName="entidad" required>
+                    <mat-select formControlName="id_entidad" required>
                         <mat-option *ngFor="let tipologia of entidad" [value]="tipologia.id_entidad">
                             {{tipologia.nombre_entidad}}
                         </mat-option>

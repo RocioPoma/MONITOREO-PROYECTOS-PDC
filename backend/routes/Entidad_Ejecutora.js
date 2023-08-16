@@ -45,10 +45,10 @@ router.post('/create', (req, res) => {
     });
   });
 //modificar
-router.put('/update/:id', (req, res) => {
-    const { id } = req.params;
-    const { nom_entidad_ejecutora, desc_entidad_ejecutora, estado } = req.body;
-    connection.query('UPDATE ENTIDAD_EJECUTORA SET nom_entidad_ejecutora = ?, desc_entidad_ejecutora = ?, estado = ? WHERE id_entidad_ejecutora = ?', [nom_entidad_ejecutora, desc_entidad_ejecutora, estado, id], (err) => {
+router.put('/update/', (req, res) => {
+   
+    const { nom_entidad_ejecutora, desc_entidad_ejecutora, estado ,id_entidad_ejecutora} = req.body;
+    connection.query('UPDATE ENTIDAD_EJECUTORA SET nom_entidad_ejecutora = ?, desc_entidad_ejecutora = ?, estado = ? WHERE id_entidad_ejecutora = ?', [nom_entidad_ejecutora, desc_entidad_ejecutora, estado, id_entidad_ejecutora], (err) => {
       if (err) {
         console.error(err);
         res.status(500).json({ message: 'Hubo un error al actualizar la entidad ejecutora' });
@@ -69,5 +69,8 @@ router.delete('/delete/:id', (req, res) => {
       }
     });
   });
+
+
+  //status
 
 module.exports = router;

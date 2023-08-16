@@ -1,0 +1,35 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row fxLayout="row">
+        <span class="title-center">{{action}} Entidad Ejecutora</span>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="entidadEjeForm">
+        <div fxFlex fxLayout="column">
+            <div fxLayout="row wrap">
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="nom_entidad_ejecutora" required>
+                    <mat-error *ngIf="entidadEjeForm.controls.nom_entidad_ejecutora.touched && entidadEjeForm.controls.nom_entidad_ejecutora.invalid">
+                        <span *ngIf="entidadEjeForm.controls.nom_entidad_ejecutora.errors.required">Este campo es obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Descripción</mat-label>
+                    <input matInput formControlName="desc_entidad_ejecutora" required>
+                    <mat-error *ngIf="entidadEjeForm.controls.desc_entidad_ejecutora.touched && entidadEjeForm.controls.desc_entidad_ejecutora.invalid">
+                        <span *ngIf="entidadEjeForm.controls.desc_entidad_ejecutora.errors.required">Este campo es obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" type="submit" (click)="handleSubmit()"
+        [disabled]="![entidadEjeForm.valid && entidadEjeForm.dirty]">{{action}}</button>
+        <button mat-raised-button color="primary" mat-dialog-close>Cancelar</button>
+</mat-dialog-actions>

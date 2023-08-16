@@ -120,12 +120,12 @@ menuItems: MenuItem[] = [
         link: '/categoria'
       },
       {
-        title: 'Acción 1',
-        link: '/accion1'
+        title: 'Entidad Ejecutora',
+        link: '/entidad-ejecutora'
       },
       {
-        title: 'Acción 2',
-        link: '/accion2'
+        title: 'Entidad U organizacion',
+        link: '/entidad-organizacion'
       }
     ]
   }
