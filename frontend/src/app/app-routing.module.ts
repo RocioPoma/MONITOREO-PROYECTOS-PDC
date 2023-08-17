@@ -41,7 +41,8 @@ const routes: Routes = [
     { path: 'municipio', component: ManageMunicipioComponent },
     { path: 'entidad-ejecutora', component: ManageEntidadEjecutoraComponent },
     { path: 'entidad-financiera', component: ManageEntidadFinancieraComponent },
-    { path: 'entidad-organizacion', component: ManageEntidadUOrganizacionComponent }
+    { path: 'entidad-organizacion', component: ManageEntidadUOrganizacionComponent },
+   // { path: 'indicador', component: ManageIndicadorComponent }
     ] 
   },
 /* 
