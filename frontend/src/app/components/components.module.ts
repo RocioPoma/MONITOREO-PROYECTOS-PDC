@@ -26,6 +26,8 @@ import { ManageEntidadUOrganizacionComponent } from './manage-entidad-u-organiza
 import { EntidadEjecutoraComponent } from './dialog/entidad-ejecutora/entidad-ejecutora.component';
 import { EntidadOrganizacionComponent } from './dialog/entidad-organizacion/entidad-organizacion.component';
 import { AppComponent } from '../app.component';
+import { ManageEntidadFinancieraComponent } from './manage-entidad-financiera/manage-entidad-financiera.component';
+import { EntidadFinancieraComponent } from './dialog/entidad-financiera/entidad-financiera.component';
 
 //import { MaterialModule } from '../shared/material-module';
 
@@ -50,7 +52,9 @@ import { AppComponent } from '../app.component';
     ManageEntidadEjecutoraComponent,
     ManageEntidadUOrganizacionComponent,
     EntidadEjecutoraComponent,
-    EntidadOrganizacionComponent
+    EntidadOrganizacionComponent,
+    ManageEntidadFinancieraComponent,
+    EntidadFinancieraComponent
   ],
   imports: [
     CommonModule,

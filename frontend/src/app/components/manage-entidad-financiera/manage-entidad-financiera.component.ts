@@ -6,30 +6,31 @@ import { CategoriaService } from 'src/app/services/categoria.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { GlobalCostants } from 'src/app/shared/global-constants';
 
-import { EntidadOrganizacionComponent } from "../dialog/entidad-organizacion/entidad-organizacion.component";
+import { EntidadFinancieraComponent } from "../dialog/entidad-financiera/entidad-financiera.component";
 import { ConfirmationComponent } from '../dialog/confirmation/confirmation.component';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { EntidadService } from 'src/app/services/entidad.service';
+import { EntidadFinancieraService } from 'src/app/services/entidad-financiera.service';
 
 
 @Component({
-  selector: 'app-manage-entidad-u-organizacion',
-  templateUrl: './manage-entidad-u-organizacion.component.html',
-  styleUrls: ['./manage-entidad-u-organizacion.component.scss']
+  selector: 'app-manage-entidad-financiera',
+  templateUrl: './manage-entidad-financiera.component.html',
+  styleUrls: ['./manage-entidad-financiera.component.scss']
 })
-export class ManageEntidadUOrganizacionComponent {
-  displayedColumns: string[] = ['numero', 'nombre', 'comentario', 'acciones']; 
+export class ManageEntidadFinancieraComponent {
+
+  displayedColumns: string[] = ['numero', 'nombre', 'descripcion', 'acciones']; 
   dataSource: any;
   responseMessage: any;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(
-    private entidadServices: EntidadService,
+constructor(
+    private entidadFinanciera: EntidadFinancieraService,
     private dialog: MatDialog,
     private snackbarService: SnackbarService,
     private router: Router) { }
@@ -39,7 +40,7 @@ export class ManageEntidadUOrganizacionComponent {
   }
 
   tableData() {
-    this.entidadServices.GetEntidades().subscribe((response: any) => {
+    this.entidadFinanciera.get().subscribe((response: any) => {
       this.dataSource = new MatTableDataSource(response);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -71,11 +72,11 @@ export class ManageEntidadUOrganizacionComponent {
       action: 'Add'
     }
     dialogConfig.width = "700px";
-    const dialogRef = this.dialog.open(EntidadOrganizacionComponent, dialogConfig);
+    const dialogRef = this.dialog.open(EntidadFinancieraComponent, dialogConfig);
     this.router.events.subscribe(() => {
       dialogRef.close();
     });
-    const sub = dialogRef.componentInstance.onAddEntidad.subscribe((response) => {
+    const sub = dialogRef.componentInstance.onAddEntidadFinan.subscribe((response) => {
       this.tableData();
     })
   }
@@ -87,11 +88,11 @@ export class ManageEntidadUOrganizacionComponent {
       data: values
     }
     dialogConfig.width = "700px";
-    const dialogRef = this.dialog.open(EntidadOrganizacionComponent, dialogConfig);
+    const dialogRef = this.dialog.open(EntidadFinancieraComponent, dialogConfig);
     this.router.events.subscribe(() => {
       dialogRef.close();
     });
-    const sub = dialogRef.componentInstance.onEditEntidad.subscribe((response) => {
+    const sub = dialogRef.componentInstance.onEditEntidadFinan.subscribe((response) => {
       this.tableData();
     })
   }
@@ -99,17 +100,17 @@ export class ManageEntidadUOrganizacionComponent {
   handleDeleteAction(values: any) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      message: ' eliminar Entidad  '+ values.nombre_entidad
+      message: ' eliminar Entidad Ejecutora '+ values.nom_entidad_ejecutora
     };
     const dialogRef = this.dialog.open(ConfirmationComponent, dialogConfig);
     const sub = dialogRef.componentInstance.onEmitStatusChange.subscribe((response) => {
-      this.deleteEntidad(values.id_entidad);
+      this.deleteEntidadFinan(values.id_entidad_finan);
       dialogRef.close();
     });
   }
 
-  deleteEntidad(id_entidad: any) {
-    this.entidadServices.delete(id_entidad).subscribe((response: any) => {
+  deleteEntidadFinan(id_finan: any) {
+    this.entidadFinanciera.delete(id_finan).subscribe((response: any) => {
       this.tableData();
       this.responseMessage = response?.message;
       this.snackbarService.openSnackBar(this.responseMessage, "success");
@@ -124,12 +125,12 @@ export class ManageEntidadUOrganizacionComponent {
     })
   }
 
-  onChange(status: any, id_entidad: any) {
+  onChange(status: any, id_finan: any) {
     var data = {
       estado: status.toString(),
-      id_entidad: id_entidad
+      id_entidad_finan: id_finan
     }
-    this.entidadServices.updateStatus(data).subscribe((response: any) => {
+    this.entidadFinanciera.updateStatus(data).subscribe((response: any) => {
       this.tableData();
       this.responseMessage = response?.message;
       this.snackbarService.openSnackBar(this.responseMessage, "success");
@@ -147,5 +148,5 @@ export class ManageEntidadUOrganizacionComponent {
 
 
 
-  
+
 }

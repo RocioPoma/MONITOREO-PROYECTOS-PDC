@@ -30,25 +30,15 @@ router.get('/get', (req, res) => {
     });
   });
   
-  router.put('/update/:id', (req, res) => {
-    const { id } = req.params;
-    const { nom_entidad_finan, desc_entidad_finan, estado } = req.body;
+  router.put('/update/', (req, res) => {   
+    const { nom_entidad_finan, desc_entidad_finan, estado,id_entidad_finan } = req.body;
     const sql = 'UPDATE ENTIDAD_FINANCIERA SET nom_entidad_finan = ?, desc_entidad_finan = ?, estado = ? WHERE id_entidad_finan = ?';
-    connection.query(sql, [nom_entidad_finan, desc_entidad_finan, estado, id], (err, result) => {
+    connection.query(sql, [nom_entidad_finan, desc_entidad_finan, estado, id_entidad_finan], (err, result) => {
       if (err) throw err;
       res.json({ message: 'Entidad financiera actualizada correctamente' });
     });
   });
   
-  router.put('/habilitar/:id', (req, res) => {
-    const { id } = req.params;
-    const { estado } = req.body;
-    const sql = 'UPDATE ENTIDAD_FINANCIERA SET estado = ? WHERE id_entidad_finan = ?';
-    connection.query(sql, [estado, id], (err, result) => {
-      if (err) throw err;
-      res.json({ message: 'Estado de entidad financiera actualizado correctamente' });
-    });
-  });
   
   router.delete('/delete/:id', (req, res) => {
     const { id } = req.params;
@@ -57,6 +47,25 @@ router.get('/get', (req, res) => {
       if (err) throw err;
       res.json({ message: 'Entidad financiera eliminada correctamente' });
     });
+  });
+  
+
+  //status entidad financiera
+router.patch('/updateStatus',(req,res)=>{
+  let user =req.body;
+  console.log(user);
+  var query = "update entidad_financiera set estado=? where id_entidad_finan=?";
+  connection.query(query,[user.estado,user.id_entidad_finan],(err,results)=>{
+      if(!err){
+          if(results.affectedRows == 0){
+              return res.status(404).json({message:"La entidad no existe"});
+          }
+          return res.status(200).json({message:"Actualización Estado de estado fue un éxito"});
+      }
+      else{
+          return res.status(500).json(err);
+      }
+  })
   });
   
 

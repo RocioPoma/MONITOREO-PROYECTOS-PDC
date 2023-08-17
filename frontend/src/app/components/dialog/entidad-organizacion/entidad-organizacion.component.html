@@ -1,1 +1,36 @@
-<p>entidad-organizacion works!</p>
+<mat-toolbar color="primary">
+    <mat-toolbar-row fxLayout="row">
+        <span class="title-center">{{action}} Entidad </span>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="entidadForm">
+        <div fxFlex fxLayout="column">
+            <div fxLayout="row wrap">
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="nombre_entidad" required>
+                    <mat-error *ngIf="entidadForm.controls.nombre_entidad.touched && entidadForm.controls.nombre_entidad.invalid">
+                        <span *ngIf="entidadForm.controls.nombre_entidad.errors.required">Este campo es obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Comentario</mat-label>
+                    <input matInput formControlName="comentario" required>
+                    <mat-error *ngIf="entidadForm.controls.comentario.touched && entidadForm.controls.comentario.invalid">
+                        <span *ngIf="entidadForm.controls.comentario.errors.required">Este campo es obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" type="submit" (click)="handleSubmit()"
+        [disabled]="![entidadForm.valid && entidadForm.dirty]">{{action}}</button>
+        <button mat-raised-button color="primary" mat-dialog-close>Cancelar</button>
+</mat-dialog-actions>
+

@@ -1,41 +1,40 @@
 import { Component, EventEmitter, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { CategoriaService } from 'src/app/services/categoria.service';
-import { EntidadService } from 'src/app/services/entidad.service';
-
-
+import { EntidadFinancieraService } from 'src/app/services/entidad-financiera.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { GlobalCostants } from 'src/app/shared/global-constants';
 
+
 @Component({
-  selector: 'app-entidad-organizacion',
-  templateUrl: './entidad-organizacion.component.html',
-  styleUrls: ['./entidad-organizacion.component.scss']
+  selector: 'app-entidad-financiera',
+  templateUrl: './entidad-financiera.component.html',
+  styleUrls: ['./entidad-financiera.component.scss']
 })
-export class EntidadOrganizacionComponent {
-  onAddEntidad = new EventEmitter();
-  onEditEntidad = new EventEmitter();
-  entidadForm:any= FormGroup;
+export class EntidadFinancieraComponent {
+
+  onAddEntidadFinan = new EventEmitter();
+  onEditEntidadFinan = new EventEmitter();
+  entidadFinanForm:any= FormGroup;
   dialogAction:any="Add";
   action:any="Registrar";
   responseMessage:any;
   
   constructor(@Inject(MAT_DIALOG_DATA) public dialogData:any,
   private formBuilder:FormBuilder,
-  private EntidadServices : EntidadService,
-  private dialogRef:MatDialogRef<EntidadOrganizacionComponent>,
+  private entidadFinancieraServices : EntidadFinancieraService,
+  private dialogRef:MatDialogRef<EntidadFinancieraComponent>,
   private snackbarService:SnackbarService) { }
 
   ngOnInit(): void {
-    this.entidadForm = this.formBuilder.group({
-      nombre_entidad: [null, [Validators.required]],
-      comentario: [null, [Validators.required]]
+    this.entidadFinanForm = this.formBuilder.group({
+      nom_entidad_finan: [null, [Validators.required]],
+      desc_entidad_finan: [null, [Validators.required]]
     });
     if(this.dialogData.action ==='Edit') {
       this.dialogAction="Edit";
       this.action ="Actualizar";
-      this.entidadForm.patchValue(this.dialogData.data);
+      this.entidadFinanForm.patchValue(this.dialogData.data);
     }
   }
 
@@ -49,15 +48,15 @@ export class EntidadOrganizacionComponent {
   }
 
   add(){
-    var formData = this.entidadForm.value;
+    var formData = this.entidadFinanForm.value;
     var data ={
-      nombre_entidad: formData.nombre_entidad,
-      comentario: formData.comentario,
+      nom_entidad_finan: formData.nom_entidad_finan,
+      desc_entidad_finan: formData.desc_entidad_finan,
       estado : true
     }
-    this.EntidadServices.add(data).subscribe((response:any)=>{
+    this.entidadFinancieraServices.add(data).subscribe((response:any)=>{
       this.dialogRef.close();
-      this.onAddEntidad.emit();
+      this.onAddEntidadFinan.emit();
       this.responseMessage = response.message;
       this.snackbarService.openSnackBar(this.responseMessage,"success");
     },(error:any)=>{
@@ -73,16 +72,16 @@ export class EntidadOrganizacionComponent {
   }
 
   edit(){
-    var formData = this.entidadForm.value;
+    var formData = this.entidadFinanForm.value;
     var data ={
-      id_entidad:this.dialogData.data.id_entidad,
-      nombre_entidad: formData.nombre_entidad,
-      comentario: formData.comentario,
+      id_entidad_finan:this.dialogData.data.id_entidad_finan,
+      nom_entidad_finan: formData.nom_entidad_finan,
+      desc_entidad_finan: formData.desc_entidad_finan,
       estado : true
     }
-    this.EntidadServices.update(data).subscribe((response:any)=>{
+    this.entidadFinancieraServices.update(data).subscribe((response:any)=>{
       this.dialogRef.close();
-      this.onEditEntidad.emit();
+      this.onEditEntidadFinan.emit();
       this.responseMessage = response.message;
       this.snackbarService.openSnackBar(this.responseMessage,"success");
     },(error:any)=>{
@@ -96,5 +95,8 @@ export class EntidadOrganizacionComponent {
       this.snackbarService.openSnackBar(this.responseMessage,GlobalCostants.error);
     })
   }
+
+
+
 
 }

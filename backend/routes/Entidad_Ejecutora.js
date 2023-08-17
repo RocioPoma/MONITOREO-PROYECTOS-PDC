@@ -40,13 +40,12 @@ router.post('/create', (req, res) => {
         console.error(err);
         res.status(500).json({ message: 'Hubo un error al crear la entidad ejecutora' });
       } else {
-        res.json({ id_entidad_ejecutora, nom_entidad_ejecutora, desc_entidad_ejecutora, estado });
+        res.json({ message: 'Entidad ejecutora fue creada correctamente' });
       }
     });
   });
 //modificar
-router.put('/update/', (req, res) => {
-   
+router.put('/update/', (req, res) => {   
     const { nom_entidad_ejecutora, desc_entidad_ejecutora, estado ,id_entidad_ejecutora} = req.body;
     connection.query('UPDATE ENTIDAD_EJECUTORA SET nom_entidad_ejecutora = ?, desc_entidad_ejecutora = ?, estado = ? WHERE id_entidad_ejecutora = ?', [nom_entidad_ejecutora, desc_entidad_ejecutora, estado, id_entidad_ejecutora], (err) => {
       if (err) {
@@ -72,5 +71,21 @@ router.delete('/delete/:id', (req, res) => {
 
 
   //status
-
+//status entidad ejecutora
+router.patch('/updateStatus',(req,res)=>{
+  let user =req.body;
+  console.log(user);
+  var query = "update entidad_ejecutora set estado=? where id_entidad_ejecutora=?";
+  connection.query(query,[user.estado,user.id_entidad_ejecutora],(err,results)=>{
+      if(!err){
+          if(results.affectedRows == 0){
+              return res.status(404).json({message:"La entidad ejecutora no existe"});
+          }
+          return res.status(200).json({message:"Actualización Estado de estado fue un éxito"});
+      }
+      else{
+          return res.status(500).json(err);
+      }
+  })
+})
 module.exports = router;

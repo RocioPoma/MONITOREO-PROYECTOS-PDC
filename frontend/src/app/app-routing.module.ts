@@ -13,6 +13,7 @@ import { BasedeDatosComponent } from "./components/opcionesMenu/basede-datos/bas
 import { AuthGuard } from './guards/auth.guard';
 import { ManageGestionUsuarioComponent } from "./components/manage-gestion-usuario/manage-gestion-usuario.component";
 import { ManageEntidadEjecutoraComponent} from "./components/manage-entidad-ejecutora/manage-entidad-ejecutora.component";
+import { ManageEntidadFinancieraComponent} from "./components/manage-entidad-financiera/manage-entidad-financiera.component";
 import { ManageEntidadUOrganizacionComponent } from "./components/manage-entidad-u-organizacion/manage-entidad-u-organizacion.component";
 
 const routes: Routes = [
@@ -39,6 +40,7 @@ const routes: Routes = [
     { path: 'gestionusuario', component: ManageGestionUsuarioComponent },
     { path: 'municipio', component: ManageMunicipioComponent },
     { path: 'entidad-ejecutora', component: ManageEntidadEjecutoraComponent },
+    { path: 'entidad-financiera', component: ManageEntidadFinancieraComponent },
     { path: 'entidad-organizacion', component: ManageEntidadUOrganizacionComponent }
     ] 
   },
