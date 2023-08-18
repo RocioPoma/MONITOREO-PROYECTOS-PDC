@@ -44,7 +44,7 @@ const routes: Routes = [
     { path: 'entidad-financiera', component: ManageEntidadFinancieraComponent },
     { path: 'entidad-organizacion', component: ManageEntidadUOrganizacionComponent },
     { path: 'indicador', component: ManageIndicadorComponent }
-   // { path: 'indicador', component: ManageIndicadorComponent }
+   //{ path: 'indicador', component: ManageIndicadorComponent }
     ] 
   },
 /* 
