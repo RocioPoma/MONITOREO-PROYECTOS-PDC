@@ -161,7 +161,7 @@ export class ManageProyectoComponent {
       data: values
     }
     console.log(values);
-    dialogConfig.width = "600px";
+    dialogConfig.width = "820px";
     const dialogRef = this.dialog.open(SeguimientoProyectoComponent, dialogConfig);
     this.router.events.subscribe(() => {
       dialogRef.close();

@@ -19,6 +19,7 @@ const entidad_eje_Route = require('./routes/entidad_ejecutora');
 const entidad_financiera_Route = require('./routes/entidad_financiera');
 const seguimiento_proyecto_Route=require('./routes/seguimiento_proyecto');
 const entidad_Route=require('./routes/Entidad');
+const fuente_informacion_Route=require('./routes/fuente_de_informacion');
 
 
 //const path = require('path');
@@ -47,5 +48,6 @@ app.use('/entidad_eje',entidad_eje_Route);
 app.use('/entidad_financiera',entidad_financiera_Route);
 app.use('/seguimiento_proyecto',seguimiento_proyecto_Route);
 app.use('/entidad',entidad_Route);
+app.use('/fuente_informacion',fuente_informacion_Route);
 
 module.exports=app;
