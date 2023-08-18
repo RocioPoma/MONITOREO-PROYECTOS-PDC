@@ -12,6 +12,15 @@ export class SeguimientoProyectoService {
 
   //----------------------API PARA LISTAR ETAPA SEGUN EL ID DE TIPOLOGÍA-------- se utilizo 
   getEtapaByIdTipologia(id_tipologia: any) {
-    return this.httpClient.get(this.url + "/seguimiento_proyecto/getByIdTipologia/" + id_tipologia);
+    return this.httpClient.get<any>(this.url + "/seguimiento_proyecto/getByIdTipologia/" + id_tipologia);
+  }
+  getEtapaProyectoByIdEtapa(id_proyecto:number,id_etapa:number){
+    return this.httpClient.get<any>(`${this.url}/seguimiento_proyecto/getEtapaByIdEtapaProyecto`,{params:{id_proyecto,id_etapa}})
+  }
+  getFinanciamientoByIdEtapaProyecto(id_etapa_proyecto:number){
+    return this.httpClient.get<any>(`${this.url}/seguimiento_proyecto/getFinanciamiento/${id_etapa_proyecto}`);
+  }
+  createSeguimientoProyecto(seguimientoForm:any){
+    return this.httpClient.post<any>(`${this.url}/seguimiento_proyecto/registrarEtapa_Proyecto`,seguimientoForm)
   }
 }

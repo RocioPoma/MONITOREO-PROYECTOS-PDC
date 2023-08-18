@@ -1,0 +1,47 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row fxLayout="row">
+        <span class="title-center">{{action}} Indicador</span>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+    <mat-dialog-content class="mat-typography">
+        <form [formGroup]="indicadorForm">
+            <div fxFlex fxLayout="column">
+                <div fxLayout="row wrap">
+                    <mat-form-field appearance="fill" fxFlex>
+                        <mat-label>Nombre</mat-label>
+                        <input matInput formControlName="nom_indicador" required>
+                        <mat-error *ngIf="indicadorForm.controls.nom_indicador.touched && indicadorForm.controls.nom_indicador.invalid">
+                            <span *ngIf="indicadorForm.controls.nom_indicador.errors.required">Este campo es obligatorio.</span>
+                        </mat-error>
+
+                        <mat-form-field appearance="fill" fxFlex>
+                            <mat-label>Descripcion</mat-label>
+                            <input matInput formControlName="desc_indicador" required>
+                            <mat-error *ngIf="indicadorForm.controls.desc_indicador.touched && indicadorForm.controls.desc_indicador.invalid">
+                                <span *ngIf="indicadorForm.controls.desc_indicador.errors.required">Este campo es obligatorio.</span>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="fill" fxFlex>
+                            <mat-label>Unidad Medicion</mat-label>
+                            <mat-select formControlName="id_unidad_medicion">
+                                <mat-option *ngFor="let unidad of unidad" [value]="unidad.id_unidad_medicion">
+                                    {{unidad.nom_unidad}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="center">
+        <button mat-raised-button color="primary" type="submit" (click)="handleSubmit()">
+            [disabled]="![indicadorForm.valid && indicadorForm.dirty]">{{action}}</button>
+            <button mat-raised-button color="primary" mat-dialog-close>Cancelar</button>
+    </mat-dialog-actions>
+
+

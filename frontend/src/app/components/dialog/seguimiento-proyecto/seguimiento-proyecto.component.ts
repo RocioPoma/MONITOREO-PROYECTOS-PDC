@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ProyectoComponent } from '../proyecto/proyecto.component';
@@ -8,6 +8,9 @@ import { EntidadEjecutoraService } from 'src/app/services/entidad-ejecutora.serv
 import { GlobalCostants } from 'src/app/shared/global-constants';
 import { EntidadFinancieraService } from 'src/app/services/entidad-financiera.service';
 import { SeguimientoProyectoService } from 'src/app/services/seguimiento-proyecto.service';
+import { FuenteInformacionService } from 'src/app/services/fuente-informacion.service';
+import { DatePipe } from '@angular/common';
+import { DateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-seguimiento-proyecto',
@@ -17,8 +20,9 @@ import { SeguimientoProyectoService } from 'src/app/services/seguimiento-proyect
 export class SeguimientoProyectoComponent {
   onAddSeguimiento = new EventEmitter();
   onEditSeguimiento = new EventEmitter();
-  seguimientoForm1: any = FormGroup;
   dialogAction: any = "Add";
+  id_proyecto:number;
+  id_etapa_proyecto:number;
   action: any = "Registrar";
   nombreProyecto:any;
   responseMessage: any;
@@ -28,9 +32,10 @@ export class SeguimientoProyectoComponent {
   fileSelected!: ArrayBuffer | string | null;
 
   //-------Para almacenar los datos de servicios
-  EntidadEjecutora: any = [];
-  Etapa: any = [];
-  EntidadFinanciera: any = [];
+  EntidadEjecutora: any[] = [];
+  fuenteInformacion:any[]=[];
+  Etapa: any[] = [];
+  EntidadFinanciera: any[] = [];
 
   //-------Para agregar y quitar campos de Input
   Financiamiento: { entidad_financiera: any; monto_inicial: any; monto_final: any }[] = [];
@@ -42,52 +47,99 @@ export class SeguimientoProyectoComponent {
     private EntidadEjecutoraService: EntidadEjecutoraService,
     private EntidadFinancieraService: EntidadFinancieraService,
     private SeguimientoProyectoService: SeguimientoProyectoService,
+    private fuenteInfService:FuenteInformacionService,
     private dialogRef: MatDialogRef<ProyectoComponent>,
     private snackbarService: SnackbarService,
     //private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private dateAdapter: DateAdapter<Date>
   ) {
     //this.fechaActual = new Date();
-
+    this.dateAdapter.setLocale('en-GB'); //dd/MM/yyyy
     // Convierte la fecha a string en formato "dd-MM-yyyy" 
     // this.fechaActualString = this.datePipe.transform(this.fechaActual, 'yyyy-MM-dd');
   }
 
+  seguimientoForm1:FormGroup = this.formBuilder.group({
+    id_etapa:                       [, [Validators.required]],
+    id_entidad_ejecutora:           [, [Validators.required]],
+    id_fuente_de_informacion:       [, [Validators.required]],
+    id_proyecto:                    [, [Validators.required]],
+    fecha_seguimiento:              [, [Validators.required]],
+    avance_seguimiento_fisico:      [0,[Validators.required]],
+    observacion_seguimiento_fisico: [],
+    // auxmonto_inicial: [null],
+    financiamiento: this.formBuilder.array([],[Validators.required]),
+    seguimiento_financiamiento: this.formBuilder.array([]),
+  });
   ngOnInit(): void {
 
     // console.log(this.fechaActualString);
     this.getEntidadEjecutora();
     this.getEntidadFinanciera();
-
-    this.seguimientoForm1 = this.formBuilder.group({
-      id_entidad_ejecutora: [null, [Validators.required]],
-      fuente_informacion: [null, [Validators.required]],
-      fecha_registro: [null, [Validators.required]],
-      id_etapa: [null, [Validators.required]],
-      id_entidad_financiera: [null, [Validators.required]],
-      monto_inicial: [null],
-      monto_final: [null],
-      financiamiento: [null],
-      auxmonto_inicial: [null],
-
-    });
+    this.getFuenteInformacion();
+    // console.log(this.dialogData.action);
     if (this.dialogData.action === 'seguimiento') {
       console.log(this.dialogData.data);
       this.dialogAction = "Edit";
       this.action = this.dialogData.data.NombreTipologia;
       this.nombreProyecto=this.dialogData.data.nom_proyecto;
+      this.id_proyecto=this.dialogData.data.id_proyecto;
+      this.seguimientoForm1.get('id_proyecto')?.setValue(this.id_proyecto)
       //this.seguimientoForm1.patchValue(this.dialogData.data);
       this.getEtapaByIdTipologia(this.dialogData.data.id_tipologia);
     }
+    console.log(this.financiamientoArray.controls);
   }
+    get financiamientoArray(){
+      return this.seguimientoForm1.controls['financiamiento'] as FormArray;
+    }
+    get seguimientoFinanciamientoArray(){
+      return this.seguimientoForm1.controls['seguimiento_financiamiento'] as FormArray;
+    }
+    addFinancimiento(){
+      const finItem = this.formBuilder.group({
+        id_entidad_financiera: [, [Validators.required,Validators.min(1)]],
+        monto_inicial: [,[Validators.required,Validators.min(1)]],
+        monto_final: [,[Validators.required,Validators.min(1)]],
+      })
+      this.financiamientoArray.push(finItem);
+    }
+    deleteFinanciamiento(index:number){
+      this.financiamientoArray.removeAt(index);
+      this.seguimientoFinanciamientoArray.removeAt(index);
+    }
 
     //------------- PARA LLAMAR A LA FUNCION (GREGAR O EDITAR) ---------------------
     handleSubmit() {
+      // console.log(this.seguimientoForm1);
       if (this.dialogAction === 'Edit') {
         //this.edit();
+        this.add();
       }
       else {
-        //this.add();
       }
+    }
+    add(){
+      console.log('add: ',this.seguimientoForm1);
+      console.log('add: ',this.seguimientoForm1.value);
+      if(this.seguimientoForm1.invalid) return;
+
+      this.SeguimientoProyectoService.createSeguimientoProyecto(this.seguimientoForm1.value).subscribe({
+        next:res=>{
+          console.log(res);
+        },
+        error:err=>{
+          console.log(err);
+        }
+      })
+    }
+    dateFormateado(){
+      // console.log('fecha:D');
+      this.seguimientoForm1.get('fecha_seguimiento')?.setValue(this.datePipe.transform(this.seguimientoForm1.get('fecha_seguimiento')?.value, 'yyyy-MM-dd'));
+    }
+    entidades(index:number){
+      return this.EntidadFinanciera.find(item=>item.id_entidad_financiera===this.financiamientoArray.at(index).get('id_entidad_financiera')?.value)
     }
     //--------------- SELECCIONAR ARCHIVO ------------------
     selectFile(event: any): any {
@@ -102,17 +154,12 @@ export class SeguimientoProyectoComponent {
       }
     }
     //------------- FIN SELECCIONAR ARCHIVO ---------------------
-  
-  
-    //----------- PARA AGREGAR CAMPOS INPUT (CANTIDAD Y UNIDAD)
-    addInput() {
-      this.Financiamiento.push({ entidad_financiera: '', monto_inicial: '', monto_final:'' });
-    }
+
   
     //----------- PARA QUITAR CAMPOS INPUT(CANTIDAD Y UNIDAD)
     removeInput() {
-      if (this.Financiamiento.length > 0) {
-        this.Financiamiento.pop();
+      if (this.financiamientoArray.length > 1) {
+        this.financiamientoArray.removeAt(this.financiamientoArray.length-1);
       }
     }
     mostrarDatos() {
@@ -134,7 +181,44 @@ export class SeguimientoProyectoComponent {
       this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
     });
   }
-
+  getFuenteInformacion(){
+    this.fuenteInfService.getFuentes().subscribe({
+      next:(res)=>{
+        this.fuenteInformacion=res;
+      },
+      error:(error)=>{
+        if (error.error?.message) {
+          this.responseMessage = error.error?.message;
+        }
+        else {
+          this.responseMessage = GlobalCostants.genericError;
+        }
+        this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+      }
+    })
+  }
+  addListFinanciamiento(id_etapa_proyecto:number){
+    this.SeguimientoProyectoService.getFinanciamientoByIdEtapaProyecto(id_etapa_proyecto)
+    .subscribe({
+      next:res=>{
+        console.log(res);
+        if(res.length>0){
+          for(let item of res){
+            const finItem = this.formBuilder.group({
+              id_entidad_financiera: [item.id_entidad_financiera, [Validators.required,Validators.min(1)]],
+              monto_inicial: [item.monto_inicial,[Validators.required,Validators.min(1)]],
+              monto_final: [item.monto_final,[Validators.required,Validators.min(1)]],
+            })
+            this.financiamientoArray.push(finItem);
+            // this.addEntidadFinanciera(item);
+          }
+        }
+      },
+      error:err=>{
+        console.log(err);
+      }
+    })
+  }
   //------------------- OBTENEMOS ENTIDAD FINANCIERA
   getEntidadFinanciera() {
     this.EntidadFinancieraService.get().subscribe((response: any) => {
@@ -164,6 +248,41 @@ export class SeguimientoProyectoComponent {
         this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
       });
     }
-
+    changeEtapa(etapa:any){
+      console.log(etapa);
+      console.log(this.dialogData.data.id_proyecto,etapa.id_etapa);
+      this.SeguimientoProyectoService.getEtapaProyectoByIdEtapa(this.dialogData.data.id_proyecto,etapa.id_etapa).subscribe({
+        next:res=>{
+          console.log(res);
+          this.seguimientoFinanciamientoArray.reset();
+          this.financiamientoArray.reset();
+          if(res){
+            this.id_etapa_proyecto=res.id_etapa_proyecto;
+            this.addListFinanciamiento(this.id_etapa_proyecto);
+            this.seguimientoForm1.get('id_entidad_ejecutora')?.setValue(res.id_entidad_ejecutora);
+            this.seguimientoForm1.get('id_fuente_de_informacion')?.setValue(res.id_fuente_de_informacion);
+            // this.seguimientoForm1.get('id_proyecto')?.setValue(res.id_proyecto);
+          }else{
+            this.financiamientoArray.setControl(0,
+              this.formBuilder.group({
+                id_entidad_financiera: [, [Validators.required,Validators.min(1)]],
+                monto_inicial: [,[Validators.required,Validators.min(1)]],
+                monto_final: [,[Validators.required,Validators.min(1)]],}))
+            this.seguimientoForm1.reset({'id_etapa':etapa.id_etapa,'id_proyecto':this.id_proyecto});
+          }
+        },
+        error:err=>{
+          console.log(err);
+        }
+      })
+    }
+    addEntidadFinanciera(item:any){
+      // console.log(item.id_entidad_financiera);
+      const segFinItem = this.formBuilder.group({
+        monto:[,[Validators.required,Validators.min(1)]],
+        observacion:[],
+      })
+      this.seguimientoFinanciamientoArray.push(segFinItem);
+    }
 
 }
