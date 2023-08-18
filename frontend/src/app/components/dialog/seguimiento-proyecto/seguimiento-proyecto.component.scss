@@ -24,9 +24,39 @@
 
 }
 
- mat-select {
-    font-size: 12px;
-}
 input{
     font-size: 12px;
 }
+
+.mat-typography mat-form-field+mat-form-field {
+    margin-left: 8px;
+  }
+  
+  .title-center {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+  
+  .subTitle {
+    //background-color: aqua;
+    margin-bottom: 6px;
+    margin-left: 2px;
+  }
+  
+  .subTitle1 {
+    background-color: aqua;
+    margin-bottom: 160px;
+    margin-left: 2px;
+  }
+  
+  .btn-icon:hover {
+    cursor: pointer;
+    /* Cambia el cursor a la mano */
+  }
+
+  .center-aligned {
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+  }
+  

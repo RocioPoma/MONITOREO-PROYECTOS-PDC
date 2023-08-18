@@ -23,10 +23,11 @@ export class IndicadorService {
     });
   }
 
-  //----------------------API PARA ACTUALIZAR CATEGORÍA ------------------------------
-  updateStatus(data: any){
+
+   //----------------------API PARA ACTUALIZAR ESTADO -------------------------
+   updateStatus(data: any) {
     return this.httpClient.patch(this.url +
-      "/indicador/habilitarDeshabilitar/", data, {
+      "/indicador/updateStatus/", data, {
       headers: new HttpHeaders().set('Content-Type', "application/json")
     });
   }

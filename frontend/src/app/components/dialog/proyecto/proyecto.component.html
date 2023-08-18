@@ -136,7 +136,7 @@
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Selecciona Comunidades</mat-label>
                     <mat-select [formControl]="selectedComunidadesControl" [multiple]="true"
-                        (selectionChange)="onComunidadesSelectionChange($event)">
+                        (selectionChange)="onComunidadesSelectionChange($event.value)">
                         <mat-option>
                             <ngx-mat-select-search [formControl]="searchComunidad"
                                 placeholderLabel="Buscar opción"></ngx-mat-select-search>

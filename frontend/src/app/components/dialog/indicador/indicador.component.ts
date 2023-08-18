@@ -35,7 +35,7 @@ export class IndicadorComponent implements OnInit {
     this.getUnidad();
 
     this.indicadorForm = this.formBuilder.group({
-      nom_indicador : [null, [Validators.required]],
+      nombre_indicador : [null, [Validators.required]],
       desc_indicador : [null, [Validators.required]],
       id_unidad_medicion : [null, [Validators.required]]
     });

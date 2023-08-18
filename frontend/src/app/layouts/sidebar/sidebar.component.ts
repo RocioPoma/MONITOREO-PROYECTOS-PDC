@@ -158,24 +158,20 @@ menuItems2: MenuItem[] = [
    
   },
    {
-    title: 'reportes',
+    title: 'Reportes',
     icon: 'assessment',
     submenus: [
       {
-        title: 'Proyecto 1',
+        title: 'Indicadores',
         link: '/proyecto1'
       },
       {
-        title: 'Proyecto 2',
+        title: 'Lineas Estr.',
         link: '/proyecto2'
       },
       {
-        title: 'Acción 1',
+        title: 'Proyecto ...',
         link: '/accion1'
-      },
-      {
-        title: 'Acción 2',
-        link: '/accion2'
       }
     ]
   },
@@ -212,7 +208,7 @@ menuItems2: MenuItem[] = [
         // Determinar el rol actual del usuario (puedes obtenerlo desde el servicio de autenticación)
         const userRole = this.rol; // Por ejemplo, asumimos que el rol es 'admin'
        // Asignar el menú según el rol del usuario
-    if (userRole === 'Admin') {
+    if (userRole === 'Administrador') {
       this.menuItems = this.menuItems;
     } else {
       this.menuItems = this.menuItems2;

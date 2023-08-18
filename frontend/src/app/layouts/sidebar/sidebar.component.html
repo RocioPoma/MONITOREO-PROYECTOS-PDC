@@ -56,27 +56,23 @@
   <ng-container *ngFor="let menuItem of menuItems">
     <ng-container *ngIf="!menuItem.submenus; else submenuTemplate">
       <mat-list-item>
-        <a mat-list-item [routerLink]="['/',menuItem.link]">
-          <mat-icon>{{ menuItem.icon }}</mat-icon>
-          <span>{{ menuItem.title }}</span>
+        <a mat-list-item [routerLink]="['/', menuItem.link]" style="display: flex; align-items: center;">
+          <mat-icon style="color: #5D6D7E;">{{ menuItem.icon }}</mat-icon>
+          <span style="color: #5D6D7E; margin-left: 10px;">{{ menuItem.title }}</span>
         </a>
       </mat-list-item>
     </ng-container>
     <ng-template #submenuTemplate>
-      <mat-expansion-panel >
-        <mat-expansion-panel-header>
-      
-          <mat-icon>{{ menuItem.icon }}</mat-icon>
-          <span>{{ menuItem.title }}</span>
-        
+      <mat-expansion-panel>
+        <mat-expansion-panel-header style="display: flex; align-items: center;">
+          <mat-icon style="color: #5D6D7E; font-size: 20px;">{{ menuItem.icon }}</mat-icon>
+          <span style="color: #5D6D7E; font-size: 15px; margin-left: 5px;">{{ menuItem.title }}</span>
         </mat-expansion-panel-header>
-        <mat-list >
-          <mat-list-item  *ngFor="let submenuItem of menuItem.submenus">
-
-            <a mat-menu-item  (click)="navigateTo('/layout' + submenuItem.link)" >
+        <mat-list>
+          <mat-list-item *ngFor="let submenuItem of menuItem.submenus">
+            <a mat-menu-item (click)="navigateTo('/layout' + submenuItem.link)" class="custom-menu-link">
               {{ submenuItem.title }}
-            </a >
-            
+            </a>
           </mat-list-item>
         </mat-list>
       </mat-expansion-panel>

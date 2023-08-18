@@ -6,7 +6,7 @@ var auth = require('../services/authentication');
 
 // Obtener todos los usuarios
 router.get('/list',auth.authenticateToken,(req, res) => {
-    connection.query('SELECT * FROM usuario', (err, results) => {
+    connection.query("SELECT u.*, DATE_FORMAT(u.fecha_registro, '%d-%m-%Y') AS fecha_registro_convert  FROM usuario u", (err, results) => {
       if (err) {
         console.error(err);
         res.status(500).json({ message: 'Hubo un error al obtener los usuarios' });

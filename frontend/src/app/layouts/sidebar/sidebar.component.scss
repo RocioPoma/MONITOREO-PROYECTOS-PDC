@@ -18,3 +18,10 @@
   .menu-item  {    
     background-color: red;
   }
+
+/* Estilo para los enlaces en los submenús */
+::ng-deep .mat-menu-content .mat-menu-item {
+  color: #5D6D7E;
+  font-size: 12px; /* Ajusta el tamaño de fuente según tus preferencias */
+  margin: 4px 0; /* Ajusta el espaciado vertical según tus preferencias */
+}
