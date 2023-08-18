@@ -58,7 +58,7 @@ menuItems: MenuItem[] = [
     icon: 'home',
     submenus: [
       {
-        title: 'Proyecto 1',
+        title: 'Proyecto/acción',
         link: '/pproyecto'
       }
     ]
@@ -75,36 +75,24 @@ menuItems: MenuItem[] = [
       {
         title: 'Proyecto 2',
         link: '/proyecto2'
-      },
-      {
-        title: 'Acción 1',
-        link: '/accion1'
-      },
-      {
-        title: 'Acción 2',
-        link: '/accion2'
       }
     ]
   },  {
-    title: 'reportes',
+    title: 'Reportes',
     icon: 'assessment',
     submenus: [
       {
-        title: 'Proyecto 1',
+        title: 'Indicadores',
         link: '/proyecto1'
       },
       {
-        title: 'Proyecto 2',
+        title: 'Lineas Estr.',
         link: '/proyecto2'
       },
       {
-        title: 'Acción 1',
+        title: 'Proyecto ...',
         link: '/accion1'
       },
-      {
-        title: 'Acción 2',
-        link: '/accion2'
-      }
     ]
   },
   {
@@ -163,7 +151,7 @@ menuItems2: MenuItem[] = [
     icon: 'home',
     submenus: [
       {
-        title: 'Proyecto 1',
+        title: 'Proyecto/acción',
         link: '/pproyecto'
       }
     ]
