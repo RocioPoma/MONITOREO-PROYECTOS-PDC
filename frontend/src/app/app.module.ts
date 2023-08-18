@@ -34,8 +34,7 @@ import { HighchartsChartModule } from "highcharts-angular";
     HeaderComponent,
     SidebarComponent,
     LoginComponent,
-    DashboardComponent,
-    
+    DashboardComponent
   ],
   imports: [
    
