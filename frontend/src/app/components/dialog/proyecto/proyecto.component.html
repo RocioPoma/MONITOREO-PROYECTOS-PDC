@@ -132,20 +132,21 @@
                     </mat-select>
                 </mat-form-field> -->
                 <!---->
-        
-                <mat-form-field>
+
+                <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Selecciona Comunidades</mat-label>
                     <mat-select [formControl]="selectedComunidadesControl" [multiple]="true"
                         (selectionChange)="onComunidadesSelectionChange($event)">
-                        <mat-option >
-                            <ngx-mat-select-search [formControl]="searchComunidad"  placeholderLabel="Buscar opción"></ngx-mat-select-search>
+                        <mat-option>
+                            <ngx-mat-select-search [formControl]="searchComunidad"
+                                placeholderLabel="Buscar opción"></ngx-mat-select-search>
                         </mat-option>
                         <mat-option *ngFor="let comunidad of comunidad" [value]="comunidad">
                             {{ comunidad.nombre }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-        
+
                 <!---->
             </div>
 
@@ -213,25 +214,24 @@
                 <!---->
             </div>
 
-            <!--
-            <button mat-button color="primary" (click)="mostrarDatos()">Mostrar Datos</button>
-            -->
 
             <div fxLayout="row" fxGap="8px" class="subTitle-container">
-                <span class="subTitle" style="margin-right: 4.7cm;">ADJUNTO</span>
+                <span class="subTitle" style="margin-right: 4.7cm; ">ADJUNTO</span>
                 <input (change)="selectFile($event)" formControlName="documento" class="form-control-file" type="file">
-
             </div>
 
+            
+            <!-------------------------------PDCG----------------------------->
+            
+
             <div *ngIf="showAdditionalSelects" style="margin-top: 0.5cm;">
-                <div fxLayout="row" fxGap="8px" class="subTitle-container">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" fxGap="8px" class="subTitle-container" style="margin-top: 0.5cm;">
                     <span class="subTitle" style="margin-right: 4.7cm;">ALINEAMIENTO DE ACCIONES ESTRATÉGICAS
                         (PDC)</span>
                 </div>
                 <div>
                     <div *ngIf="showSelector1">
-
-                        <!--vigente-->
                         <!--
                         <mat-form-field>
                             <mat-select [formControl]="LineasEstCtrl" placeholder="Lineas Estrategicas" #singleSelect
@@ -262,7 +262,7 @@
 
                         <mat-form-field fxFlex>
                             <mat-label>Línea Estratégica (LE)</mat-label>
-                            <mat-select (selectionChange)="getLineaDeAccion($event.value)">
+                            <mat-select formControlName="id_linea_estrategica" (selectionChange)="getLineaDeAccion($event.value)">
                                 <mat-option><ngx-mat-select-search [formControl]="searchLineaEstrategica"
                                         placeholderLabel="Buscar opción"></ngx-mat-select-search></mat-option>
                                 <mat-option *ngFor="let option of filterLineaEstrategica"
@@ -275,7 +275,7 @@
                     <div *ngIf="showSelector2">
                         <mat-form-field fxFlex>
                             <mat-label>Línea de Acción (LA)</mat-label>
-                            <mat-select (selectionChange)="getAccionEstrategica($event.value)">
+                            <mat-select formControlName="id_linea_accion" (selectionChange)="getAccionEstrategica($event.value)">
                                 <mat-option><ngx-mat-select-search [formControl]="searchLineaDeAccion"
                                         placeholderLabel="Buscar opción"></ngx-mat-select-search></mat-option>
                                 <mat-option *ngFor="let option of filterLineaDeAccion" [value]="option.id_linea_accion">
@@ -304,21 +304,9 @@
                 </div>
                 <div>
                     <div *ngIf="showSelector1">
-                        <!-- <mat-form-field class="example-full-width" fxFlex>
-                            <mat-label>Indicador</mat-label>
-                            <input type="text" aria-label="Number" matInput [formControl]="myControl"
-                                [matAutocomplete]="auto">
-                            <mat-autocomplete #auto="matAutocomplete"
-                                (optionSelected)="getLineaDeAccion($event.option)">
-                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option.descripcion">
-                                    {{option.id_linea_estrategica}} {{option.descripcion}}
-                                </mat-option>
-                            </mat-autocomplete>
-                        </mat-form-field> -->
-                        <!-- ... -->
                         <mat-form-field fxFlex>
                             <mat-label>Indicador</mat-label>
-                            <mat-select formControlName="id_indicador">
+                            <mat-select formControlName="id_indicador" (selectionChange)="onIndicadorChange()">
                                 <mat-option><ngx-mat-select-search [formControl]="searchIndicador"
                                         placeholderLabel="Buscar opción"></ngx-mat-select-search></mat-option>
                                 <mat-option *ngFor="let option of filterIndicador" [value]="option.id_indicador">
@@ -338,12 +326,12 @@
                                 obligatorio.</span>
                         </mat-error>
                     </mat-form-field>
-                    <!--
+
                     <mat-form-field appearance="fill">
                         <mat-label>Unidad</mat-label>
-                        <input matInput formControlName="nom_proyecto" required>
+                        <input matInput formControlName="unidad">
                     </mat-form-field>
-                    -->
+
                 </div>
             </div>
         </div>

@@ -96,7 +96,7 @@ export class ProyectoComponent implements OnInit {
 
   ComunidadMultiCtrl = new FormControl();
   //prueba
-  
+
 
   //-------Para agregar y quitar campos de Input
   alcances: { cantidad: any; unidad: any }[] = [];
@@ -135,9 +135,11 @@ export class ProyectoComponent implements OnInit {
     private datePipe: DatePipe,
     private dateAdapter: DateAdapter<Date>
   ) {
-    this.fechaActual = new Date();
+
     //Convierte la fecha en formato //dd/MM/yyyy
     this.dateAdapter.setLocale('en-GB'); //dd/MM/yyyy
+
+    this.fechaActual = new Date();
     // Convierte la fecha actual a string en formato "dd-MM-yyyy" 
     this.fechaActualString = this.datePipe.transform(this.fechaActual, 'yyyy-MM-dd');
 
@@ -175,24 +177,28 @@ export class ProyectoComponent implements OnInit {
       //nuevos casillas  
       id_unidad_medicion: [null, [Validators.required]],
       id_linea_estrategica: [null],
-      id_linea_accion:[null],
+      id_linea_accion: [null],
       id_accion_estrategica: [null, [Validators.required]],
       id_indicador: [null, [Validators.required]],
       documento: [null],
       //para alcance
       alcance_cantidad: [null, [Validators.required]],
       alcance_id_unidad_medicion: [null, [Validators.required]],
+      unidad: [{ value: '', disabled: false }, Validators.required],
     });
     if (this.dialogData.action === 'Edit') {
       this.dialogAction = "Edit";
       this.action = "Actualizar";
       this.showSelectors(true);
       this.proyectoForm.patchValue(this.dialogData.data);
-      //
-      // this.proyectoForm.id_ciudad_comunidad=this.dialogData.comunidades;
-      // this.proyectoForm.id_accion_estrategica=this.dialogData.accion_estrategica;
-      // this.proyectoForm.id_indicador=this.dialogData.a
-      //
+      this.proyectoForm.id_linea_estrategica=this.dialogData.data.id_linea_estrategica;
+      this.getLineaDeAccion(this.dialogData.data.id_linea_estrategica);
+      this.proyectoForm.id_linea_accion=this.dialogData.data.id_linea_accion;
+      this.getAccionEstrategica(this.dialogData.data.id_linea_accion);
+      this.proyectoForm.id_accion_estrategica=this.dialogData.data.id_accion_estrategica;
+
+      this.onIndicadorChange();
+      
       console.log(this.dialogData.data)
       this.getComunidad(this.dialogData.data.id_municipio);
     }
@@ -215,7 +221,7 @@ export class ProyectoComponent implements OnInit {
       this.filterOptionsIndicador(searchTerm);
     });
 
-    
+
     this.searchComunidad.valueChanges.subscribe(searchTerm => {
       this.filterOptionsComunidad(searchTerm);
     });
@@ -380,7 +386,7 @@ export class ProyectoComponent implements OnInit {
   getComunidad(id_municipio: any) {
     this.ComunidadService.getComunidad(id_municipio).subscribe((response: any) => {
       this.comunidad = response;
-      
+
     }, (error: any) => {
       if (error.error?.message) {
         this.responseMessage = error.error?.message;
@@ -480,6 +486,15 @@ export class ProyectoComponent implements OnInit {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
+  // Agrega un método para manejar el cambio de indicador
+  onIndicadorChange() {
+    const selectedIndicador = this.indicador.find(
+      (indicador) => indicador.id_indicador === this.proyectoForm.value.id_indicador
+    );
+    if (selectedIndicador) {
+      this.proyectoForm.get('unidad').setValue(selectedIndicador.nom_unidad);
+    }
+  }
 
   //------------------- AGREGAR PROYECTO
   add() {

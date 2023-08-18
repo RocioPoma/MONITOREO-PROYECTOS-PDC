@@ -11,7 +11,7 @@ const fs = require('fs');
 
 // Ruta para obtener todos los proyectos
 router.get('/get', (req, res) => {
-  //const sql = "SELECT P.id_proyecto,  P.nom_proyecto, fecha_inicio, fecha_fin, DATE_FORMAT(P.fecha_inicio, '%d-%m-%Y') as fecha_inicio_convert,  DATE_FORMAT(P.fecha_fin, '%d-%m-%Y') as fecha_fin_convert,  DATE_FORMAT(P.fecha_registro, '%d-%m-%Y') as fecha_registro,  P.area,  P.coordenada_x,  P.coordenada_y,  P.id_categoria,  P.id_tipologia,  P.id_indicador,  P.id_cuenca,  P.estado,  P.cantidad,  P.hombres,  P.mujeres,  M.nombre_municipio AS NombreMunicipio,  M.id_municipio,  C.nom_cuenca AS NombreCuenca,  CAT.nom_categoria AS NombreCategoria,  TIP.nom_tipologia AS NombreTipologia FROM  PROYECTO AS P JOIN PROYECTO_CIUDAD_O_COMUNIDAD AS PCOC ON P.id_proyecto = PCOC.id_proyecto JOIN CIUDAD_O_COMUNIDAD AS CC ON PCOC.id_ciudad_comunidad = CC.id JOIN MUNICIPIO AS M ON CC.id_municipio = M.id_municipio JOIN CUENCA AS C ON P.id_cuenca = C.id_cuenca JOIN CATEGORIA AS CAT ON P.id_categoria = CAT.id_categoria JOIN TIPOLOGIA AS TIP ON P.id_tipologia = TIP.id_tipologia GROUP BY P.id_proyecto;"
+ // const sql = "SELECT P.id_proyecto,  P.nom_proyecto, fecha_inicio, fecha_fin, DATE_FORMAT(P.fecha_inicio, '%d-%m-%Y') as fecha_inicio_convert,  DATE_FORMAT(P.fecha_fin, '%d-%m-%Y') as fecha_fin_convert,  DATE_FORMAT(P.fecha_registro, '%d-%m-%Y') as fecha_registro,  P.area,  P.coordenada_x,  P.coordenada_y,  P.id_categoria,  P.id_tipologia,  P.id_indicador,  P.id_cuenca,  P.estado,  P.cantidad,  P.hombres,  P.mujeres,  M.nombre_municipio,  M.id_municipio,  C.nom_cuenca AS NombreCuenca,  CAT.nom_categoria AS NombreCategoria,  TIP.nom_tipologia AS NombreTipologia FROM  PROYECTO AS P JOIN PROYECTO_CIUDAD_O_COMUNIDAD AS PCOC ON P.id_proyecto = PCOC.id_proyecto JOIN CIUDAD_O_COMUNIDAD AS CC ON PCOC.id_ciudad_comunidad = CC.id JOIN MUNICIPIO AS M ON CC.id_municipio = M.id_municipio JOIN CUENCA AS C ON P.id_cuenca = C.id_cuenca JOIN CATEGORIA AS CAT ON P.id_categoria = CAT.id_categoria JOIN TIPOLOGIA AS TIP ON P.id_tipologia = TIP.id_tipologia GROUP BY P.id_proyecto;"
   const sql =   "SELECT " +
   "p.*, " +
   "DATE_FORMAT(p.fecha_inicio, '%d-%m-%Y') AS fecha_inicio_convert, " +
@@ -23,6 +23,7 @@ router.get('/get', (req, res) => {
   "mu.id_municipio, " +
   "mu.nombre_municipio, " +
   "le.id_linea_estrategica, " +
+  "la.id_linea_accion, " +
   "le.descripcion AS linea_estrategica, " +
   "la.descripcion AS linea_de_accion, " +
   "ae.descripcion AS accion_estrategica, " +

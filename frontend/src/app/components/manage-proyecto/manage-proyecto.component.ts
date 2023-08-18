@@ -28,7 +28,7 @@ import { SeguimientoProyectoComponent } from '../dialog/seguimiento-proyecto/seg
   //imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule],
 })
 export class ManageProyectoComponent {
-  displayedColumns: string[] = ['Nro', 'NombreProyecto', 'FechaInicio', 'FechaFin', 'NombreMunicipio', 'NombreCuenca', 'NombreCategoria', 'NombreTipologia', 'documento', 'seguimiento', 'estado', 'Acciones'];
+  displayedColumns: string[] = ['Nro', 'NombreProyecto', 'FechaInicio', 'FechaFin', 'NombreMunicipio', 'NombreCuenca', 'NombreCategoria', 'NombreTipologia', 'documento', 'seguimiento', 'Acciones'];
   dataSource: any;
   responseMessage: any;
   municipios: any = [];
@@ -98,9 +98,9 @@ export class ManageProyectoComponent {
     }
   }
 
-  applyMunicipioFilter(filterValue: string) {
+  applyMunicipioFilter(filterValue: String) {
     filterValue = filterValue.trim().toLowerCase();
-    this.dataSource.filterPredicate = (data: any, filter: string) => data.NombreMunicipio.trim().toLowerCase() === filter;
+    this.dataSource.filterPredicate = (data: any, filter: string) => data.nombre_municipio.trim().toLowerCase() === filter;
     this.dataSource.filter = filterValue;
 
     if (this.dataSource.paginator) {

@@ -76,21 +76,25 @@ mat-form-field {
 }
 
 
-
-
 //para las opciones
 
 .icon-group {
     display: flex;
     align-items: center;
-   // gap: 10px; /* Espacio entre los iconos */
+    gap: -1cm; /* Espacio entre los iconos */
+}
+.icon{
+    margin-left: -15px;
+    margin-right: -4px;
 }
 
 /* Asegurar que los botones y los iconos tengan el mismo tamaño */
-.icon-group button {
-   
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+
+
+/* Ajustar el margen del mat-slide-toggle */
+.mat-slide-toggle {
+    margin-top: -8px; /* Ajusta el margen superior según tus necesidades */
+    width: 8px;
+    height: 5px;
 }
