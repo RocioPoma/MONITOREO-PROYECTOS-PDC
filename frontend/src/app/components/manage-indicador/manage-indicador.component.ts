@@ -76,7 +76,7 @@ export class ManageIndicadorComponent {
     });
 
     const sub = dialogRef.componentInstance.onEditIndicador.subscribe((response)=>{
-      this.tableData;
+      this.tableData();
     }); 
   }
 
