@@ -17,8 +17,8 @@ export class IndicadorService {
 
   //----------------------API PARA EDITAR CATEGORÍA ------------------------------
   updateIndicador(data: any) {
-    return this.httpClient.put(this.url +
-      "/indicador/update/", data, {
+    return this.httpClient.patch(this.url +
+      "/indicador/update", data, {
       headers: new HttpHeaders().set('Content-Type', "application/json")
     });
   }

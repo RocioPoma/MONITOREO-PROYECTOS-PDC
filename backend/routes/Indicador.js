@@ -16,10 +16,10 @@ router.get('/get', (req, res) => {
 });
 
 // Ruta para editar un indicador
-router.put('/update/:id', (req, res) => {
-  const id = req.params.id;
-  const { nombre_indicador, desc_indicador } = req.body;
-  connection.query('UPDATE INDICADOR SET nombre_indicador = ?, desc_indicador = ? WHERE id_indicador = ?', [nombre_indicador, desc_indicador, id], (error, results) => {
+router.patch('/update', (req, res) => {
+  let indicador = req.body;
+  var query = "update indicador set nombre_indicador=?, desc_indicador=?, id_unidad_medicion=? WHERE id_indicador=?"
+  connection.query(query, [indicador.nombre_indicador, indicador.desc_indicador, indicador.id_unidad_medicion, indicador.id_indicador], (error, results) => {
     if (error) throw error;
     res.json({ message: 'Indicador actualizado exitosamente' });
   });

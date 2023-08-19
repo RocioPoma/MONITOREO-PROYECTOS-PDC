@@ -59,9 +59,10 @@
             <div fxLayout="row wrap" >
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Nombre Indicador</mat-label>
-                    <input matInput formControlName="nombre_indicador" required>
+                    <!-- <input matInput formControlName="nombre_indicador" required> -->
+                    <textarea matInput formControlName="nombre_indicador" required></textarea>
                     <mat-error *ngIf="indicadorForm.controls.nombre_indicador.touched && indicadorForm.controls.nombre_indicador.invalid">
-                        <span *ngIf="indicadorForm.controls.nom_innombre_indicadordicador.errors.required">Este campo es obligatorio.</span>
+                        <span *ngIf="indicadorForm.controls.nombre_indicador.errors.required">Este campo es obligatorio.</span>
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -69,7 +70,8 @@
             <div fxLayout="row wrap" >
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Descripcion Indicador</mat-label>
-                    <input matInput formControlName="desc_indicador" required>
+                    <!-- <input matInput formControlName="desc_indicador" required> -->
+                    <textarea matInput formControlName="desc_indicador" required></textarea>
                     <mat-error *ngIf="indicadorForm.controls.desc_indicador.touched && indicadorForm.controls.desc_indicador.invalid">
                         <span *ngIf="indicadorForm.controls.desc_indicador.errors.required">Este campo es obligatorio.</span>
                     </mat-error>

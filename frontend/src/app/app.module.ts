@@ -11,6 +11,8 @@ import { HeaderComponent } from './layouts/header/header.component';
 import { SidebarComponent } from './layouts/sidebar/sidebar.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SharedModule } from './shared/shared.module';
@@ -43,6 +45,8 @@ import { HighchartsChartModule } from "highcharts-angular";
     BrowserAnimationsModule,
     FormsModule,
     MaterialModule,
+    MatInputModule,
+    MatFormFieldModule,
     ReactiveFormsModule,
     FlexLayoutModule,
     SharedModule,
