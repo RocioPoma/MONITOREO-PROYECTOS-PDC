@@ -30,6 +30,8 @@ import { ManageEntidadFinancieraComponent } from './manage-entidad-financiera/ma
 import { EntidadFinancieraComponent } from './dialog/entidad-financiera/entidad-financiera.component';
 import { ManageIndicadorComponent } from './manage-indicador/manage-indicador.component';
 import { IndicadorComponent } from './dialog/indicador/indicador.component';
+import { ManageGestionEtapaComponent } from './manage-gestion-etapa/manage-gestion-etapa.component';
+import { GestionEtapaComponent } from './dialog/gestion-etapa/gestion-etapa.component';
 
 //import { MaterialModule } from '../shared/material-module';
 
@@ -58,7 +60,9 @@ import { IndicadorComponent } from './dialog/indicador/indicador.component';
     ManageEntidadFinancieraComponent,
     EntidadFinancieraComponent,
     ManageIndicadorComponent,
-    IndicadorComponent
+    IndicadorComponent,
+    ManageGestionEtapaComponent,
+    GestionEtapaComponent
   ],
   imports: [
     CommonModule,

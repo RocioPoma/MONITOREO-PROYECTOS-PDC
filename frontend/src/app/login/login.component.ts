@@ -43,7 +43,8 @@ export class LoginComponent implements OnInit {
 
     this.userService.login(email, password).subscribe(
       (response) => {
-        // Maneja la respuesta del servidor aquí (por ejemplo, almacena el token en el almacenamiento local)
+               
+          // Maneja la respuesta del servidor aquí (por ejemplo, almacena el token en el almacenamiento local)
         this.userService.setRol(response.data.rol);
         this.userService.setNombre(response.data.nombre);
         this.userService.setAp(response.data.ap_paterno);
@@ -51,7 +52,8 @@ export class LoginComponent implements OnInit {
         console.log(response);
         console.log('Token:', response.token);
         this.userService.setAuthToken(response.token);
-        this.router.navigate(['/layout']);
+        this.router.navigate(['/layout']);   
+        
       },
       (error) => {
         // Maneja el error si falla la autenticación

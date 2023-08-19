@@ -6,7 +6,7 @@ var auth = require('../services/authentication');
 
 // Obtener todos los usuarios
 router.get('/list',auth.authenticateToken,(req, res) => {
-    connection.query("SELECT u.*, DATE_FORMAT(u.fecha_registro, '%d-%m-%Y') AS fecha_registro_convert  FROM usuario u", (err, results) => {
+    connection.query("SELECT e.nombre_entidad,u.*, DATE_FORMAT(u.fecha_registro, '%d-%m-%Y') AS fecha_registro_convert FROM usuario u, entidad e where e.id_entidad = u.id_entidad ", (err, results) => {
       if (err) {
         console.error(err);
         res.status(500).json({ message: 'Hubo un error al obtener los usuarios' });
@@ -36,8 +36,8 @@ router.get('/buscar/:ci',auth.authenticateToken, (req, res) => {
 //crear usuario
 router.post('/create/',auth.authenticateToken, (req, res) => {
   console.log(req.body);
-    const { ci, nombre, ap_paterno, ap_materno, password, email, telefono, genero, rol, estado, id_entidad,fecha_nacimiento,fecha_registro } = req.body;
-    connection.query('INSERT INTO USUARIO (ci, nombre, ap_paterno, ap_materno, password, email, telefono, genero, rol, estado, id_entidad,fecha_nacimiento,fecha_registro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [ci, nombre, ap_paterno, ap_materno, password, email, telefono, genero, rol, estado,id_entidad,fecha_nacimiento,fecha_registro ], (err, results) => {
+    const { ci, nombre, ap_paterno, ap_materno, password, email, telefono, genero, rol, estado, id_entidad,celular,fecha_registro } = req.body;
+    connection.query('INSERT INTO USUARIO (ci, nombre, ap_paterno, ap_materno, password, email, telefono, genero, rol, estado, id_entidad,celular,fecha_registro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [ci, nombre, ap_paterno, ap_materno, password, email, telefono, genero, rol, estado,id_entidad,celular,fecha_registro ], (err, results) => {
       if (!err) {
         return res.status(200).json({ message: "Usuario agregado con exito" });
       }
@@ -50,8 +50,8 @@ router.post('/create/',auth.authenticateToken, (req, res) => {
 //actualizar usuario
 router.put('/update/', auth.authenticateToken,(req, res) => {
     
-    const {ci, nombre, ap_paterno, ap_materno, password, email, telefono, genero, rol, estado, id_entidad,fecha_nacimiento,fecha_registro } = req.body;
-    connection.query('UPDATE USUARIO SET nombre = ?, ap_paterno = ?, ap_materno = ?, password = ?, email = ?, telefono = ?, genero = ?, rol = ?, estado = ?, id_entidad = ?,fecha_nacimiento = ?,fecha_registro= ? WHERE ci = ?', [nombre, ap_paterno, ap_materno, password, email, telefono, genero, rol, estado,id_entidad,fecha_nacimiento,fecha_registro, ci], (err) => {
+    const {ci, nombre, ap_paterno, ap_materno, password, email, telefono, genero, rol, estado, id_entidad,celular,fecha_registro } = req.body;
+    connection.query('UPDATE USUARIO SET nombre = ?, ap_paterno = ?, ap_materno = ?, password = ?, email = ?, telefono = ?, genero = ?, rol = ?, estado = ?, id_entidad = ?,celular = ?,fecha_registro= ? WHERE ci = ?', [nombre, ap_paterno, ap_materno, password, email, telefono, genero, rol, estado,id_entidad,celular,fecha_registro, ci], (err) => {
       if (err) {
         console.error(err);
         res.status(500).json({ message: 'Hubo un error al actualizar el usuario' });
@@ -115,7 +115,7 @@ router.post('/login',(req,res)=>{
             if(results.length <= 0 || results[0].password != user.password){
                 return res.status(401).json({message:"Nombre de usuario o contraseña incorrecta"});
             }
-            else if(results[0].status==='false'){
+            else if(results[0].estado==='false'){
                 return res.status(401).json({message:"Esperar la aprobación del administrador"});   
             }
             else if(results[0].password==user.password){

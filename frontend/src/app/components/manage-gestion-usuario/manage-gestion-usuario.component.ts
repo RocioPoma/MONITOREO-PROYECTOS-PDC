@@ -17,7 +17,7 @@ import { EntidadService } from 'src/app/services/entidad.service';
   styleUrls: ['./manage-gestion-usuario.component.scss']
 })
 export class ManageGestionUsuarioComponent {
-  displayedColumns: string[] = ['numero', 'Foto', 'Nombre', 'Rol', 'Fecha', 'Accion']; 
+  displayedColumns: string[] = ['numero', 'Ci', 'Nombre', 'Rol', 'Entidad', 'Fecha', 'Accion']; 
   dataSource: any;
   entidad: any;
   responseMessage: any;
@@ -42,7 +42,7 @@ export class ManageGestionUsuarioComponent {
 
   tableData() {
     this.usuarioService.getusuario().subscribe((response: any) => {
-      //console.log(response);
+      console.log(response);
       this.dataSource = new MatTableDataSource(response);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
