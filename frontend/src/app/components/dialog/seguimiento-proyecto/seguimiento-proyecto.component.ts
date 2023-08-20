@@ -61,12 +61,12 @@ export class SeguimientoProyectoComponent {
   }
 
   seguimientoForm1: FormGroup = this.formBuilder.group({
-    id_etapa: [, [Validators.required]],
-    id_entidad_ejecutora: [, [Validators.required]],
-    id_fuente_de_informacion: [, [Validators.required]],
-    id_proyecto: [, [Validators.required]],
-    fecha_seguimiento: [, [Validators.required]],
-    avance_seguimiento_fisico: [0, [Validators.required]],
+    id_etapa:                       [, [Validators.required]],
+    id_entidad_ejecutora:           [{value:null,disabled:true}, [Validators.required]],
+    id_fuente_de_informacion:       [{value:null,disabled:true}, [Validators.required]],
+    id_proyecto:                    [{value:null,disabled:true}, [Validators.required]],
+    fecha_seguimiento:              [{value:null,disabled:true}, [Validators.required]],
+    avance_seguimiento_fisico:      [{value:0,   disabled:true}, [Validators.required]],
     observacion_seguimiento_fisico: [],
     // auxmonto_inicial: [null],
     financiamiento: this.formBuilder.array([], [Validators.required]),
@@ -83,7 +83,7 @@ export class SeguimientoProyectoComponent {
     if (this.dialogData.action === 'seguimiento') {
       console.log('seguimiento');
       console.log(this.dialogData.data);
-      this.dialogAction = "Edit";
+      // this.dialogAction = "Edit";
       this.action = this.dialogData.data.nom_tipologia;
       this.nombreProyecto = this.dialogData.data.nom_proyecto;
       this.id_proyecto = this.dialogData.data.id_proyecto;
@@ -91,7 +91,7 @@ export class SeguimientoProyectoComponent {
       //this.seguimientoForm1.patchValue(this.dialogData.data);
       this.getEtapaByIdTipologia(this.dialogData.data.id_tipologia);
     }
-    console.log(this.financiamientoArray.controls);
+    // console.log(this.financiamientoArray.controls);
   }
   get financiamientoArray() {
     return this.seguimientoForm1.controls['financiamiento'] as FormArray;
@@ -206,9 +206,10 @@ export class SeguimientoProyectoComponent {
     this.SeguimientoProyectoService.getFinanciamientoByIdEtapaProyecto(id_etapa_proyecto)
       .subscribe({
         next: res => {
-          console.log(res);
+          // console.log(res);
           if (res.length > 0) {
             for (let item of res) {
+              // console.log('iteeeem',item);
               const finItem = this.formBuilder.group({
                 id_entidad_financiera: [item.id_entidad_financiera, [Validators.required, Validators.min(1)]],
                 monto_inicial: [item.monto_inicial, [Validators.required, Validators.min(1)]],
@@ -253,34 +254,38 @@ export class SeguimientoProyectoComponent {
       this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
     });
   }
-  changeEtapa(etapa: any) {
-    console.log(etapa);
-    console.log(this.dialogData.data.id_proyecto, etapa.id_etapa);
-    this.SeguimientoProyectoService.getEtapaProyectoByIdEtapa(this.dialogData.data.id_proyecto, etapa.id_etapa).subscribe({
+  changeEtapa(etapaValue: number) {
+    this.SeguimientoProyectoService.getEtapaProyectoByIdEtapa(this.dialogData.data.id_proyecto, etapaValue).subscribe({
       next: res => {
-        console.log(res);
-        this.seguimientoFinanciamientoArray.reset();
-        this.financiamientoArray.reset();
+        this.seguimientoFinanciamientoArray.clear();
+        this.financiamientoArray.clear();
+        this.seguimientoForm1.reset({ 'id_etapa': etapaValue, 'id_proyecto': this.id_proyecto });
+        this.seguimientoForm1.enable();
         if (res) {
+          this.dialogAction = "Edit";
           this.id_etapa_proyecto = res.id_etapa_proyecto;
           this.addListFinanciamiento(this.id_etapa_proyecto);
           this.seguimientoForm1.get('id_entidad_ejecutora')?.setValue(res.id_entidad_ejecutora);
           this.seguimientoForm1.get('id_fuente_de_informacion')?.setValue(res.id_fuente_de_informacion);
           // this.seguimientoForm1.get('id_proyecto')?.setValue(res.id_proyecto);
         } else {
+          this.dialogAction = "Add";
           this.financiamientoArray.setControl(0,
             this.formBuilder.group({
               id_entidad_financiera: [, [Validators.required, Validators.min(1)]],
               monto_inicial: [, [Validators.required, Validators.min(1)]],
               monto_final: [, [Validators.required, Validators.min(1)]],
             }))
-          this.seguimientoForm1.reset({ 'id_etapa': etapa.id_etapa, 'id_proyecto': this.id_proyecto });
+          // this.seguimientoForm1.reset({ 'id_etapa': etapa.id_etapa, 'id_proyecto': this.id_proyecto });
         }
       },
       error: err => {
         console.log(err);
       }
     })
+  }
+  clearControls(){
+
   }
   addEntidadFinanciera(item: any) {
     // console.log(item.id_entidad_financiera);

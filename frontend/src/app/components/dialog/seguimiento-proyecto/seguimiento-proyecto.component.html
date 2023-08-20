@@ -46,9 +46,8 @@
                 </mat-form-field>
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Etapa</mat-label>
-                    <mat-select formControlName="id_etapa" required>
-                        <mat-option *ngFor="let etapa of Etapa" [value]="etapa.id_etapa"
-                            (onSelectionChange)="changeEtapa(etapa)">
+                    <mat-select formControlName="id_etapa" required (valueChange)="changeEtapa($event)">
+                        <mat-option *ngFor="let etapa of Etapa" [value]="etapa.id_etapa">
                             {{etapa.nombre_etapa}}
                         </mat-option>
                     </mat-select>
