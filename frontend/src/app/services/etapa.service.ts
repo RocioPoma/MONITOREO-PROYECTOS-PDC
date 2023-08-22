@@ -17,7 +17,7 @@ export class EtapaService {
 
   //----------------------API PARA EDITAR CATEGORÍA ------------------------------
   update(data: any) {
-    return this.httpClient.patch(this.url +
+    return this.httpClient.put(this.url +
       "/etapa/update/", data, {
       headers: new HttpHeaders().set('Content-Type', "application/json")
     });

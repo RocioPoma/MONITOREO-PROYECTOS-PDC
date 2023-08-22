@@ -120,6 +120,10 @@ menuItems: MenuItem[] = [
         link: '/entidad-financiera'
       },
       {
+        title: 'Etapas',
+        link: '/etapa'
+      },
+      {
         title: 'ADM Indicador',
         link: '/indicador'
       }

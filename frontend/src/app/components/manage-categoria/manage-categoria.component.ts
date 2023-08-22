@@ -84,6 +84,7 @@ export class ManageCategoriaComponent {
   }
 
   handleEditAction(values: any) {
+    console.log(values);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       action: 'Edit',

@@ -1,1 +1,41 @@
-<p>gestion-etapa works!</p>
+<mat-toolbar color="primary">
+    <mat-toolbar-row fxLayout="row">
+        <span class="title-center">{{action}} Categoría</span>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="etapaForm">
+        <div fxFlex fxLayout="column">
+            <div fxLayout="row wrap">
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="nom_etapa" required>
+                    <mat-error *ngIf="etapaForm.controls.nom_etapa.touched && etapaForm.controls.nom_etapa.invalid">
+                        <span *ngIf="etapaForm.controls.nom_etapa.errors.required">Este campo es obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Peso</mat-label>
+                    <input matInput formControlName="peso_etapa" required>
+                    <mat-error *ngIf="etapaForm.controls.peso_etapa.touched && etapaForm.controls.peso_etapa.invalid">
+                        <span *ngIf="etapaForm.controls.peso_etapa.errors.required">Este campo es obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>             
+            </div>
+            <mat-form-field appearance="fill" fxFlex>
+                <mat-label>Descripción</mat-label>
+                <input matInput formControlName="desc_etapa" required>
+                <mat-error *ngIf="etapaForm.controls.desc_etapa.touched && etapaForm.controls.desc_etapa.invalid">
+                    <span *ngIf="etapaForm.controls.desc_etapa.errors.required">Este campo es obligatorio.</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" type="submit" (click)="handleSubmit()"
+        [disabled]="![etapaForm.valid && etapaForm.dirty]">{{action}}</button>
+        <button mat-raised-button color="primary" mat-dialog-close>Cancelar</button>
+</mat-dialog-actions>
