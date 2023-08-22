@@ -61,23 +61,32 @@ export class SeguimientoProyectoComponent {
   }
 
   seguimientoForm1: FormGroup = this.formBuilder.group({
-    id_etapa:                       [, [Validators.required]],
-    id_entidad_ejecutora:           [{value:null,disabled:true}, [Validators.required]],
-    id_fuente_de_informacion:       [{value:null,disabled:true}, [Validators.required]],
-    id_proyecto:                    [{value:null,disabled:true}, [Validators.required]],
-    fecha_seguimiento:              [{value:null,disabled:true}, [Validators.required]],
-    avance_seguimiento_fisico:      [{value:0,   disabled:true}, [Validators.required]],
-    observacion_seguimiento_fisico: [],
+    id_etapa:                           [                          , [Validators.required]],
+    id_entidad_ejecutora:               [{value:null,disabled:true}, [Validators.required]],
+    fuente_de_informacion:              [{value:null,disabled:true}, [Validators.required]],
+    id_proyecto:                        [                          , [Validators.required]],
+    fecha_seguimiento:                  [{value:null,disabled:true}, [Validators.required]],
+    avance_seguimiento_fisico:          [{value:null,disabled:true}, [Validators.required]],
+    comentario_seguimiento_fisico:      [{value:null,disabled:true}, [Validators.required]],
+    comentario_seguimiento_financiero:  [{value:null,disabled:true}, [Validators.required]],
     // auxmonto_inicial: [null],
-    financiamiento: this.formBuilder.array([], [Validators.required]),
+    financiamiento: this.formBuilder.array([
+      this.formBuilder.group({
+        id_entidad_financiera: [{value:null, disabled:true}, [Validators.required, Validators.min(1)]],
+        monto_inicial:         [{value:null, disabled:true}, [Validators.required, Validators.min(1)]],
+        monto_final:           [{value:null, disabled:true}, [Validators.required, Validators.min(1)]],
+      })
+    ], [Validators.required]),
     seguimiento_financiamiento: this.formBuilder.array([]),
+  },{
+
   });
   ngOnInit(): void {
 
     // console.log(this.fechaActualString);
+    // this.seguimientoForm1.disable();
     this.getEntidadEjecutora();
     this.getEntidadFinanciera();
-    this.getFuenteInformacion();
 
     // console.log(this.dialogData.action);
     if (this.dialogData.action === 'seguimiento') {
@@ -100,6 +109,8 @@ export class SeguimientoProyectoComponent {
     return this.seguimientoForm1.controls['seguimiento_financiamiento'] as FormArray;
   }
   addFinancimiento() {
+    console.log(this.seguimientoForm1.get('id_etapa'));
+    if(this.seguimientoForm1.get('id_etapa')?.invalid) return;
     const finItem = this.formBuilder.group({
       id_entidad_financiera: [, [Validators.required, Validators.min(1)]],
       monto_inicial: [, [Validators.required, Validators.min(1)]],
@@ -115,16 +126,21 @@ export class SeguimientoProyectoComponent {
   //------------- PARA LLAMAR A LA FUNCION (GREGAR O EDITAR) ---------------------
   handleSubmit() {
     // console.log(this.seguimientoForm1);
+    console.log(this.dialogAction);
     if (this.dialogAction === 'Edit') {
-      //this.edit();
-      this.add();
+      this.update();
     }
-    else {
+    else if(this.dialogAction ==='Add') {
+      this.add();
     }
   }
   add() {
-    console.log('add: ', this.seguimientoForm1);
-    console.log('add: ', this.seguimientoForm1.value);
+    
+    this.seguimientoForm1.markAllAsTouched();
+    console.log('add');
+    console.log(this.seguimientoForm1);
+    console.log(this.seguimientoForm1.value);
+    // return;
     if (this.seguimientoForm1.invalid) return;
 
     this.SeguimientoProyectoService.createSeguimientoProyecto(this.seguimientoForm1.value).subscribe({
@@ -135,6 +151,31 @@ export class SeguimientoProyectoComponent {
         this.snackbarService.openSnackBar(this.responseMessage, "success");
       },
       error: err => {
+        console.log(err);
+      }
+    })
+  }
+  update(){
+    this.seguimientoForm1.markAllAsTouched();
+    console.log('edit');
+    console.log(this.seguimientoForm1);
+    console.log(this.seguimientoForm1.value);
+    if(this.seguimientoForm1.invalid) return;
+    const {avance_seguimiento_fisico,
+      comentario_seguimiento_financiero,
+      comentario_seguimiento_fisico,
+      fecha_seguimiento,
+      seguimiento_financiamiento} = this.seguimientoForm1.value;
+    this.SeguimientoProyectoService.registerSeguimientoEtapa({id_etapa_proyecto:this.id_etapa_proyecto,
+                                                              avance_seguimiento_fisico,
+                                                              comentario_seguimiento_financiero,
+                                                              comentario_seguimiento_fisico,
+                                                              fecha_seguimiento,
+                                                              seguimiento_financiamiento}).subscribe({
+      next:res=>{
+        console.log(res);
+      },
+      error:err=>{
         console.log(err);
       }
     })
@@ -186,22 +227,7 @@ export class SeguimientoProyectoComponent {
       this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
     });
   }
-  getFuenteInformacion() {
-    this.fuenteInfService.getFuentes().subscribe({
-      next: (res) => {
-        this.fuenteInformacion = res;
-      },
-      error: (error) => {
-        if (error.error?.message) {
-          this.responseMessage = error.error?.message;
-        }
-        else {
-          this.responseMessage = GlobalCostants.genericError;
-        }
-        this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
-      }
-    })
-  }
+
   addListFinanciamiento(id_etapa_proyecto: number) {
     this.SeguimientoProyectoService.getFinanciamientoByIdEtapaProyecto(id_etapa_proyecto)
       .subscribe({
@@ -262,11 +288,15 @@ export class SeguimientoProyectoComponent {
         this.seguimientoForm1.reset({ 'id_etapa': etapaValue, 'id_proyecto': this.id_proyecto });
         this.seguimientoForm1.enable();
         if (res) {
+          console.log(res);
           this.dialogAction = "Edit";
           this.id_etapa_proyecto = res.id_etapa_proyecto;
           this.addListFinanciamiento(this.id_etapa_proyecto);
           this.seguimientoForm1.get('id_entidad_ejecutora')?.setValue(res.id_entidad_ejecutora);
-          this.seguimientoForm1.get('id_fuente_de_informacion')?.setValue(res.id_fuente_de_informacion);
+          // this.seguimientoForm1.get('fecha_seguimiento')?.setValue(res.fecha_seguimiento);
+          this.seguimientoForm1.get('fuente_de_informacion')?.setValue(res.fuente_de_informacion);
+          this.seguimientoForm1.get('id_entidad_ejecutora')?.setValue(res.id_entidad_ejecutora);
+          console.log(this.seguimientoForm1.value);
           // this.seguimientoForm1.get('id_proyecto')?.setValue(res.id_proyecto);
         } else {
           this.dialogAction = "Add";
@@ -291,7 +321,6 @@ export class SeguimientoProyectoComponent {
     // console.log(item.id_entidad_financiera);
     const segFinItem = this.formBuilder.group({
       monto: [, [Validators.required, Validators.min(1)]],
-      observacion: [],
     })
     this.seguimientoFinanciamientoArray.push(segFinItem);
   }
