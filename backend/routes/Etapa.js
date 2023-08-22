@@ -5,10 +5,10 @@ var auth = require('../services/authentication');
 
 //Listar etapa
 router.get('/get', (req, res) => {
-    connection.query('SELECT * FROM entidad', (err, results) => {
+    connection.query('SELECT E.*, T.nom_tipologia, T.id_tipologia FROM etapa E INNER JOIN tipologia T ON E.id_tipologia = T.id_tipologia;', (err, results) => {
       if (err) {
         console.error(err);
-        res.status(500).json({ message: 'Hubo un error al obtener las entidades' });
+        res.status(500).json({ message: 'Hubo un error al obtener las etapas' });
       } else {
         res.json(results);
       }
@@ -36,8 +36,8 @@ router.get('/get', (req, res) => {
 
 //modificar
 router.put('/update/', (req, res) => {   
-  const {  nombre_entidad, comentario, estado,id_entidad} = req.body;
-  connection.query('UPDATE entidad SET nombre_entidad = ?, comentario = ?, estado = ? WHERE id_entidad = ?', [nombre_entidad, comentario, estado,id_entidad], (err) => {
+  const {  nom_etapa, desc_etapa,peso_etapa, estado,id_etapa} = req.body;
+  connection.query('UPDATE etapa SET nom_etapa = ?, desc_etapa = ?,peso_etapa=?, estado = ? WHERE id_etapa = ?', [nom_etapa, desc_etapa,peso_etapa, estado,id_etapa], (err) => {
     if (err) {
       console.error(err);
       res.status(500).json({ message: 'Hubo un error al actualizar la entidad ' });
@@ -52,13 +52,13 @@ router.put('/update/', (req, res) => {
 router.patch('/updateStatus',(req,res)=>{
 let user =req.body;
 console.log(user);
-var query = "update entidad set estado=? where id_entidad=?";
-connection.query(query,[user.estado,user.id_entidad],(err,results)=>{
+var query = "update etapa set estado=? where id_etapa=?";
+connection.query(query,[user.estado,user.id_etapa],(err,results)=>{
     if(!err){
         if(results.affectedRows == 0){
             return res.status(404).json({message:"La etapa no existe"});
         }
-        return res.status(200).json({message:"Actualización Estado de estado fue un éxito"});
+        return res.status(200).json({message:"Actualización de estado fue un éxito"});
     }
     else{
         return res.status(500).json(err);

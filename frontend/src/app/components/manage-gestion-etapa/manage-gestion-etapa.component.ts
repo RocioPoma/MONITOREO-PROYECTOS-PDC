@@ -2,10 +2,14 @@ import { Component, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { CategoriaService } from 'src/app/services/categoria.service';
+
+import { EtapaService } from 'src/app/services/etapa.service';
+
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { GlobalCostants } from 'src/app/shared/global-constants';
-import { CategoriaComponent } from '../dialog/categoria/categoria.component';
+
+import { GestionEtapaComponent } from '../dialog/gestion-etapa/gestion-etapa.component';
+
 import { ConfirmationComponent } from '../dialog/confirmation/confirmation.component';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -18,14 +22,15 @@ import { MatInputModule } from '@angular/material/input';
   styleUrls: ['./manage-gestion-etapa.component.scss']
 })
 export class ManageGestionEtapaComponent {
-  displayedColumns: string[] = ['numero', 'nombre', 'descripcion', 'acciones']; 
+  displayedColumns: string[] = ['numero', 'nombre', 'peso','descripcion','tipologia', 'acciones']; 
   dataSource: any;
   responseMessage: any;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private categoriaService: CategoriaService,
+  constructor(
+    private etapaService: EtapaService,
     private dialog: MatDialog,
     private snackbarService: SnackbarService,
     private router: Router) { }
@@ -35,7 +40,8 @@ export class ManageGestionEtapaComponent {
   }
 
   tableData() {
-    this.categoriaService.getCategoria().subscribe((response: any) => {
+    this.etapaService.getEtapa().subscribe((response: any) => {
+      console.log(response);
       this.dataSource = new MatTableDataSource(response);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -67,20 +73,20 @@ export class ManageGestionEtapaComponent {
 
  
 
-  handleAddAction() {
+  /* handleAddAction() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       action: 'Add'
     }
     dialogConfig.width = "700px";
-    const dialogRef = this.dialog.open(CategoriaComponent, dialogConfig);
+    const dialogRef = this.dialog.open(GestionEtapaComponent, dialogConfig);
     this.router.events.subscribe(() => {
       dialogRef.close();
     });
     const sub = dialogRef.componentInstance.onAddCategoria.subscribe((response) => {
       this.tableData();
     })
-  }
+  } */
 
   handleEditAction(values: any) {
     const dialogConfig = new MatDialogConfig();
@@ -89,16 +95,16 @@ export class ManageGestionEtapaComponent {
       data: values
     }
     dialogConfig.width = "700px";
-    const dialogRef = this.dialog.open(CategoriaComponent, dialogConfig);
+    const dialogRef = this.dialog.open(GestionEtapaComponent, dialogConfig);
     this.router.events.subscribe(() => {
       dialogRef.close();
     });
-    const sub = dialogRef.componentInstance.onEditCategoria.subscribe((response) => {
+    const sub = dialogRef.componentInstance.onEditEtapa.subscribe((response) => {
       this.tableData();
     })
   }
  
-  handleDeleteAction(values: any) {
+/*   handleDeleteAction(values: any) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       message: ' eliminar Categoria '+ values.nom_categoria
@@ -109,9 +115,9 @@ export class ManageGestionEtapaComponent {
       dialogRef.close();
     });
   }
-
-  deleteCategoria(id_categoria: any) {
-    this.categoriaService.delete(id_categoria).subscribe((response: any) => {
+ */
+ /*  deleteCategoria(id_categoria: any) {
+    this.etapaService.delete(id_categoria).subscribe((response: any) => {
       this.tableData();
       this.responseMessage = response?.message;
       this.snackbarService.openSnackBar(this.responseMessage, "success");
@@ -124,14 +130,15 @@ export class ManageGestionEtapaComponent {
       }
       this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
     })
-  }
+  } */
 
-  onChange(status: any, id_categoria: any) {
+  onChange(status: any, id_etapa: any) {
     var data = {
       estado: status.toString(),
-      id_categoria: id_categoria
+      id_etapa: id_etapa
     }
-    this.categoriaService.updateStatus(data).subscribe((response: any) => {
+    console.log(data);
+    this.etapaService.updateStatus(data).subscribe((response: any) => {
       this.tableData();
       this.responseMessage = response?.message;
       this.snackbarService.openSnackBar(this.responseMessage, "success");
