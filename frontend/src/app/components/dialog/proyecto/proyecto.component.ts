@@ -25,16 +25,11 @@ import { IndicadorService } from 'src/app/services/indicador.service';
 
 import { DomSanitizer } from '@angular/platform-browser';
 import { DateAdapter } from '@angular/material/core';
-//interface para area
-interface area {
-  value: string;
-  viewValue: string;
-}
 
-interface LineasEstrategica {
-  id_linea_estrategica: number;
-  descripcion: string;
-}
+//importamos para mapa
+import * as L from 'leaflet'; // Importa la biblioteca Leaflet
+import * as turf from '@turf/turf'; // Importa Turf.js
+
 
 @Component({
   selector: 'app-proyecto',
@@ -112,6 +107,11 @@ export class ProyectoComponent implements OnInit {
   showSelector1 = false;
   showSelector2 = false;
   showSelector3 = false;
+
+  //--------------------Mapa --------------------------------------
+  modalVisible: boolean = false;
+  map: any;
+
   //---------------------------------------------------------------------------variables para select especial
   @ViewChild('singleSelect', { static: true }) singleSelect!: MatSelect;
 
@@ -191,14 +191,14 @@ export class ProyectoComponent implements OnInit {
       this.action = "Actualizar";
       this.showSelectors(true);
       this.proyectoForm.patchValue(this.dialogData.data);
-      this.proyectoForm.id_linea_estrategica=this.dialogData.data.id_linea_estrategica;
+      this.proyectoForm.id_linea_estrategica = this.dialogData.data.id_linea_estrategica;
       this.getLineaDeAccion(this.dialogData.data.id_linea_estrategica);
-      this.proyectoForm.id_linea_accion=this.dialogData.data.id_linea_accion;
+      this.proyectoForm.id_linea_accion = this.dialogData.data.id_linea_accion;
       this.getAccionEstrategica(this.dialogData.data.id_linea_accion);
-      this.proyectoForm.id_accion_estrategica=this.dialogData.data.id_accion_estrategica;
+      this.proyectoForm.id_accion_estrategica = this.dialogData.data.id_accion_estrategica;
 
       this.onIndicadorChange();
-      
+
       console.log(this.dialogData.data)
       this.getComunidad(this.dialogData.data.id_municipio);
     }
@@ -583,6 +583,49 @@ export class ProyectoComponent implements OnInit {
       this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
     })
   }
+
+  //--------------------------------Mapa ----------------------------------------------//
+  abrirVentanaModal() {
+    this.modalVisible = true;
+    this.inicializarMapa();
+  }
+
+  cerrarVentanaModal() {
+    this.modalVisible = false;
+    if (this.map) {
+      this.map.remove();
+    }
+  }
+
+  inicializarMapa() {
+    // Crea el mapa en el elemento con id "map"
+    this.map = L.map('map').setView([51.505, -0.09], 13);
+
+    // Agrega una capa de mosaico (puedes usar tu propia capa)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
+    /*
+        // Agrega tu GeoJSON con los polígonos aquí
+        const geojson = {}; // Reemplaza esto con tu GeoJSON
+    
+        // Agrega los polígonos al mapa
+        L.geoJSON(geojson).addTo(this.map);
+    
+        // Maneja el clic en el mapa
+        this.map.on('click', (e: any) => {
+          const clickedPoint = turf.point([e.latlng.lng, e.latlng.lat]);
+    
+          // Verifica si el punto está dentro de algún polígono
+          if (turf.booleanPointInPolygon(clickedPoint, geojson)) {
+            console.log(`Coordenada X: ${e.latlng.lng}, Coordenada Y: ${e.latlng.lat}`);
+          } else {
+            alert('El punto no está dentro de la cuenca.');
+          }
+        });*/
+  }
+
+  //------------------------------- Fin Mapa --------------------------------------------
+
+
   //selectores
   onCuencaSelected(event: any) {
     console.log('Event')
@@ -604,4 +647,5 @@ export class ProyectoComponent implements OnInit {
     this.showSelector3 = status;
 
   }
+
 }

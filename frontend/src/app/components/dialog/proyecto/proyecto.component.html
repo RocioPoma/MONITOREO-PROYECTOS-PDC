@@ -55,7 +55,15 @@
                 </mat-form-field>
             </div>
 
-            <span class="subTitle">LOCALIZACION</span>
+            <div fxLayout="row" fxGap="8px" class="subTitle-container">
+                <span class="subTitle" style="margin-right: 5.2cm;">LOCALIZACION</span>
+                 <!-- Botón para abrir la ventana modal -->
+                <mat-icon class="btn-icon" style="margin-right: 8px; color: #85929E ;" (click)="abrirVentanaModal()">location_on</mat-icon>
+            </div>
+
+      
+           
+    
 
             <div fxLayout="row wrap">
                 <mat-form-field appearance="fill" fxFlex>
@@ -154,7 +162,7 @@
                 <span class="subTitle" style="margin-right: 4.7cm;">ALCANCE</span>
                 <mat-icon class="btn-icon" style="margin-right: 8px;" (click)="addInput()"
                     color="primary">add_circle</mat-icon>
-                <mat-icon class="btn-icon" (click)="removeInput()">remove_circle</mat-icon>
+                <mat-icon class="btn-icon" style="color: #85929E;" (click)="removeInput()">remove_circle</mat-icon>
             </div>
 
             <div fxLayout="row wrap">
@@ -220,9 +228,9 @@
                 <input (change)="selectFile($event)" formControlName="documento" class="form-control-file" type="file">
             </div>
 
-            
+
             <!-------------------------------PDCG----------------------------->
-            
+
 
             <div *ngIf="showAdditionalSelects" style="margin-top: 0.5cm;">
                 <mat-divider></mat-divider>
@@ -262,7 +270,8 @@
 
                         <mat-form-field fxFlex>
                             <mat-label>Línea Estratégica (LE)</mat-label>
-                            <mat-select formControlName="id_linea_estrategica" (selectionChange)="getLineaDeAccion($event.value)">
+                            <mat-select formControlName="id_linea_estrategica"
+                                (selectionChange)="getLineaDeAccion($event.value)">
                                 <mat-option><ngx-mat-select-search [formControl]="searchLineaEstrategica"
                                         placeholderLabel="Buscar opción"></ngx-mat-select-search></mat-option>
                                 <mat-option *ngFor="let option of filterLineaEstrategica"
@@ -275,7 +284,8 @@
                     <div *ngIf="showSelector2">
                         <mat-form-field fxFlex>
                             <mat-label>Línea de Acción (LA)</mat-label>
-                            <mat-select formControlName="id_linea_accion" (selectionChange)="getAccionEstrategica($event.value)">
+                            <mat-select formControlName="id_linea_accion"
+                                (selectionChange)="getAccionEstrategica($event.value)">
                                 <mat-option><ngx-mat-select-search [formControl]="searchLineaDeAccion"
                                         placeholderLabel="Buscar opción"></ngx-mat-select-search></mat-option>
                                 <mat-option *ngFor="let option of filterLineaDeAccion" [value]="option.id_linea_accion">
@@ -343,3 +353,15 @@
         [disabled]="![proyectoForm.valid && proyectoForm.dirty]">{{action}}</button>
     <button mat-raised-button color="primary" mat-dialog-close>Cancelar</button>
 </mat-dialog-actions>
+
+
+
+
+<!-- Ventana modal para Mapa -->
+<div class="modal" [ngClass]="{'visible': modalVisible}">
+    <div class="modal-content">
+        <h2>Mapa Poligonizado</h2>
+        <div id="map"></div>
+        <p (click)="cerrarVentanaModal()">Cerrar</p>
+    </div>
+</div>
