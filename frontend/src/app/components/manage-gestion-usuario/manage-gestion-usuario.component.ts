@@ -10,6 +10,9 @@ import { GlobalCostants } from 'src/app/shared/global-constants';
 import { GestionusuarioComponent} from 'src/app/components/dialog/gestionusuario/gestionusuario.component';
 import { ConfirmationComponent } from '../dialog/confirmation/confirmation.component';
 import { EntidadService } from 'src/app/services/entidad.service';
+import  {jsPDF} from 'jspdf';
+import html2canvas, {Options} from 'html2canvas';
+
 
 @Component({
   selector: 'app-manage-gestion-usuario',
@@ -17,10 +20,11 @@ import { EntidadService } from 'src/app/services/entidad.service';
   styleUrls: ['./manage-gestion-usuario.component.scss']
 })
 export class ManageGestionUsuarioComponent {
-  displayedColumns: string[] = ['numero', 'Ci', 'Nombre', 'Rol', 'Entidad', 'Fecha', 'Accion']; 
+  displayedColumns: string[] = ['numero', 'Ci', 'Nombre', 'Rol', 'Entidad', 'Fecha','documento', 'Accion']; 
   dataSource: any;
   entidad: any;
   responseMessage: any;
+  usuario:any;
   
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -153,4 +157,28 @@ onChange(status: any, ci: any) {
         this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
       })
     }
+
+    //pdf
+    
+    generateReport(value:any) {
+      console.log(value);
+      this.usuario= value.ap_paterno+' '+value.ap_materno+' '+value.nombre;
+      const pdf = new jsPDF();  
+       const content = document.getElementById('report-content');    
+      if (content) {
+        html2canvas(content).then(canvas => {
+          const imgData = canvas.toDataURL('src/assets/img/logo_sihita.png'); 
+          pdf.addImage(imgData, 'PNG', 5, 5, 30, 15);//lugar en el espacio 5 , 5 tamaño de la imagen 30 , 15
+    
+          const currentDate = new Date();
+          const footerText = `Generado el ${currentDate.toLocaleDateString()} a las ${currentDate.toLocaleTimeString()} por `+ this.usuario;   
+          pdf.setFontSize(10);
+          pdf.text(footerText,10,280);
+          const pdfBlob = pdf.output('blob');
+          const pdfUrl = URL.createObjectURL(pdfBlob);
+    
+          window.open(pdfUrl, '_blank'); // Abre el PDF en una nueva ventana
+        });
+      }
+    } 
 }

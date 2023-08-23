@@ -55,6 +55,19 @@
                         <td mat-cell *matCellDef="let element"> {{element.fecha_registro | date}} </td>
                     </ng-container>
 
+                        <!-- Documento Column -->
+                        <ng-container matColumnDef="documento">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Doc.</th>
+                            <td mat-cell *matCellDef="let element" class="action-link">
+                                <div class="icon-group">
+                                    <button mat-icon-button color="accent" matTooltip="Pdf"
+                                        (click)="generateReport(element)">
+                                        <mat-icon> picture_as_pdf</mat-icon>
+                                    </button>
+                                </div>
+                            </td>
+                        </ng-container>
+
 
                     <ng-container matColumnDef="Accion">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Acciones</th>
@@ -95,3 +108,10 @@
 
 
 </mat-card>
+
+
+<div id="report-content">
+    <!-- Aquí puedes incluir los elementos del informe -->
+    <img src="assets/img/logo_sihita.png" alt="Logo">
+    <p>Contenido del informe...</p>
+  </div>
