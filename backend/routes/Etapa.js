@@ -36,8 +36,8 @@ router.get('/get', (req, res) => {
 
 //modificar
 router.put('/update/', (req, res) => {   
-  const {  nom_etapa, desc_etapa,peso_etapa, estado,id_etapa} = req.body;
-  connection.query('UPDATE etapa SET nom_etapa = ?, desc_etapa = ?,peso_etapa=?, estado = ? WHERE id_etapa = ?', [nom_etapa, desc_etapa,peso_etapa, estado,id_etapa], (err) => {
+  const {  nom_etapa, desc_etapa,peso_etapa, estado,id_tipologia, id_etapa} = req.body;
+  connection.query('UPDATE etapa SET nom_etapa = ?, desc_etapa = ?, peso_etapa=?, estado = ?,id_tipologia=? WHERE id_etapa = ?', [nom_etapa, desc_etapa, peso_etapa, estado,id_tipologia, id_etapa], (err) => {
     if (err) {
       console.error(err);
       res.status(500).json({ message: 'Hubo un error al actualizar la entidad ' });

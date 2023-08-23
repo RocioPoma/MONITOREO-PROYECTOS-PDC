@@ -21,6 +21,7 @@ const seguimiento_proyecto_Route=require('./routes/seguimiento_proyecto');
 const entidad_Route=require('./routes/Entidad');
 const fuente_informacion_Route=require('./routes/fuente_de_informacion');
 const etapa_Route=require('./routes/Etapa');
+const tipologia_Route=require('./routes/tipologia');
 
 
 //const path = require('path');
@@ -51,5 +52,6 @@ app.use('/seguimiento_proyecto',seguimiento_proyecto_Route);
 app.use('/entidad',entidad_Route);
 app.use('/fuente_informacion',fuente_informacion_Route);
 app.use('/etapa',etapa_Route);
+app.use('/tipologia',tipologia_Route);
 
 module.exports=app;

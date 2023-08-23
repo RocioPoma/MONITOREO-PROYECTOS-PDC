@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
     <mat-toolbar-row fxLayout="row">
-        <span class="title-center">{{action}} Categoría</span>
+        <span class="title-center">{{action}} Etapa</span>
     </mat-toolbar-row>
 </mat-toolbar>
 
@@ -29,6 +29,14 @@
                 <mat-error *ngIf="etapaForm.controls.desc_etapa.touched && etapaForm.controls.desc_etapa.invalid">
                     <span *ngIf="etapaForm.controls.desc_etapa.errors.required">Este campo es obligatorio.</span>
                 </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill" fxFlex>
+                <mat-label>Tipologia</mat-label>
+                <mat-select formControlName="id_tipologia">
+                    <mat-option *ngFor="let unidad of tipologia" [value]="unidad.id_tipologia">
+                        {{unidad.nom_tipologia}}
+                    </mat-option>
+                </mat-select>
             </mat-form-field>
         </div>
     </form>

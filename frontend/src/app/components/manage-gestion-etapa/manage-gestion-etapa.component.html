@@ -24,28 +24,28 @@
 
                 <!-- Nro -->
                 <ng-container matColumnDef="numero">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> No.</th>
+                    <th mat-header-cell *matHeaderCellDef > No.</th>
                     <td mat-cell *matCellDef="let element; index as i "> {{i+1}} </td>
                 </ng-container>
 
 
                 <ng-container matColumnDef="nombre">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+                    <th mat-header-cell *matHeaderCellDef >Nombre</th>
                     <td mat-cell *matCellDef="let element"> {{element.nom_etapa}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="peso">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Peso</th>
+                    <th mat-header-cell *matHeaderCellDef >Peso</th>
                     <td mat-cell *matCellDef="let element"> {{element.peso_etapa}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="descripcion">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</th>
+                    <th mat-header-cell *matHeaderCellDef >Descripción</th>
                     <td mat-cell *matCellDef="let element"> {{element.desc_etapa}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="tipologia">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipologia</th>
+                    <th mat-header-cell *matHeaderCellDef >Tipologia</th>
                     <td mat-cell *matCellDef="let element"> {{element.nom_tipologia}} </td>
                 </ng-container>
 

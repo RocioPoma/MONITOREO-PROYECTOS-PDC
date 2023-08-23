@@ -24,23 +24,23 @@
 
             <!-- Nro -->
             <ng-container matColumnDef="numero">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> No.</th>
+                <th mat-header-cell *matHeaderCellDef > No.</th>
                 <td mat-cell *matCellDef="let element; index as i "> {{i+1}} </td>
             </ng-container>
 
 
             <ng-container matColumnDef="nombre">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Entidad Financiera</th>
-                <td mat-cell *matCellDef="let element"> {{element.nom_entidad_financiera}} </td>
+                <th mat-header-cell *matHeaderCellDef > Nombre Entidad Financiera</th>
+                <td mat-cell *matCellDef="let element"> {{element.nom_entidad_finan}} </td>
             </ng-container>
 
             <ng-container matColumnDef="descripcion">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</th>
-                <td mat-cell *matCellDef="let element"> {{element.desc_entidad_financiera}} </td>
+                <th mat-header-cell *matHeaderCellDef >Descripción</th>
+                <td mat-cell *matCellDef="let element"> {{element.desc_entidad_finan}} </td>
             </ng-container>
 
             <ng-container matColumnDef="acciones">
-                <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                <th mat-header-cell *matHeaderCellDef >Acciones</th>
                 <td class="acciones" mat-cell *matCellDef="let element" class="action-link">
                     <button mat-icon-button color="primary" matTooltip="Edit" (click)="handleEditAction(element)">
                         <mat-icon>edit</mat-icon>

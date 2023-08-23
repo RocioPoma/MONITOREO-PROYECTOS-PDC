@@ -128,3 +128,16 @@ mat-form-field {
   cursor: pointer;
   /* Cambia el cursor a la mano */
 }
+.mat-sort-header-container {
+    display:flex;
+    justify-content:center;
+  }
+
+td, th {
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+ 
+
+ 
+ 
