@@ -24,6 +24,13 @@
   /* Cambia el cursor a la mano */
 }
 
+/* Estilos para los elementos input y select en este componente */
+mat-form-field input.mat-input,
+mat-form-field select.mat-select {
+    font-size: 6px;
+    color: green;
+}
+
 
 /* Estilos para la ventana modal de Mapa */
 .modal {
@@ -54,7 +61,8 @@
 
 /* Estilos para el mapa */
 #map {
+  
+  width: 600px;
   height: 400px;
-  width: 80%;
   margin: 20px auto;
 }

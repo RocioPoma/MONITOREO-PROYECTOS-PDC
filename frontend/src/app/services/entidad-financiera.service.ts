@@ -24,29 +24,29 @@ export class EntidadFinancieraService {
   }
 
   //----------------------API PARA EDITAR CATEGORÍA ------------------------------
-update(data: any) {
-  return this.httpClient.put(this.url +
-    "/entidad_financiera/update/", data, {
-    headers: new HttpHeaders().set('Content-Type', "application/json")
-  });
-}
+  update(data: any) {
+    return this.httpClient.put(this.url +
+      "/entidad_financiera/update/", data, {
+      headers: new HttpHeaders().set('Content-Type', "application/json")
+    });
+  }
 
 
-//----------------------API PARA ELIMINAR CATEGORÍA ------------------------------
-delete(id: any) {
-  return this.httpClient.delete(this.url +
-    "/entidad_financiera/delete/" + id, {
-    headers: new HttpHeaders().set('Content-Type', "application/json")
-  });
-}
+  //----------------------API PARA ELIMINAR CATEGORÍA ------------------------------
+  delete(id: any) {
+    return this.httpClient.delete(this.url +
+      "/entidad_financiera/delete/" + id, {
+      headers: new HttpHeaders().set('Content-Type', "application/json")
+    });
+  }
 
-//----------------------API PARA ACTUALIZAR ESTADO -------------------------
-updateStatus(data: any) {
-  return this.httpClient.patch(this.url +
-    "/entidad_financiera/updateStatus/", data, {
-    headers: new HttpHeaders().set('Content-Type', "application/json")
-  });
-}
+  //----------------------API PARA ACTUALIZAR ESTADO -------------------------
+  updateStatus(data: any) {
+    return this.httpClient.patch(this.url +
+      "/entidad_financiera/updateStatus/", data, {
+      headers: new HttpHeaders().set('Content-Type', "application/json")
+    });
+  }
 
 
 }

@@ -71,23 +71,6 @@ export class ManageGestionEtapaComponent {
     }
   } 
 
- 
-
-  /* handleAddAction() {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-      action: 'Add'
-    }
-    dialogConfig.width = "700px";
-    const dialogRef = this.dialog.open(GestionEtapaComponent, dialogConfig);
-    this.router.events.subscribe(() => {
-      dialogRef.close();
-    });
-    const sub = dialogRef.componentInstance.onAddCategoria.subscribe((response) => {
-      this.tableData();
-    })
-  } */
-
   handleEditAction(values: any) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
@@ -104,33 +87,6 @@ export class ManageGestionEtapaComponent {
     })
   }
  
-/*   handleDeleteAction(values: any) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-      message: ' eliminar Categoria '+ values.nom_categoria
-    };
-    const dialogRef = this.dialog.open(ConfirmationComponent, dialogConfig);
-    const sub = dialogRef.componentInstance.onEmitStatusChange.subscribe((response) => {
-      this.deleteCategoria(values.id_categoria);
-      dialogRef.close();
-    });
-  }
- */
- /*  deleteCategoria(id_categoria: any) {
-    this.etapaService.delete(id_categoria).subscribe((response: any) => {
-      this.tableData();
-      this.responseMessage = response?.message;
-      this.snackbarService.openSnackBar(this.responseMessage, "success");
-    }, (error: any) => {
-      if (error.error?.message) {
-        this.responseMessage = error.error?.message;
-      }
-      else {
-        this.responseMessage = GlobalCostants.genericError;
-      }
-      this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
-    })
-  } */
 
   onChange(status: any, id_etapa: any) {
     var data = {

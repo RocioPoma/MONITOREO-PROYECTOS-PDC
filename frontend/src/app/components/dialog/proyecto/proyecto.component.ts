@@ -301,7 +301,7 @@ export class ProyectoComponent implements OnInit {
     console.log(this.alcances);
   }
 
-  /*---------------------INICIO SERVICIOS ESTRAS --------------*/
+  /*---------------------INICIO SERVICIOS EXTRAS --------------*/
   //------------------- OBTENEMOS TIPOLOGIA
   getTipologia() {
     this.ProyectoService.getTipologia().subscribe((response: any) => {
@@ -603,26 +603,30 @@ export class ProyectoComponent implements OnInit {
 
     // Agrega una capa de mosaico (puedes usar tu propia capa)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
-    /*
-        // Agrega tu GeoJSON con los polígonos aquí
-        const geojson = {}; // Reemplaza esto con tu GeoJSON
-    
+
+    // Carga el GeoJSON desde assets/capas/limite_cuenca.geojson
+    fetch('assets/capas/limite_cuenca.geojson')
+      .then(response => response.json())
+      .then(geojson => {
         // Agrega los polígonos al mapa
         L.geoJSON(geojson).addTo(this.map);
-    
+
         // Maneja el clic en el mapa
         this.map.on('click', (e: any) => {
           const clickedPoint = turf.point([e.latlng.lng, e.latlng.lat]);
-    
+
           // Verifica si el punto está dentro de algún polígono
           if (turf.booleanPointInPolygon(clickedPoint, geojson)) {
             console.log(`Coordenada X: ${e.latlng.lng}, Coordenada Y: ${e.latlng.lat}`);
           } else {
             alert('El punto no está dentro de la cuenca.');
           }
-        });*/
+        });
+      })
+      .catch(error => {
+        console.error('Error al cargar el archivo GeoJSON:', error);
+      });
   }
-
   //------------------------------- Fin Mapa --------------------------------------------
 
 
