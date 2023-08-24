@@ -61,7 +61,7 @@
                 <span class="subTitle" style="margin-right: 5.2cm;">LOCALIZACION</span>
                 <!-- Botón para abrir la ventana modal -->
                 <mat-icon class="btn-icon" style="margin-right: 8px; color: #85929E ;"
-                (click)="openMapModal()">location_on</mat-icon>
+                    (click)="openMapModal()">location_on</mat-icon>
             </div>
 
             <div fxLayout="row wrap">
@@ -130,11 +130,11 @@
             <!-------------------------ALCANCE------------------------------->
             <div fxLayout="row" fxGap="8px" class="subTitle-container">
                 <span class="subTitle" style="margin-right: 4.7cm;">ALCANCE</span>
-                <mat-icon class="btn-icon" style="margin-right: 8px;" (click)="addInput()"
+                <mat-icon class="btn-icon" style="margin-right: 8px;" (click)="addAlcance()"
                     color="primary">add_circle</mat-icon>
                 <mat-icon class="btn-icon" style="color: #85929E;" (click)="removeInput()">remove_circle</mat-icon>
             </div>
-
+           
             <div fxLayout="row wrap">
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Cantidad</mat-label>
@@ -167,27 +167,41 @@
                         <span *ngIf="proyectoForm.controls.mujeres.errors.required">Este campo es obligatorio.</span>
                     </mat-error>
                 </mat-form-field>
-
-
             </div>
+
             <div>
                 <!--Aregar y quitar campos de Input-->
-                <div *ngFor="let input of alcances; let i = index" fxLayout="row wrap">
-                    <mat-form-field appearance="fill" fxFlex>
-                        <mat-label>Cantidad {{i + 1}}</mat-label>
-                        <input matInput [(ngModel)]="input.cantidad" formControlName="alcance_cantidad">
-                    </mat-form-field>
-                    <mat-form-field appearance="fill" fxFlex>
-                        <mat-label>Unidad</mat-label>
-                        <mat-select [(ngModel)]="input.unidad" formControlName="alcance_id_unidad_medicion">
-                            <mat-option *ngFor="let unidad of unidad" [value]="unidad.id_unidad_medicion">
-                                {{unidad.nom_unidad}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <div appearance="fill" fxFlex></div>
-                    <div appearance="fill" fxFlex></div>
-                </div>
+                <ng-container formArrayName="alcance">
+                    <ng-container *ngFor="let finForm of alcancetoArray.controls; let i = index">
+                        <div [formGroupName]="i" fxLayout="row wrap">
+                            <mat-form-field appearance="fill" fxFlex fxFlex.gt-sm="24%">
+                                <mat-label>Cantidad {{i + 1}}</mat-label>
+                                <input matInput formControlName="cantidad" required>
+                                <mat-error
+                                    *ngIf="alcancetoArray.at(i)?.get('cantidad')?.touched && alcancetoArray.at(i)?.get('cantidad')?.invalid">
+                                    <span *ngIf="alcancetoArray.at(i)?.get('cantidad')?.errors?.['required']">Este
+                                        campo es obligatorio.</span>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="fill" fxFlex fxFlex.gt-sm="24.22%">
+                                <mat-label>Unidad de Medición</mat-label>
+                                <mat-select formControlName="id_unidad_medicion">
+                                    <mat-option *ngFor="let item of unidad" [value]="item.id_unidad_medicion">
+                                        {{item.nom_unidad}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error
+                                    *ngIf="alcancetoArray.at(i)?.get('id_unidad_medicion')?.touched && alcancetoArray.at(i)?.get('id_unidad_medicion')?.invalid">
+                                    <span
+                                        *ngIf="alcancetoArray.at(i)?.get('id_unidad_medicion')?.errors?.['required']">Este
+                                        campo es obligatorio.</span>
+                                </mat-error>
+                            </mat-form-field>
+
+                        </div>
+                    </ng-container>
+                </ng-container>
                 <!---->
             </div>
 
@@ -214,8 +228,8 @@
                                 (selectionChange)="getLineaDeAccion($event.value)">
                                 <mat-option><ngx-mat-select-search [formControl]="searchLineaEstrategica"
                                         placeholderLabel="Buscar opción"></ngx-mat-select-search></mat-option>
-                                <mat-option *ngFor="let option of filterLineaEstrategica" 
-                                    [value]="option.id_linea_estrategica"> {{option.id_linea_estrategica}}.- 
+                                <mat-option *ngFor="let option of filterLineaEstrategica"
+                                    [value]="option.id_linea_estrategica"> {{option.id_linea_estrategica}}.-
                                     {{ option.descripcion }}
                                 </mat-option>
                                 <td mat-cell *matCellDef="let element; index as i "> {{i+1}} </td>

@@ -77,7 +77,7 @@ export class SeguimientoProyectoComponent {
         monto_final:           [{value:null, disabled:true}, [Validators.required, Validators.min(1)]],
       })
     ], [Validators.required]),
-    seguimiento_financiamiento: this.formBuilder.array([]),
+    seguimiento_financiamiento: this.formBuilder.array([]), 
   },{
 
   });
