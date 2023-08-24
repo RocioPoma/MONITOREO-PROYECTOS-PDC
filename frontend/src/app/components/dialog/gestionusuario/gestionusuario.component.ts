@@ -97,7 +97,7 @@ export class GestionusuarioComponent {
       telefono: formData.telefono,
       genero: formData.genero,
       rol: formData.rol,
-      estado: 1,
+      estado: true,
       id_entidad: formData.id_entidad,
       ci: formData.ci
     }

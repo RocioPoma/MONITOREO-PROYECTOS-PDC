@@ -32,6 +32,7 @@ import { ManageIndicadorComponent } from './manage-indicador/manage-indicador.co
 import { IndicadorComponent } from './dialog/indicador/indicador.component';
 import { ManageGestionEtapaComponent } from './manage-gestion-etapa/manage-gestion-etapa.component';
 import { GestionEtapaComponent } from './dialog/gestion-etapa/gestion-etapa.component';
+import { MapModalComponent } from './dialog/map-modal/map-modal.component';
 
 //import { MaterialModule } from '../shared/material-module';
 
@@ -62,7 +63,8 @@ import { GestionEtapaComponent } from './dialog/gestion-etapa/gestion-etapa.comp
     ManageIndicadorComponent,
     IndicadorComponent,
     ManageGestionEtapaComponent,
-    GestionEtapaComponent
+    GestionEtapaComponent,
+    MapModalComponent
   ],
   imports: [
     CommonModule,

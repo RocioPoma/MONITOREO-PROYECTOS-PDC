@@ -41,10 +41,10 @@
 
             <div fxLayout="row wrap">
                 <mat-form-field fxFlex>
-                    <mat-label>fecha de seguimiento</mat-label>
+                    <mat-label>fecha de seguimiento DD/MM/YYYY</mat-label>
                     <input matInput [matDatepicker]="picker" formControlName="fecha_seguimiento"
                         (dateChange)="dateFormateado()">
-                    <mat-hint>DD/MM/YYYY</mat-hint>
+                
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                     <mat-error
@@ -130,7 +130,7 @@
             </mat-toolbar>
 
             <div fxLayout="row" fxGap="8px" class="subTitle-container">
-                <span class="subTitle" style="margin-right: 4.7cm;">FÍSICO</span>
+                <span class="subTitle" style="margin-right: 4.7cm;">AVANCE FÍSICO</span>
             </div>
             <div fxLayout="row wrap">
                 <mat-form-field appearance="fill" fxFlex>
@@ -152,7 +152,7 @@
                 </mat-form-field>
             </div>
             <div fxLayout="row" fxGap="8px" class="subTitle-container">
-                <span class="subTitle" style="margin-right: 4.7cm;">FINANCIERO</span>
+                <span class="subTitle" style="margin-right: 4.7cm;">AVANCE FINANCIERO</span>
             </div>
             <ng-container formArrayName="seguimiento_financiamiento">
                 <ng-container *ngFor="let segForm of seguimientoFinanciamientoArray.controls; let i = index">

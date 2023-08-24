@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { ProyectoService } from 'src/app/services/proyecto.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
@@ -29,6 +29,7 @@ import { DateAdapter } from '@angular/material/core';
 //importamos para mapa
 import * as L from 'leaflet'; // Importa la biblioteca Leaflet
 import * as turf from '@turf/turf'; // Importa Turf.js
+import { MapModalComponent } from '../map-modal/map-modal.component';
 
 
 @Component({
@@ -109,8 +110,10 @@ export class ProyectoComponent implements OnInit {
   showSelector3 = false;
 
   //--------------------Mapa --------------------------------------
-  modalVisible: boolean = false;
-  map: any;
+  /* modalVisible: boolean = false;
+   map: any;*/
+  private map: L.Map;
+  private cuencaLayer: L.GeoJSON;
 
   //---------------------------------------------------------------------------variables para select especial
   @ViewChild('singleSelect', { static: true }) singleSelect!: MatSelect;
@@ -133,6 +136,7 @@ export class ProyectoComponent implements OnInit {
     private dialogRef: MatDialogRef<ProyectoComponent>,
     private snackbarService: SnackbarService,
     private datePipe: DatePipe,
+    private dialog: MatDialog,
     private dateAdapter: DateAdapter<Date>
   ) {
 
@@ -585,48 +589,47 @@ export class ProyectoComponent implements OnInit {
   }
 
   //--------------------------------Mapa ----------------------------------------------//
-  abrirVentanaModal() {
-    this.modalVisible = true;
-    this.inicializarMapa();
-  }
 
-  cerrarVentanaModal() {
-    this.modalVisible = false;
-    if (this.map) {
-      this.map.remove();
-    }
-  }
+  openMapModal() {
+    const dialogRef = this.dialog.open(MapModalComponent, {
+      width: '80%',
+      //height: '80%',
+      data: { geojsonFile: 'assets/capas/limite_cuenca.geojson' }
+    });
 
-  inicializarMapa() {
-    // Crea el mapa en el elemento con id "map"
-    this.map = L.map('map').setView([51.505, -0.09], 13);
+    dialogRef.afterClosed().subscribe(coords => {
+      if (coords) {
 
-    // Agrega una capa de mosaico (puedes usar tu propia capa)
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
-
-    // Carga el GeoJSON desde assets/capas/limite_cuenca.geojson
-    fetch('assets/capas/limite_cuenca.geojson')
-      .then(response => response.json())
-      .then(geojson => {
-        // Agrega los polígonos al mapa
-        L.geoJSON(geojson).addTo(this.map);
-
-        // Maneja el clic en el mapa
-        this.map.on('click', (e: any) => {
-          const clickedPoint = turf.point([e.latlng.lng, e.latlng.lat]);
-
-          // Verifica si el punto está dentro de algún polígono
-          if (turf.booleanPointInPolygon(clickedPoint, geojson)) {
-            console.log(`Coordenada X: ${e.latlng.lng}, Coordenada Y: ${e.latlng.lat}`);
-          } else {
-            alert('El punto no está dentro de la cuenca.');
-          }
+        this.proyectoForm.patchValue({
+          coordenada_x: coords.lat,
+          coordenada_y: coords.lng
         });
-      })
-      .catch(error => {
-        console.error('Error al cargar el archivo GeoJSON:', error);
-      });
+        
+        console.log('Coordenadas:', coords);
+        console.log('Coordenada x :', coords.lat);
+        console.log('Coordenada y:', coords.lng);
+
+      }
+    });
   }
+
+  /*
+  openMapModal() {
+    const dialogRef = this.dialog.open(MapModalComponent, {
+      width: '80%',
+     // height: '80%',
+      disableClose: true,
+    });
+
+    dialogRef.componentInstance.coordinatesSelected.subscribe((coordinates) => {
+      // Lógica para actualizar las coordenadas en los formularios
+      console.log('Coordenada X:', coordinates.x);
+      console.log('Coordenada Y:', coordinates.y);
+    });
+  }
+  */
+
+
   //------------------------------- Fin Mapa --------------------------------------------
 
 

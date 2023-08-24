@@ -1,0 +1,14 @@
+.mat-dialog-container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+#map {
+    flex-grow: 1;
+    height: 100%;
+    width: 100%;
+}
