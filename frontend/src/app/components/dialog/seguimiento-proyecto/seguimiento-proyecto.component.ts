@@ -238,7 +238,7 @@ export class SeguimientoProyectoComponent {
     console.log(this.Financiamiento);
   }
 
-  /*---------------------INICIO SERVICIOS ESTRAS --------------*/
+  /*---------------------INICIO SERVICIOS EXTRAS --------------*/
   //------------------- OBTENEMOS ENTIDAD EJECUTORA
   getEntidadEjecutora() {
     this.EntidadEjecutoraService.get().subscribe((response: any) => {

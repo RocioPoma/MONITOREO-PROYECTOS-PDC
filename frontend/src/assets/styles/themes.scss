@@ -14,7 +14,9 @@ $light-theme:mat.define-light-theme(
     )
 );
 
+
 @include mat.all-component-themes($light-theme);
+
 
 /*
 $primary: mat.define-palette(mat.$indigo-palette, 500);
