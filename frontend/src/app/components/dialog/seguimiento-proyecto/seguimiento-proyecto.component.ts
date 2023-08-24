@@ -134,6 +134,32 @@ export class SeguimientoProyectoComponent {
       this.add();
     }
   }
+  montoFinalTotal(){
+    const values=this.financiamientoArray.value as Array<any>
+    let total:number=0;
+    values.forEach(val=>{
+      total = total+val.monto_final
+    });
+    return total;
+  }
+  montoInicial(i:number){
+    // console.log(i);
+    if(this.montoFinalTotal()===0) return '';
+    const monto=this.financiamientoArray.at(i).get('monto_inicial')?.value;
+    return ((monto*100)/this.montoFinalTotal()).toFixed(2);
+  }
+  montoFinal(i:number){
+    // console.log(i);
+    if(this.montoFinalTotal()===0) return '';
+    const monto=this.financiamientoArray.at(i).get('monto_final')?.value;
+    return ((monto*100)/this.montoFinalTotal()).toFixed(2);
+  }
+  montoSeg(i:number){
+    if(this.montoFinalTotal()===0) return '';
+    const montoFinal =this.financiamientoArray.at(i).get('monto_inicial')?.value;
+    const montoSeguimiento = this.seguimientoFinanciamientoArray.at(i).get('monto')?.value;
+    return ((montoSeguimiento*100)/montoFinal).toFixed(2)
+  }
   add() {
     
     this.seguimientoForm1.markAllAsTouched();

@@ -71,7 +71,7 @@
                     <mat-icon class="btn-icon" (click)="addFinancimiento()" color="primary">add_circle</mat-icon>
                     <mat-icon class="btn-icon" *ngIf="financiamientoArray.length>0"(click)="removeInput()">remove_circle</mat-icon>
                 </div>
-                <span> Total (Bs.):{{'2000000'}}</span>
+                <span> Total(Bs.): {{montoFinalTotal()}}</span>
             </div>
             <div>
                 <!--Aregar y quitar campos de Input-->
@@ -92,14 +92,18 @@
                                 </mat-error>
                             </mat-form-field>
                             <mat-form-field appearance="fill" fxFlex>
-                                <mat-label>Monto inicial {{i + 1}}</mat-label>
+                                <mat-label >Monto inicial {{i + 1}}</mat-label>
                                 <input matInput formControlName="monto_inicial" type="number">
                                 <mat-error *ngIf="financiamientoArray.at(i)?.get('monto_inicial')?.touched && financiamientoArray.at(i)?.get('monto_inicial')?.invalid">
                                     <span *ngIf="financiamientoArray.at(i)?.get('monto_inicial')?.errors?.['required']">Este campo es obligatorio.</span>
                                     <span *ngIf="financiamientoArray.at(i)?.get('monto_final')?.errors?.['min']">El minimo es 1.</span>
                                 </mat-error>
                             </mat-form-field>
-
+                            <mat-form-field appearance="fill" fxFlex>
+                                <mat-label>aporte inicial</mat-label>
+                                <input matInput type="text" [disabled]="true" [value]="montoInicial(i)">
+                                <span matTextPrefix>%&nbsp;</span>
+                            </mat-form-field>
                             <mat-form-field appearance="fill" fxFlex>
                                 <mat-label>Monto Final {{i + 1}}</mat-label>
                                 <input matInput formControlName="monto_final" type="number">
@@ -107,6 +111,11 @@
                                     <span *ngIf="financiamientoArray.at(i)?.get('monto_final')?.errors?.['required']">Este campo es obligatorio.</span>
                                     <span *ngIf="financiamientoArray.at(i)?.get('monto_final')?.errors?.['min']">El minimo es 1.</span>
                                 </mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" fxFlex>
+                                <mat-label>aporte final</mat-label>
+                                <input matInput type="text" [disabled]="true" [value]="montoFinal(i)">
+                                <span matTextPrefix>%&nbsp;</span>
                             </mat-form-field>
                             <mat-icon class="delete-btn" *ngIf="i>0" (click)="deleteFinanciamiento(i)">delete_forever</mat-icon>
                         </div>
@@ -163,7 +172,8 @@
                             </mat-form-field>
                             <mat-form-field appearance="fill" fxFlex>
                                 <mat-label>% de seguimiento financiero</mat-label>
-                                <input matInput type="number" [disabled]="true">
+                                <input matInput type="number" [disabled]="true" [value]="montoSeg(i)">
+                                <span matTextPrefix>%&nbsp;</span>
                             </mat-form-field>
                         </div>
 
