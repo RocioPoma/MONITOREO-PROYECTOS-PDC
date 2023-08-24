@@ -43,6 +43,19 @@ router.get("/getEtapaByIdEtapaProyecto", (req, res) => {
     }
   });
 });
+router.get('/getEtapasByIdProyecto/:id_proyecto',(req,res)=>{
+  const {id_proyecto} =req.params;
+  const query =`SELECT ETP.id_etapa_proyecto,ETP.fuente_de_informacion,
+  ETA.nombre_etapa,ETA.peso_etapa,SEGF.avance_seguimiento_fisico FROM ETAPA_PROYECTO AS ETP 
+  JOIN ETAPA AS ETA ON ETA.id_etapa = ETP.id_etapa 
+  JOIN SEGUIMIENTO_FISICO AS SEGF ON SEGF.id_etapa_proyecto = ETP.id_etapa_proyecto
+  WHERE ETP.id_proyecto = ?;`;
+  connection.query(query,[id_proyecto],(err,result)=>{
+    if(err) res.status(500).json({msg:'error al consultar - etap by idProyecto'});
+
+    res.json(result)
+  })
+})
 router.post("/registrarEtapa_Proyecto", (req, res) => {
   const {
     id_entidad_ejecutora,
