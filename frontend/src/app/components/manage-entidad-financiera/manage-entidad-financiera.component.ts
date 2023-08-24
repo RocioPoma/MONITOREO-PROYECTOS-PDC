@@ -100,11 +100,11 @@ constructor(
   handleDeleteAction(values: any) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      message: ' eliminar Entidad Ejecutora '+ values.nom_entidad_ejecutora
+      message: ' eliminar Entidad Ejecutora '+ values.nom_entidad_financiera
     };
     const dialogRef = this.dialog.open(ConfirmationComponent, dialogConfig);
     const sub = dialogRef.componentInstance.onEmitStatusChange.subscribe((response) => {
-      this.deleteEntidadFinan(values.id_entidad_finan);
+      this.deleteEntidadFinan(values.id_entidad_financiera);
       dialogRef.close();
     });
   }
@@ -128,7 +128,7 @@ constructor(
   onChange(status: any, id_finan: any) {
     var data = {
       estado: status.toString(),
-      id_entidad_finan: id_finan
+      id_entidad_financiera: id_finan
     }
     this.entidadFinanciera.updateStatus(data).subscribe((response: any) => {
       this.tableData();

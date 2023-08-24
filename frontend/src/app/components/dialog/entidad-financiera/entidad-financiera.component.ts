@@ -28,8 +28,8 @@ export class EntidadFinancieraComponent {
 
   ngOnInit(): void {
     this.entidadFinanForm = this.formBuilder.group({
-      nom_entidad_finan: [null, [Validators.required]],
-      desc_entidad_finan: [null, [Validators.required]]
+      nom_entidad_financiera: [null, [Validators.required]],
+      desc_entidad_financiera: [null, [Validators.required]]
     });
     if(this.dialogData.action ==='Edit') {
       this.dialogAction="Edit";
@@ -50,8 +50,8 @@ export class EntidadFinancieraComponent {
   add(){
     var formData = this.entidadFinanForm.value;
     var data ={
-      nom_entidad_finan: formData.nom_entidad_finan,
-      desc_entidad_finan: formData.desc_entidad_finan,
+      nom_entidad_financiera: formData.nom_entidad_financiera,
+      desc_entidad_financiera: formData.desc_entidad_financiera,
       estado : true
     }
     this.entidadFinancieraServices.add(data).subscribe((response:any)=>{
@@ -74,9 +74,9 @@ export class EntidadFinancieraComponent {
   edit(){
     var formData = this.entidadFinanForm.value;
     var data ={
-      id_entidad_finan:this.dialogData.data.id_entidad_finan,
-      nom_entidad_finan: formData.nom_entidad_finan,
-      desc_entidad_finan: formData.desc_entidad_finan,
+      id_entidad_financiera:this.dialogData.data.id_entidad_financiera,
+      nom_entidad_financiera: formData.nom_entidad_financiera,
+      desc_entidad_financiera: formData.desc_entidad_financiera,
       estado : true
     }
     this.entidadFinancieraServices.update(data).subscribe((response:any)=>{

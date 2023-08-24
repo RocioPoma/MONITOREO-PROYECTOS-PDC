@@ -15,29 +15,12 @@ router.get('/get', (req, res) => {
     });
   });
 
-  //obtener entidadcon id
-  router.get('/entidad/:id', (req, res) => {
-    const { id } = req.params;
-    connection.query('SELECT * FROM entidad WHERE id_entedidad = ?', [id], (err, results) => {
-      if (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Hubo un error al obtener el entidad' });
-      } else {
-        if (results.length === 0) {
-          res.status(404).json({ message: 'Entidad no encontrado' });
-        } else {
-          res.json(results[0]);
-        }
-      }
-    });
-  });
-
 
 
 //modificar
 router.put('/update/', (req, res) => {   
-  const {  nom_etapa, desc_etapa,peso_etapa, estado,id_tipologia, id_etapa} = req.body;
-  connection.query('UPDATE etapa SET nom_etapa = ?, desc_etapa = ?, peso_etapa=?, estado = ?,id_tipologia=? WHERE id_etapa = ?', [nom_etapa, desc_etapa, peso_etapa, estado,id_tipologia, id_etapa], (err) => {
+  const {  nombre_etapa, descripcion_etapa,peso_etapa, estado,id_tipologia, id_etapa} = req.body;
+  connection.query('UPDATE etapa SET nombre_etapa = ?, descripcion_etapa = ?, peso_etapa=?, estado = ?,id_tipologia=? WHERE id_etapa = ?', [nombre_etapa, descripcion_etapa, peso_etapa, estado,id_tipologia, id_etapa], (err) => {
     if (err) {
       console.error(err);
       res.status(500).json({ message: 'Hubo un error al actualizar la entidad ' });
@@ -50,10 +33,10 @@ router.put('/update/', (req, res) => {
 
 //status entidad 
 router.patch('/updateStatus',(req,res)=>{
-let user =req.body;
-console.log(user);
+let etapa =req.body;
+console.log(etapa);
 var query = "update etapa set estado=? where id_etapa=?";
-connection.query(query,[user.estado,user.id_etapa],(err,results)=>{
+connection.query(query,[etapa.estado,etapa.id_etapa],(err,results)=>{
     if(!err){
         if(results.affectedRows == 0){
             return res.status(404).json({message:"La etapa no existe"});

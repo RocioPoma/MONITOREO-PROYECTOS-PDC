@@ -20,11 +20,13 @@ import html2canvas, {Options} from 'html2canvas';
   styleUrls: ['./manage-gestion-usuario.component.scss']
 })
 export class ManageGestionUsuarioComponent {
-  displayedColumns: string[] = ['numero', 'Ci', 'Nombre', 'Rol', 'Entidad', 'Fecha','documento', 'Accion']; 
+  displayedColumns: string[] = ['numero', 'Ci', 'Nombre', 'Rol', 'Entidad', 'Fecha', 'Accion']; 
   dataSource: any;
   entidad: any;
   responseMessage: any;
-  usuario:any;
+  usuario: any;
+  ap:any;
+  am:any;
   
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -41,6 +43,17 @@ export class ManageGestionUsuarioComponent {
   ngOnInit(): void {
     this.tableData();
     this.entidades();  
+
+    //para imprimier el usuario q hace reporte
+    const nombreString = localStorage.getItem('nombre');
+    const ApString = localStorage.getItem('ap_paterno');
+    const AmString = localStorage.getItem('ap_materno');
+   
+
+    this.usuario = nombreString? (nombreString): null;
+    this.ap = ApString ? (ApString ): null;
+    this.am = AmString? (AmString): null;
+  
     
   }
 
@@ -160,25 +173,53 @@ onChange(status: any, ci: any) {
 
     //pdf
     
-    generateReport(value:any) {
-      console.log(value);
-      this.usuario= value.ap_paterno+' '+value.ap_materno+' '+value.nombre;
+    generateReport() {    
+
       const pdf = new jsPDF();  
-       const content = document.getElementById('report-content');    
-      if (content) {
-        html2canvas(content).then(canvas => {
-          const imgData = canvas.toDataURL('src/assets/img/logo_sihita.png'); 
-          pdf.addImage(imgData, 'PNG', 5, 5, 30, 15);//lugar en el espacio 5 , 5 tamaño de la imagen 30 , 15
+       //const content = document.getElementById('report-content');   
+     
+        /* html2canvas(content).then(canvas => {
+          const imgData = canvas.toDataURL('assets/img/image.png'); 
+          pdf.addImage(imgData, 'PNG', 20, 50, 150, 100);//lugar en el espacio 5 , 5 tamaño de la imagen 30 , 15
     
           const currentDate = new Date();
-          const footerText = `Generado el ${currentDate.toLocaleDateString()} a las ${currentDate.toLocaleTimeString()} por `+ this.usuario;   
+          const footerText = `Generado el ${currentDate.toLocaleDateString()} a las ${currentDate.toLocaleTimeString()} por `+ this.usuario + ' '+ this.ap + ' '+this.am ;   
           pdf.setFontSize(10);
           pdf.text(footerText,10,280);
           const pdfBlob = pdf.output('blob');
           const pdfUrl = URL.createObjectURL(pdfBlob);
     
           window.open(pdfUrl, '_blank'); // Abre el PDF en una nueva ventana
-        });
-      }
+        }); */
+
+        const content: HTMLElement = document.getElementById('report-content')!;
+  
+              html2canvas(content).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF();
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                console.log(pdfHeight );
+
+                const currentDate = new Date();
+                const footerText = `Generado el ${currentDate.toLocaleDateString()} a las ${currentDate.toLocaleTimeString()} por `+ this.usuario + ' '+ this.ap + ' '+this.am ;
+                pdf.setFontSize(10);
+                pdf.text(footerText,10,280);
+
+
+                  // Agregar imagen
+                const logo = new Image();
+                logo.src = 'assets/img/logo_sihita.png';
+                pdf.addImage(logo, 'PNG', 10, 10, 25, 25);
+                
+
+                pdf.addImage(imgData, 'PNG', 0, 50, 265, 50);
+                //pdf.save('report.pdf');
+                const pdfBlob = pdf.output('blob');
+                const pdfUrl = URL.createObjectURL(pdfBlob);
+                window.open(pdfUrl, '_blank'); // Abre el PDF en una nueva ventana
+
+              });
+      
     } 
 }

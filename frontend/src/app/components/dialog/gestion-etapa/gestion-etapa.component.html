@@ -10,9 +10,9 @@
             <div fxLayout="row wrap">
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Nombre</mat-label>
-                    <input matInput formControlName="nom_etapa" required>
-                    <mat-error *ngIf="etapaForm.controls.nom_etapa.touched && etapaForm.controls.nom_etapa.invalid">
-                        <span *ngIf="etapaForm.controls.nom_etapa.errors.required">Este campo es obligatorio.</span>
+                    <input matInput formControlName="nombre_etapa" required>
+                    <mat-error *ngIf="etapaForm.controls.nombre_etapa.touched && etapaForm.controls.nombre_etapa.invalid">
+                        <span *ngIf="etapaForm.controls.nombre_etapa.errors.required">Este campo es obligatorio.</span>
                     </mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="fill" fxFlex>
@@ -25,9 +25,9 @@
             </div>
             <mat-form-field appearance="fill" fxFlex>
                 <mat-label>Descripción</mat-label>
-                <input matInput formControlName="desc_etapa" required>
-                <mat-error *ngIf="etapaForm.controls.desc_etapa.touched && etapaForm.controls.desc_etapa.invalid">
-                    <span *ngIf="etapaForm.controls.desc_etapa.errors.required">Este campo es obligatorio.</span>
+                <input matInput formControlName="descripcion_etapa" required>
+                <mat-error *ngIf="etapaForm.controls.descripcion_etapa.touched && etapaForm.controls.descripcion_etapa.invalid">
+                    <span *ngIf="etapaForm.controls.descripcion_etapa.errors.required">Este campo es obligatorio.</span>
                 </mat-error>
             </mat-form-field>
             <mat-form-field appearance="fill" fxFlex>

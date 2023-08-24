@@ -31,9 +31,9 @@ export class GestionEtapaComponent {
   ngOnInit(): void {
     this.llamarTipologia();
     this.etapaForm = this.formBuilder.group({
-      nom_etapa: [null, [Validators.required]],
+      nombre_etapa: [null, [Validators.required]],
       peso_etapa: [null, [Validators.required]],
-      desc_etapa: [null, [Validators.required]],
+      descripcion_etapa: [null, [Validators.required]],
       id_tipologia:[null, [Validators.required]]
     });
     if(this.dialogData.action ==='Edit') {
@@ -79,9 +79,9 @@ export class GestionEtapaComponent {
     var formData = this.etapaForm.value;
     var data ={
       id_etapa:this.dialogData.data.id_etapa,
-      nom_etapa: formData.nom_etapa,
+      nombre_etapa: formData.nombre_etapa,
       peso_etapa: formData.peso_etapa,
-      desc_etapa: formData.desc_etapa,
+      descripcion_etapa: formData.descripcion_etapa,
       id_tipologia:formData.id_tipologia,
       estado: this.dialogData.data.estado     
     }
