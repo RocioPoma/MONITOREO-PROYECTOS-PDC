@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { ProyectoService } from 'src/app/services/proyecto.service';
@@ -186,6 +186,12 @@ export class ProyectoComponent implements OnInit {
       id_indicador: [null, [Validators.required]],
       documento: [null],
       //para alcance
+      alcance: this.formBuilder.array([
+        this.formBuilder.group({
+          cantidad: [null, [Validators.required]],
+          id_unidad_medicion: [{ value: null}, [Validators.required, Validators.min(1)]],
+        })
+      ], [Validators.required]),
       alcance_cantidad: [null, [Validators.required]],
       alcance_id_unidad_medicion: [null, [Validators.required]],
       unidad: [{ value: '', disabled: false }, Validators.required],
@@ -291,19 +297,40 @@ export class ProyectoComponent implements OnInit {
 
 
   //----------- PARA AGREGAR CAMPOS INPUT (CANTIDAD Y UNIDAD)
+  /*
   addInput() {
     this.alcances.push({ cantidad: '', unidad: '' });
-  }
+  }*/
 
   //----------- PARA QUITAR CAMPOS INPUT(CANTIDAD Y UNIDAD)
   removeInput() {
-    if (this.alcances.length > 0) {
-      this.alcances.pop();
+    if (this.alcancetoArray.length > 1) {
+      this.alcancetoArray.removeAt(this.alcancetoArray.length - 1);
     }
   }
   mostrarDatos() {
     console.log(this.alcances);
   }
+
+  //---------- ALCANCE
+  get alcancetoArray() {
+    return this.proyectoForm.controls['alcance'] as FormArray;
+  }
+
+  //
+  addAlcance() {
+    const alcanceItem = this.formBuilder.group({
+      cantidad: [null, [Validators.required]],
+      id_unidad_medicion: [, [Validators.required]],
+    })
+    this.alcancetoArray.push(alcanceItem);
+  }
+
+  deleteAlcance(index: number) {
+    this.alcancetoArray.removeAt(index);
+  }
+
+  //---------- FIN ALCANCE
 
   /*---------------------INICIO SERVICIOS EXTRAS --------------*/
   //------------------- OBTENEMOS TIPOLOGIA
@@ -604,7 +631,7 @@ export class ProyectoComponent implements OnInit {
           coordenada_x: coords.lat,
           coordenada_y: coords.lng
         });
-        
+
         console.log('Coordenadas:', coords);
         console.log('Coordenada x :', coords.lat);
         console.log('Coordenada y:', coords.lng);

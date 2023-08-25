@@ -46,14 +46,37 @@ router.get("/getEtapaByIdEtapaProyecto", (req, res) => {
 router.get('/getEtapasByIdProyecto/:id_proyecto',(req,res)=>{
   const {id_proyecto} =req.params;
   const query =`SELECT ETP.id_etapa_proyecto,ETP.fuente_de_informacion,
-  ETA.nombre_etapa,ETA.peso_etapa,SEGF.avance_seguimiento_fisico FROM ETAPA_PROYECTO AS ETP 
+  ETA.nombre_etapa,DATE_FORMAT(ETP.fecha_seguimiento, '%d-%m-%Y') AS fecha_seguimiento,SEGF.avance_seguimiento_fisico FROM ETAPA_PROYECTO AS ETP 
   JOIN ETAPA AS ETA ON ETA.id_etapa = ETP.id_etapa 
   JOIN SEGUIMIENTO_FISICO AS SEGF ON SEGF.id_etapa_proyecto = ETP.id_etapa_proyecto
   WHERE ETP.id_proyecto = ?;`;
   connection.query(query,[id_proyecto],(err,result)=>{
     if(err) res.status(500).json({msg:'error al consultar - etap by idProyecto'});
 
-    res.json(result)
+    avanceEtapas=[];
+    for(avance of result){
+      if(avanceEtapas.length===0) avanceEtapas.push(avance);
+      else{
+        const ava = avanceEtapas.find(val=>val.nombre_etapa===avance.nombre_etapa);
+        if(ava){
+          ava.avance_seguimiento_fisico = 
+              avance.avance_seguimiento_fisico>ava.avance_seguimiento_fisico
+                ?avance.avance_seguimiento_fisico:ava.avance_seguimiento_fisico;
+        }else{
+          avanceEtapas.push(avance);
+        }
+      }
+    }
+    res.json(avanceEtapas)
+  })
+})
+router.get('/get_seguimientos/:id_etapa_proyecto',(req,res)=>{
+  const {id_etapa_proyecto} =req.params;
+  const query=`SELECT SEGF.avance_seguimiento_fisico,DATE_FORMAT(SEGF.fecha_seguimiento_fisico, '%d-%m-%Y') AS fecha_seguimiento_fisico 
+  FROM SEGUIMIENTO_FISICO AS SEGF WHERE SEGF.id_etapa_proyecto = ? ORDER BY SEGF.avance_seguimiento_fisico DESC `
+  connection.query(query,[id_etapa_proyecto],(err,result)=>{
+    if(err) res.status(500).json({err,msg:'error al obtener seguiminetos fisicos'});
+    res.json(result);
   })
 })
 router.post("/registrarEtapa_Proyecto", (req, res) => {

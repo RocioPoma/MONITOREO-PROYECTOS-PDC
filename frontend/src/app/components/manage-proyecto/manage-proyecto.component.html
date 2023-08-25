@@ -48,8 +48,15 @@
 
                     <!-- NombreProyecto Column -->
                     <ng-container matColumnDef="NombreProyecto">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> NombreProyecto </th>
-                        <td class="nomProy" mat-cell *matCellDef="let element"> {{element.nom_proyecto}} </td>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>NombreProyecto</th>
+                        <td class="nomProy flex-column" mat-cell *matCellDef="let element">
+                            <div>
+                                <button  mat-mini-fab color="accent" (click)="openEtapasProyecto(element)">
+                                    <mat-icon >history</mat-icon>
+                                </button>
+                            </div> 
+                            <span>{{element.nom_proyecto}}</span>
+                        </td>
                     </ng-container>
 
                     <!-- FechaInicio Column -->
@@ -159,4 +166,11 @@
             <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
         </div>
     </div>
+    <div [style]="{'margin':'10px'}">
+        <app-historial-seguimientos-proyecto
+        *ngIf="openSeguimientosProyecto"
+        [proyecto]="proyecto"
+        >
+    </app-historial-seguimientos-proyecto>
+</div>
 </mat-card>

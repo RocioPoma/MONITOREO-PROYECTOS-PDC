@@ -26,4 +26,11 @@ export class SeguimientoProyectoService {
   registerSeguimientoEtapa(seguimientoForm:any){
     return this.httpClient.post(`${this.url}/registrarAvanceSeguimientoProyecto`,seguimientoForm);
   }
+
+  getEtapasProyecto(id_proyecto:number){
+    return this.httpClient.get<any>(`${this.url}/getEtapasByIdProyecto/${id_proyecto}`);
+  }
+  getHistorialSeguimientoEtapa(id_etapa_proyecto:number){
+    return this.httpClient.get<any>(`${this.url}/get_seguimientos/${id_etapa_proyecto}`);
+  }
 }
