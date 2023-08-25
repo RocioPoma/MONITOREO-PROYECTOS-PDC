@@ -34,7 +34,6 @@ import { ManageGestionEtapaComponent } from './manage-gestion-etapa/manage-gesti
 import { GestionEtapaComponent } from './dialog/gestion-etapa/gestion-etapa.component';
 import { MapModalComponent } from './dialog/map-modal/map-modal.component';
 import { HistorialSeguimientosProyectoComponent } from './historial-seguimientos-proyecto/historial-seguimientos-proyecto.component';
-import { HistorialSeguimientoEtapaComponent } from './historial-seguimiento-etapa/historial-seguimiento-etapa.component';
 
 //import { MaterialModule } from '../shared/material-module';
 
@@ -67,8 +66,7 @@ import { HistorialSeguimientoEtapaComponent } from './historial-seguimiento-etap
     ManageGestionEtapaComponent,
     GestionEtapaComponent,
     MapModalComponent,
-    HistorialSeguimientosProyectoComponent,
-    HistorialSeguimientoEtapaComponent
+    HistorialSeguimientosProyectoComponent
   ],
   imports: [
     CommonModule,

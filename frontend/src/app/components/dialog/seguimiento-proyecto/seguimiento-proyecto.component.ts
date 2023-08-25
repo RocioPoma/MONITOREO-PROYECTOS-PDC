@@ -200,6 +200,14 @@ export class SeguimientoProyectoComponent {
                                                               seguimiento_financiamiento}).subscribe({
       next:res=>{
         console.log(res);
+
+        this.responseMessage = "Se registro correctamente el seguimiento de etapa";
+        this.snackbarService.openSnackBar(this.responseMessage, "success");
+        this.seguimientoForm1.get('fecha_seguimiento').reset();
+        this.seguimientoForm1.get('avance_seguimiento_fisico').reset();
+        this.seguimientoForm1.get('comentario_seguimiento_fisico').reset();
+        this.seguimientoForm1.get('comentario_seguimiento_financiero').reset();
+        this.seguimientoFinanciamientoArray.reset();
       },
       error:err=>{
         console.log(err);

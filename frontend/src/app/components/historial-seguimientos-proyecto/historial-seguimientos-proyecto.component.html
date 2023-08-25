@@ -1,4 +1,4 @@
-<div class="padding">
+<div class="padding-historial">
     <div class="sub-title">
         <b><span class="color-text">SEGUIMIENTO FISICO DEL PROYECTO: "{{proyecto.nom_proyecto}}"</span></b>
     </div>
@@ -39,6 +39,38 @@
                       (click)="clickedRows.add(row)"
                       [class.demo-row-is-clicked]="clickedRows.has(row)"
                       *matRowDef="let row; columns: displayedColumns;"
+                  ></tr>
+            </table>
+        </div>
+    </div>
+    <div class="sub-title" *ngIf="openHistorialEtapa">
+        <b><span class="color-text">SEGUIMIENTO DE LA ETAPA: "{{etapa_proyecto.nombre_etapa}}"</span></b>
+    </div>
+    <div class="mat-elevation-z4" *ngIf="openHistorialEtapa">
+        <div class="table-wrapper">
+            <table mat-table [dataSource]="dataSeguimientosEtapa" matSort style="table-layout: auto; width: 100%;">
+                <ng-container matColumnDef="nro">
+                    <th mat-header-cell *matHeaderCellDef>No.</th>
+                    <td mat-cell *matCellDef="let element;index as i">{{i+1}}</td>
+                </ng-container>
+                <ng-container matColumnDef="nombre_etapa">
+                    <th mat-header-cell *matHeaderCellDef>Etapa.</th>
+                    <td mat-cell *matCellDef="let element">{{etapa_proyecto.nombre_etapa}}</td>
+                  </ng-container>
+                <ng-container matColumnDef="fecha_seguimiento">
+                    <th mat-header-cell *matHeaderCellDef>Fecha de seguimiento.</th>
+                    <td mat-cell *matCellDef="let element">{{element.fecha_seguimiento_fisico}}</td>
+                  </ng-container>
+                <ng-container matColumnDef="avance_seguimiento_fisico">
+                    <th mat-header-cell *matHeaderCellDef>Avance de seguimiento.</th>
+                    <td mat-cell *matCellDef="let element">{{element.avance_seguimiento_fisico}}%</td>
+                  </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="displayedSeguimientoColumns"></tr>
+                  <tr
+                      mat-row
+                      (click)="clickedSeguimientosRows.add(row)"
+                      [class.demo-row-is-clicked]="clickedSeguimientosRows.has(row)"
+                      *matRowDef="let row; columns: displayedSeguimientoColumns;"
                   ></tr>
             </table>
         </div>
