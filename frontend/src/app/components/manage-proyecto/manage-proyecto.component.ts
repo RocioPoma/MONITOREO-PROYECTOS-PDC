@@ -31,8 +31,9 @@ export class ManageProyectoComponent {
   displayedColumns: string[] = ['Nro', 'NombreProyecto', 'FechaInicio', 'FechaFin', 'NombreMunicipio', 'NombreCuenca', 'NombreCategoria', 'NombreTipologia', 'documento', 'seguimiento', 'Acciones'];
   dataSource: any;
   responseMessage: any;
+  proyecto:any;
   municipios: any = [];
-
+  openSeguimientosProyecto=false; //ABRIR LOS SEGUIMIENTOS DE ETAPAS DE PROYECTO
   apiResponse: any = []; //para filtrar con el select
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -221,9 +222,12 @@ export class ManageProyectoComponent {
       this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
     })
   }
-
-
-
+  openEtapasProyecto(proyecto:any){
+    this.proyecto=proyecto;
+    // console.log(proyecto);
+    this.openSeguimientosProyecto= !this.openSeguimientosProyecto;
+    // console.log(this.openSeguimientosProyecto);
+  }
 }
 
 
