@@ -10,9 +10,13 @@ import { GlobalCostants } from 'src/app/shared/global-constants';
 import { GestionusuarioComponent} from 'src/app/components/dialog/gestionusuario/gestionusuario.component';
 import { ConfirmationComponent } from '../dialog/confirmation/confirmation.component';
 import { EntidadService } from 'src/app/services/entidad.service';
-import  {jsPDF} from 'jspdf';
-import html2canvas, {Options} from 'html2canvas';
 
+
+
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { image } from 'html2canvas/dist/types/css/types/image';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-manage-gestion-usuario',
@@ -27,6 +31,7 @@ export class ManageGestionUsuarioComponent {
   usuario: any;
   ap:any;
   am:any;
+  tabla:any;
   
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -55,11 +60,13 @@ export class ManageGestionUsuarioComponent {
     this.am = AmString? (AmString): null;
   
     
+    
   }
 
   tableData() {
     this.usuarioService.getusuario().subscribe((response: any) => {
       console.log(response);
+      this.tabla=response;
       this.dataSource = new MatTableDataSource(response);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -174,52 +181,74 @@ onChange(status: any, ci: any) {
     //pdf
     
     generateReport() {    
+      const currentDate = new Date().toLocaleDateString();
+      //const tableBody = this.tabla.map(person => [person.nombre, person.ci, person.rol]);      
+      const tableBody = [];
+      for (let i = 0; i < this.tabla.length; i++) {
+        const person = this.tabla[i];
+        tableBody.push([person.ci, person.nombre +' '+ person.ap_paterno +' '+ person.ap_materno, person.telefono, person.celular, person.rol, person.nombre_entidad]);
+      }
 
-      const pdf = new jsPDF();  
-       //const content = document.getElementById('report-content');   
-     
-        /* html2canvas(content).then(canvas => {
-          const imgData = canvas.toDataURL('assets/img/image.png'); 
-          pdf.addImage(imgData, 'PNG', 20, 50, 150, 100);//lugar en el espacio 5 , 5 tamaño de la imagen 30 , 15
-    
-          const currentDate = new Date();
-          const footerText = `Generado el ${currentDate.toLocaleDateString()} a las ${currentDate.toLocaleTimeString()} por `+ this.usuario + ' '+ this.ap + ' '+this.am ;   
-          pdf.setFontSize(10);
-          pdf.text(footerText,10,280);
-          const pdfBlob = pdf.output('blob');
-          const pdfUrl = URL.createObjectURL(pdfBlob);
-    
-          window.open(pdfUrl, '_blank'); // Abre el PDF en una nueva ventana
-        }); */
-
-        const content: HTMLElement = document.getElementById('report-content')!;
-  
-              html2canvas(content).then(canvas => {
-                const imgData = canvas.toDataURL('image/png');
-                const pdf = new jsPDF();
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-                console.log(pdfHeight );
-
-                const currentDate = new Date();
-                const footerText = `Generado el ${currentDate.toLocaleDateString()} a las ${currentDate.toLocaleTimeString()} por `+ this.usuario + ' '+ this.ap + ' '+this.am ;
-                pdf.setFontSize(10);
-                pdf.text(footerText,10,280);
-
-
-                  // Agregar imagen
-                const logo = new Image();
-                logo.src = 'assets/img/logo_sihita.png';
-                pdf.addImage(logo, 'PNG', 10, 10, 25, 25);
-                
-
-                pdf.addImage(imgData, 'PNG', 0, 50, 265, 50);
-                //pdf.save('report.pdf');
-                const pdfBlob = pdf.output('blob');
-                const pdfUrl = URL.createObjectURL(pdfBlob);
-                window.open(pdfUrl, '_blank'); // Abre el PDF en una nueva ventana
-
-              });
+      const logo = new Image();
+      logo.src = '../../../assets/img/logo_sihita.png';
+      console.log(tableBody);
+      const documentDefinition = {
+        
+        //carguemos imagen
+        images: {
+          building: 'data:image/png;base64,../../../assets/img/logo_sihita.png'},
+         // encabezado  
+   
+        header: () => (
+          { text: 'Encabezado del PDF', 
+          alignment: 'center', margin: [0, 10], 
+          image: logo, width: 50, height: 50 }
       
-    } 
+          ),
+
+       //margenes
+          pageMargins: [ 40, 60, 40, 60 ],
+          Times: {
+            normal: 'Times-Roman',           
+          },
+          //contenido tablas e informacion
+            content: [              
+               'Datos de Personas\n\n',
+              {
+                
+                      table: {
+                        headerRows: 1,
+                        widths: ['*', '*' , '*', '*', '*', '*'],
+                        body: [
+                          ['Ci', 'nombre completo','telefono','celular','rol','entidad'],
+                         ...tableBody
+                        ]
+                      },	
+                      fontSize: 8,
+                      italics: true
+
+              },             
+            ],
+
+
+            //footer pie de pagina
+            footer: () => ({
+              columns: [
+                { text: `Usuario: ${this.usuario+' '+this.ap+' '+this.am}`, alignment: 'left', margin: [10, 0] },
+                { text: `Fecha: ${currentDate}`, alignment: 'right', margin: [0, 0] }
+              ],
+              margin: [40, 0]
+            })
+            
+          };
+          
+          pdfMake.createPdf(documentDefinition).open();
+        }
+    
+        
+    
+
+
+
+    
 }
