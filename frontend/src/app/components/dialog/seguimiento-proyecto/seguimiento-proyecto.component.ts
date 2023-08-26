@@ -214,9 +214,20 @@ export class SeguimientoProyectoComponent {
       }
     })
   }
-  dateFormateado() {
+  dateFormateado($event:any) {
     // console.log('fecha:D');
-    this.seguimientoForm1.get('fecha_seguimiento')?.setValue(this.datePipe.transform(this.seguimientoForm1.get('fecha_seguimiento')?.value, 'yyyy-MM-dd'));
+    console.log($event.value);
+    console.log(this.datePipe);
+    this.seguimientoForm1.get('fecha_seguimiento')?.setValue(this.datePipe.transform($event.value, 'yyyy-MM-dd'));
+    console.log(this.seguimientoForm1.value);
+  }
+ get dateDisabled(){
+    // console.log('format date',this.seguimientoForm1);
+    // console.log(this.inputData.getAttribute('ng-reflect-mat-datepicker').);
+    return this.seguimientoForm1.get('fecha_seguimiento').disabled;
+  }
+  get inputData(){
+    return document.getElementById('id_fecha_seguimiento')
   }
   entidades(index: number) {
     return this.EntidadFinanciera.find(item => item.id_entidad_financiera === this.financiamientoArray.at(index).get('id_entidad_financiera')?.value)

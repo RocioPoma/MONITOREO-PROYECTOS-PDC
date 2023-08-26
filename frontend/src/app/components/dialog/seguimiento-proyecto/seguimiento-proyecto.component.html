@@ -42,9 +42,7 @@
             <div fxLayout="row wrap">
                 <mat-form-field fxFlex>
                     <mat-label>fecha de seguimiento DD/MM/YYYY</mat-label>
-                    <input matInput [matDatepicker]="picker" formControlName="fecha_seguimiento"
-                        (dateChange)="dateFormateado()">
-                
+                    <input matInput [matDatepicker]="picker" [disabled]="dateDisabled" (dateChange)="dateFormateado($event)" id="id_fecha_seguimiento">
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                     <mat-error

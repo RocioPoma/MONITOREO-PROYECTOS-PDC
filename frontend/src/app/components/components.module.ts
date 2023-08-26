@@ -34,6 +34,7 @@ import { ManageGestionEtapaComponent } from './manage-gestion-etapa/manage-gesti
 import { GestionEtapaComponent } from './dialog/gestion-etapa/gestion-etapa.component';
 import { MapModalComponent } from './dialog/map-modal/map-modal.component';
 import { HistorialSeguimientosProyectoComponent } from './historial-seguimientos-proyecto/historial-seguimientos-proyecto.component';
+import { HighchartsChartModule } from 'highcharts-angular';
 
 //import { MaterialModule } from '../shared/material-module';
 
@@ -76,7 +77,8 @@ import { HistorialSeguimientosProyectoComponent } from './historial-seguimientos
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    CdkTableModule
+    CdkTableModule,
+    HighchartsChartModule
   ]
  // bootstrap: [AppComponent]
 })
