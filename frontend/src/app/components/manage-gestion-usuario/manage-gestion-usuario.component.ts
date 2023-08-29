@@ -16,6 +16,8 @@ import { EntidadService } from 'src/app/services/entidad.service';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { image } from 'html2canvas/dist/types/css/types/image';
+import { Utils } from 'src/app/services/utils';
+import { DatePipe } from '@angular/common';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -32,7 +34,8 @@ export class ManageGestionUsuarioComponent {
   ap:any;
   am:any;
   tabla:any;
-  
+  logoDataUrl: string;
+  pipe = new DatePipe('en-US');
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -79,6 +82,10 @@ export class ManageGestionUsuarioComponent {
       }
       this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
     })
+    //llamar a logo y convertilo
+    Utils.getImageDataUrlFromLocalPath1('../../../assets/img/logo_sihita.png').then(
+      result => this.logoDataUrl = result
+    )
   }
 
   entidades() {
@@ -181,30 +188,48 @@ onChange(status: any, ci: any) {
     //pdf
     
     generateReport() {    
-      const currentDate = new Date().toLocaleDateString();
-      //const tableBody = this.tabla.map(person => [person.nombre, person.ci, person.rol]);      
+      const currentDate = this.pipe.transform(Date.now(), 'M/d/yy, h:mm a');
+     //array para los datos que imprime  
       const tableBody = [];
       for (let i = 0; i < this.tabla.length; i++) {
         const person = this.tabla[i];
         tableBody.push([person.ci, person.nombre +' '+ person.ap_paterno +' '+ person.ap_materno, person.telefono, person.celular, person.rol, person.nombre_entidad]);
       }
 
-      const logo = new Image();
-      logo.src = '../../../assets/img/logo_sihita.png';
-      console.log(tableBody);
+    //inicio de la documentacion
       const documentDefinition = {
-        
-        //carguemos imagen
-        images: {
-          building: 'data:image/png;base64,../../../assets/img/logo_sihita.png'},
-         // encabezado  
-   
+        pageSize: 'A4',
+        //nuevo footer y header
+        footer: function(currentPage, pageCount) {
+          return {
+            columns: [
+                    {
+                  text: currentPage.toString() + ' / ' + pageCount,
+                  alignment: 'right',
+                  margin: [5, 5],
+                  fontSize: 8
+                    },
+                    /* { text: `Impreso por: ${this.usuario+' '+this.ap+' '+this.am}`, 
+                    alignment: 'left', margin: [5, 5],  
+                    fontSize: 8,italics: true }, */
+                    ]
+          };
+        },
         header: () => (
-          { text: 'Encabezado del PDF', 
-          alignment: 'center', margin: [0, 10], 
-          image: logo, width: 50, height: 50 }
-      
+          { 
+            columns: [
+              {  image: this.logoDataUrl,  width: 40,
+                height: 40 ,   margin: [5, 5] },
+              { text: `Fecha: ${currentDate}`, alignment: 'right', margin: [5, 5],  
+              fontSize: 8, italics: true }
+            ]  
+          }         
+          
           ),
+       
+        //nuevo footer y header
+
+   
 
        //margenes
           pageMargins: [ 40, 60, 40, 60 ],
@@ -213,7 +238,7 @@ onChange(status: any, ci: any) {
           },
           //contenido tablas e informacion
             content: [              
-               'Datos de Personas\n\n',
+               'Datos de Personas\n\n',              
               {
                 
                       table: {
@@ -227,19 +252,33 @@ onChange(status: any, ci: any) {
                       fontSize: 8,
                       italics: true
 
-              },             
-            ],
-
+              }, 
+              
+                          
+            ]
+               //margenes
+              
+             
 
             //footer pie de pagina
-            footer: () => ({
+           /*  footer: function(currentPage, pageCount) {
+              return {                
+                text: currentPage.toString() + '/' + pageCount,
+                alignment: 'right', // Align the pagination to the center
+                margin: [10, 0] // Adjust margin as needed                
+              };
+            }, */
+           /*  footer: () => ({
               columns: [
-                { text: `Usuario: ${this.usuario+' '+this.ap+' '+this.am}`, alignment: 'left', margin: [10, 0] },
-                { text: `Fecha: ${currentDate}`, alignment: 'right', margin: [0, 0] }
+                { text: `Impreso por: ${this.usuario+' '+this.ap+' '+this.am}`, alignment: 'left', margin: [5, 5],  fontSize: 8,italics: true },
+                  
               ],
-              margin: [40, 0]
-            })
+             
+             
+            }) */
             
+
+           
           };
           
           pdfMake.createPdf(documentDefinition).open();
