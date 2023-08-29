@@ -11,40 +11,40 @@ const fs = require('fs');
 
 // Ruta para obtener todos los proyectos
 router.get('/get', (req, res) => {
- // const sql = "SELECT P.id_proyecto,  P.nom_proyecto, fecha_inicio, fecha_fin, DATE_FORMAT(P.fecha_inicio, '%d-%m-%Y') as fecha_inicio_convert,  DATE_FORMAT(P.fecha_fin, '%d-%m-%Y') as fecha_fin_convert,  DATE_FORMAT(P.fecha_registro, '%d-%m-%Y') as fecha_registro,  P.area,  P.coordenada_x,  P.coordenada_y,  P.id_categoria,  P.id_tipologia,  P.id_indicador,  P.id_cuenca,  P.estado,  P.cantidad,  P.hombres,  P.mujeres,  M.nombre_municipio,  M.id_municipio,  C.nom_cuenca AS NombreCuenca,  CAT.nom_categoria AS NombreCategoria,  TIP.nom_tipologia AS NombreTipologia FROM  PROYECTO AS P JOIN PROYECTO_CIUDAD_O_COMUNIDAD AS PCOC ON P.id_proyecto = PCOC.id_proyecto JOIN CIUDAD_O_COMUNIDAD AS CC ON PCOC.id_ciudad_comunidad = CC.id JOIN MUNICIPIO AS M ON CC.id_municipio = M.id_municipio JOIN CUENCA AS C ON P.id_cuenca = C.id_cuenca JOIN CATEGORIA AS CAT ON P.id_categoria = CAT.id_categoria JOIN TIPOLOGIA AS TIP ON P.id_tipologia = TIP.id_tipologia GROUP BY P.id_proyecto;"
-  const sql =   "SELECT " +
-  "p.*, " +
-  "DATE_FORMAT(p.fecha_inicio, '%d-%m-%Y') AS fecha_inicio_convert, " +
-  "DATE_FORMAT(p.fecha_fin, '%d-%m-%Y') AS fecha_fin_convert, " +
-  "DATE_FORMAT(p.fecha_registro, '%d-%m-%Y') AS fecha_registro_convert, " +
-  "t.nom_tipologia, " +
-  "c.nom_categoria, " +
-  "cu.nom_cuenca, " +
-  "mu.id_municipio, " +
-  "mu.nombre_municipio, " +
-  "le.id_linea_estrategica, " +
-  "la.id_linea_accion, " +
-  "le.descripcion AS linea_estrategica, " +
-  "la.descripcion AS linea_de_accion, " +
-  "ae.descripcion AS accion_estrategica, " +
-  "i.nombre_indicador, " +
-  "GROUP_CONCAT(DISTINCT com.nombre SEPARATOR ', ') AS comunidades, " +
-  "alc.cantidad, " +
-  "um.nom_unidad AS unidad_medicion_alcance " +
-  "FROM proyecto p " +
-  "LEFT JOIN tipologia t ON p.id_tipologia = t.id_tipologia " +
-  "LEFT JOIN categoria c ON p.id_categoria = c.id_categoria " +
-  "LEFT JOIN cuenca cu ON p.id_cuenca = cu.id_cuenca " +
-  "LEFT JOIN proyecto_ciudad_o_comunidad pc ON p.id_proyecto = pc.id_proyecto " +
-  "LEFT JOIN ciudad_o_comunidad com ON pc.id_ciudad_comunidad = com.id " +
-  "LEFT JOIN alcance alc ON p.id_proyecto = alc.id_proyecto " +
-  "LEFT JOIN unidad_medicion um ON alc.id_unidad_medicion = um.id_unidad_medicion " +
-  "LEFT JOIN accion_estrategica ae ON p.id_accion_estrategica = ae.id_accion_estrategica " +
-  "LEFT JOIN linea_de_accion la ON ae.id_linea_accion = la.id_linea_accion " +
-  "LEFT JOIN linea_estrategica le ON la.id_linea_estrategica = le.id_linea_estrategica " +
-  "LEFT JOIN indicador i ON p.id_indicador = i.id_indicador " +
-  "LEFT JOIN municipio mu ON com.id_municipio = mu.id_municipio " +
-  "GROUP BY p.id_proyecto;"
+  // const sql = "SELECT P.id_proyecto,  P.nom_proyecto, fecha_inicio, fecha_fin, DATE_FORMAT(P.fecha_inicio, '%d-%m-%Y') as fecha_inicio_convert,  DATE_FORMAT(P.fecha_fin, '%d-%m-%Y') as fecha_fin_convert,  DATE_FORMAT(P.fecha_registro, '%d-%m-%Y') as fecha_registro,  P.area,  P.coordenada_x,  P.coordenada_y,  P.id_categoria,  P.id_tipologia,  P.id_indicador,  P.id_cuenca,  P.estado,  P.cantidad,  P.hombres,  P.mujeres,  M.nombre_municipio,  M.id_municipio,  C.nom_cuenca AS NombreCuenca,  CAT.nom_categoria AS NombreCategoria,  TIP.nom_tipologia AS NombreTipologia FROM  PROYECTO AS P JOIN PROYECTO_CIUDAD_O_COMUNIDAD AS PCOC ON P.id_proyecto = PCOC.id_proyecto JOIN CIUDAD_O_COMUNIDAD AS CC ON PCOC.id_ciudad_comunidad = CC.id JOIN MUNICIPIO AS M ON CC.id_municipio = M.id_municipio JOIN CUENCA AS C ON P.id_cuenca = C.id_cuenca JOIN CATEGORIA AS CAT ON P.id_categoria = CAT.id_categoria JOIN TIPOLOGIA AS TIP ON P.id_tipologia = TIP.id_tipologia GROUP BY P.id_proyecto;"
+  const sql = "SELECT " +
+    "p.*, " +
+    "DATE_FORMAT(p.fecha_inicio, '%d-%m-%Y') AS fecha_inicio_convert, " +
+    "DATE_FORMAT(p.fecha_fin, '%d-%m-%Y') AS fecha_fin_convert, " +
+    "DATE_FORMAT(p.fecha_registro, '%d-%m-%Y') AS fecha_registro_convert, " +
+    "t.nom_tipologia, " +
+    "c.nom_categoria, " +
+    "cu.nom_cuenca, " +
+    "mu.id_municipio, " +
+    "mu.nombre_municipio, " +
+    "le.id_linea_estrategica, " +
+    "la.id_linea_accion, " +
+    "le.descripcion AS linea_estrategica, " +
+    "la.descripcion AS linea_de_accion, " +
+    "ae.descripcion AS accion_estrategica, " +
+    "i.nombre_indicador, " +
+    "GROUP_CONCAT(DISTINCT com.id SEPARATOR ', ') AS comunidades, " +
+    "alc.cantidad, " +
+    "um.nom_unidad AS unidad_medicion_alcance " +
+    "FROM proyecto p " +
+    "LEFT JOIN tipologia t ON p.id_tipologia = t.id_tipologia " +
+    "LEFT JOIN categoria c ON p.id_categoria = c.id_categoria " +
+    "LEFT JOIN cuenca cu ON p.id_cuenca = cu.id_cuenca " +
+    "LEFT JOIN proyecto_ciudad_o_comunidad pc ON p.id_proyecto = pc.id_proyecto " +
+    "LEFT JOIN ciudad_o_comunidad com ON pc.id_ciudad_comunidad = com.id " +
+    "LEFT JOIN alcance alc ON p.id_proyecto = alc.id_proyecto " +
+    "LEFT JOIN unidad_medicion um ON alc.id_unidad_medicion = um.id_unidad_medicion " +
+    "LEFT JOIN accion_estrategica ae ON p.id_accion_estrategica = ae.id_accion_estrategica " +
+    "LEFT JOIN linea_de_accion la ON ae.id_linea_accion = la.id_linea_accion " +
+    "LEFT JOIN linea_estrategica le ON la.id_linea_estrategica = le.id_linea_estrategica " +
+    "LEFT JOIN indicador i ON p.id_indicador = i.id_indicador " +
+    "LEFT JOIN municipio mu ON com.id_municipio = mu.id_municipio " +
+    "GROUP BY p.id_proyecto;"
 
   connection.query(sql, (err, result) => {
     if (err) throw err;
@@ -90,13 +90,9 @@ router.post('/create', (req, res) => {
 router.post('/add', multer.single('documento'), (req, res) => {
   const file = req.file;
   let proyecto = req.body;
+  const alcance = JSON.parse(req.body.alcance);
+  const comunidad = JSON.parse(req.body.comunidad);
   let datos = {};
-  let proy = {};
-  proy = req.body;
-
-  const ObjetId_ciudad_comunidad = JSON.parse(proyecto.id_ciudad_comunidad) //Datos comunidad en formato JSON, (id, nombre, id_municipio)
-  const ObjetAlcance = JSON.parse(proyecto.alcance) //Datos en formato JSON, con campos (cantidad, unidad que equivale a 'id_unidad_medicion')
-
 
   if (!file) {
     datos = {
@@ -116,7 +112,8 @@ router.post('/add', multer.single('documento'), (req, res) => {
       id_cuenca: proyecto.id_cuenca,
       id_accion_estrategica: proyecto.id_accion_estrategica,
       estado: proyecto.estado,
-      documento: ''
+      documento: '',
+      estado:'true'
 
     }
   } else {
@@ -138,50 +135,52 @@ router.post('/add', multer.single('documento'), (req, res) => {
       id_cuenca: proyecto.id_cuenca,
       id_accion_estrategica: proyecto.id_accion_estrategica,
       estado: proyecto.estado,
-      documento: req.file.filename
+      documento: req.file.filename,
+      estado:'true'
     }
   }
 
   console.log(datos);
-  console.log(ObjetId_ciudad_comunidad);
-  console.log(ObjetAlcance);
+  /*
+    console.log(datos);
+    console.log(ObjetId_ciudad_comunidad);
+    console.log(ObjetAlcance);
+  */
 
+  
+    connection.query('INSERT INTO PROYECTO  SET ?', [datos], (err, results) => {
+      if (!err) {
+        return res.status(200).json({ message: "Proyecto agregado con exito" });
+      }
+      else {
+        return res.status(500).json(err);
+      }
+    });
 
-
-  connection.query('INSERT INTO PROYECTO  SET ?', [datos], (err, results) => {
-    if (!err) {
-      return res.status(200).json({ message: "Proyecto agregado con exito" });
-    }
-    else {
-      return res.status(500).json(err);
-    }
-  });
-
-  //console.log(proyecto.id_ciudad_comunidad);
-  //ObtenerIdUltimoRegistroProyecto(proyecto.id_ciudad_comunidad, proyecto.id_unidad_medicion, proyecto.cantidad);
-
-  ObtenerIdUltimoRegistroProyecto(ObjetId_ciudad_comunidad, ObjetAlcance, proyecto.id_unidad_medicion, proyecto.cantidad);
+  
+   ObtenerIdUltimoRegistroProyecto(comunidad, alcance, proyecto.id_unidad_medicion, proyecto.cantidad);
+  //ObtenerIdUltimoRegistroProyecto(proyecto.alcance);
 });
 
-function ObtenerIdUltimoRegistroProyecto(ObjetId_ciudad_comunidad, ObjetAlcance, id_unidad_medicion, cantidad) {
+function ObtenerIdUltimoRegistroProyecto(comunidad, alcance, id_unidad_medicion, cantidad) {
   let id_proyecto;
   connection.query('select id_proyecto from proyecto order by id_proyecto desc limit 1', (err, rows) => {
     id_proyecto = rows[0].id_proyecto;
 
-    add_proyecto_comunidad(id_proyecto, ObjetId_ciudad_comunidad); //para agregar a la tabla (proyecto_ciudad_o_comunidad)
-    add_alcance(id_proyecto, ObjetAlcance, id_unidad_medicion, cantidad); //para agregar a la tabla (alcance) que es  la relacion de las tablas (Proyecto y unidad_medicion)
+    add_proyecto_comunidad(id_proyecto, comunidad); //para agregar a la tabla (proyecto_ciudad_o_comunidad)
+    add_alcance(id_proyecto, alcance, id_unidad_medicion, cantidad); //para agregar a la tabla (alcance) que es  la relacion de las tablas (Proyecto y unidad_medicion)
     //la variable (alcance) es un array de objetos en formato JSON que tiene los atributos (cantidad, unidad)
   });
+  return id_proyecto;
 }
 
-function add_proyecto_comunidad(id_proyecto, ObjetId_ciudad_comunidad) {
-
+function add_proyecto_comunidad(id_proyecto, comunidad) {
   const query = "INSERT INTO proyecto_ciudad_o_comunidad (id_proyecto, id_ciudad_comunidad) VALUES (?, ?)";
-  ObjetId_ciudad_comunidad.forEach((proyecto_comunidad) => {
-    console.log('id_proyecto: ' + id_proyecto + '  id_ciudad_comunidad: ' + proyecto_comunidad.id);
-    connection.query(query, [id_proyecto, proyecto_comunidad.id], (err, results) => {
+  comunidad.forEach((id_comunidad) => {
+    console.log('id_proyecto: ' + id_proyecto + '  id_ciudad_comunidad: ' + id_comunidad);
+    connection.query(query, [id_proyecto, id_comunidad], (err, results) => {
       if (!err) {
-        console.log('Proyecto_ciudad_comunidad inserted successfully: ', proyecto_comunidad.id);
+        console.log('Proyecto_ciudad_comunidad inserted successfully: ', id_comunidad);
       } else {
         console.error('Error inserting Proyecto_ciudad_comunidad: ', err);
       }
@@ -189,23 +188,23 @@ function add_proyecto_comunidad(id_proyecto, ObjetId_ciudad_comunidad) {
   });
 }
 
-function add_alcance(id_proyecto, ObjetAlcance, id_unidad_medicion, cantidad) {
+function add_alcance(id_proyecto, ObjAlcance, id_unidad_medicion, cantidad) {
   datos = {
     cantidad: cantidad,
     id_unidad_medicion: id_unidad_medicion,
     id_proyecto: id_proyecto
   }
-  //console.log(datos);
+  //console.log(datos); 
   connection.query('INSERT INTO ALCANCE  set ?', [datos], (err, results) => {
     // console.log('Agregado.!!!')
   });
 
   const query = "INSERT INTO ALCANCE (cantidad, id_unidad_medicion,id_proyecto) VALUES (?, ?,?)";
-  ObjetAlcance.forEach((alcance) => {
+  ObjAlcance.forEach((alcance) => {
     //console.log('id_proyecto: ' + id_proyecto + '  id_ciudad_comunidad: ' + proyecto_comunidad.id);
-    connection.query(query, [alcance.cantidad, alcance.unidad, id_proyecto], (err, results) => {
+    connection.query(query, [alcance.cantidad, alcance.id_unidad_medicion, id_proyecto], (err, results) => {
       if (!err) {
-        console.log('id proyecto: ' + id_proyecto + ' cantidad: ' + alcance.cantidad + ' id_unidad: ' + alcance.unidad);
+        console.log('id proyecto: ' + id_proyecto + ' cantidad: ' + alcance.cantidad + ' id_unidad: ' + alcance.id_unidad_medicion);
       } else {
         console.error('Error inserting Proyecto_ciudad_comunidad: ', err);
       }
@@ -214,7 +213,7 @@ function add_alcance(id_proyecto, ObjetAlcance, id_unidad_medicion, cantidad) {
 }
 
 
-// Ruta para actualizar un proyecto
+// RUTA PARA ACTUALIZAR PROYECTO
 router.put('/update/:id', (req, res) => {
   const { id } = req.params;
   const { nom_proyecto, fecha_inicio, fecha_fin, area, coordenada_x, coordenada_y, CATEGORIA_id_categoria, TIPOLOGIA_id_tipologia, INDICADOR_id_indicador, ACCIONES_ESTRATEGICAS_id_acciones_estrategicas, estado } = req.body;
@@ -225,7 +224,7 @@ router.put('/update/:id', (req, res) => {
   });
 });
 
-// Ruta para habilitar o deshabilitar un proyecto
+// RUTA PARA HABILITAR O DESHABILITAR PROYECTO
 router.patch('/activar/:id', (req, res) => {
   const { id } = req.params;
   const { estado } = req.body;
@@ -236,7 +235,7 @@ router.patch('/activar/:id', (req, res) => {
   });
 });
 
-// Ruta para eliminar un proyecto
+// RUTA PARA ELIMINAR PROYECTO
 router.delete('/delete/:id', (req, res) => {
   const { id } = req.params;
   eliminarProyectoComunidad(req.params.id);

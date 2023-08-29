@@ -16,7 +16,7 @@ export class ProyectoService {
     return this.httpClient.get(this.url + "/proyecto/get")
   }
 
-  //----------------------API PARA AGREGAR PROYECTO ------------------------------
+  //----------------------API PARA AGREGAR PROYECTO SIN DOCUMENTO ------------------------------ No se utilizo
   add(data: any) {
     return this.httpClient.post(this.url +
       "/proyecto/add/", data, {
@@ -44,7 +44,7 @@ export class ProyectoService {
     fd.append('id_cuenca',data.id_cuenca);
     fd.append('id_accion_estrategica',data.id_accion_estrategica);
     fd.append('estado',data.estado);
-    fd.append('id_ciudad_comunidad',data.id_ciudad_comunidad);
+    fd.append('comunidad',data.comunidad);
     fd.append("alcance",data.alcance);
     fd.append("documento",documento);
     

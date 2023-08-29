@@ -19,6 +19,7 @@
         flex: 1 1 100%;
     }
 }
+
 //---fin respopnsividad
 
 .mat-mdc-form-field {
@@ -32,23 +33,27 @@
     margin-right: 10px;
 }
 
-th{
+th {
     align-items: center;
-    text-align: center; 
+    text-align: center;
 }
-td{
-    font-size: 12px; 
+
+td {
+    font-size: 12px;
 }
-.nomProy{
+
+.nomProy {
     font-size: 11px;
 }
-.title{
+
+.title {
     align-items: center;
-    text-align: center; 
-    padding-bottom: 15px;  
+    text-align: center;
+    padding-bottom: 15px;
 }
-.color-text{
-    color: #A6ACAF ;
+
+.color-text {
+    color: #A6ACAF;
 }
 
 mat-card {
@@ -77,32 +82,49 @@ mat-form-field {
 
 
 //para las opciones
-
 .icon-group {
     display: flex;
     align-items: center;
-    gap: -1cm; /* Espacio entre los iconos */
+    gap: -1cm;
+    /* Espacio entre los iconos */
 }
-.icon{
+
+.icon {
     margin-left: -15px;
     margin-right: -4px;
 }
 
-/* Asegurar que los botones y los iconos tengan el mismo tamaño */
+
 
 
 
 /* Ajustar el margen del mat-slide-toggle */
 .mat-slide-toggle {
-    margin-top: -8px; /* Ajusta el margen superior según tus necesidades */
+    margin-top: -8px;
+    /* Ajusta el margen superior según tus necesidades */
     width: 8px;
     height: 5px;
 }
-.sub-title{
+
+.sub-title {
     text-align: left;
 }
-.icon-display{
+
+.icon-display {
     transform: scale(.8);
-}.flex-column{
-  display: flex;  
+}
+
+.flex-column {
+    display: flex;
+}
+
+/* Cursor de las celdad */
+.td_btn:hover {
+    cursor: pointer;
+    background-color: #F4F6F6; /* Color de fondo cuando pasas el cursor por encima */
+}
+
+/* Estilo para resaltar el registro cuando pasas el cursor sobre él */
+.highlighted-row {
+    background-color: #999999; /* Color de fondo cuando el registro está resaltado */
 }
