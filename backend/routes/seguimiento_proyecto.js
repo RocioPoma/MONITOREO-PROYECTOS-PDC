@@ -43,8 +43,6 @@ router.get("/getEtapaByIdEtapaProyecto", (req, res) => {
     }
   });
 });
-
-
 router.get('/getEtapasByIdProyecto/:id_proyecto',(req,res)=>{
   const {id_proyecto} =req.params;
   const query =`SELECT ETP.id_etapa_proyecto,ETP.fuente_de_informacion,
