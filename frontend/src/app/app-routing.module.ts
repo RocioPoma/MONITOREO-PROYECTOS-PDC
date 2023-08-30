@@ -17,6 +17,7 @@ import { ManageEntidadFinancieraComponent} from "./components/manage-entidad-fin
 import { ManageEntidadUOrganizacionComponent } from "./components/manage-entidad-u-organizacion/manage-entidad-u-organizacion.component";
 import { ManageIndicadorComponent } from './components/manage-indicador/manage-indicador.component';
 import { ManageGestionEtapaComponent } from './components/manage-gestion-etapa/manage-gestion-etapa.component';
+import { ReportesProyectoComponent } from './components/reportes-proyecto/reportes-proyecto.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent},
@@ -45,8 +46,9 @@ const routes: Routes = [
     { path: 'entidad-financiera', component: ManageEntidadFinancieraComponent },
     { path: 'entidad-organizacion', component: ManageEntidadUOrganizacionComponent },
     { path: 'etapa', component: ManageGestionEtapaComponent },
-    { path: 'indicador', component: ManageIndicadorComponent }
+    { path: 'indicador', component: ManageIndicadorComponent },
    //{ path: 'indicador', component: ManageIndicadorComponent }
+    { path: 'reportes-proyectos',component:ReportesProyectoComponent}
     ] 
   },
 /* 

@@ -35,9 +35,10 @@ import { GestionEtapaComponent } from './dialog/gestion-etapa/gestion-etapa.comp
 import { MapModalComponent } from './dialog/map-modal/map-modal.component';
 import { HistorialSeguimientosProyectoComponent } from './historial-seguimientos-proyecto/historial-seguimientos-proyecto.component';
 import { HighchartsChartModule } from 'highcharts-angular';
-
+import { ReportesProyectoComponent } from './reportes-proyecto/reportes-proyecto.component';
+import {MatGridListModule} from '@angular/material/grid-list';
 //import { MaterialModule } from '../shared/material-module';
-
+import {ScrollingModule} from '@angular/cdk/scrolling';
 //import { ComponentsRoutingModule } from './components-routing.module';
 
 
@@ -67,7 +68,8 @@ import { HighchartsChartModule } from 'highcharts-angular';
     ManageGestionEtapaComponent,
     GestionEtapaComponent,
     MapModalComponent,
-    HistorialSeguimientosProyectoComponent
+    HistorialSeguimientosProyectoComponent,
+    ReportesProyectoComponent
   ],
   imports: [
     CommonModule,
@@ -78,7 +80,9 @@ import { HighchartsChartModule } from 'highcharts-angular';
     ReactiveFormsModule,
     FlexLayoutModule,
     CdkTableModule,
-    HighchartsChartModule
+    HighchartsChartModule,
+    MatGridListModule,
+    ScrollingModule
   ]
  // bootstrap: [AppComponent]
 })

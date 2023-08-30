@@ -26,8 +26,20 @@
                     <td mat-cell *matCellDef="let element">{{element.fecha_seguimiento}}</td>
                   </ng-container>
                 <ng-container matColumnDef="avance_seguimiento_fisico">
-                    <th mat-header-cell *matHeaderCellDef>Avance de seguimiento.</th>
+                    <th mat-header-cell *matHeaderCellDef>Avance de seguimiento fisico. (%)</th>
                     <td mat-cell *matCellDef="let element">{{element.avance_seguimiento_fisico}}%</td>
+                  </ng-container>
+                <ng-container matColumnDef="avance_seguimiento_financiero">
+                    <th mat-header-cell *matHeaderCellDef>Avance de seguimiento financiero. (%)</th>
+                    <td mat-cell *matCellDef="let element">{{progresoFinanciamiento(element)}} %</td>
+                  </ng-container>
+                <ng-container matColumnDef="monto_total">
+                    <th mat-header-cell *matHeaderCellDef>monto total. (Bs.)</th>
+                    <td mat-cell *matCellDef="let element">{{element.monto_total}}</td>
+                  </ng-container>
+                <ng-container matColumnDef="coste_final">
+                    <th mat-header-cell *matHeaderCellDef>monto total de Etapa. (Bs.)</th>
+                    <td mat-cell *matCellDef="let element">{{element.coste_final}}</td>
                   </ng-container>
                 <ng-container matColumnDef="fuente_de_informacion">
                     <th mat-header-cell *matHeaderCellDef>Fuente de informacion</th>

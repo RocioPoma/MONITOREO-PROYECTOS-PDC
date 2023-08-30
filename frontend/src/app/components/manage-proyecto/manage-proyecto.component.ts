@@ -266,9 +266,14 @@ export class ManageProyectoComponent {
   }
   openEtapasProyecto(proyecto:any){
     this.proyecto=proyecto;
-    // console.log(proyecto);
-    this.openSeguimientosProyecto= !this.openSeguimientosProyecto;
+    console.log(proyecto);
     // console.log(this.openSeguimientosProyecto);
+    if(this.openSeguimientosProyecto){
+      this.openSeguimientosProyecto=false;
+      // this.openSeguimientosProyecto=true;
+    }else{
+      this.openSeguimientosProyecto= true;
+    }
   }
 
 
