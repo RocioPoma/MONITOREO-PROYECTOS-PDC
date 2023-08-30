@@ -1,0 +1,126 @@
+//---para responsividad
+.table-wrapper {
+    overflow-x: auto;
+}
+
+@media screen and (max-width: 600px) {
+    .mat-table {
+        display: block;
+    }
+
+    .mat-header-row,
+    .mat-row {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .mat-cell,
+    .mat-header-cell {
+        flex: 1 1 100%;
+    }
+}
+//---fin respopnsividad
+
+.mat-mdc-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+.float-right {
+    float: right;
+    margin-top: -8px;
+    margin-right: 10px;
+}
+
+th{
+    align-items: center;
+    text-align: center; 
+}
+td{
+    font-size: 12px; 
+}
+.nomProy{
+    font-size: 11px;
+}
+.title{
+    align-items: center;
+    text-align: center; 
+    padding-bottom: 15px;  
+}
+.color-text{
+    color: #A6ACAF ;
+}
+
+mat-card {
+    padding: 20px;
+}
+
+.padding {
+    padding: 20px;
+}
+
+
+span {
+    align-items: center;
+    text-align: center;
+}
+
+mat-form-field {
+    padding: 5px;
+}
+
+.img {
+    background-size: cover;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+
+
+//para las opciones
+
+.icon-group {
+    display: flex;
+    align-items: center;
+    gap: -1cm; /* Espacio entre los iconos */
+}
+.icon{
+    margin-left: -15px;
+    margin-right: -4px;
+}
+
+/* Asegurar que los botones y los iconos tengan el mismo tamaño */
+
+
+
+/* Ajustar el margen del mat-slide-toggle */
+.mat-slide-toggle {
+    margin-top: -8px; /* Ajusta el margen superior según tus necesidades */
+    width: 8px;
+    height: 5px;
+}
+.sub-title{
+    text-align: left;
+    display: inline;
+}
+.icon-display{
+    transform: scale(.8);
+}.flex-column{
+  display: flex;  
+}
+.DivToScroll{   
+    background-color: #F5F5F5;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px 0 4px 0;
+    color: #3B3C3E;
+    font-size: 12px;
+    font-weight: bold;
+    left: -1px;
+    padding: 10px 7px 5px;
+}
+
+.DivWithScroll{
+    height:380px;
+    min-width: 380px;
+    overflow:scroll;
+    overflow-x:scroll;
+}

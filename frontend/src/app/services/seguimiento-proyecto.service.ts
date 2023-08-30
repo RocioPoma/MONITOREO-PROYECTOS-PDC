@@ -30,6 +30,9 @@ export class SeguimientoProyectoService {
   getEtapasProyecto(id_proyecto:number){
     return this.httpClient.get<any>(`${this.url}/getEtapasByIdProyecto/${id_proyecto}`);
   }
+  getMontosEtapas(id_etapa_proyecto:number){
+    return this.httpClient.get<any>(`${this.url}/getMontos/${id_etapa_proyecto}`);
+  }
   getHistorialSeguimientoEtapa(id_etapa_proyecto:number){
     return this.httpClient.get<any>(`${this.url}/get_seguimientos/${id_etapa_proyecto}`);
   }

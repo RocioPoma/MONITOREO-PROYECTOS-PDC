@@ -1,0 +1,41 @@
+<mat-card>
+    <div class="title">
+        <b><span class="color-text">REPORTES DE ACCIONES/PROYECTOS</span></b>
+    </div>
+    <mat-grid-list cols="2" rowHeight="2:1">
+        <mat-grid-tile colspan="2">
+            <div class="sub-title">
+                <span>Nro. Acciones/Proyectos por LE.</span>
+            </div>
+            <div class="DivToScroll">
+
+                <div [style]="{'padding':'10px 10px'}" class="DivWithScroll">
+                    <div id="chart-container-lineas"></div>
+                </div>
+            </div>
+            
+        </mat-grid-tile>
+        <mat-grid-tile rowspan="2">
+            <div class="sub-title"> <span>Nro. Acciones/Proyectos por indicador (PDC).</span></div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div class="sub-title"> <span>Nro. Acciones/Proyectos por Categoria.</span></div>
+            <div class="DivToScroll">
+
+                <div [style]="{'padding':'10px 10px'}" class="DivWithScroll">
+                    <div id="chart-container-categoria"></div>
+                </div>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div class="sub-title"> <span>Nro. Acciones/Proyectos por Tipologia.</span></div>
+            <div class="DivToScroll">
+
+                <div [style]="{'padding':'10px 10px'}" class="DivWithScroll">
+                    <div id="chart-container-tipologia"></div>
+                </div>
+            </div>
+
+        </mat-grid-tile>
+      </mat-grid-list>
+</mat-card>
