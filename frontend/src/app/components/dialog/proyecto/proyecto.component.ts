@@ -89,9 +89,11 @@ export class ProyectoComponent implements OnInit {
   selectedComunidadesControl = new FormControl();
   isDropdownOpen = false;
 
+  comunidadesSeleccionadas = []; //se utilizo
+
 
   ComunidadMultiCtrl = new FormControl();
-  //prueba
+
 
 
   //-------Para agregar y quitar campos de Input
@@ -179,17 +181,18 @@ export class ProyectoComponent implements OnInit {
       id_ciudad_comunidad: [null, [Validators.required]],
       id_municipio: [null, [Validators.required]],
       //nuevos casillas  
-      id_unidad_medicion: [null, [Validators.required]],
+      id_unidad_medicion: [7, [Validators.required]],
       id_linea_estrategica: [null],
       id_linea_accion: [null],
       id_accion_estrategica: [null, [Validators.required]],
       id_indicador: [null, [Validators.required]],
       documento: [null],
+      comunidad: [],
       //para alcance
       alcance: this.formBuilder.array([
         this.formBuilder.group({
           cantidad: [null, [Validators.required]],
-          id_unidad_medicion: [{ value: null}, [Validators.required, Validators.min(1)]],
+          id_unidad_medicion: [{ value: null }, [Validators.required, Validators.min(1)]],
         })
       ], [Validators.required]),
       alcance_cantidad: [null, [Validators.required]],
@@ -201,11 +204,21 @@ export class ProyectoComponent implements OnInit {
       this.action = "Actualizar";
       this.showSelectors(true);
       this.proyectoForm.patchValue(this.dialogData.data);
+
+      //para comunidades
+      this.comunidadesSeleccionadas = this.dialogData.data.comunidades.split(',').map(Number);
+
+      // Configura las comunidades seleccionadas en el formulario
+      this.proyectoForm.get('comunidad').setValue(this.comunidadesSeleccionadas);
+      //fin comunidades
+
+      //PDC
       this.proyectoForm.id_linea_estrategica = this.dialogData.data.id_linea_estrategica;
       this.getLineaDeAccion(this.dialogData.data.id_linea_estrategica);
       this.proyectoForm.id_linea_accion = this.dialogData.data.id_linea_accion;
       this.getAccionEstrategica(this.dialogData.data.id_linea_accion);
       this.proyectoForm.id_accion_estrategica = this.dialogData.data.id_accion_estrategica;
+
 
       this.onIndicadorChange();
 
@@ -534,6 +547,15 @@ export class ProyectoComponent implements OnInit {
     this.ffin = this.datePipe.transform(formData.fecha_fin, 'yyyy-MM-dd')
     console.log(this.fechaActualString);
 
+    /*
+        this.proyectoForm.value.fecha_inicio = this.finicio;
+        this.proyectoForm.value.fecha_fin = this.ffin;
+        this.proyectoForm.value.fecha_registro=this.fechaActualString;
+        this.proyectoForm.value.alcance=JSON.stringify(this.proyectoForm.value.alcance);
+        this.proyectoForm.value.comunidad=JSON.stringify(this.proyectoForm.value.comunidad);
+        console.log(this.proyectoForm.value);
+        console.log(this.proyectoForm);*/
+
     var data = {
       nom_proyecto: formData.nom_proyecto,
       fecha_inicio: this.finicio,
@@ -552,8 +574,8 @@ export class ProyectoComponent implements OnInit {
       id_cuenca: formData.id_cuenca,
       id_accion_estrategica: formData.id_accion_estrategica,
       estado: 'true',
-      id_ciudad_comunidad: JSON.stringify(this.comunidades), //Enviamos un objeto de comunidades
-      alcance: JSON.stringify(this.alcances) //Enviamos un objeto de alcances
+      comunidad: JSON.stringify(this.proyectoForm.value.comunidad), //Enviamos un objeto de comunidades
+      alcance: JSON.stringify(this.proyectoForm.value.alcance) //Enviamos un objeto de alcances
     }
 
     console.log(data);

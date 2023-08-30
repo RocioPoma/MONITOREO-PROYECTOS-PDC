@@ -176,7 +176,7 @@ export class ManageProyectoComponent {
     console.log(values);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      message: ' eliminar proyecto ' + values.NombreProyecto
+      message: ' eliminar proyecto ' + values.nom_proyecto
     };
     const dialogRef = this.dialog.open(ConfirmationComponent, dialogConfig);
     const sub = dialogRef.componentInstance.onEmitStatusChange.subscribe((response) => {

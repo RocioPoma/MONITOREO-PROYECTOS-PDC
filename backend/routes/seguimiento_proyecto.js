@@ -43,7 +43,7 @@ router.get("/getEtapaByIdEtapaProyecto", (req, res) => {
     }
   });
 });
-router.get('/getEtapasByIdProyecto/:id_proyecto', (req,res)=>{
+router.get('/getEtapasByIdProyecto/:id_proyecto',(req,res)=>{
   const {id_proyecto} =req.params;
   const query =`SELECT ETP.id_etapa_proyecto,ETP.fuente_de_informacion,
   ETA.nombre_etapa,DATE_FORMAT(ETP.fecha_seguimiento, '%d-%m-%Y') AS fecha_seguimiento, 
@@ -108,6 +108,7 @@ router.get('/get_seguimientos/:id_etapa_proyecto',(req,res)=>{
     res.json(result);
   })
 })
+
 router.post("/registrarEtapa_Proyecto", (req, res) => {
   const {
     id_entidad_ejecutora,
@@ -228,6 +229,8 @@ const addSeguimientoFisico = (segForm) => {
     }
   );
 };
+
+
 router.post('/registrarAvanceSeguimientoProyecto',(req,res)=>{
     const {id_etapa_proyecto,
         avance_seguimiento_fisico,

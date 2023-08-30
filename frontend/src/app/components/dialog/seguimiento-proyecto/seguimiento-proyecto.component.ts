@@ -160,6 +160,7 @@ export class SeguimientoProyectoComponent {
     const montoSeguimiento = this.seguimientoFinanciamientoArray.at(i).get('monto')?.value;
     return ((montoSeguimiento*100)/montoFinal).toFixed(2)
   }
+  
   add() {
     
     this.seguimientoForm1.markAllAsTouched();
