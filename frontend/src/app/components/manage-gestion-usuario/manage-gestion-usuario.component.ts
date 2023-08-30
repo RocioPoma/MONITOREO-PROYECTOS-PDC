@@ -35,6 +35,7 @@ export class ManageGestionUsuarioComponent {
   am:any;
   tabla:any;
   logoDataUrl: string;
+  infoFiltrada:any;
   pipe = new DatePipe('en-US');
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -99,8 +100,11 @@ export class ManageGestionUsuarioComponent {
 applyFilter(event: Event) {
   const filterValue = (event.target as HTMLInputElement).value;
   this.dataSource.filter = filterValue.trim().toLowerCase();
-
-  if (this.dataSource.paginator) {
+  //dar valor a variables para su impresion
+  console.log(this.dataSource.filteredData);   
+  this.infoFiltrada=this.dataSource.filteredData;
+  this.tabla=this.infoFiltrada;
+  if (this.dataSource.paginator) {   
     this.dataSource.paginator.firstPage();
   }
 } 
@@ -189,6 +193,9 @@ onChange(status: any, ci: any) {
     
     generateReport() {    
       const currentDate = this.pipe.transform(Date.now(), 'M/d/yy, h:mm a');
+      const usuario = this.usuario; 
+      const ap = this.ap; 
+      const am = this.am; 
      //array para los datos que imprime  
       const tableBody = [];
       for (let i = 0; i < this.tabla.length; i++) {
@@ -202,16 +209,19 @@ onChange(status: any, ci: any) {
         //nuevo footer y header
         footer: function(currentPage, pageCount) {
           return {
+            
             columns: [
-                    {
-                  text: currentPage.toString() + ' / ' + pageCount,
+              { 
+                  text: `Impreso por: ${usuario+' '+ap+' '+am}`, 
+                  alignment: 'left', margin: [40, 10],  
+                  fontSize: 8,italics: true }, 
+              {
+                  text:`pagina `+ currentPage.toString() + ' / ' + pageCount,
                   alignment: 'right',
-                  margin: [5, 5],
+                  margin: [20, 5],
                   fontSize: 8
-                    },
-                    /* { text: `Impreso por: ${this.usuario+' '+this.ap+' '+this.am}`, 
-                    alignment: 'left', margin: [5, 5],  
-                    fontSize: 8,italics: true }, */
+              },
+                    
                     ]
           };
         },
@@ -220,7 +230,7 @@ onChange(status: any, ci: any) {
             columns: [
               {  image: this.logoDataUrl,  width: 40,
                 height: 40 ,   margin: [5, 5] },
-              { text: `Fecha: ${currentDate}`, alignment: 'right', margin: [5, 5],  
+              { text: `Fecha: ${currentDate}`, alignment: 'right', margin: [0, 20, 10, 10],  //0 , Y
               fontSize: 8, italics: true }
             ]  
           }         
