@@ -1,24 +1,30 @@
 <header>
   <div class="logo-container">
-    <img src="../../assets/img/logo_sihita.png" alt="Logo 1"  class="logo1"/>
-    <img src="../../assets/img/logos-ucb-gadt-sedegia.png" alt="Logo 2"   class="logo2"/>
-    <img src="../../assets/img/logo_agua.png" alt="Logo 3"  class="logo3" />
+    <a href="https://sihita.org/" target="_blank">
+      <img src="../../assets/img/logo_sihita.png" alt="Logo 1" class="logo1" />
+    </a>
+    <img src="../../assets/img/logos-ucb-gadt-sedegia.png" alt="Logo 2" class="logo2" /> 
+    <a href="https://www.rotariaweb.net/procuenca/aquagis.php" target="_blank">
+      <img src="../../assets/img/logo_agua.png" alt="Logo 3" class="logo3" />
+    </a>
   </div>
   <mat-toolbar color="primary" class="navbar">
     <mat-toolbar-row class="navbar-row">
       <div class="left-options">
-        <button mat-button  class="option"  ><mat-icon>home</mat-icon>Logo</button>
-        <button mat-button  class="option" (click)="navigateTo('nosotros')"><mat-icon>info</mat-icon>Nosotros</button>
-        <button mat-button  class="option" (click)="navigateTo('reportes')"><mat-icon>bar_chart</mat-icon>Reportes</button>
-        <button mat-button  class="option" (click)="navigateTo('bd')"><mat-icon>storage</mat-icon>Base de Datos</button>
-        <button mat-button  class="option" (click)="click('Otros')"><mat-icon>more_vert</mat-icon>Otros</button>
+        <button mat-button class="option"><mat-icon>home</mat-icon>Logo</button>
+        <button mat-button class="option" (click)="navigateTo('nosotros')"><mat-icon>info</mat-icon>Nosotros</button>
+        <button mat-button class="option"
+          (click)="navigateTo('reportes')"><mat-icon>bar_chart</mat-icon>Reportes</button>
+        <button mat-button class="option" (click)="navigateTo('bd')"><mat-icon>storage</mat-icon>Base de Datos</button>
+        <button mat-button class="option" (click)="click('Otros')"><mat-icon>more_vert</mat-icon>Otros</button>
       </div>
       <span class="spacer"></span>
       <div class="right-options">
         <button mat-icon-button class="search-option">
           <mat-icon>search</mat-icon>
         </button>
-        <button mat-button class="option"(click)="openLoginDialog()"><mat-icon>account_circle</mat-icon>Iniciar Sesión</button>
+        <button mat-button class="option" (click)="openLoginDialog()"><mat-icon>account_circle</mat-icon>Iniciar
+          Sesión</button>
       </div>
     </mat-toolbar-row>
   </mat-toolbar>

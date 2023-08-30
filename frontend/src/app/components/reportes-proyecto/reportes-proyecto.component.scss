@@ -124,3 +124,14 @@ mat-form-field {
     overflow:scroll;
     overflow-x:scroll;
 }
+
+//
+.DivToScroll {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.DivContent {
+    flex-grow: 1;
+}
