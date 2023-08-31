@@ -52,7 +52,8 @@ export class HistorialSeguimientosProyectoComponent {
   getEtapas(){
     this.seguimientoProyectoService.getEtapasProyecto(this.proyecto.id_proyecto).subscribe({
       next:res=>{
-        console.log(res);
+        // console.log(res);
+        // console.log(this.proyecto);
         this.dataEtapas=res;
         this.finaciamientoEtapas();
       }
@@ -68,13 +69,13 @@ export class HistorialSeguimientosProyectoComponent {
     }
   }
   openHistorial(element:any){
-    console.log(element);
+    // console.log(element);
     this.etapa_proyecto=element;
     this.openHistorialEtapa=true;
     this.getSeguimientoEtapasEtapas()
   }
   progresoFinanciamiento(element:any){
-    console.log(element);
+    // console.log(element);
     if(element.monto_total){
       return ((element.monto_total*100)/element.coste_final).toFixed(2)
     } return 0
