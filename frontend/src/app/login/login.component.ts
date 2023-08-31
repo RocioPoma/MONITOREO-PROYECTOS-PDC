@@ -49,6 +49,8 @@ export class LoginComponent implements OnInit {
         this.userService.setNombre(response.data.nombre);
         this.userService.setAp(response.data.ap_paterno);
         this.userService.setAm(response.data.ap_materno);
+        this.userService.setEstado(response.data.estado);
+        this.userService.setEntidad(response.data.nombre_entidad);
         console.log(response);
         console.log('Token:', response.token);
         this.userService.setAuthToken(response.token);

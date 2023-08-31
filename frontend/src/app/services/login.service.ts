@@ -10,6 +10,8 @@ export class LoginService {
   private nombre: string="";
   private ap: string="";
   private am: string="";
+  private entidad: string="";
+  private estado: string="";
   url = environment.apiUrl;
   private authToken: string | null = null;
 
@@ -85,6 +87,28 @@ export class LoginService {
   getAm() {
     return this.am;
   }
+  //entidad
+  setEntidad(entidad: string) {
+    this.entidad = entidad;
+      // Guardar en el almacenamiento local
+      localStorage.setItem('entidad', entidad);
+  }
+
+  getEntidad() {
+    return this.entidad;
+  }
+
+  //estado
+  setEstado(Estado: string) {
+    this.estado = Estado;
+      // Guardar en el almacenamiento local
+      localStorage.setItem('estado', Estado);
+  }
+
+  getEstado() {
+    return this.estado;
+  }
+
   ////-------------------------------------nombre y rol 
 
 

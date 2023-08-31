@@ -46,8 +46,10 @@ export class ManageProyectoComponent {
 
     //variables para pdf
     usuario: any;
+    entidadN: any;
     ap:any;
     am:any;
+    estado:any;
     tabla:any;
     logoDataUrl: string;
     infoFiltrada:any;
@@ -74,11 +76,15 @@ export class ManageProyectoComponent {
 
      //para usaurio de pdf    
      const nombreString = localStorage.getItem('nombre');
+     const entidadString = localStorage.getItem('entidad');
      const ApString = localStorage.getItem('ap_paterno');
      const AmString = localStorage.getItem('ap_materno');
+     const estadoString = localStorage.getItem('estado');
      this.usuario = nombreString? (nombreString): null;
+     this.entidadN = entidadString? (entidadString): null;
      this.ap = ApString ? (ApString ): null;
      this.am = AmString? (AmString): null;
+     this.estado = estadoString? (estadoString): null;
      //------------------------------------
   }
 

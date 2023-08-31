@@ -30,9 +30,12 @@ export class ManageGestionUsuarioComponent {
   dataSource: any;
   entidad: any;
   responseMessage: any;
+  //variables para pdf
   usuario: any;
+  entidadN: any;
   ap:any;
   am:any;
+  estado:any;
   tabla:any;
   logoDataUrl: string;
   infoFiltrada:any;
@@ -53,18 +56,21 @@ export class ManageGestionUsuarioComponent {
     this.tableData();
     this.entidades();  
 
-    //para imprimier el usuario q hace reporte
+    //para usaurio de pdf    
     const nombreString = localStorage.getItem('nombre');
+    const entidadString = localStorage.getItem('entidad');
     const ApString = localStorage.getItem('ap_paterno');
     const AmString = localStorage.getItem('ap_materno');
-   
-
+    const estadoString = localStorage.getItem('estado');
     this.usuario = nombreString? (nombreString): null;
+    this.entidadN = entidadString? (entidadString): null;
     this.ap = ApString ? (ApString ): null;
     this.am = AmString? (AmString): null;
+    this.estado = estadoString? (estadoString): null;
+    //------------------------------------
   
-    
-    
+    console.log(this.estado);
+   
   }
 
   tableData() {
@@ -196,6 +202,7 @@ onChange(status: any, ci: any) {
       const usuario = this.usuario; 
       const ap = this.ap; 
       const am = this.am; 
+      const entida = this.entidadN;
      //array para los datos que imprime  
       const tableBody = [];
       for (let i = 0; i < this.tabla.length; i++) {
@@ -212,7 +219,7 @@ onChange(status: any, ci: any) {
             
             columns: [
               { 
-                  text: `Impreso por: ${usuario+' '+ap+' '+am}`, 
+                  text: `Impreso por: ${usuario+' '+ap+' '+am +' '} de la entidad ${entida}`, 
                   alignment: 'left', margin: [40, 10],  
                   fontSize: 8,italics: true }, 
               {
