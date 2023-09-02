@@ -26,6 +26,8 @@ import { image } from 'html2canvas/dist/types/css/types/image';
 import { Utils } from 'src/app/services/utils';
 import { DatePipe } from '@angular/common';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
+//excel imports
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-manage-proyecto',
@@ -270,6 +272,7 @@ export class ManageProyectoComponent {
       this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
     })
   }
+
   openEtapasProyecto(proyecto:any){
     this.proyecto=proyecto;
     console.log(proyecto);
@@ -281,6 +284,34 @@ export class ManageProyectoComponent {
       this.openSeguimientosProyecto= true;
     }
   }
+  //excel
+    generateExcel(){
+       //array para los datos que imprime  
+    const tableBody = [];
+    for (let i = 0; i < this.tabla.length; i++) {
+      const person = this.tabla[i];
+      tableBody.push([person.nom_proyecto, person.fecha_inicio_convert,person.fecha_fin_convert, person.nombre_municipio, person.nom_cuenca,person.nom_categoria,person.nom_tipologia]);
+    }
+    
+
+    // Crear una hoja de cálculo de Excel
+    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(tableBody);
+
+    // Combinar las celdas para el título
+    ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 12 } }];
+
+  // Establecer estilos para aparentar centrado
+  ws['A1'].s = { font: { sz: 18, bold: true }, alignment: { horizontal: 'center', vertical: 'center' } };
+
+
+    // Crear un libro de Excel
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Datos'); // Asignar la hoja de cálculo al libro
+
+
+
+      XLSX.writeFile(wb,'information.xlsx')
+    }
 
 
    //pdf
