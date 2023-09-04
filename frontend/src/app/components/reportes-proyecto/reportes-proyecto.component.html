@@ -1,89 +1,25 @@
-<mat-card>
-    <div class="title">
-        <b><span class="color-text">REPORTES DE ACCIONES/PROYECTOS</span></b>
-    </div>
-    <!--
-    <mat-grid-list cols="2" rowHeight="2:1">
-        <mat-grid-tile colspan="2">
-            <div class="sub-title">
-                <span>Nro. Acciones/Proyectos por LE.</span>
-            </div>
-            <div class="DivToScroll">
-
-                <div [style]="{'padding':'10px 10px'}" class="DivWithScroll">
-                    <div id="chart-container-lineas"></div>
-                </div>
-            </div>
-
-        </mat-grid-tile>
-        <mat-grid-tile rowspan="2">
-            <div class="sub-title"> <span>Nro. Acciones/Proyectos por indicador (PDC).</span></div>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <div class="sub-title"> <span>Nro. Acciones/Proyectos por Categoria.</span></div>
-            <div class="DivToScroll">
-
-                <div [style]="{'padding':'10px 10px'}" class="DivWithScroll">
-                    <div id="chart-container-categoria"></div>
-                </div>
-            </div>
-        </mat-grid-tile>
-        <mat-grid-tile>
-            <div class="sub-title"> <span>Nro. Acciones/Proyectos por Tipologia.</span></div>
-            <div class="DivToScroll">
-
-                <div [style]="{'padding':'10px 10px'}" class="DivWithScroll">
-                    <div id="chart-container-tipologia"></div>
-                </div>
-            </div>
-
-        </mat-grid-tile>
-    </mat-grid-list>-->
-
-    <mat-grid-list cols="2" rowHeight="2:1" style="width: 100%;">
-        
-        <mat-grid-tile colspan="2" style="background-color: #f0f0f0;">
-            <div class="sub-title">
-                <span>Nro. Acciones/Proyectos por LE.</span>
-            </div>
-            <div class="DivToScroll">
-                <div class="DivContent">
-                    <div [style]="{'padding':'10px 10px'}" class="DivWithScroll">
-                        <div id="chart-container-lineas" style="height: 300px; width: 900px;"></div>
-                    </div>
-                </div>
-            </div>
-        </mat-grid-tile>
-        <mat-grid-tile rowspan="2" style="background-color: #f5f5f5;">
-            <div class="sub-title">
-                <span>Nro. Acciones/Proyectos por indicador (PDC).</span>
-            </div>
-        </mat-grid-tile>
-        <mat-grid-tile style="background-color: #f0f0f0;">
-            <div class="sub-title">
-                <span>Nro. Acciones/Proyectos por Categoria.</span>
-            </div>
-            <div class="DivToScroll">
-                <div class="DivContent">
-                    <div [style]="{'padding':'10px 10px'}" class="DivWithScroll">
-                        <div id="chart-container-categoria" style="height: 300px;"></div>
-                    </div>
-                </div>
-            </div>
-        </mat-grid-tile>
-        <mat-grid-tile style="background-color: #f5f5f5;">
-            <div class="sub-title">
-                <span>Nro. Acciones/Proyectos por Tipologia.</span>
-            </div>
-            <div class="DivToScroll">
-                <div class="DivContent">
-                    <div [style]="{'padding':'10px 10px'}" class="DivWithScroll">
-                        <div id="chart-container-tipologia" style="height: 300px;"></div>
-                    </div>
-                </div>
-            </div>
-        </mat-grid-tile>
-    </mat-grid-list>
-    
-    
+<mat-card [ngStyle]="{'min-width':'1368px'}">
+  <div class="title">
+    <b><span class="color-text">REPORTES DE ACCIONES/PROYECTOS</span></b>
+  </div>
+  <mat-grid-list cols="2" rowHeight="2:1" style="width: 100%">
+    <mat-grid-tile colspan="2" style="background-color: #f0f0f0">
+        <div class="scroller-x">
+            <div id="chart-container-lineas"></div>
+        </div>
+    </mat-grid-tile>
+    <mat-grid-tile rowspan="2" style="background-color: #f5f5f5">
+        <div id="chart-container-pdc"></div>
+    </mat-grid-tile>
+    <mat-grid-tile style="background-color: #f0f0f0">
+        <div class="scroller">
+            <div id="chart-container-categoria"></div>
+        </div>
+    </mat-grid-tile>
+    <mat-grid-tile style="background-color: #f5f5f5">
+        <div class="scroller">
+            <div id="chart-container-tipologia"></div>
+        </div>
+    </mat-grid-tile>
+  </mat-grid-list>
 </mat-card>

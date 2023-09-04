@@ -135,3 +135,19 @@ mat-form-field {
 .DivContent {
     flex-grow: 1;
 }
+.container-reporte {
+    height: 400px;
+    min-width: 320px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+.scroller{
+  background-color: lightblue;
+  max-height: 98%;
+  overflow-y: scroll;
+}
+.scroller-x{
+    background-color: lightblue;
+    min-width: 95%;
+    overflow-x: scroll;
+  }

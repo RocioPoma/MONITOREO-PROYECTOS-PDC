@@ -20,11 +20,26 @@ export class SeguimientoProyectoService {
   getFinanciamientoByIdEtapaProyecto(id_etapa_proyecto:number){
     return this.httpClient.get<any>(`${this.url}/getFinanciamiento/${id_etapa_proyecto}`);
   }
-  createSeguimientoProyecto(seguimientoForm:any){
-    return this.httpClient.post<any>(`${this.url}/registrarEtapa_Proyecto`,seguimientoForm)
+  createSeguimientoProyecto(seguimientoForm:any,files:File[]){
+    console.log('los archivitos :v');
+    const fd=new FormData();
+    files.forEach(file=>{
+      fd.append('documentos',file)
+    })
+    fd.append('etapa',seguimientoForm);
+    // fd.append('fecha_inicio',data.fecha_inicio
+    return this.httpClient.post<any>(`${this.url}/registrarEtapa_Proyecto`,fd)
   }
-  registerSeguimientoEtapa(seguimientoForm:any){
-    return this.httpClient.post(`${this.url}/registrarAvanceSeguimientoProyecto`,seguimientoForm);
+  registerSeguimientoEtapa(seguimientoForm:any,files:File[]){
+    console.log('los archivitos :v');
+    const fd=new FormData();
+    files.forEach(file=>{
+      fd.append('documentos',file)
+    })
+    const form = JSON.stringify(seguimientoForm);
+    console.log('stringyfiado',form);
+    fd.append('seguimiento',form);
+    return this.httpClient.post(`${this.url}/registrarAvanceSeguimientoProyecto`,fd);
   }
 
   getEtapasProyecto(id_proyecto:number){
