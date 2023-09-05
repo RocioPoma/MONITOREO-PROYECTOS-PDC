@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import * as L from 'leaflet';
 
@@ -8,30 +8,44 @@ import * as L from 'leaflet';
   styleUrls: ['./map-modal.component.scss']
 })
 export class MapModalComponent {
- 
-  constructor(
-    public dialogRef: MatDialogRef<MapModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-) {}
 
+  @Input()
+  latLong!:L.LatLng;
+  @Output()
+  sendLatLong:EventEmitter<L.LatLngExpression> = new EventEmitter<L.LatLngExpression>();
+  private _map!:L.Map;
 
-  ngAfterViewInit() {
-    // Inicializa el mapa en el div con id 'map'
-    const map = L.map('map').setView([-16.5000, -64.0000], 6);
-
-    // Agrega una capa TileLayer (por ejemplo, OpenStreetMap)
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    // Agrega un evento de clic para obtener coordenadas
-    map.on('click', (e) => {
-        const coords = e.latlng;
-        // Envía las coordenadas de regreso al componente padre
-        this.dialogRef.close(coords);
+  private initMap(){
+    this._map=L.map('map',{
+      center: [ -21.4734,-64.8026 ],
+      zoom: 15
+    })
+    this.latLong
+    const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      minZoom: 3,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     });
-}
-
-
+    tiles.addTo(this._map);
+    const marker = L.marker({lat:-21.4734,lng:-64.8026},{draggable:true,})
+    this._map.on("click",($event)=>{
+      console.log($event);
+      console.log('se clickeo en el mapa');
+    })
+    
+    marker.addEventListener("dragend",($event)=>{
+      // console.log($event.target._latlng);
+      
+    this.sendLatLong.emit($event.target._latlng)
+    })
+    marker.addTo(this._map);
+  }
+  ngAfterViewInit(): void {
+    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+    //Add 'impleme nts AfterViewInit' to the class.
+    this.initMap();
+  }
+  enviarCoord(lat:number,lng:number){
+    this.sendLatLong.emit({lat,lng})
+  }
 }

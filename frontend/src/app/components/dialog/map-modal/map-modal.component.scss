@@ -1,14 +1,19 @@
-.mat-dialog-container {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: center;
-    width: 100%;
+.map-container {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 30px;
+    height: 590px;
+    //position: absolute;
+    //width: 100vw;
+  }
+  
+  .map-frame {
+    border: 2px solid black;
     height: 100%;
-}
-
-#map {
-    flex-grow: 1;
+  }
+  
+  #map {
     height: 100%;
-    width: 100%;
-}
+  }

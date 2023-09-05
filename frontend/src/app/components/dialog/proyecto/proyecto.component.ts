@@ -641,8 +641,8 @@ export class ProyectoComponent implements OnInit {
 
   openMapModal() {
     const dialogRef = this.dialog.open(MapModalComponent, {
-      width: '80%',
-      //height: '80%',
+      width: '70%',
+      height: '90%',
       data: { geojsonFile: 'assets/capas/limite_cuenca.geojson' }
     });
 
