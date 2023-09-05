@@ -286,23 +286,31 @@ export class ManageProyectoComponent {
   }
   //excel
     generateExcel(){
+      const fechaActual = new Date();
+      const añoActual = fechaActual.getFullYear();
        //array para los datos que imprime  
     const tableBody = [];
+    console.log(this.tabla);
     for (let i = 0; i < this.tabla.length; i++) {
       const person = this.tabla[i];
-      tableBody.push([person.nom_proyecto, person.fecha_inicio_convert,person.fecha_fin_convert, person.nombre_municipio, person.nom_cuenca,person.nom_categoria,person.nom_tipologia]);
+      tableBody.push([i+1,person.linea_estrategica,i+1,person.linea_de_accion,person.nom_proyecto, 'Tarija',person.nombre_municipio, '','', '',  añoActual,'estado',person.nom_tipologia]);
     }
     
 
     // Crear una hoja de cálculo de Excel
-    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(tableBody);
+    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
 
+      // Establecer estilos para aparentar centrado
+    ws['A1'] = { t: 's', v: 'Título de la tabla', s: { font: { bold: true }, alignment: { horizontal: 'center' } } };
     // Combinar las celdas para el título
     ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 12 } }];
 
-  // Establecer estilos para aparentar centrado
-  ws['A1'].s = { font: { sz: 18, bold: true }, alignment: { horizontal: 'center', vertical: 'center' } };
+  const headers = ['Nº', 'Lineamientos Estrategicos','Nº', 'Linea de accion', 'Accion Especifica', 'Departamento', 'Municipio', 'Zona', 'Este', 'Norte', 'Gestion', 'Estado', 'Fuente de financiamiento'];
+    // Agregar los encabezados de columna en la segunda fila
+  XLSX.utils.sheet_add_aoa(ws, [headers], { origin: 'A2' });
 
+ // Agregar los datos de tableBody a la hoja de cálculo
+ XLSX.utils.sheet_add_aoa(ws, tableBody, { origin: 'A3' });
 
     // Crear un libro de Excel
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
