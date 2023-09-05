@@ -28,7 +28,7 @@ export class SeguimientoProyectoComponent {
   responseMessage: any;
 
   //-------Para cargar archivo
-  file!: File;
+  files: File[]=[];
   fileSelected!: ArrayBuffer | string | null;
 
   //-------Para almacenar los datos de servicios
@@ -77,7 +77,7 @@ export class SeguimientoProyectoComponent {
         monto_final:           [{value:null, disabled:true}, [Validators.required, Validators.min(1)]],
       })
     ], [Validators.required]),
-    seguimiento_financiamiento: this.formBuilder.array([]), 
+    seguimiento_financiamiento:         this.formBuilder.array([]), 
   },{
 
   });
@@ -109,7 +109,7 @@ export class SeguimientoProyectoComponent {
     return this.seguimientoForm1.controls['seguimiento_financiamiento'] as FormArray;
   }
   addFinancimiento() {
-    console.log(this.seguimientoForm1.get('id_etapa'));
+    // console.log(this.seguimientoForm1.get('id_etapa'));
     if(this.seguimientoForm1.get('id_etapa')?.invalid) return;
     const finItem = this.formBuilder.group({
       id_entidad_financiera: [, [Validators.required, Validators.min(1)]],
@@ -166,11 +166,12 @@ export class SeguimientoProyectoComponent {
     this.seguimientoForm1.markAllAsTouched();
     console.log('add');
     console.log(this.seguimientoForm1);
-    console.log(this.seguimientoForm1.value);
-    // return;
+    console.log(JSON.stringify(this.seguimientoForm1.value));
+
+    //return;
     if (this.seguimientoForm1.invalid) return;
 
-    this.SeguimientoProyectoService.createSeguimientoProyecto(this.seguimientoForm1.value).subscribe({
+    this.SeguimientoProyectoService.createSeguimientoProyecto(JSON.stringify(this.seguimientoForm1.value),this.files).subscribe({
       next: res => {
         console.log(res);
         this.dialogRef.close();
@@ -198,10 +199,9 @@ export class SeguimientoProyectoComponent {
                                                               comentario_seguimiento_financiero,
                                                               comentario_seguimiento_fisico,
                                                               fecha_seguimiento,
-                                                              seguimiento_financiamiento}).subscribe({
+                                                              seguimiento_financiamiento},this.files).subscribe({
       next:res=>{
         console.log(res);
-
         this.responseMessage = "Se registro correctamente el seguimiento de etapa";
         this.snackbarService.openSnackBar(this.responseMessage, "success");
         this.seguimientoForm1.get('fecha_seguimiento').reset();
@@ -234,15 +234,20 @@ export class SeguimientoProyectoComponent {
     return this.EntidadFinanciera.find(item => item.id_entidad_financiera === this.financiamientoArray.at(index).get('id_entidad_financiera')?.value)
   }
   //--------------- SELECCIONAR ARCHIVO ------------------
-  selectFile(event: any): any {
+  selectFile(event: any,index:number): any {
     this._sanitizer.bypassSecurityTrustStyle(event.target.files);
     if (event.target.files && event.target.files[0]) {
-      this.file = (<File>event.target.files[0]);
+      const file = this.files[index];
+      if(file){
+        this.files[index] =(<File>event.target.files[0]);
+      }else{
+        this.files.push((<File>event.target.files[0]));
+      }
       //File preview
       const reader = new FileReader();
       reader.onload = e => this.fileSelected = reader.result;
-
-      reader.readAsDataURL(this.file);
+      
+      reader.readAsDataURL(this.files[index]);
     }
   }
   //------------- FIN SELECCIONAR ARCHIVO ---------------------
@@ -370,5 +375,6 @@ export class SeguimientoProyectoComponent {
     })
     this.seguimientoFinanciamientoArray.push(segFinItem);
   }
-
-}
+  // fileName:any;
+  
+} 

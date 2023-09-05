@@ -3,6 +3,8 @@ const connection = require("../connection");
 const router = express.Router();
 var auth = require("../services/authentication");
 
+const multer = require('../libs/multer');
+const fs = require('fs');
 //obtener Etapa por id de Tipología
 router.get("/getByIdTipologia/:id_tipologia", (req, res) => {
   const id_tipologia = req.params.id_tipologia;
@@ -79,6 +81,7 @@ router.get("/getEtapasByIdProyecto/:id_proyecto", (req, res) => {
   });
 });
 router.get("/getMontos/:id_etapa_proyecto", (req, res) => {
+
   const { id_etapa_proyecto } = req.params;
   const queryFn = `SELECT SUM(FIN.costo_final) AS coste_final FROM financiamiento AS FIN 
                   WHERE FIN.id_etapa_proyecto = ?;`;
@@ -130,7 +133,13 @@ router.get("/get_seguimientos/:id_etapa_proyecto", (req, res) => {
   });
 });
 
-router.post("/registrarEtapa_Proyecto", (req, res) => {
+router.post("/registrarEtapa_Proyecto",[multer.array('documentos')], (req, res) => {
+  const files = req.files;
+  console.log('archivos,',files);
+  const etapa =JSON.parse(req.body.etapa);
+  // const json = JSON.parse(proyecto.etapa)
+  //res.json({ok:'ok',files,etapa});
+  //return ;
   const {
     id_entidad_ejecutora,
     id_etapa,
@@ -138,7 +147,7 @@ router.post("/registrarEtapa_Proyecto", (req, res) => {
     fuente_de_informacion,
     fecha_seguimiento,
     ...resForm
-  } = req.body;
+  } = etapa;
   const query = `INSERT INTO ETAPA_PROYECTO (fecha_seguimiento,id_etapa,id_proyecto,fuente_de_informacion,id_entidad_ejecutora) VALUES(?,?,?,?,?);`;
   connection.query(
     query,
@@ -166,11 +175,13 @@ router.post("/registrarEtapa_Proyecto", (req, res) => {
             addFinaciamiento({
               ...resForm,
               id_etapa_proyecto,
+              adjunto_financiero:files[1]?.filename || null,
               fecha_seguimiento,
             });
             addSeguimientoFisico({
               ...resForm,
               id_etapa_proyecto,
+              adjunto_fisico:files[0]?.filename || null,
               fecha_seguimiento,
             });
             res.json({ msg: "ok", result });
@@ -187,6 +198,7 @@ const addFinaciamiento = (resForm) => {
     id_etapa_proyecto,
     comentario_seguimiento_financiero: comentario,
     fecha_seguimiento,
+    adjunto_financiero,
   } = resForm;
 
   for (fnItem in financiamiento) {
@@ -209,11 +221,11 @@ const addFinaciamiento = (resForm) => {
               throw new Error(err);
             }
             id_financiamiento = result[0].id_financiamiento;
-            const queryFnSeg = `INSERT INTO SEGUIMIENTO_FINANCIERO (monto,comentario,id_financiamiento,fecha_seguimiento) VALUES(?,?,?,?);`;
+            const queryFnSeg = `INSERT INTO SEGUIMIENTO_FINANCIERO (monto,comentario,id_financiamiento,fecha_seguimiento,adjunto_financiero) VALUES(?,?,?,?,?);`;
             const { monto } = seguimiento_financiamiento[fnItem];
             connection.query(
               queryFnSeg,
-              [monto, comentario, id_financiamiento, fecha_seguimiento],
+              [monto, comentario, id_financiamiento, fecha_seguimiento,adjunto_financiero],
               (err, result) => {
                 if (err)
                   throw new Error({
@@ -234,8 +246,9 @@ const addSeguimientoFisico = (segForm) => {
     comentario_seguimiento_fisico: comentario,
     id_etapa_proyecto,
     fecha_seguimiento,
+    adjunto_fisico,
   } = segForm;
-  const query = `INSERT INTO SEGUIMIENTO_FISICO (avance_seguimiento_fisico,comentario,id_etapa_proyecto,fecha_seguimiento_fisico) VALUES(?,?,?,?);`;
+  const query = `INSERT INTO SEGUIMIENTO_FISICO (avance_seguimiento_fisico,comentario,id_etapa_proyecto,fecha_seguimiento_fisico,adjunto_fisico) VALUES(?,?,?,?,?);`;
   connection.query(
     query,
     [
@@ -243,6 +256,7 @@ const addSeguimientoFisico = (segForm) => {
       comentario,
       id_etapa_proyecto,
       fecha_seguimiento,
+      adjunto_fisico
     ],
     (err, result) => {
       // console.log(err,result);
@@ -251,7 +265,12 @@ const addSeguimientoFisico = (segForm) => {
   );
 };
 
-router.post("/registrarAvanceSeguimientoProyecto", (req, res) => {
+router.post("/registrarAvanceSeguimientoProyecto", [multer.array('documentos')],(req, res) => {
+  const files = req.files;
+  console.log('archivos,',files);
+  console.log(req.body);
+  const seguimiento =JSON.parse(req.body.seguimiento);
+  console.log(seguimiento);
   const {
     id_etapa_proyecto,
     avance_seguimiento_fisico,
@@ -259,8 +278,10 @@ router.post("/registrarAvanceSeguimientoProyecto", (req, res) => {
     comentario_seguimiento_fisico,
     comentario_seguimiento_financiero,
     seguimiento_financiamiento,
-  } = req.body;
-  const querySegFis = `INSERT INTO SEGUIMIENTO_FISICO (id_etapa_proyecto,avance_seguimiento_fisico,fecha_seguimiento_fisico,comentario) VALUES(?,?,?,?);`;
+    adjunto_fisico = files[0]?.filename || null,
+    adjunto_financiero = files[1]?.filename || null,
+  } = seguimiento;
+  const querySegFis = `INSERT INTO SEGUIMIENTO_FISICO (id_etapa_proyecto,avance_seguimiento_fisico,fecha_seguimiento_fisico,comentario,adjunto_fisico) VALUES(?,?,?,?,?);`;
   connection.query(
     querySegFis,
     [
@@ -268,6 +289,7 @@ router.post("/registrarAvanceSeguimientoProyecto", (req, res) => {
       avance_seguimiento_fisico,
       fecha_seguimiento,
       comentario_seguimiento_fisico,
+      adjunto_fisico
     ],
     (err, result) => {
       if (err) {
@@ -282,7 +304,7 @@ router.post("/registrarAvanceSeguimientoProyecto", (req, res) => {
     if (err) res.status(500).json({ msg: "erro al en seleccion" });
     financiamiento_id = result;
     for (let index in seguimiento_financiamiento) {
-      const querySegFn = `INSERT INTO seguimiento_financiero (id_financiamiento,monto,fecha_seguimiento,comentario) VALUES (?,?,?,?);`;
+      const querySegFn = `INSERT INTO seguimiento_financiero (id_financiamiento,monto,fecha_seguimiento,comentario,adjunto_financiero) VALUES (?,?,?,?,?);`;
       connection.query(
         querySegFn,
         [
@@ -290,6 +312,7 @@ router.post("/registrarAvanceSeguimientoProyecto", (req, res) => {
           seguimiento_financiamiento[index].monto,
           fecha_seguimiento,
           comentario_seguimiento_financiero,
+          adjunto_financiero,
         ],
         (err, result) => {
           if (err) {

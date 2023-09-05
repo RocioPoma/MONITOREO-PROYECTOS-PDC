@@ -115,7 +115,6 @@
                                 <input matInput type="text" [disabled]="true" [value]="montoFinal(i)">
                                 <span matTextPrefix>%&nbsp;</span>
                             </mat-form-field>
-                            <mat-icon class="delete-btn" *ngIf="i>0" (click)="deleteFinanciamiento(i)">delete_forever</mat-icon>
                         </div>
                     </ng-container>
                 </ng-container>
@@ -149,6 +148,18 @@
                     </mat-error>
                 </mat-form-field>
             </div>
+            <div fxLayout="row" fxGap="8px" class="subTitle-container" *ngIf="seguimientoForm1.get('id_entidad_ejecutora').enabled">
+                <span class="subTitle" style="margin-right: 4.7cm; ">ADJUNTO FISICO (Opcional)</span>
+                <!-- <input onchange="console.log(event.target.files)" formControlName="adjunto_fisico" class="form-control-file" type="file"> -->
+                <input type="file" class="file-input" (change)="selectFile($event,0)" #fileUpload>
+                <div class="file-upload">{{files[0]?.name || "Solo archivos con extension:"}}
+                  <button mat-mini-fab color="primary" class="upload-btn"
+                  (click)="fileUpload.click()">
+                    <mat-icon>attach_file</mat-icon>
+                  </button>
+                </div>
+            </div>
+
             <div fxLayout="row" fxGap="8px" class="subTitle-container">
                 <span class="subTitle" style="margin-right: 4.7cm;">AVANCE FINANCIERO</span>
             </div>
@@ -183,6 +194,17 @@
                     <mat-label>Comentario</mat-label>
                     <input matInput type="text" formControlName="comentario_seguimiento_financiero">
                 </mat-form-field>
+            </div>
+            <div fxLayout="row" fxGap="8px" class="subTitle-container" *ngIf="seguimientoForm1.get('id_entidad_ejecutora').enabled">
+                <span class="subTitle" style="margin-right: 4.7cm; ">ADJUNTO FINANCIERO (Opcional)</span>
+                <!-- <input onchange="console.log(event.target.files)" formControlName="adjunto_fisico" class="form-control-file" type="file"> -->
+                <input type="file" class="file-input" (change)="selectFile($event,1)" #fileUpload>
+                <div class="file-upload">{{files[1]?.name || "Solo archivos con extension:"}}
+                  <button mat-mini-fab color="primary" class="upload-btn"
+                  (click)="fileUpload.click()">
+                    <mat-icon>attach_file</mat-icon>
+                  </button>
+                </div>
             </div>
         </div>
 

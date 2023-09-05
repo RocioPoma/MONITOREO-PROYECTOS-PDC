@@ -13,6 +13,6 @@ function uploadFile() {
 
     const upload = multer({ storage: storage }).array('file');
     return upload;
-} 
+}
 
 module.exports = uploadFile;
