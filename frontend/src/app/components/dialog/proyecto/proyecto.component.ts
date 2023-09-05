@@ -112,10 +112,8 @@ export class ProyectoComponent implements OnInit {
   showSelector3 = false;
 
   //--------------------Mapa --------------------------------------
-  /* modalVisible: boolean = false;
-   map: any;*/
-  private map: L.Map;
-  private cuencaLayer: L.GeoJSON;
+  polygonData: any; // Variable para almacenar los datos del polígono
+
 
   //---------------------------------------------------------------------------variables para select especial
   @ViewChild('singleSelect', { static: true }) singleSelect!: MatSelect;
@@ -148,6 +146,7 @@ export class ProyectoComponent implements OnInit {
     this.fechaActual = new Date();
     // Convierte la fecha actual a string en formato "dd-MM-yyyy" 
     this.fechaActualString = this.datePipe.transform(this.fechaActual, 'yyyy-MM-dd');
+    this.loadPolygonData();
 
   }
 
@@ -317,7 +316,7 @@ export class ProyectoComponent implements OnInit {
 
   //----------- PARA QUITAR CAMPOS INPUT(CANTIDAD Y UNIDAD)
   removeInput() {
-    if (this.alcancetoArray.length > 1) {
+    if (this.alcancetoArray.length > 0) {
       this.alcancetoArray.removeAt(this.alcancetoArray.length - 1);
     }
   }
@@ -556,6 +555,11 @@ export class ProyectoComponent implements OnInit {
         console.log(this.proyectoForm.value);
         console.log(this.proyectoForm);*/
 
+    // 
+   
+    // Llamar a la función validateCoordinates
+    const estaDentroLaCuenca = this.validateCoordinates(formData.coordenada_x, formData.coordenada_y);
+
     var data = {
       nom_proyecto: formData.nom_proyecto,
       fecha_inicio: this.finicio,
@@ -579,22 +583,29 @@ export class ProyectoComponent implements OnInit {
     }
 
     console.log(data);
-
-    this.ProyectoService.add1(data, this.file).subscribe((response: any) => {
-      this.dialogRef.close();
-      this.onAddProyecto.emit();
-      this.responseMessage = response.message;
-      this.snackbarService.openSnackBar(this.responseMessage, "success");
-    }, (error: any) => {
-      this.dialogRef.close();
-      if (error.error?.message) {
-        this.responseMessage = error.error?.message;
-      }
-      else {
-        this.responseMessage = GlobalCostants.genericError;
-      }
-      this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
-    })
+    if (estaDentroLaCuenca) {
+      // El punto está dentro del polígono
+      console.log('El punto está dentro de la cuenca.');
+      this.ProyectoService.add1(data, this.file).subscribe((response: any) => {
+        this.dialogRef.close();
+        this.onAddProyecto.emit();
+        this.responseMessage = response.message;
+        this.snackbarService.openSnackBar(this.responseMessage, "success");
+      }, (error: any) => {
+        this.dialogRef.close();
+        if (error.error?.message) {
+          this.responseMessage = error.error?.message;
+        }
+        else {
+          this.responseMessage = GlobalCostants.genericError;
+        }
+        this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+      })
+    } else {
+      // El punto no está dentro de la cuenca
+      alert('Las coordenadas no estan dentro de la cuenca');
+    }
+    
   }
 
   //------------------- EDITAR
@@ -662,21 +673,35 @@ export class ProyectoComponent implements OnInit {
     });
   }
 
-  /*
-  openMapModal() {
-    const dialogRef = this.dialog.open(MapModalComponent, {
-      width: '80%',
-     // height: '80%',
-      disableClose: true,
-    });
+  //------------------------- MAPA Y VALIDACION DE MAPA -------------------------------
 
-    dialogRef.componentInstance.coordinatesSelected.subscribe((coordinates) => {
-      // Lógica para actualizar las coordenadas en los formularios
-      console.log('Coordenada X:', coordinates.x);
-      console.log('Coordenada Y:', coordinates.y);
-    });
+  // Carga el archivo GeoJSON y almacena los datos del polígono
+  loadPolygonData() {
+    // Reemplaza la ruta con la ubicación correcta de tu archivo GeoJSON
+    fetch('../../../../../assets/capas/cuenca1.geojson')
+      .then(response => response.json())
+      .then(geojson => {
+        // Asigna los datos del polígono a la variable polygonData
+        this.polygonData = geojson;
+      })
+      .catch(error => {
+        console.error('Error al cargar el GeoJSON:', error);
+      });
   }
-  */
+
+  validateCoordinates(latitude: number, longitude: number): boolean {
+    if (latitude !== undefined && longitude !== undefined && this.polygonData) {
+      const point = turf.point([longitude, latitude]);
+
+      // Utiliza la función "booleanPointInPolygon" de Turf.js para verificar si el punto está dentro del polígono
+      const isInside = turf.booleanPointInPolygon(point, this.polygonData.features[0].geometry);
+
+      return isInside;
+    } else {
+      return false; // Devuelve false si las coordenadas son inválidas o el polígono no se ha cargado
+    }
+  }
+
 
 
   //------------------------------- Fin Mapa --------------------------------------------
