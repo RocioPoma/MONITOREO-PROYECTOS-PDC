@@ -34,7 +34,7 @@ app.use(cors({origen:"*"}));
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 
-//--app.use('/uploads',express.static(path.resolve('uploads')));
+app.use('/uploads',express.static(path.resolve('uploads')));
 //rutas componentes
 app.use('/usuarios',userRoute);
 app.use('/municipio',MunicipioRoute);

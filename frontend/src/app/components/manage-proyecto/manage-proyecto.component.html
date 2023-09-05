@@ -99,7 +99,7 @@
                     </ng-container>
 
                     <!-- Documento Column -->
-                    <ng-container matColumnDef="documento">
+                  <!-- <ng-container matColumnDef="documento">
                         <th mat-header-cell *matHeaderCellDef>Doc.</th>
                         <td mat-cell *matCellDef="let element" class="action-link">
                             <div class="icon-group">
@@ -107,6 +107,18 @@
                                     (click)="handleEditAction(element)">
                                     <mat-icon> picture_as_pdf</mat-icon>
                                 </button>
+                            </div>
+                        </td>
+                    </ng-container>--> 
+
+                    <ng-container matColumnDef="documento">
+                        <th mat-header-cell *matHeaderCellDef>Doc.</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{element.documento}}
+                            <div *ngIf="(element.documento!='')">
+                                <a [href]="fileURL + element.documento" target="_blank">
+                                    <img width="25px" height="25px" src="../../../assets/img/pdf-icono.png" alt="no exist">
+                                </a>
                             </div>
                         </td>
                     </ng-container>
