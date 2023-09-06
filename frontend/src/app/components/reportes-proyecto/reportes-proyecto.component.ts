@@ -66,15 +66,17 @@ export class ReportesProyectoComponent {
       chart: {
         type: 'colum', // Puedes cambiar el tipo de gráfico aquí (line, bar, pie, etc.)
       },
-      // title: {
-      //   text: 'Gráfico de Datos Emulados por columnas',
-      // },
+      title: {
+        text: 'Nro. Acciones/Proyectos por LE.',
+        align:'left',
+      },
       xAxis: {
         categories: data.map((item) => item.descripcion),
+
       },
       yAxis: {
         title: {
-          text: 'Valores',
+          text: 'Nro.',
         },
       },
 
@@ -82,6 +84,9 @@ export class ReportesProyectoComponent {
         {
           data: data.map((item) => item.total),
           type: 'column',
+          name:'Nro de acciones/proyectos',
+          color:'#3cb371',
+
         },
       ],
       noData: {
@@ -104,29 +109,31 @@ export class ReportesProyectoComponent {
     Highcharts.chart('chart-container-categoria', {
       chart: {
         type: 'bar', // Puedes cambiar el tipo de gráfico aquí (line, bar, pie, etc.)
+        marginLeft:150
       },
       title: {
-        text: 'Gráfico de Datos por Emulados por barras',
+        text: 'Nro. Acciones/Proyectos por Categoría',
       },
       xAxis: {
-        // categories: data.map((item) => item.name),
+        categories: data.map((item) => item.nom_categoria),
         labels: {
-          skew3d: true,
           style: {
-            fontSize: '16px',
+            fontSize: '12px',
           },
+        
         },
       },
       yAxis: {
         title: {
           text: 'Valores',
         },
-        // categories:data.map((item) => item.nom_categoria),
+        //categories:data.map((item) => item.nom_categoria),
       },
       series: [
         {
           data: data.map((item) => item.total),
           type: 'column',
+          
         },
       ],
       noData: {
@@ -146,81 +153,44 @@ export class ReportesProyectoComponent {
     }));
 
     // Configuración del gráfico
+    // Configuración del gráfico
     Highcharts.chart('chart-container-tipologia', {
       chart: {
-        type: 'bar',
-        marginLeft: 150,
+        type: 'bar', // Puedes cambiar el tipo de gráfico aquí (line, bar, pie, etc.)
+        marginLeft:150
       },
       title: {
-        text: 'Most popular ideas by April 2016',
-      },
-      subtitle: {
-        text: 'Source: <a href="https://highcharts.uservoice.com/forums/55896-highcharts-javascript-api">UserVoice</a>',
+        text: 'Nro. Acciones/Proyectos por Categoría',
       },
       xAxis: {
-        type: 'category',
-        title: {
-          text: null,
+        categories: data.map((item) => item.nom_tipologia),
+        labels: {
+          style: {
+            fontSize: '12px',
+          },
+        
         },
-        min: 0,
-        max: 4,
-        scrollbar: {
-          enabled: true,
-        },
-        tickLength: 0,
       },
       yAxis: {
-        min: 0,
-        max: 1200,
         title: {
-          text: 'Votes',
-          align: 'high',
+          text: 'Valores',
         },
-        scrollbar: {
-          enabled: true,
-        },
-      },
-      plotOptions: {
-        bar: {
-          dataLabels: {
-            enabled: true,
-          },
-        },
-      },
-      legend: {
-        enabled: false,
-      },
-      credits: {
-        enabled: false,
+        //categories:data.map((item) => item.nom_categoria),
       },
       series: [
         {
-          name: 'Votes',
+          data: data.map((item) => item.total),
           type: 'column',
-          data: [
-            ['Gantt chart', 1000],
-            ['Autocalculation and plotting of trend lines', 575],
-            ['Allow navigator to have multiple data series', 523],
-            ['Implement dynamic font size', 427],
-            ['Multiple axis alignment control', 399],
-            ['Stacked area (spline etc) in irregular datetime series', 309],
-            ['Adapt chart height to legend height', 278],
-            ['Export charts in excel sheet', 239],
-            ['Toggle legend box', 235],
-            ['Venn Diagram', 203],
-            ['Add ability to change Rangeselector position', 182],
-            ['Draggable legend box', 157],
-            ['Sankey Diagram', 149],
-            ['Add Navigation bar for Y-Axis in Highcharts Stock', 144],
-            ['Grouped x-axis', 143],
-            ['ReactJS plugin', 137],
-            ['3D surface charts', 134],
-            ['Draw lines over a stock chart, for analysis purpose', 118],
-            ['Data module for database tables', 118],
-            ['Draggable points', 117],
-          ],
+          
         },
       ],
+      noData: {
+        style: {
+          fontWeight: 'bold',
+          fontSize: '15px',
+          color: '#303030',
+        },
+      },
     });
   }
   createChartPdc() {
