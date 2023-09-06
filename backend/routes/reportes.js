@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get('/lineas-estrategicas',(req,res)=>{
 
-    const query=`SELECT LNE.descripcion ,COUNT(PROY.id_proyecto) FROM linea_estrategica AS LNE
+    const query=`SELECT LNE.descripcion ,COUNT(PROY.id_proyecto) total FROM linea_estrategica AS LNE
 	LEFT JOIN linea_de_accion AS LNA ON LNA.id_linea_estrategica = LNE.id_linea_estrategica
 	LEFT JOIN accion_estrategica AS ACCE ON ACCE.id_linea_accion = LNA.id_linea_accion
 	LEFT JOIN proyecto AS PROY ON PROY.id_accion_estrategica = ACCE.id_accion_estrategica

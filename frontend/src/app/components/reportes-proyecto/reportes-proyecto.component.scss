@@ -142,12 +142,13 @@ mat-form-field {
     margin: 0 auto;
 }
 .scroller{
-  background-color: lightblue;
-  max-height: 98%;
+  margin:10px 10px;
+  min-width: 95%;
+  min-height: 468px;
+  max-width: 468px;
   overflow-y: scroll;
 }
 .scroller-x{
-    background-color: lightblue;
     min-width: 95%;
     overflow-x: scroll;
   }
