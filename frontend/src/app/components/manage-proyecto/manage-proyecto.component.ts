@@ -28,6 +28,7 @@ import { DatePipe } from '@angular/common';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 //excel imports
 import * as XLSX from 'xlsx';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-manage-proyecto',
@@ -45,6 +46,11 @@ export class ManageProyectoComponent {
   openSeguimientosProyecto=false; //ABRIR LOS SEGUIMIENTOS DE ETAPAS DE PROYECTO
   apiResponse: any = []; //para filtrar con el select
 
+   //----url del servidor backend
+   url = environment.apiUrl;
+   //----creamos la url para las imagenes
+   fileURL = this.url + '/uploads/documents/';
+ 
 
     //variables para pdf
     usuario: any;
@@ -75,7 +81,7 @@ export class ManageProyectoComponent {
     this.tableData();
     this.getMunicipio();
 
-
+    console.log("url: " + this.fileURL);
      //para usaurio de pdf    
      const nombreString = localStorage.getItem('nombre');
      const entidadString = localStorage.getItem('entidad');

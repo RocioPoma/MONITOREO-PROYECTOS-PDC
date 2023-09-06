@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import * as L from 'leaflet';
 
@@ -9,43 +9,71 @@ import * as L from 'leaflet';
 })
 export class MapModalComponent {
 
-  @Input()
-  latLong!:L.LatLng;
-  @Output()
-  sendLatLong:EventEmitter<L.LatLngExpression> = new EventEmitter<L.LatLngExpression>();
-  private _map!:L.Map;
+  polygon: any; // Variable para el polígono
 
-  private initMap(){
-    this._map=L.map('map',{
-      center: [ -21.4734,-64.8026 ],
-      zoom: 15
-    })
-    this.latLong
-    const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  constructor(
+    public dialogRef: MatDialogRef<MapModalComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) { }
+
+  ngAfterViewInit() {
+    // Inicializa el mapa en el div con id 'map'
+    const map = L.map('map').setView([-16.5000, -64.0000], 6);
+
+    // Capa TileLayer (OpenStreetMap)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Capa TileLayer (Google Maps)
+    /*L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+      maxZoom: 19,
+      attribution: '© <a href="https://developers.google.com/maps/terms">Google Maps</a> contributors'
+    }).addTo(map);*/
+
+    // Capa TileLayer (Stamen)
+    /*L.tileLayer('http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png', {
       maxZoom: 18,
-      minZoom: 3,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    });
-    tiles.addTo(this._map);
-    const marker = L.marker({lat:-21.4734,lng:-64.8026},{draggable:true,})
-    this._map.on("click",($event)=>{
-      console.log($event);
-      console.log('se clickeo en el mapa');
-    })
-    
-    marker.addEventListener("dragend",($event)=>{
-      // console.log($event.target._latlng);
-      
-    this.sendLatLong.emit($event.target._latlng)
-    })
-    marker.addTo(this._map);
+      attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>'
+    }).addTo(map);*/
+
+    fetch('../../../../../assets/capas/cuenca1.geojson')
+      .then(response => response.json())
+      .then(geojson => {
+        console.log('entro a fetch del mapa');
+
+        if (geojson.features && geojson.features.length > 0) {
+          const firstFeature = geojson.features[0];
+
+          // Accede a la geometría del polígono en la propiedad "geometry"
+          this.polygon = L.geoJSON(firstFeature.geometry, {
+            style: {
+              color: 'red',       // Color del borde del polígono
+              weight: 2,           // Grosor del borde del polígono
+              fillOpacity: 0.2     // Opacidad del relleno del polígono
+            }
+          }).addTo(map);
+
+          // Agrega un evento de clic para verificar si el punto está dentro del polígono
+          map.on('click', (e) => {
+            const latlng = e.latlng;
+            if (this.polygon.getBounds().contains(latlng)) {
+              console.log('El punto está dentro del polígono.');
+              const coords = e.latlng;
+              // Envía las coordenadas de regreso al componente padre
+              this.dialogRef.close(coords);
+            } else {
+              alert('El punto no está dentro de la cuenca.');
+            }
+          });
+        } else {
+          console.error('El GeoJSON no contiene un polígono válido.');
+        }
+      })
+      .catch(error => {
+        console.error('Error al cargar el GeoJSON:', error);
+      });
   }
-  ngAfterViewInit(): void {
-    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-    //Add 'impleme nts AfterViewInit' to the class.
-    this.initMap();
-  }
-  enviarCoord(lat:number,lng:number){
-    this.sendLatLong.emit({lat,lng})
-  }
+
 }
