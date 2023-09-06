@@ -30,6 +30,9 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import * as XLSX from 'xlsx';
 import { environment } from 'src/environments/environment';
 
+//convertir los coordenadas
+import proj4 from 'proj4';
+
 @Component({
   selector: 'app-manage-proyecto',
   templateUrl: './manage-proyecto.component.html',
@@ -78,6 +81,8 @@ export class ManageProyectoComponent {
 
 
   ngOnInit(): void {
+     
+
     this.tableData();
     this.getMunicipio();
 
@@ -292,16 +297,41 @@ export class ManageProyectoComponent {
   }
   //excel
     generateExcel(){
+      //zona
+     // Definir proyecciones
+     proj4.defs("EPSG:4326", "+proj=longlat +datum=WGS84 +no_defs");
+     proj4.defs("EPSG:32720", "+proj=utm +zone=20 +south +datum=WGS84 +units=m +no_defs");// Puedes cambiar el número de zona según tu ubicación
+
+
       const fechaActual = new Date();
       const añoActual = fechaActual.getFullYear();
        //array para los datos que imprime  
     const tableBody = [];
-    console.log(this.tabla);
-    for (let i = 0; i < this.tabla.length; i++) {
+    
+    for (let i = 0; i < this.tabla.length; i++) {      
       const person = this.tabla[i];
-      tableBody.push([i+1,person.linea_estrategica,i+1,person.linea_de_accion,person.nom_proyecto, 'Tarija',person.nombre_municipio, '','', '',  añoActual,'estado',person.nom_tipologia]);
+      // Coordenadas geográficas (latitud y longitud)
+      const latitud = parseFloat(person.coordenada_x); // Por ejemplo, París
+      const longitud = parseFloat(person.coordenada_y);
+    
+      const coordenadasUTM = proj4("EPSG:4326", "EPSG:32720", [latitud,  longitud]);
+      
+      // coordenadasUTM es un array con [Este, Norte]
+      const este = coordenadasUTM[0];
+      const norte = coordenadasUTM[1];
+      //console.log(este,norte);
+      tableBody.push([i+1,person.linea_estrategica,i+1,person.linea_de_accion,person.nom_proyecto, 'Tarija',person.nombre_municipio,'20S', este, norte,  añoActual,'estado',person.nom_tipologia]);
     }
     
+
+    // Definir un objeto de estilo para los bordes
+const borderStyle = {
+  top: { style: 'thin', color: { rgb: '000000' } }, // Borde superior delgado en negro
+  bottom: { style: 'thin', color: { rgb: '000000' } }, // Borde inferior delgado en negro
+  left: { style: 'thin', color: { rgb: '000000' } }, // Borde izquierdo delgado en negro
+  right: { style: 'thin', color: { rgb: '000000' } }, // Borde derecho delgado en negro
+};
+
 
     // Crear una hoja de cálculo de Excel
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
@@ -312,11 +342,24 @@ export class ManageProyectoComponent {
     ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 12 } }];
 
   const headers = ['Nº', 'Lineamientos Estrategicos','Nº', 'Linea de accion', 'Accion Especifica', 'Departamento', 'Municipio', 'Zona', 'Este', 'Norte', 'Gestion', 'Estado', 'Fuente de financiamiento'];
-    // Agregar los encabezados de columna en la segunda fila
-  XLSX.utils.sheet_add_aoa(ws, [headers], { origin: 'A2' });
+   
+  // Agregar los encabezados de columna en la segunda fila      
+    XLSX.utils.sheet_add_aoa(ws, [headers], { origin: 'A2' });
+    
+    // Aplicar bordes a los encabezados de columna
+const headerRange = XLSX.utils.decode_range(ws['!ref']); // Obtener el rango de encabezados
+for (let col = headerRange.s.c; col <= headerRange.e.c; col++) {
+  // Aplicar bordes a cada celda de encabezado
+  const cellAddress = XLSX.utils.encode_cell({ r: headerRange.s.r, c: col });
+  ws[cellAddress].s = borderStyle;
+}
 
- // Agregar los datos de tableBody a la hoja de cálculo
- XLSX.utils.sheet_add_aoa(ws, tableBody, { origin: 'A3' });
+  // Agregar los datos de tableBody a la hoja de cálculo
+  XLSX.utils.sheet_add_aoa(ws, tableBody, { origin: 'A3' });
+
+
+    
+
 
     // Crear un libro de Excel
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
