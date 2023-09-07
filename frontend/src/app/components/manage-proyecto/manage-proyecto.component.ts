@@ -30,6 +30,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import * as XLSX from 'xlsx';
 import { environment } from 'src/environments/environment';
 
+
 //convertir los coordenadas
 import proj4 from 'proj4';
 
@@ -323,16 +324,6 @@ export class ManageProyectoComponent {
       tableBody.push([i+1,person.linea_estrategica,i+1,person.linea_de_accion,person.nom_proyecto, 'Tarija',person.nombre_municipio,'20S', este, norte,  añoActual,'estado',person.nom_tipologia]);
     }
     
-
-    // Definir un objeto de estilo para los bordes
-const borderStyle = {
-  top: { style: 'thin', color: { rgb: '000000' } }, // Borde superior delgado en negro
-  bottom: { style: 'thin', color: { rgb: '000000' } }, // Borde inferior delgado en negro
-  left: { style: 'thin', color: { rgb: '000000' } }, // Borde izquierdo delgado en negro
-  right: { style: 'thin', color: { rgb: '000000' } }, // Borde derecho delgado en negro
-};
-
-
     // Crear una hoja de cálculo de Excel
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
 
@@ -340,35 +331,18 @@ const borderStyle = {
     ws['A1'] = { t: 's', v: 'Título de la tabla', s: { font: { bold: true }, alignment: { horizontal: 'center' } } };
     // Combinar las celdas para el título
     ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 12 } }];
-
-  const headers = ['Nº', 'Lineamientos Estrategicos','Nº', 'Linea de accion', 'Accion Especifica', 'Departamento', 'Municipio', 'Zona', 'Este', 'Norte', 'Gestion', 'Estado', 'Fuente de financiamiento'];
-   
-  // Agregar los encabezados de columna en la segunda fila      
-    XLSX.utils.sheet_add_aoa(ws, [headers], { origin: 'A2' });
-    
-    // Aplicar bordes a los encabezados de columna
-const headerRange = XLSX.utils.decode_range(ws['!ref']); // Obtener el rango de encabezados
-for (let col = headerRange.s.c; col <= headerRange.e.c; col++) {
-  // Aplicar bordes a cada celda de encabezado
-  const cellAddress = XLSX.utils.encode_cell({ r: headerRange.s.r, c: col });
-  ws[cellAddress].s = borderStyle;
-}
-
-  // Agregar los datos de tableBody a la hoja de cálculo
-  XLSX.utils.sheet_add_aoa(ws, tableBody, { origin: 'A3' });
-
-
-    
-
+      const headers = ['Nº', 'Lineamientos Estrategicos','Nº', 'Linea de accion', 'Accion Especifica', 'Departamento', 'Municipio', 'Zona', 'Este', 'Norte', 'Gestion', 'Estado', 'Fuente de financiamiento'];
+      // Agregar los encabezados de columna en la segunda fila      
+      XLSX.utils.sheet_add_aoa(ws, [headers], { origin: 'A2' });
+      // Agregar los datos de tableBody a la hoja de cálculo
+      XLSX.utils.sheet_add_aoa(ws, tableBody, { origin: 'A3' });
 
     // Crear un libro de Excel
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Datos'); // Asignar la hoja de cálculo al libro
-
-
-
-      XLSX.writeFile(wb,'information.xlsx')
-    }
+    XLSX.writeFile(wb,'information.xlsx');
+    
+  }
 
 
    //pdf
