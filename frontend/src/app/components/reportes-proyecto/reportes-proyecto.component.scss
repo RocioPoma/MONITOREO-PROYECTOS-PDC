@@ -52,7 +52,11 @@ td{
 }
 
 mat-card {
-    padding: 20px;
+    padding-top: 20px;
+    padding-left: 70px;
+    padding-right: 70px;
+    padding-bottom: 70px;
+   // background-color: #A6ACAF;
 }
 
 .padding {
@@ -151,4 +155,8 @@ mat-form-field {
 .scroller-x{
     min-width: 95%;
     overflow-x: scroll;
+  }
+
+  .pdc_etapa{
+    margin-bottom: 20px;
   }

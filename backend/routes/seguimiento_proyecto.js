@@ -8,7 +8,7 @@ const fs = require('fs');
 //obtener Etapa por id de Tipología
 router.get("/getByIdTipologia/:id_tipologia", (req, res) => {
   const id_tipologia = req.params.id_tipologia;
-  var query = "SELECT * FROM ETAPA  WHERE id_tipologia=?";
+  var query = "SELECT * FROM ETAPA  WHERE id_tipologia=? and estado='true'";
   connection.query(query, [id_tipologia], (err, results) => {
     if (err) {
       console.error(err);

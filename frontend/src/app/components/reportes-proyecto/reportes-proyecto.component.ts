@@ -16,16 +16,17 @@ export class ReportesProyectoComponent {
   dataLE: any[] = [];
   dataCat: any[] = [];
   dataTip: any[] = [];
-  dataIndi: any[] = [];
+  dataIndicador: any[] = [];
 
-  constructor(private readonly reportesService: ReportesService) {}
+  constructor(private readonly reportesService: ReportesService) { }
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     this.getDataLE();
     this.getDataCat();
     this.getDataTip();
-    this.createChartPdc();
+    this.getDataPDC();
+   // this.createChartPdc();
   }
   getDataLE() {
     this.reportesService.lineasEstrategicas().subscribe({
@@ -54,6 +55,17 @@ export class ReportesProyectoComponent {
       },
     });
   }
+
+  getDataPDC() {
+    this.reportesService.pdc_etapa().subscribe({
+      next: (res) => {
+        console.log('pdc_etapa', res);
+        this.dataIndicador = res;
+        this.createChartPdc(this.dataIndicador);
+      },
+    });
+  }
+
   createChartLE(data: any[]) {
     // Mapea los datos para configurar las series del gráfico
     const seriesData = data.map((item) => ({
@@ -68,7 +80,7 @@ export class ReportesProyectoComponent {
       },
       title: {
         text: 'Nro. Acciones/Proyectos por LE.',
-        align:'left',
+        align: 'left',
       },
       xAxis: {
         categories: data.map((item) => item.descripcion),
@@ -84,8 +96,8 @@ export class ReportesProyectoComponent {
         {
           data: data.map((item) => item.total),
           type: 'column',
-          name:'Nro de acciones/proyectos',
-          color:'#3cb371',
+          name: 'Nro de acciones/proyectos',
+          color: '#3cb371',
 
         },
       ],
@@ -109,7 +121,8 @@ export class ReportesProyectoComponent {
     Highcharts.chart('chart-container-categoria', {
       chart: {
         type: 'bar', // Puedes cambiar el tipo de gráfico aquí (line, bar, pie, etc.)
-        marginLeft:150
+        height:500,
+        marginLeft: 150
       },
       title: {
         text: 'Nro. Acciones/Proyectos por Categoría',
@@ -120,7 +133,7 @@ export class ReportesProyectoComponent {
           style: {
             fontSize: '12px',
           },
-        
+
         },
       },
       yAxis: {
@@ -133,7 +146,7 @@ export class ReportesProyectoComponent {
         {
           data: data.map((item) => item.total),
           type: 'column',
-          
+          color: '#3cb371',
         },
       ],
       noData: {
@@ -157,10 +170,10 @@ export class ReportesProyectoComponent {
     Highcharts.chart('chart-container-tipologia', {
       chart: {
         type: 'bar', // Puedes cambiar el tipo de gráfico aquí (line, bar, pie, etc.)
-        marginLeft:150
+        marginLeft: 150
       },
       title: {
-        text: 'Nro. Acciones/Proyectos por Categoría',
+        text: 'Nro. Acciones/Proyectos por Tipología',
       },
       xAxis: {
         categories: data.map((item) => item.nom_tipologia),
@@ -168,7 +181,7 @@ export class ReportesProyectoComponent {
           style: {
             fontSize: '12px',
           },
-        
+
         },
       },
       yAxis: {
@@ -181,7 +194,7 @@ export class ReportesProyectoComponent {
         {
           data: data.map((item) => item.total),
           type: 'column',
-          
+
         },
       ],
       noData: {
@@ -193,22 +206,30 @@ export class ReportesProyectoComponent {
       },
     });
   }
-  createChartPdc() {
+  createChartPdc(data: any[]) {
     Highcharts.chart('chart-container-pdc', {
       chart: {
         type: 'bar',
+        height: 1000, // Establece la altura del gráfico a 800px
       },
       title: {
-        text: 'Major trophies for some English teams',
+        text: 'Nro Acciones/proyectos por indicador',
         align: 'left',
       },
       xAxis: {
-        categories: ['Arsenal', 'Chelsea', 'Liverpool', 'Manchester United'],
+       // categories: ['Arsenal', 'Chelsea', 'Liverpool', 'Manchester United'],
+       categories: data.map((item) => item.id_indicador +'.- '+ item.nombre_indicador),
+        labels: {
+          style: {
+            fontSize: '12px',
+          },
+
+        },
       },
       yAxis: {
         min: 0,
         title: {
-          text: 'Count trophies',
+          text: 'Nro',
         },
         stackLabels: {
           enabled: true,
@@ -239,18 +260,43 @@ export class ReportesProyectoComponent {
         },
       },
       series: [{
-        name: 'BPL',
-        type:'column',
-        data: [3, 5, 1, 13]
-    }, {
-        name: 'FA Cup',
-        type:'column',
-        data: [14, 8, 8, 12]
-    }, {
-        name: 'CL',
-        type:'column',
-        data: [0, 2, 6, 3]
-    }]
+        name: 'EDTP',
+        type: 'column',
+        data:  data.map((item) => item.EDTP)
+      }, {
+        name: 'Gestion Financiamiento',
+        type: 'column',
+        data: data.map((item) => item.Gestion_Financiamiento)
+      }, {
+        name: 'Ejecución',
+        type: 'column',
+        data: data.map((item) => item.Ejecucion)
+      },
+      {
+        name: 'Propuesta',
+        type: 'column',
+        data: data.map((item) => item.Propuesta)
+      },
+      {
+        name: 'Validación',
+        type: 'column',
+        data: data.map((item) => item.Validacion)
+      },
+      {
+        name: 'Promulgación',
+        type: 'column',
+        data: data.map((item) => item.Promulgacion)
+      },
+      {
+        name: 'Aprobación',
+        type: 'column',
+        data: data.map((item) => item.Aprobacion)
+      },
+      {
+        name: 'Organización',
+        type: 'column',
+        data: data.map((item) => item.Organizacion)
+      }]
     });
   }
 }

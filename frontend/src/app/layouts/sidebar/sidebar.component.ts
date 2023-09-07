@@ -64,7 +64,7 @@ menuItems: MenuItem[] = [
     ]
    
   },
-  {
+ /* {
     title: 'Seguimiento/proy',
     icon: 'article',
     submenus: [
@@ -77,7 +77,7 @@ menuItems: MenuItem[] = [
         link: '/proyecto2'
       }
     ]
-  },  {
+  },*/  {
     title: 'Reportes',
     icon: 'assessment',
     submenus: [

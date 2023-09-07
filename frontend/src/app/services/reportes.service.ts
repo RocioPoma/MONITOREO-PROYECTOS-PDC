@@ -19,4 +19,8 @@ export class ReportesService {
   tipologias(){
     return this.http.get<any>(`${this.url}/tipologias`);
   }
+
+  pdc_etapa(){
+    return this.http.get<any>(`${this.url}/pdc_etapa`);
+  }
 }
