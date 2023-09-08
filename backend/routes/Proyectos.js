@@ -12,7 +12,45 @@ const fs = require('fs');
 // Ruta para obtener todos los proyectos
 router.get('/get', (req, res) => {
   // const sql = "SELECT P.id_proyecto,  P.nom_proyecto, fecha_inicio, fecha_fin, DATE_FORMAT(P.fecha_inicio, '%d-%m-%Y') as fecha_inicio_convert,  DATE_FORMAT(P.fecha_fin, '%d-%m-%Y') as fecha_fin_convert,  DATE_FORMAT(P.fecha_registro, '%d-%m-%Y') as fecha_registro,  P.area,  P.coordenada_x,  P.coordenada_y,  P.id_categoria,  P.id_tipologia,  P.id_indicador,  P.id_cuenca,  P.estado,  P.cantidad,  P.hombres,  P.mujeres,  M.nombre_municipio,  M.id_municipio,  C.nom_cuenca AS NombreCuenca,  CAT.nom_categoria AS NombreCategoria,  TIP.nom_tipologia AS NombreTipologia FROM  PROYECTO AS P JOIN PROYECTO_CIUDAD_O_COMUNIDAD AS PCOC ON P.id_proyecto = PCOC.id_proyecto JOIN CIUDAD_O_COMUNIDAD AS CC ON PCOC.id_ciudad_comunidad = CC.id JOIN MUNICIPIO AS M ON CC.id_municipio = M.id_municipio JOIN CUENCA AS C ON P.id_cuenca = C.id_cuenca JOIN CATEGORIA AS CAT ON P.id_categoria = CAT.id_categoria JOIN TIPOLOGIA AS TIP ON P.id_tipologia = TIP.id_tipologia GROUP BY P.id_proyecto;"
-  const sql = `
+  const sql = `  
+  SELECT 
+  p.*,
+  DATE_FORMAT(p.fecha_inicio, '%d-%m-%Y') AS fecha_inicio_convert,
+  DATE_FORMAT(p.fecha_fin, '%d-%m-%Y') AS fecha_fin_convert,
+  DATE_FORMAT(p.fecha_registro, '%d-%m-%Y') AS fecha_registro_convert,
+  t.nom_tipologia,
+  c.nom_categoria,
+  cu.nom_cuenca,
+  mu.id_municipio,
+  mu.nombre_municipio,
+  le.id_linea_estrategica,
+  la.id_linea_accion,
+  le.descripcion AS linea_estrategica,
+  la.descripcion AS linea_de_accion,
+  ae.descripcion AS accion_estrategica,
+  i.nombre_indicador,
+  GROUP_CONCAT(DISTINCT com.id SEPARATOR ', ') AS comunidades,
+  alc.cantidad,
+  um.nom_unidad AS unidad_medicion_alcance,   
+   GROUP_CONCAT(DISTINCT ef.nom_entidad_financiera SEPARATOR ', ') AS Financiera  -- Agregar el nombre de la entidad financiera
+FROM proyecto p
+LEFT JOIN tipologia t ON p.id_tipologia = t.id_tipologia
+LEFT JOIN categoria c ON p.id_categoria = c.id_categoria
+LEFT JOIN cuenca cu ON p.id_cuenca = cu.id_cuenca
+LEFT JOIN proyecto_ciudad_o_comunidad pc ON p.id_proyecto = pc.id_proyecto
+LEFT JOIN ciudad_o_comunidad com ON pc.id_ciudad_comunidad = com.id
+LEFT JOIN alcance alc ON p.id_proyecto = alc.id_proyecto
+LEFT JOIN unidad_medicion um ON alc.id_unidad_medicion = um.id_unidad_medicion
+LEFT JOIN accion_estrategica ae ON p.id_accion_estrategica = ae.id_accion_estrategica
+LEFT JOIN linea_de_accion la ON ae.id_linea_accion = la.id_linea_accion
+LEFT JOIN linea_estrategica le ON la.id_linea_estrategica = le.id_linea_estrategica
+LEFT JOIN indicador i ON p.id_indicador = i.id_indicador
+LEFT JOIN municipio mu ON com.id_municipio = mu.id_municipio
+LEFT JOIN etapa_proyecto ep ON p.id_proyecto = ep.id_proyecto -- Unir con la tabla de etapa_proyecto
+LEFT JOIN financiamiento f ON ep.id_etapa_proyecto  = f.id_etapa_proyecto  -- Unir con la tabla de financiamiento
+LEFT JOIN entidad_financiera ef ON f.id_entidad_financiera = ef.id_entidad_financiera -- Unir con la tabla de entidad_financiera
+GROUP BY p.id_proyecto; `;
+  /*`
     SELECT 
         p.*,
         DATE_FORMAT(p.fecha_inicio, '%d-%m-%Y') AS fecha_inicio_convert,
@@ -47,7 +85,7 @@ router.get('/get', (req, res) => {
     LEFT JOIN municipio mu ON com.id_municipio = mu.id_municipio
     GROUP BY p.id_proyecto;
 `;
-
+*/
 
   connection.query(sql, (err, result) => {
     if (err) throw err;

@@ -321,7 +321,7 @@ export class ManageProyectoComponent {
       const este = coordenadasUTM[0];
       const norte = coordenadasUTM[1];
       //console.log(este,norte);
-      tableBody.push([i+1,person.linea_estrategica,i+1,person.linea_de_accion,person.nom_proyecto, 'Tarija',person.nombre_municipio,'20S', este, norte,  añoActual,'estado',person.nom_tipologia]);
+      tableBody.push([i+1,person.linea_estrategica,i+1,person.linea_de_accion,person.nom_proyecto, 'Tarija',person.nombre_municipio,'20S', este, norte,  añoActual,'estado',person.Financiera]);
     }
     
     // Crear una hoja de cálculo de Excel
