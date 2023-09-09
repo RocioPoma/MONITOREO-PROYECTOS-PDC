@@ -155,6 +155,10 @@
                                     (click)="handleEditAction(element)">
                                     <mat-icon>edit</mat-icon>
                                 </button>
+                                <button mat-icon-button color="primary" matTooltip="Cambio User" [disabled]="rol!=='Administrador'"
+                                (click)="handleEditAction(element)">
+                                <mat-icon>account_circle</mat-icon>
+                                </button>
                                 <button mat-icon-button color="primary" matTooltip="Delete" class="icon" [disabled]="estado==='false'"
                                     (click)="handleDeleteAction(element)">
                                     <mat-icon>delete</mat-icon>

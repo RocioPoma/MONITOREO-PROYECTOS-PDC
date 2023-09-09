@@ -62,6 +62,7 @@ export class ManageProyectoComponent {
     ap:any;
     am:any;
     estado:any;
+    rol:any;
     tabla:any;
     logoDataUrl: string;
     infoFiltrada:any;
@@ -94,11 +95,14 @@ export class ManageProyectoComponent {
      const ApString = localStorage.getItem('ap_paterno');
      const AmString = localStorage.getItem('ap_materno');
      const estadoString = localStorage.getItem('estado');
+     const rolString = localStorage.getItem('rol');
      this.usuario = nombreString? (nombreString): null;
      this.entidadN = entidadString? (entidadString): null;
      this.ap = ApString ? (ApString ): null;
      this.am = AmString? (AmString): null;
      this.estado = estadoString? (estadoString): null;
+     this.rol = rolString? (rolString): null;
+     console.log(this.rol);
      //------------------------------------
   }
 
@@ -321,7 +325,7 @@ export class ManageProyectoComponent {
       const este = coordenadasUTM[0];
       const norte = coordenadasUTM[1];
       //console.log(este,norte);
-      tableBody.push([i+1,person.linea_estrategica,i+1,person.linea_de_accion,person.nom_proyecto, 'Tarija',person.nombre_municipio,'20S', este, norte,  añoActual,'estado',person.Financiera]);
+      tableBody.push([i+1,person.linea_estrategica,i+1,person.linea_de_accion,person.nom_proyecto, 'Tarija',person.nombre_municipio,'20S', este, norte,  añoActual,person.ultima_etapa,person.fuentes_financiamiento]);
     }
     
     // Crear una hoja de cálculo de Excel
