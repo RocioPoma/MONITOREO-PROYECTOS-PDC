@@ -25,7 +25,7 @@ export class UsuarioService {
     });
   }
 
-  //----------------------API PARA EDITAR CATEGORÍA ------------------------------
+  //----------------------API PARA EDITAR usuario ------------------------------
   update(data: any) {
     return this.httpClient.put(this.url +
       "/usuarios/update/", data, {
@@ -46,6 +46,14 @@ export class UsuarioService {
   updateStatus(data: any) {
     return this.httpClient.patch(this.url +
       "/usuarios/updateStatus/", data, {
+      headers: new HttpHeaders().set('Content-Type', "application/json")
+    });
+  }
+
+   //----------------------API PARA EDITAR usuario ------------------------------
+   updateUser(data: any) {
+    return this.httpClient.put(this.url +
+      "/proyecto/updateUser/", data, {
       headers: new HttpHeaders().set('Content-Type', "application/json")
     });
   }

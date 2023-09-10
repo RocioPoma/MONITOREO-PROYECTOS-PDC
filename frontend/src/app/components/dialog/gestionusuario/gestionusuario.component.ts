@@ -5,7 +5,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { GlobalCostants } from 'src/app/shared/global-constants';
 import { DatePipe } from '@angular/common';
-import { EntidadService } from 'src/app/services/entidad.service';
+import { EntidadEjecutoraService } from 'src/app/services/entidad-ejecutora.service';
 
 @Component({
   selector: 'app-gestionusuario',
@@ -32,7 +32,7 @@ export class GestionusuarioComponent {
   private dialogRef:MatDialogRef<GestionusuarioComponent>,
   private snackbarService:SnackbarService,
   private datePipe: DatePipe,
-  private entidadServices: EntidadService
+  private entidadServices: EntidadEjecutoraService
   ) { 
     this.fechaActual = new Date();
     // Convierte la fecha a string en formato "dd-MM-yyyy" 
@@ -53,7 +53,7 @@ export class GestionusuarioComponent {
       genero: [null, [Validators.required]],
       rol: [null, [Validators.required]],
       estado: [null, [Validators.required]],
-      id_entidad: [null, [Validators.required]],
+      id_entidad_ejecutora: [null, [Validators.required]],
       ci: [null, [Validators.required]]
       
     });
@@ -67,7 +67,7 @@ export class GestionusuarioComponent {
 
   //llama a la entidades existentes
   entidades() {
-    this.entidadServices.GetEntidades().subscribe((response: any) => {
+    this.entidadServices.get().subscribe((response: any) => {
      
       this.entidad=response;    
     })
@@ -98,7 +98,7 @@ export class GestionusuarioComponent {
       genero: formData.genero,
       rol: formData.rol,
       estado: true,
-      id_entidad: formData.id_entidad,
+      id_entidad_ejecutora: formData.id_entidad_ejecutora,
       ci: formData.ci
     }
     console.log(data);
@@ -135,7 +135,7 @@ export class GestionusuarioComponent {
       genero: formData.genero,
       rol: formData.rol,
       estado: formData.estado,
-      id_entidad: formData.id_entidad,
+      id_entidad_ejecutora: formData.id_entidad_ejecutora,
       ci: formData.ci
     }
      this.usuarioService.update(data).subscribe((response:any)=>{

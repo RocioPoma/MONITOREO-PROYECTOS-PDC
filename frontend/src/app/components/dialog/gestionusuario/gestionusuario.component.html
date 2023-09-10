@@ -18,7 +18,7 @@
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" fxFlex>
-                    <mat-label>Apellido Paterno</mat-label>
+                    <mat-label>Primer Apellido</mat-label>
                     <input matInput formControlName="ap_paterno" required>
                     <mat-error *ngIf="usuarioForm.controls.ap_paterno.touched && usuarioForm.controls.ap_paterno.invalid">
                         <span *ngIf="usuarioForm.controls.ap_paterno.errors.required">Este campo es obligatorio.</span>
@@ -26,7 +26,7 @@
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" fxFlex>
-                    <mat-label>Apellido Materno</mat-label>
+                    <mat-label>Segundo Apellido</mat-label>
                     <input matInput formControlName="ap_materno" required>
                     <mat-error *ngIf="usuarioForm.controls.ap_materno.touched && usuarioForm.controls.ap_materno.invalid">
                         <span *ngIf="usuarioForm.controls.ap_materno.errors.required">Este campo es obligatorio.</span>
@@ -76,16 +76,16 @@
                     <mat-label>Rol</mat-label>
                     <mat-select formControlName="rol" required>
                         <mat-option value="Administrador">Administrador</mat-option>
-                        <mat-option value="Usuario">Operador</mat-option>
+                        <mat-option value="Operador">Operador</mat-option>
                     </mat-select>
                 </mat-form-field>
               
                 <!-- entiedad -->
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Entidad</mat-label>
-                    <mat-select formControlName="id_entidad" required>
-                        <mat-option *ngFor="let tipologia of entidad" [value]="tipologia.id_entidad">
-                            {{tipologia.nombre_entidad}}
+                    <mat-select formControlName="id_entidad_ejecutora" required>
+                        <mat-option *ngFor="let tipologia of entidad" [value]="tipologia.id_entidad_ejecutora">
+                            {{tipologia.nom_entidad_ejecutora}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>

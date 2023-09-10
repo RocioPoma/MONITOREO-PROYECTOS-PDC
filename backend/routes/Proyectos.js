@@ -357,6 +357,24 @@ router.get('/get_tipologia', (req, res) => {
 });
 
 
+//Status Etapa 
+router.put('/updateUser', (req, res) => {
+  let proyecto = req.body;
+
+  var query = "update proyecto set ci=? where id_proyecto=?";
+  connection.query(query, [proyecto.ci, proyecto.id_proyecto], (err, results) => {
+    if (!err) {
+      if (results.affectedRows == 0) {
+        return res.status(404).json({ message: "El proyecto no existe" });
+      }
+      return res.status(200).json({ message: "Actualización de estado con éxito" });
+    }
+    else {
+      return res.status(500).json(err);
+    }
+  })
+})
+
 
 
 module.exports = router;

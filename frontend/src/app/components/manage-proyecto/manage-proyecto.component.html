@@ -155,8 +155,12 @@
                                     (click)="handleEditAction(element)">
                                     <mat-icon>edit</mat-icon>
                                 </button>
-                                <button mat-icon-button color="primary" matTooltip="Cambio User" [disabled]="rol!=='Administrador'"
+                               <!--   <button mat-icon-button color="primary" matTooltip="Cambio User" [disabled]="rol!=='Administrador'"
                                 (click)="handleEditAction(element)">
+                                <mat-icon>account_circle</mat-icon>
+                                </button>  -->
+                                <button mat-icon-button color="primary" matTooltip="Cambio User" *ngIf="rol=== 'Administrador'"
+                                (click)="handleEditActionUserProyecto(element)">
                                 <mat-icon>account_circle</mat-icon>
                                 </button>
                                 <button mat-icon-button color="primary" matTooltip="Delete" class="icon" [disabled]="estado==='false'"
@@ -164,7 +168,7 @@
                                     <mat-icon>delete</mat-icon>
                                 </button>
                                 <mat-slide-toggle color="primary"
-                                    (change)="onChange($event.checked, element.id_proyecto)" [disabled]="estado==='false'"
+                                    (change)="onChange($event.checked, element.id_proyecto)" *ngIf="rol==='Administrador'"
                                     matTooltip="Activar o Desactivar" [checked]="element.estado">
                                 </mat-slide-toggle>
                             </div>

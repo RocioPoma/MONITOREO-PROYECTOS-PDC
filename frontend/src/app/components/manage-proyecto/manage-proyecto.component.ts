@@ -8,7 +8,7 @@ import { ProyectoService } from 'src/app/services/proyecto.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 //globales constants
 import { GlobalCostants } from 'src/app/shared/global-constants';
-//dialogMunicipio
+//dialogProyecto
 import { ProyectoComponent } from "../dialog/proyecto/proyecto.component";
 //confirmation
 import { ConfirmationComponent } from "../dialog/confirmation/confirmation.component";
@@ -16,7 +16,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MunicipioService } from 'src/app/services/municipio.service';
 import { SeguimientoProyectoComponent } from '../dialog/seguimiento-proyecto/seguimiento-proyecto.component';
-
+//dialogCambio user
+import { CambioUsuarioProyectoComponent } from "../dialog/cambio-usuario-proyecto/cambio-usuario-proyecto.component";
 
 
 //pdf importaciones
@@ -454,6 +455,31 @@ export class ManageProyectoComponent {
         pdfMake.createPdf(documentDefinition).open();
       }
 
+
+
+
+
+
+
+      //cambio de usuario proyecto
+      
+      //------------ LLAMA AL MODAL PARA EDITAR
+  handleEditActionUserProyecto(values: any) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      action: 'Change',
+      data: values
+    }
+    console.log(values);
+    dialogConfig.width = "700px";
+    const dialogRef = this.dialog.open(CambioUsuarioProyectoComponent, dialogConfig);
+    this.router.events.subscribe(() => {
+      dialogRef.close();
+    });
+    const sub = dialogRef.componentInstance.onEditUserProyect.subscribe((response) => {
+      this.tableData();
+    })
+  }
 }
 
 

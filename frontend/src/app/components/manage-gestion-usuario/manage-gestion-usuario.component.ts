@@ -9,7 +9,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 import { GlobalCostants } from 'src/app/shared/global-constants';
 import { GestionusuarioComponent} from 'src/app/components/dialog/gestionusuario/gestionusuario.component';
 import { ConfirmationComponent } from '../dialog/confirmation/confirmation.component';
-import { EntidadService } from 'src/app/services/entidad.service';
+import { EntidadEjecutoraService } from 'src/app/services/entidad-ejecutora.service';
 
 
 
@@ -49,7 +49,7 @@ export class ManageGestionUsuarioComponent {
     private dialog: MatDialog,
     private snackbarService: SnackbarService,
     private router: Router,
-    private entidadServices: EntidadService
+    private entidadServices: EntidadEjecutoraService
     ) { }
  
   ngOnInit(): void {
@@ -96,7 +96,7 @@ export class ManageGestionUsuarioComponent {
   }
 
   entidades() {
-    this.entidadServices.GetEntidades().subscribe((response: any) => {
+    this.entidadServices.get().subscribe((response: any) => {
       console.log(response);
       this.entidad=response;    
     })
@@ -207,7 +207,7 @@ onChange(status: any, ci: any) {
       const tableBody = [];
       for (let i = 0; i < this.tabla.length; i++) {
         const person = this.tabla[i];
-        tableBody.push([person.ci, person.nombre +' '+ person.ap_paterno +' '+ person.ap_materno, person.telefono, person.celular, person.rol, person.nombre_entidad]);
+        tableBody.push([person.ci, person.nombre +' '+ person.ap_paterno +' '+ person.ap_materno, person.telefono, person.celular, person.rol, person.nom_entidad_ejecutora]);
       }
 
     //inicio de la documentacion
