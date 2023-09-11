@@ -37,7 +37,7 @@
                
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Ci</mat-label>
-                    <input type="number" matInput formControlName="ci" required>
+                    <input  matInput formControlName="ci" required>
                     <mat-error *ngIf="usuarioForm.controls.ci.touched && usuarioForm.controls.ci.invalid">
                         <span *ngIf="usuarioForm.controls.ci.errors.required">Este campo es obligatorio.</span>
                     </mat-error>
