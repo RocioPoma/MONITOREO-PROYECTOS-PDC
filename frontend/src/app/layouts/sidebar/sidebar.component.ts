@@ -42,15 +42,15 @@ menuItems: MenuItem[] = [
       {
         title: 'Gestion Usuario',
         link: '/gestionusuario'
-      },
-      {
+      }
+     /*{
         title: 'Gestion Roles',
         link: '/p'
       },
       {
         title: 'Gestion Procesos',
         link: '/p'
-      }
+      }*/
     ]
   },
   {
@@ -100,11 +100,11 @@ menuItems: MenuItem[] = [
     icon: 'settings',
     submenus: [
       {
-        title: 'Gestión municipio',
+        title: 'Municipio',
         link: '/municipio'
       },
       {
-        title: 'Gestión categoria',
+        title: 'Categoría',
         link: '/categoria'
       },
       {

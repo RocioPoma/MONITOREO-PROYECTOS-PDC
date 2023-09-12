@@ -147,7 +147,7 @@ export class ReportesProyectoComponent {
         align: 'left',
       },
       xAxis: {
-        categories: data.map((item) => item.descripcion),
+        categories: data.map((item) =>item.id_linea_estrategica+' .- '+ item.descripcion),
 
       },
       yAxis: {
