@@ -546,17 +546,6 @@ export class ProyectoComponent implements OnInit {
     this.ffin = this.datePipe.transform(formData.fecha_fin, 'yyyy-MM-dd')
     console.log(this.fechaActualString);
 
-    /*
-        this.proyectoForm.value.fecha_inicio = this.finicio;
-        this.proyectoForm.value.fecha_fin = this.ffin;
-        this.proyectoForm.value.fecha_registro=this.fechaActualString;
-        this.proyectoForm.value.alcance=JSON.stringify(this.proyectoForm.value.alcance);
-        this.proyectoForm.value.comunidad=JSON.stringify(this.proyectoForm.value.comunidad);
-        console.log(this.proyectoForm.value);
-        console.log(this.proyectoForm);*/
-
-    // 
-   
     // Llamar a la función validateCoordinates
     const estaDentroLaCuenca = this.validateCoordinates(formData.coordenada_x, formData.coordenada_y);
 
@@ -605,15 +594,22 @@ export class ProyectoComponent implements OnInit {
       // El punto no está dentro de la cuenca
       alert('Las coordenadas no estan dentro de la cuenca');
     }
-    
+
   }
 
   //------------------- EDITAR
   edit() {
     var formData = this.proyectoForm.value;
-    console.log(this.proyectoForm.value);
+    this.finicio = this.datePipe.transform(formData.fecha_inicio, 'yyyy-MM-dd')
+    this.ffin = this.datePipe.transform(formData.fecha_fin, 'yyyy-MM-dd')
+    console.log(this.fechaActualString);
+
+    // Llamar a la función validateCoordinates
+    const estaDentroLaCuenca = this.validateCoordinates(formData.coordenada_x, formData.coordenada_y);
+
     var data = {
-      nom_proyecto: formData.NombreProyecto,
+      id_proyecto: this.dialogData.data.id_proyecto,
+      nom_proyecto: formData.nom_proyecto,
       fecha_inicio: this.finicio,
       fecha_fin: this.ffin,
       fecha_registro: this.fechaActualString,
@@ -625,27 +621,37 @@ export class ProyectoComponent implements OnInit {
       mujeres: formData.mujeres,
       id_categoria: formData.id_categoria,
       id_tipologia: formData.id_tipologia,
-      id_indicador: null,
+      id_unidad_medicion: formData.id_unidad_medicion,
+      id_indicador: formData.id_indicador,
       id_cuenca: formData.id_cuenca,
-      id_accion_estrategica: null,
+      id_accion_estrategica: formData.id_accion_estrategica,
       estado: 'true',
-      id_ciudad_comunidad: this.comunidades //Enviamos un objeto de comunidades
+      comunidad: JSON.stringify(this.proyectoForm.value.comunidad), //Enviamos un objeto de comunidades
+      alcance: JSON.stringify(this.proyectoForm.value.alcance) //Enviamos un objeto de alcances
     }
-    this.ProyectoService.update(data).subscribe((response: any) => {
-      this.dialogRef.close();
-      this.onEditProyecto.emit();
-      this.responseMessage = response.message;
-      this.snackbarService.openSnackBar(this.responseMessage, "success");
-    }, (error: any) => {
-      this.dialogRef.close();
-      if (error.error?.message) {
-        this.responseMessage = error.error?.message;
-      }
-      else {
-        this.responseMessage = GlobalCostants.genericError;
-      }
-      this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
-    })
+
+    console.log(data);
+    if (estaDentroLaCuenca){
+      this.ProyectoService.update(data, this.file).subscribe((response: any) => {
+        this.dialogRef.close();
+        this.onEditProyecto.emit();
+        this.responseMessage = response.message;
+        this.snackbarService.openSnackBar(this.responseMessage, "success");
+      }, (error: any) => {
+        this.dialogRef.close();
+        if (error.error?.message) {
+          this.responseMessage = error.error?.message;
+        }
+        else {
+          this.responseMessage = GlobalCostants.genericError;
+        }
+        this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+      })
+    }else{
+      // El punto no está dentro de la cuenca
+      alert('Las coordenadas no estan dentro de la cuenca');
+    }
+   
   }
 
   //--------------------------------Mapa ----------------------------------------------//

@@ -165,7 +165,7 @@ router.post('/add', multer.single('documento'), (req, res) => {
       id_accion_estrategica: proyecto.id_accion_estrategica,
       estado: proyecto.estado,
       documento: '',
-      estado:'true'
+      estado: 'true'
 
     }
   } else {
@@ -188,7 +188,7 @@ router.post('/add', multer.single('documento'), (req, res) => {
       id_accion_estrategica: proyecto.id_accion_estrategica,
       estado: proyecto.estado,
       documento: req.file.filename,
-      estado:'true'
+      estado: 'true'
     }
   }
 
@@ -199,18 +199,18 @@ router.post('/add', multer.single('documento'), (req, res) => {
     console.log(ObjetAlcance);
   */
 
-  
-    connection.query('INSERT INTO PROYECTO  SET ?', [datos], (err, results) => {
-      if (!err) {
-        return res.status(200).json({ message: "Proyecto agregado con exito" });
-      }
-      else {
-        return res.status(500).json(err);
-      }
-    });
 
-  
-   ObtenerIdUltimoRegistroProyecto(comunidad, alcance, proyecto.id_unidad_medicion, proyecto.cantidad);
+  connection.query('INSERT INTO PROYECTO  SET ?', [datos], (err, results) => {
+    if (!err) {
+      return res.status(200).json({ message: "Proyecto agregado con exito" });
+    }
+    else {
+      return res.status(500).json(err);
+    }
+  });
+
+
+  ObtenerIdUltimoRegistroProyecto(comunidad, alcance, proyecto.id_unidad_medicion, proyecto.cantidad);
   //ObtenerIdUltimoRegistroProyecto(proyecto.alcance);
 });
 
@@ -266,18 +266,75 @@ function add_alcance(id_proyecto, ObjAlcance, id_unidad_medicion, cantidad) {
 
 
 // RUTA PARA ACTUALIZAR PROYECTO
-router.put('/update/:id', (req, res) => {
-  const { id } = req.params;
-  const { nom_proyecto, fecha_inicio, fecha_fin, area, coordenada_x, coordenada_y, CATEGORIA_id_categoria, TIPOLOGIA_id_tipologia, INDICADOR_id_indicador, ACCIONES_ESTRATEGICAS_id_acciones_estrategicas, estado } = req.body;
-  const sql = 'UPDATE PROYECTO SET nom_proyecto = ?, fecha_inicio = ?, fecha_fin = ?, area = ?, coordenada_x = ?, coordenada_y = ?, CATEGORIA_id_categoria = ?, TIPOLOGIA_id_tipologia = ?, INDICADOR_id_indicador = ?, ACCIONES_ESTRATEGICAS_id_acciones_estrategicas = ?, estado = ? WHERE id_proyecto = ?';
-  connection.query(sql, [nom_proyecto, fecha_inicio, fecha_fin, area, coordenada_x, coordenada_y, CATEGORIA_id_categoria, TIPOLOGIA_id_tipologia, INDICADOR_id_indicador, ACCIONES_ESTRATEGICAS_id_acciones_estrategicas, estado, id], (err, result) => {
-    if (err) throw err;
-    res.json({ message: 'Proyecto actualizado correctamente' });
+router.patch('/update', multer.single('documento'), (req, res) => {
+  const file = req.file;
+  let proyecto = req.body;
+  const alcance = JSON.parse(req.body.alcance);
+  const comunidad = JSON.parse(req.body.comunidad);
+  let datos = {};
+
+  if (!file) {
+    datos = {
+      nom_proyecto: proyecto.nom_proyecto,
+      fecha_inicio: proyecto.fecha_inicio,
+      fecha_fin: proyecto.fecha_fin,
+      fecha_registro: proyecto.fecha_registro,
+      area: proyecto.area,
+      coordenada_x: proyecto.coordenada_x,
+      coordenada_y: proyecto.coordenada_y,
+      cantidad: proyecto.cantidad,
+      hombres: proyecto.hombres,
+      mujeres: proyecto.mujeres,
+      id_categoria: proyecto.id_categoria,
+      id_tipologia: proyecto.id_tipologia,
+      id_indicador: proyecto.id_indicador,
+      id_cuenca: proyecto.id_cuenca,
+      id_accion_estrategica: proyecto.id_accion_estrategica,
+      estado: proyecto.estado,
+      documento: '',
+      estado: 'true'
+
+    }
+  } else {
+    console.log('Con archivo')
+    datos = {
+      nom_proyecto: proyecto.nom_proyecto,
+      fecha_inicio: proyecto.fecha_inicio,
+      fecha_fin: proyecto.fecha_fin,
+      fecha_registro: proyecto.fecha_registro,
+      area: proyecto.area,
+      coordenada_x: proyecto.coordenada_x,
+      coordenada_y: proyecto.coordenada_y,
+      cantidad: proyecto.cantidad,
+      hombres: proyecto.hombres,
+      mujeres: proyecto.mujeres,
+      id_categoria: proyecto.id_categoria,
+      id_tipologia: proyecto.id_tipologia,
+      id_indicador: proyecto.id_indicador,
+      id_cuenca: proyecto.id_cuenca,
+      id_accion_estrategica: proyecto.id_accion_estrategica,
+      estado: proyecto.estado,
+      documento: req.file.filename,
+      estado: 'true'
+    }
+  }
+
+  console.log(datos);
+
+  connection.query('UPDATE PROYECTO  SET ? WHERE id_proyecto = ?', [datos, proyecto.id_proyecto], (err, results) => {
+    if (!err) {
+      return res.status(200).json({ message: "Proyecto actualizado con exito" });
+    }
+    else {
+      return res.status(500).json(err);
+    }
   });
-}); 
+
+
+  //ObtenerIdUltimoRegistroProyecto(comunidad, alcance, proyecto.id_unidad_medicion, proyecto.cantidad);
+});
 
 // RUTA PARA HABILITAR O DESHABILITAR PROYECTO
-//Status Etapa 
 router.patch('/updateStatus', (req, res) => {
   let proyecto = req.body;
 
