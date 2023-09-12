@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@angular/cli": "^15.2.9"
+    "@angular/cli": "^15.2.9",
+    "proj4": "^2.9.0"
   }
 }
