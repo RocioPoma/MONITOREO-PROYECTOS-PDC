@@ -291,7 +291,7 @@ router.patch('/update', multer.single('documento'), (req, res) => {
       id_cuenca: proyecto.id_cuenca,
       id_accion_estrategica: proyecto.id_accion_estrategica,
       estado: proyecto.estado,
-      documento: '',
+      documento: proyecto.nombre_documento,
       estado: 'true'
 
     }

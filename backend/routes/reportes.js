@@ -2,42 +2,42 @@ const express = require('express');
 const connection = require('../connection');
 const router = express.Router();
 
-router.get('/lineas-estrategicas',(req,res)=>{
+router.get('/lineas-estrategicas', (req, res) => {
 
-    const query=`SELECT LNE.descripcion ,COUNT(PROY.id_proyecto) total FROM linea_estrategica AS LNE
+    const query = `SELECT LNE.descripcion ,COUNT(PROY.id_proyecto) total FROM linea_estrategica AS LNE
 	LEFT JOIN linea_de_accion AS LNA ON LNA.id_linea_estrategica = LNE.id_linea_estrategica
 	LEFT JOIN accion_estrategica AS ACCE ON ACCE.id_linea_accion = LNA.id_linea_accion
 	LEFT JOIN proyecto AS PROY ON PROY.id_accion_estrategica = ACCE.id_accion_estrategica
 	GROUP BY LNE.id_linea_estrategica;`;
-    connection.query(query,(err,result)=>{
-        if(err) res.status(500).json({msg:'error al consultar reportes lineas estrategias',err});
+    connection.query(query, (err, result) => {
+        if (err) res.status(500).json({ msg: 'error al consultar reportes lineas estrategias', err });
         res.json(result)
     })
 });
-router.get('/categorias',(req,res)=>{
+router.get('/categorias', (req, res) => {
 
-    const query=`SELECT CAT.nom_categoria,COUNT(PROY.id_proyecto) AS total FROM categoria AS CAT
+    const query = `SELECT CAT.nom_categoria,COUNT(PROY.id_proyecto) AS total FROM categoria AS CAT
 	LEFT JOIN proyecto AS PROY ON PROY.id_categoria = CAT.id_categoria
 	GROUP BY CAT.id_categoria;`;
-    connection.query(query,(err,result)=>{
-        if(err) res.status(500).json({msg:'error al consultar reportes categorias',err});
+    connection.query(query, (err, result) => {
+        if (err) res.status(500).json({ msg: 'error al consultar reportes categorias', err });
         res.json(result)
     })
 });
-router.get('/tipologias',(req,res)=>{
+router.get('/tipologias', (req, res) => {
 
-    const query=`SELECT TIP.nom_tipologia,COUNT(PROY.id_proyecto) AS total FROM tipologia AS TIP
+    const query = `SELECT TIP.nom_tipologia,COUNT(PROY.id_proyecto) AS total FROM tipologia AS TIP
 	LEFT JOIN proyecto AS PROY ON PROY.id_tipologia = TIP.id_tipologia
 	GROUP BY TIP.id_tipologia;`;
-    connection.query(query,(err,result)=>{
-        if(err) res.status(500).json({msg:'error al consultar reportes tipologias',err});
+    connection.query(query, (err, result) => {
+        if (err) res.status(500).json({ msg: 'error al consultar reportes tipologias', err });
         res.json(result)
     })
 });
 
-router.get('/pdc_etapa',(req,res)=>{
+router.get('/pdc_etapa', (req, res) => {
 
-    const query=`SELECT
+    const query = `SELECT
     I.id_indicador,
     I.nombre_indicador,
     COUNT(DISTINCT P.id_proyecto) AS cantidad_proyectos,
@@ -89,9 +89,29 @@ GROUP BY
 ORDER BY
     I.id_indicador;
 `;
-    connection.query(query,(err,result)=>{
-        if(err) res.status(500).json({msg:'error al consultar reportes pdc',err});
+    connection.query(query, (err, result) => {
+        if (err) res.status(500).json({ msg: 'error al consultar reportes pdc', err });
         res.json(result)
     })
 });
-module.exports=router;
+
+router.get('/mapa', (req, res) => {
+
+    const query = `SELECT
+	p.id_proyecto, p.nom_proyecto AS nombre_proyecto,
+    p.coordenada_x AS latitud,
+    p.coordenada_y AS longitud,
+    (SELECT e.nombre_etapa FROM etapa_proyecto ep
+     INNER JOIN etapa e ON ep.id_etapa = e.id_etapa
+     WHERE ep.id_proyecto = p.id_proyecto
+     ORDER BY e.id_etapa DESC
+     LIMIT 1) AS ultima_etapa,
+    t.nom_tipologia AS tipologia
+FROM proyecto p
+INNER JOIN tipologia t ON p.id_tipologia = t.id_tipologia`;
+    connection.query(query, (err, result) => {
+        if (err) res.status(500).json({ msg: 'error al consultar reportes mapa', err });
+        res.json(result)
+    })
+});
+module.exports = router;

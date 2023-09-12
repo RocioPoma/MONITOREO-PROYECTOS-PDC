@@ -626,6 +626,7 @@ export class ProyectoComponent implements OnInit {
       id_cuenca: formData.id_cuenca,
       id_accion_estrategica: formData.id_accion_estrategica,
       estado: 'true',
+      nombre_documento: this.dialogData.data.documento,
       comunidad: JSON.stringify(this.proyectoForm.value.comunidad), //Enviamos un objeto de comunidades
       alcance: JSON.stringify(this.proyectoForm.value.alcance) //Enviamos un objeto de alcances
     }
