@@ -658,10 +658,23 @@ export class ProyectoComponent implements OnInit {
   //--------------------------------Mapa ----------------------------------------------//
 
   openMapModal() {
+    var coordenada_x='';
+    var coordenada_y='';
+    if (this.dialogData.action === 'Edit') {
+      coordenada_x=this.dialogData.data.coordenada_x;
+      coordenada_y=this.dialogData.data.coordenada_y;
+    }else{
+      coordenada_x=this.proyectoForm.value.coordenada_x;
+      coordenada_y=this.proyectoForm.value.coordenada_y;
+    }
     const dialogRef = this.dialog.open(MapModalComponent, {
       width: '70%',
       height: '90%',
-      data: { geojsonFile: 'assets/capas/limite_cuenca.geojson' }
+    
+      data: {
+        coordenada_x:coordenada_x,
+        coordenada_y:coordenada_y
+     }
     });
 
     dialogRef.afterClosed().subscribe(coords => {

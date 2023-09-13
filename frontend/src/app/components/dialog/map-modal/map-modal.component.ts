@@ -10,11 +10,17 @@ import * as L from 'leaflet';
 export class MapModalComponent {
 
   polygon: any; // Variable para el polígono
+  coordenada_x: any;
+  coordenada_y: any;
 
   constructor(
     public dialogRef: MatDialogRef<MapModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
+    @Inject(MAT_DIALOG_DATA) public dialogData: any
+  ) {
+    // console.log('DialogData: ',this.dialogData.data)
+    this.coordenada_x = this.dialogData.coordenada_x;
+    this.coordenada_y = this.dialogData.coordenada_y;
+  }
 
   ngAfterViewInit() {
     // Inicializa el mapa en el div con id 'map'
@@ -56,40 +62,56 @@ export class MapModalComponent {
             }
           }).addTo(map);
 
+          const myIcon = L.icon({
+            iconUrl: '../../../../../assets/img/map_icon.png',
+            iconSize: [23, 27], //Tamño del icono
+          });
+          // Agrega marcadores en coordenada_x y coordenada_y
+          if (this.coordenada_x && this.coordenada_y) {
+
+            const xMarker = L.marker([this.coordenada_x, this.coordenada_y], { icon: myIcon }).addTo(map);
+            xMarker.bindPopup('Punto de coordenadas').openPopup();
+
+            const polygonBounds = this.polygon.getBounds();
+            const point = L.latLng(this.coordenada_x, this.coordenada_y);
+
+            if (polygonBounds.contains(point)) {
+              console.log('El punto está dentro de la cuenca.');
+            } else {
+              alert('El punto no está dentro de la cuenca.');
+            }
+          }
+
           // Agrega un evento de clic para verificar si el punto está dentro del polígono
-         /*  map.on('click', (e) => {
-              const latlng = e.latlng;
-              if (this.polygon.getBounds().contains(latlng)) {
-                console.log('El punto está dentro del polígono.');
-  
-                const myIcon = L.icon({
-                  iconUrl: '../../../../../assets/img/map_icon.png', // Debe coincidir con la ruta registrada
-                  iconSize: [30, 30], // Tamaño del ícono
-                });
-            
-                const coords = e.latlng;
-                const marker = L.marker(latlng,{icon:myIcon}).addTo(map);
-                const popup = marker.bindPopup('Ubicación dentro de la cuenca').openPopup();
-            
-                // Cierra el globo después de 1 segundo (1000 milisegundos)
-                setTimeout(() => {
-                  popup.closePopup();
-                  this.dialogRef.close(coords);
-                }, 5000);               
-                // Envía las coordenadas de regreso al componente padre
-                
-              } else {
-                alert('El punto no está dentro de la cuenca.');
-              }
-            });*/
+          /*  map.on('click', (e) => {
+               const latlng = e.latlng;
+               if (this.polygon.getBounds().contains(latlng)) {
+                 console.log('El punto está dentro del polígono.');
+   
+                 const myIcon = L.icon({
+                   iconUrl: '../../../../../assets/img/map_icon.png', // Debe coincidir con la ruta registrada
+                   iconSize: [30, 30], // Tamaño del ícono
+                 });
+             
+                 const coords = e.latlng;
+                 const marker = L.marker(latlng,{icon:myIcon}).addTo(map);
+                 const popup = marker.bindPopup('Ubicación dentro de la cuenca').openPopup();
+             
+                 // Cierra el globo después de 1 segundo (1000 milisegundos)
+                 setTimeout(() => {
+                   popup.closePopup();
+                   this.dialogRef.close(coords);
+                 }, 5000);               
+                 // Envía las coordenadas de regreso al componente padre
+                 
+               } else {
+                 alert('El punto no está dentro de la cuenca.');
+               }
+             });*/
           map.on('click', (e) => {
             const latlng = e.latlng;
             if (this.polygon.getBounds().contains(latlng)) {
               console.log('El punto está dentro del polígono.');
-              const myIcon = L.icon({
-                iconUrl: '../../../../../assets/img/map_icon.png', // Debe coincidir con la ruta registrada
-                iconSize: [30, 30], // Tamaño del ícono
-              });
 
               // Crea un Popup personalizado con botones
               const popupContent = `
