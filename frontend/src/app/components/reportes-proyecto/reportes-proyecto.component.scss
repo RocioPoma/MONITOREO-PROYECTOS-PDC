@@ -19,6 +19,7 @@
         flex: 1 1 100%;
     }
 }
+
 //---fin respopnsividad
 
 .mat-mdc-form-field {
@@ -32,30 +33,34 @@
     margin-right: 10px;
 }
 
-th{
+th {
     align-items: center;
-    text-align: center; 
+    text-align: center;
 }
-td{
-    font-size: 12px; 
+
+td {
+    font-size: 12px;
 }
-.nomProy{
+
+.nomProy {
     font-size: 11px;
 }
-.title{
+
+.title {
     align-items: center;
-    text-align: center; 
-    padding-bottom: 15px;  
+    text-align: center;
+    padding-bottom: 15px;
 }
-.color-text{
-    color: #A6ACAF ;
+
+.color-text {
+    color: #A6ACAF;
 }
 
 mat-card {
     padding-top: 20px;
     padding-left: 70px;
     padding-right: 70px;
-    padding-bottom: 70px;  
+    padding-bottom: 70px;
 }
 
 .padding {
@@ -84,9 +89,11 @@ mat-form-field {
 .icon-group {
     display: flex;
     align-items: center;
-    gap: -1cm; /* Espacio entre los iconos */
+    gap: -1cm;
+    /* Espacio entre los iconos */
 }
-.icon{
+
+.icon {
     margin-left: -15px;
     margin-right: -4px;
 }
@@ -97,20 +104,26 @@ mat-form-field {
 
 /* Ajustar el margen del mat-slide-toggle */
 .mat-slide-toggle {
-    margin-top: -8px; /* Ajusta el margen superior según tus necesidades */
+    margin-top: -8px;
+    /* Ajusta el margen superior según tus necesidades */
     width: 8px;
     height: 5px;
 }
-.sub-title{
+
+.sub-title {
     text-align: left;
     display: inline;
 }
-.icon-display{
+
+.icon-display {
     transform: scale(.8);
-}.flex-column{
-  display: flex;  
 }
-.DivToScroll{   
+
+.flex-column {
+    display: flex;
+}
+
+.DivToScroll {
     background-color: #F5F5F5;
     border: 1px solid #DDDDDD;
     border-radius: 4px 0 4px 0;
@@ -121,11 +134,11 @@ mat-form-field {
     padding: 10px 7px 5px;
 }
 
-.DivWithScroll{
-    height:380px;
+.DivWithScroll {
+    height: 380px;
     min-width: 380px;
-    overflow:scroll;
-    overflow-x:scroll;
+    overflow: scroll;
+    overflow-x: scroll;
 }
 
 //
@@ -138,24 +151,27 @@ mat-form-field {
 .DivContent {
     flex-grow: 1;
 }
+
 .container-reporte {
     height: 400px;
     min-width: 320px;
     max-width: 600px;
     margin: 0 auto;
 }
-.scroller{
-  margin:10px 10px;
-  min-width: 95%;
-  min-height: 468px;
-  max-width: 468px;
-  overflow-y: scroll;
+
+.scroller {
+    margin: 10px 10px;
+    min-width: 95%;
+    min-height: 468px;
+    max-width: 468px;
+    overflow-y: scroll;
 }
-.scroller-x{
+
+.scroller-x {
     min-width: 95%;
     overflow-x: scroll;
-  }
+}
 
-  .pdc_etapa{
+.pdc_etapa {
     margin-bottom: 20px;
-  }
+}

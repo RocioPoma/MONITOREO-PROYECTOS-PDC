@@ -18,7 +18,8 @@ export class MapModalComponent {
 
   ngAfterViewInit() {
     // Inicializa el mapa en el div con id 'map'
-    const map = L.map('map').setView([-16.5000, -64.0000], 6);
+    const map = L.map('map').setView([-21.5355, -64.7293], 9.2); // Coordenadas de Tarija, Bolivia
+
 
     // Capa TileLayer (OpenStreetMap)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -56,17 +57,75 @@ export class MapModalComponent {
           }).addTo(map);
 
           // Agrega un evento de clic para verificar si el punto está dentro del polígono
+         /*  map.on('click', (e) => {
+              const latlng = e.latlng;
+              if (this.polygon.getBounds().contains(latlng)) {
+                console.log('El punto está dentro del polígono.');
+  
+                const myIcon = L.icon({
+                  iconUrl: '../../../../../assets/img/map_icon.png', // Debe coincidir con la ruta registrada
+                  iconSize: [30, 30], // Tamaño del ícono
+                });
+            
+                const coords = e.latlng;
+                const marker = L.marker(latlng,{icon:myIcon}).addTo(map);
+                const popup = marker.bindPopup('Ubicación dentro de la cuenca').openPopup();
+            
+                // Cierra el globo después de 1 segundo (1000 milisegundos)
+                setTimeout(() => {
+                  popup.closePopup();
+                  this.dialogRef.close(coords);
+                }, 5000);               
+                // Envía las coordenadas de regreso al componente padre
+                
+              } else {
+                alert('El punto no está dentro de la cuenca.');
+              }
+            });*/
           map.on('click', (e) => {
             const latlng = e.latlng;
             if (this.polygon.getBounds().contains(latlng)) {
               console.log('El punto está dentro del polígono.');
-              const coords = e.latlng;
-              // Envía las coordenadas de regreso al componente padre
-              this.dialogRef.close(coords);
+              const myIcon = L.icon({
+                iconUrl: '../../../../../assets/img/map_icon.png', // Debe coincidir con la ruta registrada
+                iconSize: [30, 30], // Tamaño del ícono
+              });
+
+              // Crea un Popup personalizado con botones
+              const popupContent = `
+                <div>
+                  <h3>Ubicación dentro de la cuenca</h3>
+                  <p>¿Desea guardar la ubicación?</p>
+                  <button id="btn-aceptar">Aceptar</button>
+                  <button id="btn-cerrar">Cerrar</button>
+                </div>
+              `;
+
+              const marker = L.marker(latlng, { icon: myIcon }).addTo(map);
+              const popup = L.popup()
+                .setLatLng(latlng)
+                .setContent(popupContent)
+                .openOn(map);
+
+              // Agrega eventos a los botones
+              document.getElementById('btn-aceptar').addEventListener('click', () => {
+                const coords = e.latlng;
+                // Envía las coordenadas de regreso al componente padre
+                this.dialogRef.close(coords);
+                console.log('Aceptar clicado');
+              });
+
+              document.getElementById('btn-cerrar').addEventListener('click', () => {
+                // Cierra el Popup al hacer clic en "Cerrar"
+                map.closePopup(popup);
+              });
+
+
             } else {
               alert('El punto no está dentro de la cuenca.');
             }
           });
+
         } else {
           console.error('El GeoJSON no contiene un polígono válido.');
         }

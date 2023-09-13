@@ -13,43 +13,10 @@
     <form [formGroup]="seguimientoForm1">
         <div fxFlex fxLayout="column">
             <mat-toolbar style="margin-top: -0.7cm; margin-bottom: 10px;">
-                <span class="subTitle center-aligned" style="color: #5D6D7E; font-size: 16px;">INFORMACION GENERAL</span>
+                <span class="subTitle center-aligned" style="color: #5D6D7E; font-size: 16px;">INFORMACIÓN
+                    GENERAL</span>
             </mat-toolbar>
             <div fxLayout="row wrap">
-                <mat-form-field appearance="fill" fxFlex>
-                    <mat-label>Entidad ejecutora</mat-label>
-                    <mat-select formControlName="id_entidad_ejecutora" required>
-                        <mat-option *ngFor="let item of EntidadEjecutora" [value]="item.id_entidad_ejecutora">
-                            {{item.nom_entidad_ejecutora}}
-                        </mat-option>
-                    </mat-select>
-                    <mat-error
-                        *ngIf="seguimientoForm1.controls['id_entidad_ejecutora']?.touched && seguimientoForm1.controls['id_entidad_ejecutora']?.invalid">
-                        <span *ngIf="seguimientoForm1.controls['id_entidad_ejecutora'].errors?.['required']">Este campo es obligatorio.</span>
-                    </mat-error>
-                </mat-form-field>
-
-                <mat-form-field appearance="fill" fxFlex>
-                    <mat-label>Fuente de información</mat-label>
-                    <input matInput formControlName="fuente_de_informacion" type="text">
-                    <mat-error
-                        *ngIf="seguimientoForm1.controls['fuente_de_informacion']?.touched && seguimientoForm1.controls['fuente_de_informacion']?.invalid">
-                        <span *ngIf="seguimientoForm1.controls['fuente_de_informacion'].errors?.['required']">Este campo es obligatorio.</span>
-                    </mat-error>
-                </mat-form-field>
-            </div>
-
-            <div fxLayout="row wrap">
-                <mat-form-field fxFlex>
-                    <mat-label>fecha de seguimiento DD/MM/YYYY</mat-label>
-                    <input matInput [matDatepicker]="picker" [disabled]="dateDisabled" (dateChange)="dateFormateado($event)" id="id_fecha_seguimiento">
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                    <mat-error
-                        *ngIf="seguimientoForm1.controls['fecha_seguimiento']?.touched && seguimientoForm1.controls['fecha_seguimiento']?.invalid">
-                        <span *ngIf="seguimientoForm1.controls['fecha_seguimiento'].errors?.['required']">Este campo es obligatorio.</span>
-                    </mat-error>
-                </mat-form-field>
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Etapa</mat-label>
                     <mat-select formControlName="id_etapa" required (valueChange)="changeEtapa($event)">
@@ -59,15 +26,58 @@
                     </mat-select>
                     <mat-error
                         *ngIf="seguimientoForm1.controls['id_etapa']?.touched && seguimientoForm1.controls['id_etapa']?.invalid">
-                        <span *ngIf="seguimientoForm1.controls['id_etapa'].errors?.['required']">Este campo es obligatorio.</span>
+                        <span *ngIf="seguimientoForm1.controls['id_etapa'].errors?.['required']">Este campo es
+                            obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex>
+                    <mat-label>fecha de seguimiento DD/MM/YYYY</mat-label>
+                    <input matInput [matDatepicker]="picker" [disabled]="dateDisabled"
+                        (dateChange)="dateFormateado($event)" id="id_fecha_seguimiento">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error
+                        *ngIf="seguimientoForm1.controls['fecha_seguimiento']?.touched && seguimientoForm1.controls['fecha_seguimiento']?.invalid">
+                        <span *ngIf="seguimientoForm1.controls['fecha_seguimiento'].errors?.['required']">Este campo es
+                            obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>
+               
+            </div>
+            <div fxLayout="row wrap">
+                
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Entidad ejecutora</mat-label>
+                    <mat-select formControlName="id_entidad_ejecutora" required>
+                        <mat-option *ngFor="let item of EntidadEjecutora" [value]="item.id_entidad_ejecutora">
+                            {{item.nom_entidad_ejecutora}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error
+                        *ngIf="seguimientoForm1.controls['id_entidad_ejecutora']?.touched && seguimientoForm1.controls['id_entidad_ejecutora']?.invalid">
+                        <span *ngIf="seguimientoForm1.controls['id_entidad_ejecutora'].errors?.['required']">Este campo
+                            es obligatorio.</span>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Fuente de información</mat-label>
+                    <input matInput formControlName="fuente_de_informacion" type="text">
+                    <mat-error
+                        *ngIf="seguimientoForm1.controls['fuente_de_informacion']?.touched && seguimientoForm1.controls['fuente_de_informacion']?.invalid">
+                        <span *ngIf="seguimientoForm1.controls['fuente_de_informacion'].errors?.['required']">Este campo
+                            es obligatorio.</span>
                     </mat-error>
                 </mat-form-field>
             </div>
+
+
             <div fxLayout="row" fxLayoutAlign="space-between center" fxGap="8px" class="subTitle-container">
                 <span class="subTitle">FINANCIAMIENTO TOTAL DE LA ETAPA </span>
                 <div class="icons">
                     <mat-icon class="btn-icon" (click)="addFinancimiento()" color="primary">add_circle</mat-icon>
-                    <mat-icon class="btn-icon" *ngIf="financiamientoArray.length>0"(click)="removeInput()">remove_circle</mat-icon>
+                    <mat-icon class="btn-icon" *ngIf="financiamientoArray.length>0"
+                        (click)="removeInput()">remove_circle</mat-icon>
                 </div>
                 <span> Total(Bs.): {{montoFinalTotal()}}</span>
             </div>
@@ -85,33 +95,44 @@
                                         {{item.nom_entidad_financiera}}
                                     </mat-option>
                                 </mat-select>
-                                <mat-error *ngIf="financiamientoArray.at(i)?.get('id_entidad_financiera')?.touched && financiamientoArray.at(i)?.get('id_entidad_financiera')?.invalid">
-                                    <span *ngIf="financiamientoArray.at(i)?.get('id_entidad_financiera')?.errors?.['required']">Este campo es obligatorio.</span>
+                                <mat-error
+                                    *ngIf="financiamientoArray.at(i)?.get('id_entidad_financiera')?.touched && financiamientoArray.at(i)?.get('id_entidad_financiera')?.invalid">
+                                    <span
+                                        *ngIf="financiamientoArray.at(i)?.get('id_entidad_financiera')?.errors?.['required']">Este
+                                        campo es obligatorio.</span>
                                 </mat-error>
                             </mat-form-field>
                             <mat-form-field appearance="fill" fxFlex>
-                                <mat-label >Monto inicial {{i + 1}}</mat-label>
+                                <mat-label>Monto inicial {{i + 1}}</mat-label>
                                 <input matInput formControlName="monto_inicial" type="number">
-                                <mat-error *ngIf="financiamientoArray.at(i)?.get('monto_inicial')?.touched && financiamientoArray.at(i)?.get('monto_inicial')?.invalid">
-                                    <span *ngIf="financiamientoArray.at(i)?.get('monto_inicial')?.errors?.['required']">Este campo es obligatorio.</span>
-                                    <span *ngIf="financiamientoArray.at(i)?.get('monto_final')?.errors?.['min']">El minimo es 1.</span>
+                                <mat-error
+                                    *ngIf="financiamientoArray.at(i)?.get('monto_inicial')?.touched && financiamientoArray.at(i)?.get('monto_inicial')?.invalid">
+                                    <span
+                                        *ngIf="financiamientoArray.at(i)?.get('monto_inicial')?.errors?.['required']">Este
+                                        campo es obligatorio.</span>
+                                    <span *ngIf="financiamientoArray.at(i)?.get('monto_final')?.errors?.['min']">El
+                                        minimo es 1.</span>
                                 </mat-error>
                             </mat-form-field>
                             <mat-form-field appearance="fill" fxFlex>
-                                <mat-label>aporte inicial</mat-label>
+                                <mat-label>Monto inicial</mat-label>
                                 <input matInput type="text" [disabled]="true" [value]="montoInicial(i)">
                                 <span matTextPrefix>%&nbsp;</span>
                             </mat-form-field>
                             <mat-form-field appearance="fill" fxFlex>
-                                <mat-label>Monto Final {{i + 1}}</mat-label>
+                                <mat-label>Monto final {{i + 1}}</mat-label>
                                 <input matInput formControlName="monto_final" type="number">
-                                <mat-error *ngIf="financiamientoArray.at(i)?.get('monto_final')?.touched && financiamientoArray.at(i)?.get('monto_final')?.invalid">
-                                    <span *ngIf="financiamientoArray.at(i)?.get('monto_final')?.errors?.['required']">Este campo es obligatorio.</span>
-                                    <span *ngIf="financiamientoArray.at(i)?.get('monto_final')?.errors?.['min']">El minimo es 1.</span>
+                                <mat-error
+                                    *ngIf="financiamientoArray.at(i)?.get('monto_final')?.touched && financiamientoArray.at(i)?.get('monto_final')?.invalid">
+                                    <span
+                                        *ngIf="financiamientoArray.at(i)?.get('monto_final')?.errors?.['required']">Este
+                                        campo es obligatorio.</span>
+                                    <span *ngIf="financiamientoArray.at(i)?.get('monto_final')?.errors?.['min']">El
+                                        minimo es 1.</span>
                                 </mat-error>
                             </mat-form-field>
                             <mat-form-field appearance="fill" fxFlex>
-                                <mat-label>aporte final</mat-label>
+                                <mat-label>Monto final</mat-label>
                                 <input matInput type="text" [disabled]="true" [value]="montoFinal(i)">
                                 <span matTextPrefix>%&nbsp;</span>
                             </mat-form-field>
@@ -133,8 +154,10 @@
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>*Avance (%)</mat-label>
                     <input matInput formControlName="avance_seguimiento_fisico" type="number">
-                    <mat-error *ngIf="seguimientoForm1.controls['avance_seguimiento_fisico']?.touched && seguimientoForm1.controls['avance_seguimiento_fisico']?.invalid">
-                        <span *ngIf="seguimientoForm1.controls['avance_seguimiento_fisico'].errors?.['required']">Este campo es obligatorio.</span>
+                    <mat-error
+                        *ngIf="seguimientoForm1.controls['avance_seguimiento_fisico']?.touched && seguimientoForm1.controls['avance_seguimiento_fisico']?.invalid">
+                        <span *ngIf="seguimientoForm1.controls['avance_seguimiento_fisico'].errors?.['required']">Este
+                            campo es obligatorio.</span>
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -143,20 +166,23 @@
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Comentario</mat-label>
                     <input matInput formControlName="comentario_seguimiento_fisico" type="text">
-                    <mat-error *ngIf="seguimientoForm1.controls['comentario_seguimiento_fisico']?.touched && seguimientoForm1.controls['comentario_seguimiento_fisico']?.invalid">
-                        <span *ngIf="seguimientoForm1.controls['comentario_seguimiento_fisico'].errors?.['required']">Este campo es obligatorio.</span>
+                    <mat-error
+                        *ngIf="seguimientoForm1.controls['comentario_seguimiento_fisico']?.touched && seguimientoForm1.controls['comentario_seguimiento_fisico']?.invalid">
+                        <span
+                            *ngIf="seguimientoForm1.controls['comentario_seguimiento_fisico'].errors?.['required']">Este
+                            campo es obligatorio.</span>
                     </mat-error>
                 </mat-form-field>
             </div>
-            <div fxLayout="row" fxGap="8px" class="subTitle-container" *ngIf="seguimientoForm1.get('id_entidad_ejecutora').enabled">
-                <span class="subTitle" style="margin-right: 4.7cm; ">ADJUNTO FISICO (Opcional)</span>
+            <div fxLayout="row" fxGap="8px" class="subTitle-container"
+                *ngIf="seguimientoForm1.get('id_entidad_ejecutora').enabled">
+                <span class="subTitle" style="margin-right: 2.7cm; ">Adjunto (Opcional)</span>
                 <!-- <input onchange="console.log(event.target.files)" formControlName="adjunto_fisico" class="form-control-file" type="file"> -->
                 <input type="file" class="file-input" (change)="selectFile($event,0)" #fileUpload>
                 <div class="file-upload">{{files[0]?.name || "Solo archivos con extension:"}}
-                  <button mat-mini-fab color="primary" class="upload-btn"
-                  (click)="fileUpload.click()">
-                    <mat-icon>attach_file</mat-icon>
-                  </button>
+                    <button mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
+                        <mat-icon>publish</mat-icon>
+                    </button>
                 </div>
             </div>
 
@@ -172,11 +198,15 @@
                                 <input matInput type="text" [value]="entidades(i)?.nom_entidad_financiera">
                             </mat-form-field>
                             <mat-form-field appearance="fill" fxFlex>
-                                <mat-label>*Monto Acumulado {{i + 1}}</mat-label>
+                                <mat-label>*Monto acumulado {{i + 1}}</mat-label>
                                 <input matInput formControlName="monto" type="number">
-                                <mat-error *ngIf="seguimientoFinanciamientoArray.at(i)?.get('monto')?.touched && seguimientoFinanciamientoArray.at(i)?.get('monto')?.invalid">
-                                    <span *ngIf="seguimientoFinanciamientoArray.at(i)?.get('monto')?.errors?.['required']">Este campo es obligatorio.</span>
-                                    <span *ngIf="seguimientoFinanciamientoArray.at(i)?.get('monto')?.errors?.['min']">El minimo es 1.</span>
+                                <mat-error
+                                    *ngIf="seguimientoFinanciamientoArray.at(i)?.get('monto')?.touched && seguimientoFinanciamientoArray.at(i)?.get('monto')?.invalid">
+                                    <span
+                                        *ngIf="seguimientoFinanciamientoArray.at(i)?.get('monto')?.errors?.['required']">Este
+                                        campo es obligatorio.</span>
+                                    <span *ngIf="seguimientoFinanciamientoArray.at(i)?.get('monto')?.errors?.['min']">El
+                                        minimo es 1.</span>
                                 </mat-error>
                             </mat-form-field>
                             <mat-form-field appearance="fill" fxFlex>
@@ -195,15 +225,15 @@
                     <input matInput type="text" formControlName="comentario_seguimiento_financiero">
                 </mat-form-field>
             </div>
-            <div fxLayout="row" fxGap="8px" class="subTitle-container" *ngIf="seguimientoForm1.get('id_entidad_ejecutora').enabled">
-                <span class="subTitle" style="margin-right: 4.7cm; ">ADJUNTO FINANCIERO (Opcional)</span>
+            <div fxLayout="row" fxGap="8px" class="subTitle-container"
+                *ngIf="seguimientoForm1.get('id_entidad_ejecutora').enabled">
+                <span class="subTitle" style="margin-right: 2.7cm; ">Adjunto (Opcional)</span>
                 <!-- <input onchange="console.log(event.target.files)" formControlName="adjunto_fisico" class="form-control-file" type="file"> -->
                 <input type="file" class="file-input" (change)="selectFile($event,1)" #fileUpload>
                 <div class="file-upload">{{files[1]?.name || "Solo archivos con extension:"}}
-                  <button mat-mini-fab color="primary" class="upload-btn"
-                  (click)="fileUpload.click()">
-                    <mat-icon>attach_file</mat-icon>
-                  </button>
+                    <button mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
+                        <mat-icon>publish</mat-icon>
+                    </button>
                 </div>
             </div>
         </div>

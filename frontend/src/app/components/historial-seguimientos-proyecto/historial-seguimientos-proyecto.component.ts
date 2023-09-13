@@ -30,7 +30,7 @@ export class HistorialSeguimientosProyectoComponent {
   proyecto:any;
   etapa_proyecto:any;
   openHistorialEtapa=false;
-  displayedColumns: string[] = ['nro','historial','nombre_etapa', 'fecha_seguimiento', 'avance_seguimiento_fisico','avance_seguimiento_financiero','monto_total','coste_final', 'fuente_de_informacion'];
+  displayedColumns: string[] = ['nro','historial','nombre_etapa','coste_final','avance_seguimiento_fisico','avance_seguimiento_financiero', 'fecha_seguimiento', 'monto_total', 'fuente_de_informacion'];
   displayedSeguimientoColumns: string[] = ['nro','nombre_etapa', 'fecha_seguimiento', 'avance_seguimiento_fisico'];
   clickedRows = new Set<PeriodicElement>();
   clickedSeguimientosRows = new Set<PeriodicHistorialElement>();

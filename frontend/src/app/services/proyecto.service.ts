@@ -76,6 +76,7 @@ export class ProyectoService {
     fd.append('estado', data.estado);
     fd.append('comunidad', data.comunidad);
     fd.append("alcance", data.alcance);
+    fd.append("nombre_documento", data.nombre_documento);
     fd.append("documento", documento);
 
 

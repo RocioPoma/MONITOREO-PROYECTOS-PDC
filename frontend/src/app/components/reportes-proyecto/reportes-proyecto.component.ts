@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { ReportesService } from 'src/app/services/reportes.service';
+import * as L from 'leaflet';
 export interface Tile {
   color: string;
   cols: number;
@@ -17,6 +18,8 @@ export class ReportesProyectoComponent {
   dataCat: any[] = [];
   dataTip: any[] = [];
   dataIndicador: any[] = [];
+  dataMap: any[] = [];
+  map: any;
 
   constructor(private readonly reportesService: ReportesService) { }
   ngOnInit(): void {
@@ -26,7 +29,18 @@ export class ReportesProyectoComponent {
     this.getDataCat();
     this.getDataTip();
     this.getDataPDC();
-   // this.createChartPdc();
+   // this.createChartInversion();
+    // this.getDataMapa();
+    // this.createChartPdc();
+    // Crea el mapa y establece la vista inicial
+    this.map = L.map('map').setView([-16.5000, -64.0000], 6);
+
+
+    // Agrega una capa de mapa base (por ejemplo, OpenStreetMap)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(this.map);
   }
   getDataLE() {
     this.reportesService.lineasEstrategicas().subscribe({
@@ -66,6 +80,56 @@ export class ReportesProyectoComponent {
     });
   }
 
+  /*
+    getDataMapa() {
+      this.reportesService.mapa_proyecto().subscribe({
+        next: (res) => {
+          console.log('pdc_etapa', res);
+          this.dataMap = res;
+          this.createChartPdc(this.dataMap);
+    
+          // Itera sobre los datos y coloca marcadores en el mapa
+          res.forEach((item) => {
+            const latlng = { lat: item.latitud, lng: item.longitud }; // Reemplaza con los campos reales de latitud y longitud en tus datos
+            const stage = item.ultima_etapa; // Reemplaza con el campo real que indica la etapa
+    
+            // Define un icono personalizado basado en la etapa
+            const icon = L.icon({
+              iconUrl: '../../../../../assets/img/map_icon.png', // Ruta relativa al ícono
+              iconSize: [25, 41], // Tamaño del ícono
+              iconAnchor: [12, 41], // Anclaje del ícono
+              popupAnchor: [1, -34], // Anclaje del globo emergente
+            });
+    
+            // Crea el marcador con el icono personalizado
+            const marker = L.marker(latlng,{icon}).addTo(this.map);
+            //const marker = L.marker(latlng,{icon:myIcon}).addTo(map);
+    
+            // Agrega un popup con información adicional si lo deseas
+            marker.bindPopup(`<b>Proyecto:</b> ${item.nombre_proyecto}<br><b>Etapa:</b> ${stage}`);
+    
+            // Resto del código...
+          });
+        },
+      });
+    }*/
+
+  getIconUrlByStage(stage: string): string {
+    // Implementa esta función para asignar una URL de icono según la etapa
+    // Puedes definir un mapeo de etapa a URL de icono aquí
+    // Por ejemplo, si tienes íconos en tu proyecto, puedes almacenarlos en una carpeta y construir la URL en función de la etapa.
+    // De lo contrario, puedes usar íconos predeterminados de Leaflet.
+    // Ejemplo de implementación:
+    // if (stage === 'EDTP') {
+    //   return 'assets/icons/edtp-icon.png'; // Reemplaza con la ruta real de tu icono
+    // } else if (stage === 'Gestion Financiamiento') {
+    //   return 'assets/icons/financiamiento-icon.png'; // Reemplaza con la ruta real de tu icono
+    // }
+    // // Resto de las etapas...
+
+    // Por defecto, usa el ícono de Leaflet
+    return 'node_modules/leaflet/dist/images/marker-icon.png';
+  }
   createChartLE(data: any[]) {
     // Mapea los datos para configurar las series del gráfico
     const seriesData = data.map((item) => ({
@@ -83,7 +147,7 @@ export class ReportesProyectoComponent {
         align: 'left',
       },
       xAxis: {
-        categories: data.map((item) => item.descripcion),
+        categories: data.map((item) =>item.id_linea_estrategica+' .- '+ item.descripcion),
 
       },
       yAxis: {
@@ -121,7 +185,7 @@ export class ReportesProyectoComponent {
     Highcharts.chart('chart-container-categoria', {
       chart: {
         type: 'bar', // Puedes cambiar el tipo de gráfico aquí (line, bar, pie, etc.)
-        height:500,
+        height: 500,
         marginLeft: 150
       },
       title: {
@@ -217,8 +281,8 @@ export class ReportesProyectoComponent {
         align: 'left',
       },
       xAxis: {
-       // categories: ['Arsenal', 'Chelsea', 'Liverpool', 'Manchester United'],
-       categories: data.map((item) => item.id_indicador +'.- '+ item.nombre_indicador),
+        // categories: ['Arsenal', 'Chelsea', 'Liverpool', 'Manchester United'],
+        categories: data.map((item) => item.id_indicador + '.- ' + item.nombre_indicador),
         labels: {
           style: {
             fontSize: '12px',
@@ -262,7 +326,7 @@ export class ReportesProyectoComponent {
       series: [{
         name: 'EDTP',
         type: 'column',
-        data:  data.map((item) => item.EDTP)
+        data: data.map((item) => item.EDTP)
       }, {
         name: 'Gestion Financiamiento',
         type: 'column',
@@ -299,4 +363,83 @@ export class ReportesProyectoComponent {
       }]
     });
   }
+
+  /*
+  createChartInversion() {
+    
+    Highcharts.chart('container-inversion', {
+      chart: {
+        type: 'bar'
+      },
+      title: {
+        text: 'Historic World Population by Region',
+        align: 'left'
+      },
+      subtitle: {
+        text: 'Source: <a ' +
+          'href="https://en.wikipedia.org/wiki/List_of_continents_and_continental_subregions_by_population"' +
+          'target="_blank">Wikipedia.org</a>',
+        align: 'left'
+      },
+      xAxis: {
+        categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania'],
+        title: {
+          text: null
+        },
+        gridLineWidth: 1,
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Population (millions)',
+          align: 'high'
+        },
+        labels: {
+          overflow: 'justify'
+        },
+        gridLineWidth: 0
+      },
+      tooltip: {
+        valueSuffix: ' millions'
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: '50%',
+          dataLabels: {
+            enabled: true
+          },
+          groupPadding: 0.1
+        }
+      },
+      legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'top',
+        x: -40,
+        y: 80,
+        floating: true,
+        borderWidth: 1,
+        backgroundColor:
+          Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+        shadow: true
+      },
+      credits: {
+        enabled: false
+      },
+      series: [{
+        name: 'Year 1990',
+        data: [631, 727, 3202, 721, 26]
+      }, {
+        name: 'Year 2000',
+        data: [814, 841, 3714, 726, 31]
+      }, {
+        name: 'Year 2010',
+        data: [1044, 944, 4170, 735, 40]
+      }, {
+        name: 'Year 2018',
+        data: [1276, 1007, 4561, 746, 42]
+      }]
+    });
+  }*/
 }
