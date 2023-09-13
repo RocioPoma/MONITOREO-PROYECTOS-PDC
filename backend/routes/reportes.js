@@ -165,35 +165,49 @@ router.get("/indicadores", async (req, res) => {
         const data = [];
         for (const {id_proyecto,nom_proyecto,id_etapa,nombre_etapa,avance_seguimiento_fisico,} of result2) {
           //reportes.push({id_proyecto,nom_proyecto,id_etapa,nombre_etapa,avance_seguimiento_fisico,})
-            if (data.length === 0)
-            data.push({id_proyecto,nom_proyecto,etapas: [{id_etapa,nombre_etapa,avance_etapa: avance_seguimiento_fisico,},],
-            });
-          else {
+         //console.log(id_proyecto,nom_proyecto,id_etapa,nombre_etapa,avance_seguimiento_fisico);  
+          if (data.length === 0){
+              if(id_etapa){
+                data.push({id_proyecto,nom_proyecto,ultima_etapa: {id_etapa,nombre_etapa,avance_etapa: avance_seguimiento_fisico || 0,},
+                });
+              }else{
+                data.push({id_proyecto,nom_proyecto,ultima_etapa: null,});
+              }
+          }else {
             const row = data.find((val) => val.id_proyecto === id_proyecto);
+            console.log('hay mas etapas:',row);
             if (row) {
-                console.log(report_result.id_indicador);
               if (typeof id_etapa === "number") {
-                const etapa = row.etapas.find(
-                  (val) => val.id_etapa === id_etapa
-                );
-                console.log(etapa);
-                if (etapa) {
-                    console.log(etapa);
-                  row.avance_seguimiento_fisico =
-                    avance_seguimiento_fisico > row.avance_seguimiento_fisico
-                      ? avance_seguimiento_fisico
-                      : row.avance_seguimiento_fisico;
-                } else {
-                  row.etapas.push({id_etapa,nombre_etapa,avance_etapa: avance_seguimiento_fisico,});
+                console.log(row);
+                if(row.ultima_etapa){
+                  if(row.ultima_etapa?.id_etapa === id_etapa){
+                    row.ultima_etapa.avance_etapa = avance_seguimiento_fisico>row.ultima_etapa.avance_etapa
+                    ?avance_seguimiento_fisico
+                    :row.ultima_etapa.avance_etapa;
+                  }else if(id_etapa>row.ultima_etapa?.id_etapa){
+                    row.ultima_etapa = {id_etapa,nombre_etapa,avance_etapa: avance_seguimiento_fisico,};
+                  }
+                }else{
+                  row.ultima_etapa = {id_etapa,nombre_etapa,avance_etapa: avance_seguimiento_fisico || 0,};
                 }
               }
             } else {
-              data.push({id_proyecto,nom_proyecto,etapas: [{id_etapa,nombre_etapa,avance_etapa: avance_seguimiento_fisico,},
-                ],
-              });
+              if(id_etapa){
+                data.push({id_proyecto,nom_proyecto,ultima_etapa: {id_etapa,nombre_etapa,avance_etapa: avance_seguimiento_fisico ||0,}});
+              }else{
+                data.push({id_proyecto,nom_proyecto,ultima_etapa: null});
+              }
             }
           }
-        }report.data=data;
+          console.log(data);
+        }
+        report.data=data;
+        let indice=0;
+        // for(const proy of data){
+        //   if(proy.etapas.length>0){
+
+        //   }
+        // }
       }
       reportes.push(report);
     }
