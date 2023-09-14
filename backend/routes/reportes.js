@@ -132,12 +132,24 @@ router.get("/indicadores", async (req, res) => {
               GROUP BY IND.id_indicador;
           `;
   const queryInd = `
-    SELECT PROY.id_proyecto,PROY.nom_proyecto,ETA.id_etapa,ETA.nombre_etapa,SEGF.avance_seguimiento_fisico FROM indicador AS IND
+    SELECT PROY.id_proyecto,
+    PROY.nom_proyecto,
+    ETA.id_etapa,
+    ETA.nombre_etapa,
+    ETa.peso_etapa,
+    SEGF.avance_seguimiento_fisico,
+    ALC.cantidad,
+    PROY.id_tipologia 
+    FROM indicador AS IND
     INNER JOIN proyecto AS PROY ON PROY.id_indicador = IND.id_indicador
+    LEFT JOIN alcance as ALC ON PROY.id_proyecto = ALC.id_proyecto
     LEFT JOIN etapa_proyecto AS ETAP ON ETAP.id_proyecto = PROY.id_proyecto
     LEFT JOIN etapa AS ETA ON ETA.id_etapa = ETAP.id_etapa
     LEFT JOIN seguimiento_fisico AS SEGF ON SEGF.id_etapa_proyecto = ETAP.id_etapa_proyecto
     WHERE IND.id_indicador = ?;`;
+  const queryPeso=`
+  	SELECT SUM(ETA.peso_etapa) AS pesos_anteriores FROM etapa AS ETA
+		WHERE ETA.id_tipologia = ?	 AND ETA.id_etapa < ?`
   try {
     const reportes = [];
     const result = await onlySelect(query);
@@ -158,46 +170,64 @@ router.get("/indicadores", async (req, res) => {
       ]);
       if (result2.length > 0) {
         const data = [];
-        for (const {id_proyecto,nom_proyecto,id_etapa,nombre_etapa,avance_seguimiento_fisico,} of result2) {
+        for (const {id_proyecto,nom_proyecto,id_tipologia,peso_etapa,cantidad,id_etapa,nombre_etapa,avance_seguimiento_fisico,} of result2) {
           //reportes.push({id_proyecto,nom_proyecto,id_etapa,nombre_etapa,avance_seguimiento_fisico,})
          //console.log(id_proyecto,nom_proyecto,id_etapa,nombre_etapa,avance_seguimiento_fisico);  
           if (data.length === 0){
               if(id_etapa){
-                data.push({id_proyecto,nom_proyecto,ultima_etapa: {id_etapa,nombre_etapa,avance_etapa: avance_seguimiento_fisico || 0,},
+                data.push({id_proyecto,nom_proyecto,id_tipologia,cantidad:cantidad||0,pesos_anteriores:0,ultima_etapa: {id_etapa,nombre_etapa,avance_etapa: avance_seguimiento_fisico || 0,peso_etapa},
                 });
               }else{
-                data.push({id_proyecto,nom_proyecto,ultima_etapa: null,});
+                data.push({id_proyecto,nom_proyecto,id_tipologia,cantidad:cantidad||0,pesos_anteriores:0,ultima_etapa: null,});
               }
           }else {
             const row = data.find((val) => val.id_proyecto === id_proyecto);
-            console.log('hay mas etapas:',row);
+           // console.log('hay mas etapas:',row);
             if (row) {
               if (typeof id_etapa === "number") {
-                console.log(row);
+                //console.log(row);
                 if(row.ultima_etapa){
                   if(row.ultima_etapa?.id_etapa === id_etapa){
                     row.ultima_etapa.avance_etapa = avance_seguimiento_fisico>row.ultima_etapa.avance_etapa
                     ?avance_seguimiento_fisico
                     :row.ultima_etapa.avance_etapa;
                   }else if(id_etapa>row.ultima_etapa?.id_etapa){
-                    row.ultima_etapa = {id_etapa,nombre_etapa,avance_etapa: avance_seguimiento_fisico,};
+                    row.ultima_etapa = {id_etapa,nombre_etapa,avance_etapa: avance_seguimiento_fisico,peso_etapa};
                   }
                 }else{
-                  row.ultima_etapa = {id_etapa,nombre_etapa,avance_etapa: avance_seguimiento_fisico || 0,};
+                  row.ultima_etapa = {id_etapa,nombre_etapa,avance_etapa: avance_seguimiento_fisico || 0,peso_etapa};
                 }
               }
             } else {
               if(id_etapa){
-                data.push({id_proyecto,nom_proyecto,ultima_etapa: {id_etapa,nombre_etapa,avance_etapa: avance_seguimiento_fisico ||0,}});
+                data.push({id_proyecto,id_tipologia,nom_proyecto,cantidad:cantidad||0,pesos_anteriores:0,ultima_etapa: {id_etapa,nombre_etapa,avance_etapa: avance_seguimiento_fisico ||0,peso_etapa}});
               }else{
-                data.push({id_proyecto,nom_proyecto,ultima_etapa: null});
+                data.push({id_proyecto,id_tipologia,nom_proyecto,cantidad:cantidad||0,pesos_anteriores:0,ultima_etapa: null});
               }
             }
           }
-          console.log(data);
+          //console.log(data);
+        }
+        for(const proy of data){
+          if(proy.ultima_etapa){
+            const result = await selectParams(queryPeso,[proy.id_tipologia,proy.ultima_etapa.id_etapa]);
+            proy.pesos_anteriores = result[0].pesos_anteriores || 0;
+          }
+        }
+        let indice =0;
+        for(const proy of data){
+          if(proy.ultima_etapa){
+            const peso_etapa_actual = ((proy.ultima_etapa.avance_etapa*proy.ultima_etapa.peso_etapa)/100);
+            let pes = (peso_etapa_actual+Number.parseInt(proy.pesos_anteriores)); 
+            let cantidad =proy.cantidad;
+            indice = indice+(cantidad*pes/100);
+            console.log(indice);
+          }
         }
         report.data=data;
-        let indice=0;
+        // report['%_ind_efectivo']
+        console.log(indice);
+        report['%_ind_efectivo']=indice;
         // for(const proy of data){
         //   if(proy.etapas.length>0){
 
