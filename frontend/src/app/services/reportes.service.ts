@@ -26,4 +26,8 @@ export class ReportesService {
   mapa_proyecto(){
     return this.http.get<any>(`${this.url}/mapa`);
   }
+  
+  report_indicadores(){
+    return this.http.get<any>(`${this.url}/indicadores`)
+  }
 }

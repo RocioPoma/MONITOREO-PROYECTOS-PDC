@@ -155,6 +155,7 @@ router.get("/indicadores", async (req, res) => {
     const result = await onlySelect(query);
     for (const report_result of result) {
       const report = {
+        COD:report_result.id_indicador,
         nombre_indicador: report_result?.nombre_indicador || "",
         uni_ind: report_result?.nom_unidad || "",
         LB_2020: report_result?.LB_2020 || 0,
@@ -221,13 +222,13 @@ router.get("/indicadores", async (req, res) => {
             let pes = (peso_etapa_actual+Number.parseInt(proy.pesos_anteriores)); 
             let cantidad =proy.cantidad;
             indice = indice+(cantidad*pes/100);
-            console.log(indice);
+            
           }
         }
-        report.data=data;
+        //report.data=data;
         // report['%_ind_efectivo']
-        console.log(indice);
-        report['%_ind_efectivo']=indice;
+        //console.log('indice total:',indice);
+        report['%_ind_efectivo']=((indice*100)/(report.Meta_2025-report.LB_2020)).toFixed(2);
         // for(const proy of data){
         //   if(proy.etapas.length>0){
 
