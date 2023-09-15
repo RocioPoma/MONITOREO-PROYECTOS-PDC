@@ -155,6 +155,7 @@ router.get("/indicadores", async (req, res) => {
     const result = await onlySelect(query);
     for (const report_result of result) {
       const report = {
+        COD:report_result.id_indicador,
         nombre_indicador: report_result?.nombre_indicador || "",
         uni_ind: report_result?.nom_unidad || "",
         LB_2020: report_result?.LB_2020 || 0,
@@ -215,6 +216,7 @@ router.get("/indicadores", async (req, res) => {
             proy.pesos_anteriores = result[0].pesos_anteriores || 0;
           }
         }
+
         let indice = 0;
         for (const proy of data) {
           if (proy.ultima_etapa) {

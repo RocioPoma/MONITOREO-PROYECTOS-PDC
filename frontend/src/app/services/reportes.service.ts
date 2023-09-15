@@ -28,6 +28,12 @@ export class ReportesService {
     return this.http.get<any>(`${this.url}/mapa`);
   }
 
+  
+  report_indicadores(){
+    return this.http.get<any>(`${this.url}/indicadores`)
+  }
+
+
   inversion_le(){
     return this.http.get<any>(`${this.url}/inversion_le`);
   }
@@ -36,4 +42,5 @@ export class ReportesService {
     return this.http.get<any>(`${this.url}/inversion_desagregada_le`);
   }
   
+
 }
