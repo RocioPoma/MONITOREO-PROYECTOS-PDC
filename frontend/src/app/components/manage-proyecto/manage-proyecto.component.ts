@@ -64,6 +64,7 @@ export class ManageProyectoComponent {
     am:any;
     estado:any;
     rol:any;
+    ci:any;
     tabla:any;
     logoDataUrl: string;
     infoFiltrada:any;
@@ -84,12 +85,22 @@ export class ManageProyectoComponent {
 
 
   ngOnInit(): void {
-     
+    const ciString = localStorage.getItem('ci');
+    this.ci = ciString? (ciString): null;
+    console.log(this.ci);
+   /*  this.tableData();
+    this.getMunicipio(); */
 
-    this.tableData();
-    this.getMunicipio();
+    //console.log("url: " + this.fileURL);
+    if(this.rol = 'Usuario' ){
+      this.tableData2(this.ci);
+      this.getMunicipio();
+    }else{
+      this.tableData();
+      this.getMunicipio();
+    }
+   
 
-    console.log("url: " + this.fileURL);
      //para usaurio de pdf    
      const nombreString = localStorage.getItem('nombre');
      const entidadString = localStorage.getItem('entidad');
@@ -110,6 +121,29 @@ export class ManageProyectoComponent {
 
   tableData() {
     this.ProyectoServices.getProyecto().subscribe((response: any) => {
+      this.tabla=response;
+      this.dataSource = new MatTableDataSource(response);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    }, (error: any) => {
+      if (error.error?.message) {
+        this.responseMessage = error.error?.message;
+      }
+      else {
+        this.responseMessage = GlobalCostants.genericError;
+      }
+      this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+    })
+    
+       //llamar a logo y convertilo
+       Utils.getImageDataUrlFromLocalPath1('../../../assets/img/logo_sihita.png').then(
+        result => this.logoDataUrl = result
+      )
+  }
+
+  //tabla2 para usuario
+  tableData2(ci:string) {
+    this.ProyectoServices.getProyecto2(ci).subscribe((response: any) => {
       this.tabla=response;
       this.dataSource = new MatTableDataSource(response);
       this.dataSource.paginator = this.paginator;

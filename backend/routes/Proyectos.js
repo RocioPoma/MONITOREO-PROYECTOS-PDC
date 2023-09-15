@@ -105,13 +105,64 @@ GROUP BY p.id_proyecto;
 });
 
 
-// Ruta para obtener un proyecto por su ID
-router.get('/buscar/:id', (req, res) => {
-  const { id } = req.params;
-  const sql = 'SELECT * FROM PROYECTO WHERE id_proyecto = ?';
-  connection.query(sql, id, (err, result) => {
+// Ruta para obtener un proyecto por su ID de usuario
+router.get('/buscar/:ci', (req, res) => {
+  const { ci } = req.params;
+  const sql = `  
+  SELECT 
+    p.*,
+    DATE_FORMAT(p.fecha_inicio, '%d-%m-%Y') AS fecha_inicio_convert,
+    DATE_FORMAT(p.fecha_fin, '%d-%m-%Y') AS fecha_fin_convert,
+    DATE_FORMAT(p.fecha_registro, '%d-%m-%Y') AS fecha_registro_convert,
+    t.nom_tipologia,
+    c.nom_categoria,
+    cu.nom_cuenca,
+    mu.id_municipio,
+    mu.nombre_municipio,
+    le.id_linea_estrategica,
+    la.id_linea_accion,
+    le.descripcion AS linea_estrategica,
+    la.descripcion AS linea_de_accion,
+    ae.descripcion AS accion_estrategica,
+    i.nombre_indicador,
+    GROUP_CONCAT(DISTINCT com.id SEPARATOR ', ') AS comunidades,
+    alc.cantidad,
+    um.nom_unidad AS unidad_medicion_alcance,   
+    
+    (SELECT e.nombre_etapa FROM etapa_proyecto ep
+     INNER JOIN etapa e ON ep.id_etapa = e.id_etapa
+     WHERE ep.id_proyecto = p.id_proyecto
+     ORDER BY e.id_etapa DESC
+     LIMIT 1) AS ultima_etapa,
+    GROUP_CONCAT(DISTINCT ef.nom_entidad_financiera SEPARATOR ', ') AS fuentes_financiamiento,
+    CASE
+        WHEN u.ci IS NOT NULL THEN 'Asignado'
+        ELSE 'No Asignado'
+    END AS estado_asignacion
+
+FROM proyecto p
+LEFT JOIN tipologia t ON p.id_tipologia = t.id_tipologia
+LEFT JOIN categoria c ON p.id_categoria = c.id_categoria
+LEFT JOIN cuenca cu ON p.id_cuenca = cu.id_cuenca
+LEFT JOIN proyecto_ciudad_o_comunidad pc ON p.id_proyecto = pc.id_proyecto
+LEFT JOIN ciudad_o_comunidad com ON pc.id_ciudad_comunidad = com.id
+LEFT JOIN alcance alc ON p.id_proyecto = alc.id_proyecto
+LEFT JOIN unidad_medicion um ON alc.id_unidad_medicion = um.id_unidad_medicion
+LEFT JOIN accion_estrategica ae ON p.id_accion_estrategica = ae.id_accion_estrategica
+LEFT JOIN linea_de_accion la ON ae.id_linea_accion = la.id_linea_accion
+LEFT JOIN linea_estrategica le ON la.id_linea_estrategica = le.id_linea_estrategica
+LEFT JOIN indicador i ON p.id_indicador = i.id_indicador
+LEFT JOIN municipio mu ON com.id_municipio = mu.id_municipio
+LEFT JOIN etapa_proyecto ep ON p.id_proyecto = ep.id_proyecto
+LEFT JOIN financiamiento f ON ep.id_etapa_proyecto = f.id_etapa_proyecto
+LEFT JOIN entidad_financiera ef ON f.id_entidad_financiera = ef.id_entidad_financiera
+LEFT JOIN usuario u ON p.ci = u.ci
+WHERE u.ci = ?
+GROUP BY p.id_proyecto;
+ `;
+  connection.query(sql, ci, (err, result) => {
     if (err) throw err;
-    res.json(result[0]);
+    res.json(result);
   });
 });
 
