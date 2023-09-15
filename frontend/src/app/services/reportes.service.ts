@@ -23,11 +23,24 @@ export class ReportesService {
   pdc_etapa(){
     return this.http.get<any>(`${this.url}/pdc_etapa`);
   }
+
   mapa_proyecto(){
     return this.http.get<any>(`${this.url}/mapa`);
   }
+
   
   report_indicadores(){
     return this.http.get<any>(`${this.url}/indicadores`)
   }
+
+
+  inversion_le(){
+    return this.http.get<any>(`${this.url}/inversion_le`);
+  }
+  
+  inversion_desagregada_le(){
+    return this.http.get<any>(`${this.url}/inversion_desagregada_le`);
+  }
+  
+
 }
