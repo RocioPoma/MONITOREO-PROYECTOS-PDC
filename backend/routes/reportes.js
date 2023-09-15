@@ -216,20 +216,6 @@ router.get("/indicadores", async (req, res) => {
             proy.pesos_anteriores = result[0].pesos_anteriores || 0;
           }
         }
-        let indice = 0;
-        for (const proy of data) {
-          if (proy.ultima_etapa) {
-            const peso_etapa_actual = ((proy.ultima_etapa.avance_etapa * proy.ultima_etapa.peso_etapa) / 100);
-            let pes = (peso_etapa_actual + Number.parseInt(proy.pesos_anteriores));
-            let cantidad = proy.cantidad;
-            indice = indice + (cantidad * pes / 100);
-            console.log(indice);
-          }
-        }
-        report.data = data;
-        // report['%_ind_efectivo']
-        console.log(indice);
-        report['%_ind_efectivo'] = indice;
         let indice =0;
         for(const proy of data){
           if(proy.ultima_etapa){
@@ -240,15 +226,8 @@ router.get("/indicadores", async (req, res) => {
             
           }
         }
-        //report.data=data;
-        // report['%_ind_efectivo']
-        //console.log('indice total:',indice);
         report['%_ind_efectivo']=((indice*100)/(report.Meta_2025-report.LB_2020)).toFixed(2);
-        // for(const proy of data){
-        //   if(proy.etapas.length>0){
-
-        //   }
-        // }
+        
       }
       reportes.push(report);
     }
