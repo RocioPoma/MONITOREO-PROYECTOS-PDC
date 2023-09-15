@@ -36,6 +36,7 @@ export class ManageGestionUsuarioComponent {
   ap:any;
   am:any;
   estado:any;
+  rol:any;
   tabla:any;
   logoDataUrl: string;
   infoFiltrada:any;
@@ -62,14 +63,16 @@ export class ManageGestionUsuarioComponent {
     const ApString = localStorage.getItem('ap_paterno');
     const AmString = localStorage.getItem('ap_materno');
     const estadoString = localStorage.getItem('estado');
+    const rolString = localStorage.getItem('rol');
     this.usuario = nombreString? (nombreString): null;
     this.entidadN = entidadString? (entidadString): null;
     this.ap = ApString ? (ApString ): null;
     this.am = AmString? (AmString): null;
     this.estado = estadoString? (estadoString): null;
+    this.rol = rolString? (rolString): null;
     //------------------------------------
   
-    console.log(this.estado);
+    console.log(this.rol);
    
   }
 

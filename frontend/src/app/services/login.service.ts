@@ -12,6 +12,7 @@ export class LoginService {
   private am: string="";
   private entidad: string="";
   private estado: string="";
+  private ci: string="";
   url = environment.apiUrl;
   private authToken: string | null = null;
 
@@ -107,6 +108,16 @@ export class LoginService {
 
   getEstado() {
     return this.estado;
+  }
+
+  setCi(ci: string) {
+    this.ci = ci;
+      // Guardar en el almacenamiento local
+      localStorage.setItem('ci', ci);
+  }
+
+  getCi() {
+    return this.ci;
   }
 
   ////-------------------------------------nombre y rol 
