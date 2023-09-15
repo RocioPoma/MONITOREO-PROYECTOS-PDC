@@ -1,16 +1,31 @@
 
 
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
-<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
-<figure class="highcharts-figure">
-    <div id="container"></div>
-    <p class="highcharts-description">
-        Bar chart showing horizontal columns. This chart type is often
-        beneficial for smaller screens, as the user can scroll through the data
-        vertically, and axis labels are easy to read.
-    </p>
-</figure>
+<mat-card [ngStyle]="{'min-width':'100%'}">
 
+
+    <div class="title">
+        <b><span class="color-text">REPORTES DE ACCIONES/PROYECTOS</span></b>
+    </div>
+    <div class="scroller-x">
+        <div id="chart-container-lineas"></div>
+    </div>
+
+    <div class="scroller-x">
+        <div id="chart-container-pdc"></div>
+    </div>
+
+    <div class="scroller-x">
+        <div id="chart-container-categoria"></div>
+    </div>
+
+    <div class="scroller-x">
+        <div id="chart-container-tipologia"></div>
+    </div>
+    <div class="scroller-x">
+        <div id="container"></div>
+    </div>
+
+  <!-- <div id="map" style="height: 500px;"></div>--> 
+
+</mat-card>
