@@ -36,4 +36,8 @@ export class ReportesService {
     return this.http.get<any>(`${this.url}/inversion_desagregada_le`);
   }
   
+  
+  report_indicadores(){
+    return this.http.get<any>(`${this.url}/indicadores`)
+  }
 }
