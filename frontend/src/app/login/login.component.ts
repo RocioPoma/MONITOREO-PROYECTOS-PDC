@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
         console.log(response);
         console.log('Token:', response.token);
         this.userService.setAuthToken(response.token);
-        this.router.navigate(['/layout/reportes-proyectos']);   
+        this.router.navigate(['/layout/pproyecto']);   
         
       },
       (error) => {

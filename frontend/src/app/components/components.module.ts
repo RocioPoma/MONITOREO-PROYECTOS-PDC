@@ -41,6 +41,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import { CambioUsuarioProyectoComponent } from './dialog/cambio-usuario-proyecto/cambio-usuario-proyecto.component';
 import { ReportesIndicadoresComponent } from './reportes-indicadores/reportes-indicadores.component';
+import { ArchivosProyectoComponent } from './dialog/archivos-proyecto/archivos-proyecto.component';
+import { ArchivosComponent } from './dialog/archivos/archivos.component';
 //import { ComponentsRoutingModule } from './components-routing.module';
 
 
@@ -73,7 +75,9 @@ import { ReportesIndicadoresComponent } from './reportes-indicadores/reportes-in
     HistorialSeguimientosProyectoComponent,
     ReportesProyectoComponent,
     CambioUsuarioProyectoComponent,
-    ReportesIndicadoresComponent
+    ReportesIndicadoresComponent,
+    ArchivosProyectoComponent,
+    ArchivosComponent
   ],
   imports: [
     CommonModule,

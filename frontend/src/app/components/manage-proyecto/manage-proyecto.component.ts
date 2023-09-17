@@ -16,6 +16,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MunicipioService } from 'src/app/services/municipio.service';
 import { SeguimientoProyectoComponent } from '../dialog/seguimiento-proyecto/seguimiento-proyecto.component';
+import { ArchivosProyectoComponent } from '../dialog/archivos-proyecto/archivos-proyecto.component';
 //dialogCambio user
 import { CambioUsuarioProyectoComponent } from "../dialog/cambio-usuario-proyecto/cambio-usuario-proyecto.component";
 
@@ -91,14 +92,7 @@ export class ManageProyectoComponent {
    /*  this.tableData();
     this.getMunicipio(); */
 
-    //console.log("url: " + this.fileURL);
-    if(this.rol = 'Usuario' ){
-      this.tableData2(this.ci);
-      this.getMunicipio();
-    }else{
-      this.tableData();
-      this.getMunicipio();
-    }
+    
    
 
      //para usaurio de pdf    
@@ -116,6 +110,18 @@ export class ManageProyectoComponent {
      this.rol = rolString? (rolString): null;
      console.log(this.rol);
      //------------------------------------
+
+
+    //console.log("url: " + this.fileURL);
+    if(this.rol === 'Operador' ){
+      this.tableData2(this.ci);
+      this.getMunicipio();
+    }else{
+      console.log(this.rol);
+      this.tableData();
+      this.getMunicipio();
+    }
+
   }
 
 
@@ -514,6 +520,40 @@ export class ManageProyectoComponent {
       this.tableData();
     })
   }
+
+
+
+
+  //------------ LLAMA AL MODAL PARA ELañadirdocumentos
+  handleAddDoc(values: any) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      action: 'Documentos',
+      data: values
+    }
+    console.log(values);
+    dialogConfig.width = "820px";
+    const dialogRef = this.dialog.open(ArchivosProyectoComponent, dialogConfig);
+    this.router.events.subscribe(() => {
+      dialogRef.close();
+    });
+    const sub = dialogRef.componentInstance.onAddDocProyect.subscribe((response) => {
+      this.tableData();
+    })
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 

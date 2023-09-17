@@ -111,5 +111,15 @@ export class ProyectoService {
   getTipologia() {
     return this.httpClient.get(this.url + "/proyecto/get_tipologia")
   }
+  
+  //añadir archivos
+  addA(documento: FormData) {
+    //const fd = new FormData();
+   /*  fd.append('id_proyecto', data.id_proyecto);   
+    fd.append('Descripcion', data.Descripcion);    */
+    //fd.append("documento", documento);
 
+    return this.httpClient.post(this.url +
+      "/proyecto/addDocs/", documento);
+  }
 }

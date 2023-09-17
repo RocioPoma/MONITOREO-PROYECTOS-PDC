@@ -1,0 +1,27 @@
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="proyectoForm">
+
+        <mat-form-field appearance="fill" fxFlex>
+            <mat-label>Descripcionn</mat-label>
+            <input matInput formControlName="Descripcion" required>
+            <mat-error
+                *ngIf="proyectoForm.controls.Descripcion.touched && proyectoForm.controls.Descripcion.invalid">
+                <span *ngIf="proyectoForm.controls.Descripcion.errors.required">Este campo es
+                    obligatorio.</span>
+            </mat-error>
+        </mat-form-field>
+
+        <div fxFlex fxLayout="column">
+            <div fxLayout="row" fxGap="8px" class="subTitle-container">
+                <span class="subTitle" style="margin-right: 4.7cm; ">ADJUNTO</span>
+                <input (change)="onFileChange($event)" formControlName="documento" class="form-control-file" type="file"  multiple>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" type="submit" (click)="Submit()"
+        [disabled]="![proyectoForm.valid && proyectoForm.dirty]">Aceptar</button>
+    <button mat-raised-button color="primary" mat-dialog-close>Cancelar</button>
+</mat-dialog-actions>

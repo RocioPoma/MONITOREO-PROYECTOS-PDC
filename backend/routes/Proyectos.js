@@ -484,5 +484,50 @@ router.put('/updateUser', (req, res) => {
 })
 
 
+//Status Etapa 
+router.get('/listarDoc/:id_proyecto', (req, res) => {
+  const { id_proyecto } = req.params;
+  const sql = `  
+  SELECT d.*
+  FROM documento d
+  INNER JOIN proyecto p ON d.id_proyecto = p.id_proyecto
+  WHERE p.id_proyecto = ?;
+ `;
+  connection.query(sql, id_proyecto, (err, result) => {
+    if (err) throw err;
+    res.json(result);
+  });
+});
+
+
+// Ruta para subir archivos y guardar información
+router.post('/addDocs', multer.single('file'), (req, res) => {
+  const { id_proyecto, descripcion } = req.body; // Datos del proyecto
+  console.log(id_proyecto,descripcion);
+  // Los archivos se han subido exitosamente, puedes manejarlos aquí
+  console.log('Archivos subidos:', req.files);
+
+  // Inserta información de cada archivo en la base de datos
+  req.files.forEach((file) => {
+    const nombre_documento = file.originalname; // Nombre del archivo en el servidor
+
+    // Inserta los datos en la base de datos
+    const query = 'INSERT INTO documento (nombre_documento, comentario, id_proyecto) VALUES (?, ?, ?)';
+    const values = [nombre_documento, descripcion, id_proyecto];
+
+    connection.query(query, values, (err, results) => {
+      if (err) {
+        console.error('Error al insertar en la base de datos:', err);
+        res.status(500).json({ message: 'Error al guardar los datos en la base de datos' });
+      } else {
+        console.log('Datos insertados en la base de datos:', results);
+      }
+    });
+  });
+
+  res.status(200).json({ message: 'Archivos y datos guardados exitosamente' });
+});
+
+
 
 module.exports = router;
