@@ -216,6 +216,7 @@ router.get("/indicadores", async (req, res) => {
             proy.pesos_anteriores = result[0].pesos_anteriores || 0;
           }
         }
+
         let indice =0;
         for(const proy of data){
           if(proy.ultima_etapa){
@@ -226,8 +227,9 @@ router.get("/indicadores", async (req, res) => {
             
           }
         }
+
         report['%_ind_efectivo']=((indice*100)/(report.Meta_2025-report.LB_2020)).toFixed(2);
-        
+
       }
       reportes.push(report);
     }

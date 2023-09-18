@@ -1,3 +1,4 @@
+//----------------------------------------------------------------------------
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import * as L from 'leaflet';
@@ -12,12 +13,12 @@ export class MapModalComponent {
   polygon: any; // Variable para el polígono
   coordenada_x: any;
   coordenada_y: any;
+  marker: any; // Variable para el marcador
 
   constructor(
     public dialogRef: MatDialogRef<MapModalComponent>,
     @Inject(MAT_DIALOG_DATA) public dialogData: any
   ) {
-    // console.log('DialogData: ',this.dialogData.data)
     this.coordenada_x = this.dialogData.coordenada_x;
     this.coordenada_y = this.dialogData.coordenada_y;
   }
@@ -26,48 +27,34 @@ export class MapModalComponent {
     // Inicializa el mapa en el div con id 'map'
     const map = L.map('map').setView([-21.5355, -64.7293], 9.2); // Coordenadas de Tarija, Bolivia
 
-
     // Capa TileLayer (OpenStreetMap)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    // Capa TileLayer (Google Maps)
-    /*L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
-      maxZoom: 19,
-      attribution: '© <a href="https://developers.google.com/maps/terms">Google Maps</a> contributors'
-    }).addTo(map);*/
-
-    // Capa TileLayer (Stamen)
-    /*L.tileLayer('http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>'
-    }).addTo(map);*/
-
     fetch('../../../../../assets/capas/cuenca1.geojson')
       .then(response => response.json())
       .then(geojson => {
-        console.log('entro a fetch del mapa');
-
         if (geojson.features && geojson.features.length > 0) {
           const firstFeature = geojson.features[0];
 
           // Accede a la geometría del polígono en la propiedad "geometry"
           this.polygon = L.geoJSON(firstFeature.geometry, {
             style: {
-              color: 'red',       // Color del borde del polígono
-              weight: 2,           // Grosor del borde del polígono
-              fillOpacity: 0.2     // Opacidad del relleno del polígono
+              color: 'red',
+              weight: 2,
+              fillOpacity: 0.2
             }
           }).addTo(map);
 
           const myIcon = L.icon({
             iconUrl: '../../../../../assets/img/map_icon.png',
-            iconSize: [23, 27], //Tamño del icono
+            iconSize: [23, 27],
           });
-          // Agrega marcadores en coordenada_x y coordenada_y
-          if (this.coordenada_x && this.coordenada_y) {
+
+           // Agrega marcadores en coordenada_x y coordenada_y
+           if (this.coordenada_x && this.coordenada_y) {
 
             const xMarker = L.marker([this.coordenada_x, this.coordenada_y], { icon: myIcon }).addTo(map);
             xMarker.bindPopup('Punto de coordenadas').openPopup();
@@ -82,38 +69,18 @@ export class MapModalComponent {
             }
           }
 
-          // Agrega un evento de clic para verificar si el punto está dentro del polígono
-          /*  map.on('click', (e) => {
-               const latlng = e.latlng;
-               if (this.polygon.getBounds().contains(latlng)) {
-                 console.log('El punto está dentro del polígono.');
-   
-                 const myIcon = L.icon({
-                   iconUrl: '../../../../../assets/img/map_icon.png', // Debe coincidir con la ruta registrada
-                   iconSize: [30, 30], // Tamaño del ícono
-                 });
-             
-                 const coords = e.latlng;
-                 const marker = L.marker(latlng,{icon:myIcon}).addTo(map);
-                 const popup = marker.bindPopup('Ubicación dentro de la cuenca').openPopup();
-             
-                 // Cierra el globo después de 1 segundo (1000 milisegundos)
-                 setTimeout(() => {
-                   popup.closePopup();
-                   this.dialogRef.close(coords);
-                 }, 5000);               
-                 // Envía las coordenadas de regreso al componente padre
-                 
-               } else {
-                 alert('El punto no está dentro de la cuenca.');
-               }
-             });*/
           map.on('click', (e) => {
             const latlng = e.latlng;
             if (this.polygon.getBounds().contains(latlng)) {
               console.log('El punto está dentro del polígono.');
 
-              // Crea un Popup personalizado con botones
+              // Eliminar el marcador anterior si existe
+              if (this.marker) {
+                map.removeLayer(this.marker);
+              }
+
+              // Crea un nuevo marcador y Popup
+              this.marker = L.marker(latlng, { icon: myIcon }).addTo(map);
               const popupContent = `
                 <div>
                   <h3>Ubicación dentro de la cuenca</h3>
@@ -122,8 +89,6 @@ export class MapModalComponent {
                   <button id="btn-cerrar">Cerrar</button>
                 </div>
               `;
-
-              const marker = L.marker(latlng, { icon: myIcon }).addTo(map);
               const popup = L.popup()
                 .setLatLng(latlng)
                 .setContent(popupContent)
@@ -141,8 +106,6 @@ export class MapModalComponent {
                 // Cierra el Popup al hacer clic en "Cerrar"
                 map.closePopup(popup);
               });
-
-
             } else {
               alert('El punto no está dentro de la cuenca.');
             }
@@ -156,5 +119,4 @@ export class MapModalComponent {
         console.error('Error al cargar el GeoJSON:', error);
       });
   }
-
 }
