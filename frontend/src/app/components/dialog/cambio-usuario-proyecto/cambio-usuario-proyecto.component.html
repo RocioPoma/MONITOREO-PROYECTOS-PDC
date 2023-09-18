@@ -58,10 +58,12 @@
                                     (click)="userProyect(element)">
                                     <mat-icon>edit</mat-icon>
                                 </button> -->
-                                <label>
-                                
-                                    <input type="radio" name="grupoRadio" [checked]="element.ci == codigo" [value]=(element) > 
-                                </label>
+                               
+                                    <!-- <a href="">{{element.ci}} {{ codigo}}</a> -->
+<!--                                     <input type="radio" formControlName="opcionRadio"  [checked]="element.ci == codigo" [value]=(element) > 
+ -->                                    <mat-radio-group formControlName="opcionRadio" name="opcionRadio">
+                                        <mat-radio-button class="material-radio"  [value]=(element) [checked]="element.ci == codigo"></mat-radio-button>
+                                        </mat-radio-group>
                             </div>
                         </td>
                     </ng-container>

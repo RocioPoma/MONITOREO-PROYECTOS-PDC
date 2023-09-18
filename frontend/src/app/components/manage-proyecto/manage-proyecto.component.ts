@@ -521,6 +521,7 @@ export class ManageProyectoComponent {
     const dialogRef = this.dialog.open(CambioUsuarioProyectoComponent, dialogConfig);
     this.router.events.subscribe(() => {
       dialogRef.close();
+     
     });
     const sub = dialogRef.componentInstance.onEditUserProyect.subscribe((response) => {
       this.tableData();

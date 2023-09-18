@@ -54,9 +54,9 @@ export class CambioUsuarioProyectoComponent {
     this.UserProyectForm = this.formBuilder.group({
       // Define aquí tus otros campos del formulario si los tienes
       // ...
-      opcionRadio: ['', [Validators.required]]
+      opcionRadio: ['']
     });
-    console.log(this.dialogData.data.ci);
+    console.log(this.dialogData.data);
     this.codigo=this.dialogData.data.ci;
     this.tableData();
     if (this.dialogData.action === 'Edit') {
@@ -68,6 +68,7 @@ export class CambioUsuarioProyectoComponent {
     }
 
   }
+  
 
   //---------------------------------Fitrador----------------------------------------------------
 applyFilter(event: Event) {
@@ -115,9 +116,9 @@ handleSubmit(){
   console.log(data);
   //aqui el servicio
   
-  this.users.updateUser(data).subscribe((response:any)=>{
+   this.users.updateUser(data).subscribe((response:any)=>{
     this.dialogRef.close();
-    //this.onEditUserProyect.emit();
+    this.onEditUserProyect.emit();
     this.responseMessage = response.message;
     this.snackbarService.openSnackBar(this.responseMessage,"success");
   },(error:any)=>{
@@ -129,7 +130,7 @@ handleSubmit(){
       this.responseMessage = GlobalCostants.genericError;
     }
     this.snackbarService.openSnackBar(this.responseMessage,GlobalCostants.error);
-  })
+  }) 
   
 }
 

@@ -503,9 +503,10 @@ router.get('/listarDoc/:id_proyecto', (req, res) => {
 //---------------------------------------------------------------multer 2 
 
 // Ruta para subir archivos y guardar información
-router.post('/addDocs', multer.array('files'), (req, res) => {
+router.post('/addDocs', [multer.array('documentos')], (req, res) => {
   const { id_proyecto, descripcion } = req.body; // Datos del proyecto
-  console.log(id_proyecto,descripcion);
+  console.log('archivos,',files);
+  console.log(req.body);
   // Los archivos se han subido exitosamente, puedes manejarlos aquí
   console.log('Archivos subidos:', req.files);
 
