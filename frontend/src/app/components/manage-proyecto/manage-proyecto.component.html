@@ -152,7 +152,7 @@
                         <th mat-header-cell *matHeaderCellDef>Acciones</th>
                         <td mat-cell *matCellDef="let element" class="action-link">
                             <div class="icon-group">
-                                <button mat-icon-button color="primary" matTooltip="Edit" [disabled]="estado==='false'"
+                                <button mat-icon-button color="primary" matTooltip="Edit" [disabled]="estadoP==='false'"
                                     (click)="handleEditAction(element)">
                                     <mat-icon>edit</mat-icon>
                                 </button>
@@ -161,7 +161,7 @@
                                 <mat-icon>account_circle</mat-icon>
                                 </button>  -->
                                 <button mat-icon-button color="primary" matTooltip="Delete" class="icon"
-                                    [disabled]="estado==='false'" (click)="handleDeleteAction(element)">
+                                    [disabled]="estadoP==='false'" (click)="handleDeleteAction(element)">
                                     <mat-icon>delete</mat-icon>
                                 </button>
                                 <button mat-icon-button color="primary" matTooltip="Cambio User" class="icon"

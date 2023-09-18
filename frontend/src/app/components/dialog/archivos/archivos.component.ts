@@ -46,7 +46,7 @@ Submit(){
 var formD = this.proyectoForm.value;
 const formData = new FormData();
 for (var i = 0; i < this.myFiles.length; i++) { 
-  formData.append("file[]", this.myFiles[i]);
+  formData.append("files[]", this.myFiles[i]);
 }
  // Agregar otros datos al FormData
   console.log(this.dialogData.data,formD.Descripcion);

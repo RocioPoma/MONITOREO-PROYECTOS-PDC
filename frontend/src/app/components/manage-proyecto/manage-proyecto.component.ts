@@ -51,7 +51,7 @@ export class ManageProyectoComponent {
   municipios: any = [];
   openSeguimientosProyecto=false; //ABRIR LOS SEGUIMIENTOS DE ETAPAS DE PROYECTO
   apiResponse: any = []; //para filtrar con el select
-
+ estadoP: any;
    //----url del servidor backend
    url = environment.apiUrl;
    //----creamos la url para las imagenes
@@ -108,7 +108,7 @@ export class ManageProyectoComponent {
      this.am = AmString? (AmString): null;
      this.estado = estadoString? (estadoString): null;
      this.rol = rolString? (rolString): null;
-     console.log(this.rol);
+    // console.log(this.rol);
      //------------------------------------
 
 
@@ -121,13 +121,16 @@ export class ManageProyectoComponent {
       this.tableData();
       this.getMunicipio();
     }
-
+    
   }
 
 
   tableData() {
     this.ProyectoServices.getProyecto().subscribe((response: any) => {
       this.tabla=response;
+      console.log(response);
+      this.estadoP=response[0].estado;
+      console.log(this.estadoP);
       this.dataSource = new MatTableDataSource(response);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -151,6 +154,9 @@ export class ManageProyectoComponent {
   tableData2(ci:string) {
     this.ProyectoServices.getProyecto2(ci).subscribe((response: any) => {
       this.tabla=response;
+      console.log(response);
+      this.estadoP=response[0].estado;
+      console.log(this.estadoP);
       this.dataSource = new MatTableDataSource(response);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;

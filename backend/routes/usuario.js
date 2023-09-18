@@ -115,9 +115,9 @@ router.post('/login',(req,res)=>{
             if(results.length <= 0 || results[0].password != user.password){
                 return res.status(401).json({message:"Nombre de usuario o contraseña incorrecta"});
             }
-           /*  else if(results[0].estado==='false'){
+            else if(results[0].estado==='false'){
                 return res.status(401).json({message:"Esperar la aprobación del administrador"});   
-            } */
+            } 
             else if(results[0].password==user.password){
                 //GUARDAMOS CIFRADO LA CONTRASENA
                 const data = { nombre: results[0].nombre, estado: results[0].estado,rol: results[0].rol,ap_paterno: results[0].ap_paterno,ap_materno: results[0].ap_materno,ci: results[0].ci };               

@@ -36,7 +36,7 @@ export class CambioUsuarioProyectoComponent {
   tabla:any;
   logoDataUrl: string;
   infoFiltrada:any;
-  
+  codigo:string;
 
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -54,10 +54,10 @@ export class CambioUsuarioProyectoComponent {
     this.UserProyectForm = this.formBuilder.group({
       // Define aquí tus otros campos del formulario si los tienes
       // ...
-      opcionRadio: [null, [Validators.required]]
+      opcionRadio: ['', [Validators.required]]
     });
-  
-
+    console.log(this.dialogData.data.ci);
+    this.codigo=this.dialogData.data.ci;
     this.tableData();
     if (this.dialogData.action === 'Edit') {
       this.dialogAction = "Edit";
