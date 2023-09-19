@@ -126,9 +126,9 @@ export class ManageProyectoComponent {
   tableData() {
     this.ProyectoServices.getProyecto().subscribe((response: any) => {
       this.tabla = response;
-      console.log(response);
+      //console.log(response);
       this.estadoP = response[0].estado;
-      console.log(this.estadoP);
+      //console.log(this.estadoP);
       this.dataSource = new MatTableDataSource(response);
       // this.dataSource =response;
       this.dataSource.paginator = this.paginator;

@@ -117,7 +117,7 @@
                         <th mat-header-cell *matHeaderCellDef>Doc.</th>
                         <td mat-cell *matCellDef="let element">
                             <button mat-icon-button color="accent" matTooltip="Seguimiento"
-                            [disabled]="estadoP==='false'" (click)="handleAddDoc(element)">
+                             (click)="handleAddDoc(element)">
                             <mat-icon>insert_drive_file</mat-icon>
                         </button>
                         </td>
@@ -128,7 +128,7 @@
                         <th mat-header-cell *matHeaderCellDef>Seg.</th>
                         <td mat-cell *matCellDef="let element" class="action-link">
                             <button mat-icon-button color="accent" matTooltip="Seguimiento"
-                                [disabled]="estadoP==='false'" (click)="handleSeguimientoAction(element)">
+                                 (click)="handleSeguimientoAction(element)">
                                 <mat-icon>edit_square</mat-icon>
                             </button>
                         </td>
@@ -152,7 +152,7 @@
                         <th mat-header-cell *matHeaderCellDef>Acciones</th>
                         <td mat-cell *matCellDef="let element" class="action-link">
                             <div class="icon-group">
-                                <button mat-icon-button color="primary" matTooltip="Edit" [disabled]="estadoP==='false'"
+                                <button mat-icon-button color="primary" matTooltip="Edit" [disabled]="element.estado==='false'&& rol==='Operador' "
                                     (click)="handleEditAction(element)">
                                     <mat-icon>edit</mat-icon>
                                 </button>
@@ -161,7 +161,7 @@
                                 <mat-icon>account_circle</mat-icon>
                                 </button>  -->
                                 <button mat-icon-button color="primary" matTooltip="Delete" class="icon"
-                                    [disabled]="estadoP==='false'" (click)="handleDeleteAction(element)">
+                                    [disabled]="element.estado==='false' && rol==='Operador'" (click)="handleDeleteAction(element)">
                                     <mat-icon>delete</mat-icon>
                                 </button>
                                 <button mat-icon-button color="primary" matTooltip="Cambio User" class="icon"
