@@ -13,7 +13,7 @@ const fs = require('fs');
 router.get('/get', (req, res) => {
   // const sql = "SELECT P.id_proyecto,  P.nom_proyecto, fecha_inicio, fecha_fin, DATE_FORMAT(P.fecha_inicio, '%d-%m-%Y') as fecha_inicio_convert,  DATE_FORMAT(P.fecha_fin, '%d-%m-%Y') as fecha_fin_convert,  DATE_FORMAT(P.fecha_registro, '%d-%m-%Y') as fecha_registro,  P.area,  P.coordenada_x,  P.coordenada_y,  P.id_categoria,  P.id_tipologia,  P.id_indicador,  P.id_cuenca,  P.estado,  P.cantidad,  P.hombres,  P.mujeres,  M.nombre_municipio,  M.id_municipio,  C.nom_cuenca AS NombreCuenca,  CAT.nom_categoria AS NombreCategoria,  TIP.nom_tipologia AS NombreTipologia FROM  PROYECTO AS P JOIN PROYECTO_CIUDAD_O_COMUNIDAD AS PCOC ON P.id_proyecto = PCOC.id_proyecto JOIN CIUDAD_O_COMUNIDAD AS CC ON PCOC.id_ciudad_comunidad = CC.id JOIN MUNICIPIO AS M ON CC.id_municipio = M.id_municipio JOIN CUENCA AS C ON P.id_cuenca = C.id_cuenca JOIN CATEGORIA AS CAT ON P.id_categoria = CAT.id_categoria JOIN TIPOLOGIA AS TIP ON P.id_tipologia = TIP.id_tipologia GROUP BY P.id_proyecto;"
   const sql = `  
-  SELECT 
+    SELECT 
     p.*,
     DATE_FORMAT(p.fecha_inicio, '%d-%m-%Y') AS fecha_inicio_convert,
     DATE_FORMAT(p.fecha_fin, '%d-%m-%Y') AS fecha_fin_convert,
@@ -30,36 +30,43 @@ router.get('/get', (req, res) => {
     ae.descripcion AS accion_estrategica,
     i.nombre_indicador,
     GROUP_CONCAT(DISTINCT com.id SEPARATOR ', ') AS comunidades,
+    GROUP_CONCAT(DISTINCT com.nombre SEPARATOR ', ') AS nombre_comunidades,
     alc.cantidad,
     um.nom_unidad AS unidad_medicion_alcance,   
     
     (SELECT e.nombre_etapa FROM etapa_proyecto ep
-     INNER JOIN etapa e ON ep.id_etapa = e.id_etapa
-     WHERE ep.id_proyecto = p.id_proyecto
-     ORDER BY e.id_etapa DESC
-     LIMIT 1) AS ultima_etapa,
+    INNER JOIN etapa e ON ep.id_etapa = e.id_etapa
+    WHERE ep.id_proyecto = p.id_proyecto
+    ORDER BY e.id_etapa DESC
+    LIMIT 1) AS ultima_etapa,
+    
+    (SELECT entidad_ejec.nom_entidad_ejecutora
+    FROM etapa_proyecto ep_ejec
+    INNER JOIN entidad_ejecutora entidad_ejec ON ep_ejec.id_entidad_ejecutora = entidad_ejec.id_entidad_ejecutora
+    WHERE ep_ejec.id_proyecto = p.id_proyecto
+    ORDER BY ep_ejec.id_etapa_proyecto DESC
+    LIMIT 1) AS entidad_ejecutora,
+    
     GROUP_CONCAT(DISTINCT ef.nom_entidad_financiera SEPARATOR ', ') AS fuentes_financiamiento
 
+  FROM proyecto p
+  LEFT JOIN tipologia t ON p.id_tipologia = t.id_tipologia
+  LEFT JOIN categoria c ON p.id_categoria = c.id_categoria
+  LEFT JOIN cuenca cu ON p.id_cuenca = cu.id_cuenca
+  LEFT JOIN proyecto_ciudad_o_comunidad pc ON p.id_proyecto = pc.id_proyecto
+  LEFT JOIN ciudad_o_comunidad com ON pc.id_ciudad_comunidad = com.id
+  LEFT JOIN alcance alc ON p.id_proyecto = alc.id_proyecto
+  LEFT JOIN unidad_medicion um ON alc.id_unidad_medicion = um.id_unidad_medicion
+  LEFT JOIN accion_estrategica ae ON p.id_accion_estrategica = ae.id_accion_estrategica
+  LEFT JOIN linea_de_accion la ON ae.id_linea_accion = la.id_linea_accion
+  LEFT JOIN linea_estrategica le ON la.id_linea_estrategica = le.id_linea_estrategica
+  LEFT JOIN indicador i ON p.id_indicador = i.id_indicador
+  LEFT JOIN municipio mu ON com.id_municipio = mu.id_municipio
+  LEFT JOIN etapa_proyecto ep ON p.id_proyecto = ep.id_proyecto
+  LEFT JOIN financiamiento f ON ep.id_etapa_proyecto = f.id_etapa_proyecto
+  LEFT JOIN entidad_financiera ef ON f.id_entidad_financiera = ef.id_entidad_financiera
 
-FROM proyecto p
-LEFT JOIN tipologia t ON p.id_tipologia = t.id_tipologia
-LEFT JOIN categoria c ON p.id_categoria = c.id_categoria
-LEFT JOIN cuenca cu ON p.id_cuenca = cu.id_cuenca
-LEFT JOIN proyecto_ciudad_o_comunidad pc ON p.id_proyecto = pc.id_proyecto
-LEFT JOIN ciudad_o_comunidad com ON pc.id_ciudad_comunidad = com.id
-LEFT JOIN alcance alc ON p.id_proyecto = alc.id_proyecto
-LEFT JOIN unidad_medicion um ON alc.id_unidad_medicion = um.id_unidad_medicion
-LEFT JOIN accion_estrategica ae ON p.id_accion_estrategica = ae.id_accion_estrategica
-LEFT JOIN linea_de_accion la ON ae.id_linea_accion = la.id_linea_accion
-LEFT JOIN linea_estrategica le ON la.id_linea_estrategica = le.id_linea_estrategica
-LEFT JOIN indicador i ON p.id_indicador = i.id_indicador
-LEFT JOIN municipio mu ON com.id_municipio = mu.id_municipio
-LEFT JOIN etapa_proyecto ep ON p.id_proyecto = ep.id_proyecto
-LEFT JOIN financiamiento f ON ep.id_etapa_proyecto = f.id_etapa_proyecto
-LEFT JOIN entidad_financiera ef ON f.id_entidad_financiera = ef.id_entidad_financiera
-
-
-GROUP BY p.id_proyecto;
+  GROUP BY p.id_proyecto;
  `;
   /*`
     SELECT 
@@ -505,7 +512,7 @@ router.get('/listarDoc/:id_proyecto', (req, res) => {
 // Ruta para subir archivos y guardar información
 router.post('/addDocs', [multer.array('documentos')], (req, res) => {
   const { id_proyecto, descripcion } = req.body; // Datos del proyecto
-  console.log('archivos,',files);
+  console.log('archivos,', files);
   console.log(req.body);
   // Los archivos se han subido exitosamente, puedes manejarlos aquí
   console.log('Archivos subidos:', req.files);

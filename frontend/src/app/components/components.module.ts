@@ -43,6 +43,7 @@ import { CambioUsuarioProyectoComponent } from './dialog/cambio-usuario-proyecto
 import { ReportesIndicadoresComponent } from './reportes-indicadores/reportes-indicadores.component';
 import { ArchivosProyectoComponent } from './dialog/archivos-proyecto/archivos-proyecto.component';
 import { ArchivosComponent } from './dialog/archivos/archivos.component';
+import { ManageComunidadComponent } from './manage-comunidad/manage-comunidad.component';
 //import { ComponentsRoutingModule } from './components-routing.module';
 
 
@@ -77,7 +78,8 @@ import { ArchivosComponent } from './dialog/archivos/archivos.component';
     CambioUsuarioProyectoComponent,
     ReportesIndicadoresComponent,
     ArchivosProyectoComponent,
-    ArchivosComponent
+    ArchivosComponent,
+    ManageComunidadComponent
   ],
   imports: [
     CommonModule,

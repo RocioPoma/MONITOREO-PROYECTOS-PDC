@@ -10,10 +10,10 @@ import * as L from 'leaflet';
 })
 export class MapModalComponent {
 
-  polygon: any; // Variable para el polígono
+  polygon: any; 
   coordenada_x: any;
   coordenada_y: any;
-  marker: any; // Variable para el marcador
+  marker: any; // Variable para el marcador del mapa(punto)
 
   constructor(
     public dialogRef: MatDialogRef<MapModalComponent>,

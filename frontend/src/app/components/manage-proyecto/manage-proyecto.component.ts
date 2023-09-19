@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 //servicio
 import { ProyectoService } from 'src/app/services/proyecto.service';
@@ -47,33 +47,34 @@ export class ManageProyectoComponent {
   displayedColumns: string[] = ['Nro', 'NombreProyecto', 'FechaInicio', 'FechaFin', 'NombreMunicipio', 'UltimaEtapa', 'NombreCategoria', 'NombreTipologia', 'documento', 'seguimiento', 'Acciones'];
   dataSource: any;
   responseMessage: any;
-  proyecto:any;
+  proyecto: any;
   municipios: any = [];
-  openSeguimientosProyecto=false; //ABRIR LOS SEGUIMIENTOS DE ETAPAS DE PROYECTO
+  openSeguimientosProyecto = false; //ABRIR LOS SEGUIMIENTOS DE ETAPAS DE PROYECTO
   apiResponse: any = []; //para filtrar con el select
- estadoP: any;
-   //----url del servidor backend
-   url = environment.apiUrl;
-   //----creamos la url para las imagenes
-   fileURL = this.url + '/uploads/documents/';
- 
+  estadoP: any;
+  //----url del servidor backend
+  url = environment.apiUrl;
+  //----creamos la url para las imagenes
+  fileURL = this.url + '/uploads/documents/';
 
-    //variables para pdf
-    usuario: any;
-    entidadN: any;
-    ap:any;
-    am:any;
-    estado:any;
-    rol:any;
-    ci:any;
-    tabla:any;
-    logoDataUrl: string;
-    infoFiltrada:any;
-    pipe = new DatePipe('en-US');
+
+  //variables para pdf
+  usuario: any;
+  entidadN: any;
+  ap: any;
+  am: any;
+  estado: any;
+  rol: any;
+  ci: any;
+  tabla: any;
+  logoDataUrl: string;
+  infoFiltrada: any;
+  pipe = new DatePipe('en-US');
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatTable) table: MatTable<any>;
 
   constructor(
     private ProyectoServices: ProyectoService,
@@ -87,51 +88,49 @@ export class ManageProyectoComponent {
 
   ngOnInit(): void {
     const ciString = localStorage.getItem('ci');
-    this.ci = ciString? (ciString): null;
+    this.ci = ciString ? (ciString) : null;
     console.log(this.ci);
-   /*  this.tableData();
-    this.getMunicipio(); */
+    /*  this.tableData();
+     this.getMunicipio(); */
 
-    
-   
-
-     //para usaurio de pdf    
-     const nombreString = localStorage.getItem('nombre');
-     const entidadString = localStorage.getItem('entidad');
-     const ApString = localStorage.getItem('ap_paterno');
-     const AmString = localStorage.getItem('ap_materno');
-     const estadoString = localStorage.getItem('estado');
-     const rolString = localStorage.getItem('rol');
-     this.usuario = nombreString? (nombreString): null;
-     this.entidadN = entidadString? (entidadString): null;
-     this.ap = ApString ? (ApString ): null;
-     this.am = AmString? (AmString): null;
-     this.estado = estadoString? (estadoString): null;
-     this.rol = rolString? (rolString): null;
+    //para usaurio de pdf    
+    const nombreString = localStorage.getItem('nombre');
+    const entidadString = localStorage.getItem('entidad');
+    const ApString = localStorage.getItem('ap_paterno');
+    const AmString = localStorage.getItem('ap_materno');
+    const estadoString = localStorage.getItem('estado');
+    const rolString = localStorage.getItem('rol');
+    this.usuario = nombreString ? (nombreString) : null;
+    this.entidadN = entidadString ? (entidadString) : null;
+    this.ap = ApString ? (ApString) : null;
+    this.am = AmString ? (AmString) : null;
+    this.estado = estadoString ? (estadoString) : null;
+    this.rol = rolString ? (rolString) : null;
     // console.log(this.rol);
-     //------------------------------------
+    //------------------------------------
 
 
     //console.log("url: " + this.fileURL);
-    if(this.rol === 'Operador' ){
+    if (this.rol === 'Operador') {
       this.tableData2(this.ci);
       this.getMunicipio();
-    }else{
+    } else {
       console.log(this.rol);
       this.tableData();
       this.getMunicipio();
     }
-    
+
   }
 
 
   tableData() {
     this.ProyectoServices.getProyecto().subscribe((response: any) => {
-      this.tabla=response;
+      this.tabla = response;
       console.log(response);
-      this.estadoP=response[0].estado;
+      this.estadoP = response[0].estado;
       console.log(this.estadoP);
       this.dataSource = new MatTableDataSource(response);
+      // this.dataSource =response;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     }, (error: any) => {
@@ -143,19 +142,19 @@ export class ManageProyectoComponent {
       }
       this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
     })
-    
-       //llamar a logo y convertilo
-       Utils.getImageDataUrlFromLocalPath1('../../../assets/img/logo_sihita.png').then(
-        result => this.logoDataUrl = result
-      )
+
+    //llamar a logo y convertilo
+    Utils.getImageDataUrlFromLocalPath1('../../../assets/img/logo_sihita.png').then(
+      result => this.logoDataUrl = result
+    )
   }
 
   //tabla2 para usuario
-  tableData2(ci:string) {
+  tableData2(ci: string) {
     this.ProyectoServices.getProyecto2(ci).subscribe((response: any) => {
-      this.tabla=response;
+      this.tabla = response;
       console.log(response);
-      this.estadoP=response[0].estado;
+      this.estadoP = response[0].estado;
       console.log(this.estadoP);
       this.dataSource = new MatTableDataSource(response);
       this.dataSource.paginator = this.paginator;
@@ -169,11 +168,11 @@ export class ManageProyectoComponent {
       }
       this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
     })
-    
-       //llamar a logo y convertilo
-       Utils.getImageDataUrlFromLocalPath1('../../../assets/img/logo_sihita.png').then(
-        result => this.logoDataUrl = result
-      )
+
+    //llamar a logo y convertilo
+    Utils.getImageDataUrlFromLocalPath1('../../../assets/img/logo_sihita.png').then(
+      result => this.logoDataUrl = result
+    )
   }
 
   //------------------- OBTENEMOS MUNICIPIO
@@ -198,9 +197,9 @@ export class ManageProyectoComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
     //pdf
     //dar valor a variables para su impresion
-    console.log(this.dataSource.filteredData);   
-    this.infoFiltrada=this.dataSource.filteredData;
-    this.tabla=this.infoFiltrada;
+    console.log(this.dataSource.filteredData);
+    this.infoFiltrada = this.dataSource.filteredData;
+    this.tabla = this.infoFiltrada;
     //pdf
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
@@ -211,11 +210,11 @@ export class ManageProyectoComponent {
     filterValue = filterValue.trim().toLowerCase();
     this.dataSource.filterPredicate = (data: any, filter: string) => data.nombre_municipio.trim().toLowerCase() === filter;
     this.dataSource.filter = filterValue;
-     //pdf
+    //pdf
     //dar valor a variables para su impresion
-    console.log(this.dataSource.filteredData);   
-    this.infoFiltrada=this.dataSource.filteredData;
-    this.tabla=this.infoFiltrada;
+    console.log(this.dataSource.filteredData);
+    this.infoFiltrada = this.dataSource.filteredData;
+    this.tabla = this.infoFiltrada;
     //pdf
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
@@ -267,8 +266,8 @@ export class ManageProyectoComponent {
     })
   }
 
-   //------------ LLAMA AL MODAL PARA EL SEGUIMIENTO DE PROYECTO
-   handleSeguimientoAction(values: any) {
+  //------------ LLAMA AL MODAL PARA EL SEGUIMIENTO DE PROYECTO
+  handleSeguimientoAction(values: any) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       action: 'seguimiento',
@@ -336,170 +335,249 @@ export class ManageProyectoComponent {
     })
   }
 
-  openEtapasProyecto(proyecto:any){
-    this.proyecto=proyecto;
+  openEtapasProyecto(proyecto: any) {
+    this.proyecto = proyecto;
     console.log(proyecto);
     // console.log(this.openSeguimientosProyecto);
-    if(this.openSeguimientosProyecto){
-      this.openSeguimientosProyecto=false;
+    if (this.openSeguimientosProyecto) {
+      this.openSeguimientosProyecto = false;
       // this.openSeguimientosProyecto=true;
-    }else{
-      this.openSeguimientosProyecto= true;
+    } else {
+      this.openSeguimientosProyecto = true;
     }
   }
   //excel
-    generateExcel(){
-      //zona
-     // Definir proyecciones
-     proj4.defs("EPSG:4326", "+proj=longlat +datum=WGS84 +no_defs");
-     proj4.defs("EPSG:32720", "+proj=utm +zone=20 +south +datum=WGS84 +units=m +no_defs");// Puedes cambiar el número de zona según tu ubicación
+  generateExcel() {
+    //zona
+    // Definir proyecciones
+    proj4.defs("EPSG:4326", "+proj=longlat +datum=WGS84 +no_defs");
+    proj4.defs("EPSG:32720", "+proj=utm +zone=20 +south +datum=WGS84 +units=m +no_defs");// Puedes cambiar el número de zona según tu ubicación
 
 
-      const fechaActual = new Date();
-      const añoActual = fechaActual.getFullYear();
-       //array para los datos que imprime  
+    const fechaActual = new Date();
+    const añoActual = fechaActual.getFullYear();
+    //array para los datos que imprime  
     const tableBody = [];
-    
-    for (let i = 0; i < this.tabla.length; i++) {      
+
+    for (let i = 0; i < this.tabla.length; i++) {
       const person = this.tabla[i];
       // Coordenadas geográficas (latitud y longitud)
       const latitud = parseFloat(person.coordenada_x); // Por ejemplo, París
       const longitud = parseFloat(person.coordenada_y);
-    
-      const coordenadasUTM = proj4("EPSG:4326", "EPSG:32720", [latitud,  longitud]);
-      
+
+      const coordenadasUTM = proj4("EPSG:4326", "EPSG:32720", [latitud, longitud]);
+
       // coordenadasUTM es un array con [Este, Norte]
       const este = coordenadasUTM[0];
       const norte = coordenadasUTM[1];
       //console.log(este,norte);
-      tableBody.push([i+1,person.linea_estrategica,i+1,person.linea_de_accion,person.nom_proyecto, 'Tarija',person.nombre_municipio,'20S', este, norte,  añoActual,person.ultima_etapa,person.fuentes_financiamiento]);
+      tableBody.push([i + 1, person.linea_estrategica, i + 1, person.linea_de_accion, person.nom_proyecto, 'Tarija', person.nombre_municipio, '20S', este, norte, añoActual, person.ultima_etapa, person.fuentes_financiamiento]);
     }
-    
+
     // Crear una hoja de cálculo de Excel
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
 
-      // Establecer estilos para aparentar centrado
+    // Establecer estilos para aparentar centrado
     ws['A1'] = { t: 's', v: 'Título de la tabla', s: { font: { bold: true }, alignment: { horizontal: 'center' } } };
     // Combinar las celdas para el título
     ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 12 } }];
-      const headers = ['Nº', 'Lineamientos Estrategicos','Nº', 'Linea de accion', 'Accion Especifica', 'Departamento', 'Municipio', 'Zona', 'Este', 'Norte', 'Gestion', 'Estado', 'Fuente de financiamiento'];
-      // Agregar los encabezados de columna en la segunda fila      
-      XLSX.utils.sheet_add_aoa(ws, [headers], { origin: 'A2' });
-      // Agregar los datos de tableBody a la hoja de cálculo
-      XLSX.utils.sheet_add_aoa(ws, tableBody, { origin: 'A3' });
+    const headers = ['Nº', 'Lineamientos Estrategicos', 'Nº', 'Linea de accion', 'Accion Especifica', 'Departamento', 'Municipio', 'Zona', 'Este', 'Norte', 'Gestion', 'Estado', 'Fuente de financiamiento'];
+    // Agregar los encabezados de columna en la segunda fila      
+    XLSX.utils.sheet_add_aoa(ws, [headers], { origin: 'A2' });
+    // Agregar los datos de tableBody a la hoja de cálculo
+    XLSX.utils.sheet_add_aoa(ws, tableBody, { origin: 'A3' });
 
     // Crear un libro de Excel
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Datos'); // Asignar la hoja de cálculo al libro
-    XLSX.writeFile(wb,'information.xlsx');
-    
+    XLSX.writeFile(wb, 'information.xlsx');
+
   }
 
 
-   //pdf
+  exportToExcel() {
+    // Convierte tus datos a un formato adecuado para xlsx
+    const fechaActual = new Date();
+    const añoActual = fechaActual.getFullYear();
+   
+    console.log(this.dataSource.data);
     
-   generateReport() {    
+    const dataForExcel = this.dataSource.filteredData.map(item => {
+       // Coordenadas geográficas (latitud y longitud)
+       const latitud = parseFloat(item.coordenada_x); // Por ejemplo, París
+       const longitud = parseFloat(item.coordenada_y);
+ 
+       const coordenadasUTM = proj4("EPSG:4326", "EPSG:32720", [latitud, longitud]);
+ 
+       // coordenadasUTM es un array con [Este, Norte]
+       const este = coordenadasUTM[0];
+       const norte = coordenadasUTM[1];
+      return {
+        "ENTIDAD EJECUTORA": item["entidad_ejecutora"],
+        "PROYECTO/ACCIÓN": item["nom_proyecto"],
+        "TIPOLOGÍA": item["nom_tipologia"],
+        "CATEGORÍA": item["nom_categoria"],
+        "ETAPA": item["ultima_etapa"],
+        "FECHA INICIO": item["fecha_inicio_convert"],
+        "FECHA FINAL": item["fecha_fin_convert"],
+        "AÑO DE EVALUACIÓN": añoActual,
+        "MUNICIPIO": item["nombre_municipio"],
+        "CIUDAD/COMUNIDAD": item["nombre_comunidades"],
+        "ÁREA": item["area"],
+        "COORDENADA X DECIMAL": item["coordenada_x"],
+        "COORDENADA Y DECIMAL": item["coordenada_y"],
+        "COORDENADA X UTM": este,
+        "COORDENADA Y UTM": norte,
+        "FUENTES FINANCIAMIENTO": item["documento"],
+        "TOTAL Hab.": item["estado"],
+        "MUJERES": item["fecha_fin"],
+        "HOMBRES": item["fecha_inicio"],
+        "LÍNEA DE ACCIÓN": item["Linea de Accion"],
+        "LÍNEA ESTRATÉGICA": item["Linea Estrategica"],
+        "ACCIÓN ESTRATÉGICA": item["Mujeres"],
+        "INDICADOR": item["Nom Cuenca"],
+      };
+    });
+
+
+    // Crea un objeto de hoja de cálculo
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataForExcel);
+
+    // Aplica el estilo de negrita a las celdas de encabezado
+    const headerCellStyle = {
+      font: { bold: true }
+    };
+
+    // Encuentra todas las claves de las celdas de encabezado (A1, B1, C1, etc.)
+    const headerKeys = Object.keys(ws).filter(key => key.startsWith('A1:'));
+
+    // Aplica el estilo de negrita a las celdas de encabezado
+    headerKeys.forEach(key => {
+      ws[key].s = headerCellStyle;
+    });
+
+    // Crea un libro de trabajo y agrega la hoja de cálculo
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1'); // 'Sheet1' es el nombre de la hoja de cálculo
+
+    // Guarda el archivo Excel
+    XLSX.writeFile(wb, 'reporte.xlsx');
+
+    // Opcional: Puedes volver a renderizar la MatTable para actualizar la vista
+    this.table.renderRows();
+
+
+  }
+
+  //pdf
+
+  generateReport() {
     const currentDate = this.pipe.transform(Date.now(), 'M/d/yy, h:mm a');
-    const usuario = this.usuario; 
-    const ap = this.ap; 
-    const am = this.am; 
-   //array para los datos que imprime  
+    const usuario = this.usuario;
+    const ap = this.ap;
+    const am = this.am;
+    //array para los datos que imprime  
     const tableBody = [];
     for (let i = 0; i < this.tabla.length; i++) {
       const person = this.tabla[i];
-      tableBody.push([person.nom_proyecto, person.fecha_inicio_convert,person.fecha_fin_convert, person.nombre_municipio, person.nom_cuenca,person.nom_categoria,person.nom_tipologia]);
+      tableBody.push([person.nom_proyecto, person.fecha_inicio_convert, person.fecha_fin_convert, person.nombre_municipio, person.nom_cuenca, person.nom_categoria, person.nom_tipologia]);
     }
 
-  //inicio de la documentacion
+    //inicio de la documentacion
     const documentDefinition = {
       pageSize: 'A4',
       //nuevo footer y header
-      footer: function(currentPage, pageCount) {
+      footer: function (currentPage, pageCount) {
         return {
-          
+
           columns: [
-            { 
-                text: `Impreso por: ${usuario+' '+ap+' '+am}`, 
-                alignment: 'left', margin: [40, 10],  
-                fontSize: 8,italics: true }, 
             {
-                text:`pagina `+ currentPage.toString() + ' / ' + pageCount,
-                alignment: 'right',
-                margin: [20, 5],
-                fontSize: 8
+              text: `Impreso por: ${usuario + ' ' + ap + ' ' + am}`,
+              alignment: 'left', margin: [40, 10],
+              fontSize: 8, italics: true
             },
-                  
-                  ]
+            {
+              text: `pagina ` + currentPage.toString() + ' / ' + pageCount,
+              alignment: 'right',
+              margin: [20, 5],
+              fontSize: 8
+            },
+
+          ]
         };
       },
       header: () => (
-        { 
+        {
           columns: [
-            {  image: this.logoDataUrl,  width: 40,
-              height: 40 ,   margin: [5, 5] },
-            { text: `Fecha: ${currentDate}`, alignment: 'right', margin: [0, 20, 10, 10],  //0 , Y
-            fontSize: 8, italics: true }
-          ]  
-        }         
-        
-        ),
-     
+            {
+              image: this.logoDataUrl, width: 40,
+              height: 40, margin: [5, 5]
+            },
+            {
+              text: `Fecha: ${currentDate}`, alignment: 'right', margin: [0, 20, 10, 10],  //0 , Y
+              fontSize: 8, italics: true
+            }
+          ]
+        }
+
+      ),
+
       //nuevo footer y header
 
- 
 
-     //margenes
-        pageMargins: [ 40, 60, 40, 60 ],
-        Times: {
-          normal: 'Times-Roman',           
+
+      //margenes
+      pageMargins: [40, 60, 40, 60],
+      Times: {
+        normal: 'Times-Roman',
+      },
+      //contenido tablas e informacion
+      content: [
+        'Datos de Indicadores\n\n',
+        {
+
+          table: {
+            headerRows: 1,
+            widths: ['*', '*', '*', '*', '*', '*', '*'],
+            body: [
+              ['Nombre_Proyecto', 'Fecha_inicio', 'Fecha_Fin', 'Municipio', 'Cuenca', 'Categoria', 'Topologia'],
+              ...tableBody
+            ]
+          },
+          fontSize: 8,
+          italics: true
+
         },
-        //contenido tablas e informacion
-          content: [              
-             'Datos de Indicadores\n\n',              
-            {
-              
-                    table: {
-                      headerRows: 1,
-                      widths: ['*','*','*','*','*','*','*'],
-                      body: [
-                        ['Nombre_Proyecto','Fecha_inicio','Fecha_Fin','Municipio','Cuenca','Categoria','Topologia'],
-                       ...tableBody
-                      ]
-                    },	
-                    fontSize: 8,
-                    italics: true
 
-            }, 
-            
-                        
-          ]
-             //margenes
-            
-           
 
-          //footer pie de pagina
-         /*  footer: function(currentPage, pageCount) {
-            return {                
-              text: currentPage.toString() + '/' + pageCount,
-              alignment: 'right', // Align the pagination to the center
-              margin: [10, 0] // Adjust margin as needed                
-            };
-          }, */
-         /*  footer: () => ({
-            columns: [
-              { text: `Impreso por: ${this.usuario+' '+this.ap+' '+this.am}`, alignment: 'left', margin: [5, 5],  fontSize: 8,italics: true },
-                
-            ],
-           
-           
-          }) */
-          
+      ]
+      //margenes
 
-         
-        };
+
+
+      //footer pie de pagina
+      /*  footer: function(currentPage, pageCount) {
+         return {                
+           text: currentPage.toString() + '/' + pageCount,
+           alignment: 'right', // Align the pagination to the center
+           margin: [10, 0] // Adjust margin as needed                
+         };
+       }, */
+      /*  footer: () => ({
+         columns: [
+           { text: `Impreso por: ${this.usuario+' '+this.ap+' '+this.am}`, alignment: 'left', margin: [5, 5],  fontSize: 8,italics: true },
+             
+         ],
         
-        pdfMake.createPdf(documentDefinition).open();
-      }
+        
+       }) */
+
+
+
+    };
+
+    pdfMake.createPdf(documentDefinition).open();
+  }
 
 
 
@@ -507,9 +585,9 @@ export class ManageProyectoComponent {
 
 
 
-      //cambio de usuario proyecto
-      
-      //------------ LLAMA AL MODAL PARA EDITAR
+  //cambio de usuario proyecto
+
+  //------------ LLAMA AL MODAL PARA EDITAR
   handleEditActionUserProyecto(values: any) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
@@ -521,7 +599,7 @@ export class ManageProyectoComponent {
     const dialogRef = this.dialog.open(CambioUsuarioProyectoComponent, dialogConfig);
     this.router.events.subscribe(() => {
       dialogRef.close();
-     
+
     });
     const sub = dialogRef.componentInstance.onEditUserProyect.subscribe((response) => {
       this.tableData();
