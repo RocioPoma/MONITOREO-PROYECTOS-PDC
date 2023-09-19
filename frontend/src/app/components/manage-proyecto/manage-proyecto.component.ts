@@ -396,22 +396,24 @@ export class ManageProyectoComponent {
 
 
   exportToExcel() {
-    // Convierte tus datos a un formato adecuado para xlsx
     const fechaActual = new Date();
     const añoActual = fechaActual.getFullYear();
-   
+  
     console.log(this.dataSource.data);
-    
+  
     const dataForExcel = this.dataSource.filteredData.map(item => {
-       // Coordenadas geográficas (latitud y longitud)
-       const latitud = parseFloat(item.coordenada_x); // Por ejemplo, París
-       const longitud = parseFloat(item.coordenada_y);
- 
-       const coordenadasUTM = proj4("EPSG:4326", "EPSG:32720", [latitud, longitud]);
- 
-       // coordenadasUTM es un array con [Este, Norte]
-       const este = coordenadasUTM[0];
-       const norte = coordenadasUTM[1];
+      // Definir proyecciones
+      proj4.defs("EPSG:4326", "+proj=longlat +datum=WGS84 +no_defs");
+      proj4.defs("EPSG:32720", "+proj=utm +zone=20 +south +datum=WGS84 +units=m +no_defs");
+      // Coordenadas geográficas (latitud y longitud)
+      const latitud = parseFloat(item.coordenada_x);
+      const longitud = parseFloat(item.coordenada_y);
+
+      const coordenadasUTM = proj4("EPSG:4326", "EPSG:32720", [latitud, longitud]);
+
+      // coordenadasUTM es un array con [Este, Norte]
+      const este = coordenadasUTM[0];
+      const norte = coordenadasUTM[1];
       return {
         "ENTIDAD EJECUTORA": item["entidad_ejecutora"],
         "PROYECTO/ACCIÓN": item["nom_proyecto"],
@@ -421,54 +423,63 @@ export class ManageProyectoComponent {
         "FECHA INICIO": item["fecha_inicio_convert"],
         "FECHA FINAL": item["fecha_fin_convert"],
         "AÑO DE EVALUACIÓN": añoActual,
+        "DEPARTAMENTO": 'TARIJA',
         "MUNICIPIO": item["nombre_municipio"],
         "CIUDAD/COMUNIDAD": item["nombre_comunidades"],
         "ÁREA": item["area"],
         "COORDENADA X DECIMAL": item["coordenada_x"],
         "COORDENADA Y DECIMAL": item["coordenada_y"],
-        "COORDENADA X UTM": este,
-        "COORDENADA Y UTM": norte,
-        "FUENTES FINANCIAMIENTO": item["documento"],
-        "TOTAL Hab.": item["estado"],
-        "MUJERES": item["fecha_fin"],
-        "HOMBRES": item["fecha_inicio"],
-        "LÍNEA DE ACCIÓN": item["Linea de Accion"],
-        "LÍNEA ESTRATÉGICA": item["Linea Estrategica"],
-        "ACCIÓN ESTRATÉGICA": item["Mujeres"],
-        "INDICADOR": item["Nom Cuenca"],
+        "ZONA": '20S',
+        "ESTE - UTM": este,
+        "NORTE - UTM": norte,
+        "FUENTES FINANCIAMIENTO": item["fuentes_financiamiento"],
+        "TOTAL Hab.": item["cantidad"],
+        "MUJERES": item["mujeres"],
+        "HOMBRES": item["hombres"],
+        "LÍNEA DE ACCIÓN": item["linea_de_accion"],
+        "LÍNEA ESTRATÉGICA": item["linea_estrategica"],
+        "ACCIÓN ESTRATÉGICA": item["accion_estrategica"],
+        "INDICADOR": item["nombre_indicador"],
       };
     });
-
-
+  
     // Crea un objeto de hoja de cálculo
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataForExcel);
-
-    // Aplica el estilo de negrita a las celdas de encabezado
+  
+    // Aplica el estilo de negrita a las celdas de encabezado y ajusta el ancho de las columnas
     const headerCellStyle = {
-      font: { bold: true }
+      font: { bold: true },
+      border: { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } },
+      alignment: { horizontal: 'center', vertical: 'center' },
     };
-
-    // Encuentra todas las claves de las celdas de encabezado (A1, B1, C1, etc.)
+  
+    const columnWidths = [
+      { wch: 20 }, // Ajusta el ancho de la primera columna
+      { wch: 20 }, // Ajusta el ancho de la segunda columna
+      // Agrega más ancho de columna según sea necesario
+    ];
+  
+    // Aplica el estilo de encabezado y ajusta el ancho de las columnas
     const headerKeys = Object.keys(ws).filter(key => key.startsWith('A1:'));
-
-    // Aplica el estilo de negrita a las celdas de encabezado
     headerKeys.forEach(key => {
       ws[key].s = headerCellStyle;
+      ws[key].s.border.color = { auto: 1 };
     });
-
+  
+    // Aplica el ancho de las columnas
+    ws['!cols'] = columnWidths;
+  
     // Crea un libro de trabajo y agrega la hoja de cálculo
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1'); // 'Sheet1' es el nombre de la hoja de cálculo
-
+  
     // Guarda el archivo Excel
     XLSX.writeFile(wb, 'reporte.xlsx');
-
+  
     // Opcional: Puedes volver a renderizar la MatTable para actualizar la vista
     this.table.renderRows();
-
-
   }
-
+  
   //pdf
 
   generateReport() {
