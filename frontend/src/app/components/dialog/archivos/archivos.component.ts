@@ -15,6 +15,9 @@ export class ArchivosComponent {
   myFiles:string [] = [];
   proyectoForm: any = FormGroup;
   responseMessage:any;
+  // Definir un arreglo para almacenar los archivos y sus vistas previas
+  files: { file: File, preview: string }[] = [];
+  selectedFiles: File[] = [];
 
   constructor(@Inject(MAT_DIALOG_DATA) public dialogData: any,
     private formBuilder: FormBuilder,
@@ -42,7 +45,7 @@ export class ArchivosComponent {
     }
   }
   
-Submit(){
+/* Submit(){
 var formD = this.proyectoForm.value;
 const formData = new FormData();
 for (var i = 0; i < this.myFiles.length; i++) { 
@@ -69,5 +72,57 @@ this.proyectoService.addA(formData).subscribe((response:any)=>{
       }
       this.snackbarService.openSnackBar(this.responseMessage,GlobalCostants.error);
     })
+} */
+
+
+onFileSelected(event: any): void {
+  this.selectedFiles = event.target.files;
 }
+
+uploadFiles(): void {
+  var formD = this.proyectoForm.value;
+  if (this.selectedFiles.length > 0) {
+    this.proyectoService.uploadFiles(this.selectedFiles,formD.Descripcion,this.dialogData.data,)
+      .subscribe(response => {
+        console.log('Archivos subidos con éxito', response);
+        // Realiza alguna acción después de subir los archivos
+      }, error => {
+        console.error('Error al subir archivos', error);
+      });
+  }
+}
+
+
+//-------------------subir archivos--------------------------------------
+// Función para manejar la selección de archivos
+/* selectFiles(event: any): void {
+  if (event.target.files && event.target.files.length > 0) {
+    for (let i = 0; i < event.target.files.length; i++) {
+      const file = event.target.files[i];
+      this.selectedFiles=event.target.files[i];
+      // Crear una instancia de FileReader
+      const reader = new FileReader();
+
+      // Configurar un controlador de eventos para cuando el archivo se cargue
+      reader.onload = (e) => {
+        // Agregar el archivo y su vista previa al arreglo
+        this.files.push({ file, preview: reader.result as string });
+      };
+
+      // Leer el contenido del archivo como una URL de datos
+      reader.readAsDataURL(file);
+    }
+    this.proyectoService.uploadFiles(this.selectedFiles).subscribe(Response=>{
+      console.log('Archivos subidos con éxito', Response);
+    },error => {
+      console.error('Error al subir archivos', error);
+    });  
+  }
+} */
+
+// Función para eliminar un archivo de la lista
+removeFile(index: number): void {
+  this.files.splice(index, 1);
+}
+
 }

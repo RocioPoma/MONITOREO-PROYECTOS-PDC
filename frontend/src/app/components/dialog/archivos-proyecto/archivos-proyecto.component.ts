@@ -5,10 +5,12 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { SnackbarService } from 'src/app/services/snackbar.service';
-import { UsuarioService } from 'src/app/services/usuario.service';
+
+import {  ProyectoService} from 'src/app/services/proyecto.service';
 import { GlobalCostants } from 'src/app/shared/global-constants';
 import { ArchivosComponent } from '../archivos/archivos.component';
 import { Router } from '@angular/router';
+import { ConfirmationComponent } from '../confirmation/confirmation.component';
 
 @Component({
   selector: 'app-archivos-proyecto',
@@ -45,7 +47,7 @@ export class ArchivosProyectoComponent {
 
   constructor(@Inject(MAT_DIALOG_DATA) public dialogData: any,
   private formBuilder: FormBuilder,
-  private users: UsuarioService,
+  private users: ProyectoService,
   private dialogRef:MatDialogRef<ArchivosProyectoComponent>,
   private router: Router,
   private dialog: MatDialog,
@@ -60,7 +62,7 @@ ngOnInit():void{
     opcionRadio: [null, [Validators.required]]
   });
 
-
+  console.log(this.dialogData.data.id_proyecto);
   this.tableData();
   if (this.dialogData.action === 'Edit') {
     this.dialogAction = "Edit";
@@ -87,7 +89,7 @@ applyFilter(event: Event) {
 }
 
     tableData() {
-      this.users.getusuario().subscribe((response: any) => {
+      this.users.getDoc(this.dialogData.data.id_proyecto).subscribe((response: any) => {
         console.log(response);    
         this.usu=response;
         this.dataSource = new MatTableDataSource(response);
@@ -105,37 +107,34 @@ applyFilter(event: Event) {
       
     }
 
-
-
-handleSubmit(){
-  
-  //console.log(this.UserProyectForm.value.opcionRadio.ci);
-  //console.log(this.dialogData.data);
-
-  var data ={
-    id_proyecto:this.dialogData.data.id_proyecto,
-    ci: this.DocProyectForm.value.opcionRadio.ci    
-  }
-  console.log(data);
-  //aqui el servicio
-  
-  this.users.updateUser(data).subscribe((response:any)=>{
-    this.dialogRef.close();
-    //this.onEditUserProyect.emit();
-    this.responseMessage = response.message;
-    this.snackbarService.openSnackBar(this.responseMessage,"success");
-  },(error:any)=>{
-    this.dialogRef.close();
-    if(error.error?.message){
-      this.responseMessage = error.error?.message;
+    handleDeleteAction(values: any) {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.data = {
+        message: ' eliminar Documento ' + values.nombre_documento
+      };
+      const dialogRef = this.dialog.open(ConfirmationComponent, dialogConfig);
+      const sub = dialogRef.componentInstance.onEmitStatusChange.subscribe((response) => {
+        this.deleteDocumento(values.id_documento,values.nombre_documento);
+        dialogRef.close();
+      });
     }
-    else{
-      this.responseMessage = GlobalCostants.genericError;
+
+    deleteDocumento(id_proyecto: any,nombre_documento:any) {
+      console.log(id_proyecto,nombre_documento);
+       this.users.delete2(id_proyecto,nombre_documento).subscribe((response: any) => {
+        this.tableData();
+        this.responseMessage = response?.message;
+        this.snackbarService.openSnackBar(this.responseMessage, "success");
+      }, (error: any) => {
+        if (error.error?.message) {
+          this.responseMessage = error.error?.message;
+        }
+        else {
+          this.responseMessage = GlobalCostants.genericError;
+        }
+        this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+      }) 
     }
-    this.snackbarService.openSnackBar(this.responseMessage,GlobalCostants.error);
-  })
-  
-}
 
 
 handleAddAction(){

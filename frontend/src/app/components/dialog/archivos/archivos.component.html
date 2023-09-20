@@ -1,8 +1,14 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row fxLayout="row">
+        <span class="title-center">Cargar Documentos para el proyecto</span>
+    </mat-toolbar-row>
+</mat-toolbar>
 <mat-dialog-content class="mat-typography">
     <form [formGroup]="proyectoForm">
-
+        <div fxFlex fxLayout="column">
+            <div fxLayout="row wrap">
         <mat-form-field appearance="fill" fxFlex>
-            <mat-label>Descripcionn</mat-label>
+            <mat-label>Comentarios</mat-label>
             <input matInput formControlName="Descripcion" required>
             <mat-error
                 *ngIf="proyectoForm.controls.Descripcion.touched && proyectoForm.controls.Descripcion.invalid">
@@ -10,18 +16,25 @@
                     obligatorio.</span>
             </mat-error>
         </mat-form-field>
+        </div>
+     
 
-        <div fxFlex fxLayout="column">
-            <div fxLayout="row" fxGap="8px" class="subTitle-container">
-                <span class="subTitle" style="margin-right: 4.7cm; ">ADJUNTO</span>
-                <input (change)="onFileChange($event)" formControlName="documento" class="form-control-file" type="file"  multiple>
-            </div>
+        <!-- aqui es el nuevo  -->
+        <div fxLayout="row wrap">
+        <input type="file" (change)="onFileSelected($event)" multiple>
+
+                            <div *ngFor="let file of files; let i = index">
+                            <img [src]="file.preview" alt="Vista previa">
+                            <span>{{ file.file.name }}</span>
+                            <button (click)="removeFile(i)">Eliminar</button>
+                            </div>
+        </div>
         </div>
     </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="center">
-    <button mat-raised-button color="primary" type="submit" (click)="Submit()"
+    <button mat-raised-button color="primary" type="submit" (click)="uploadFiles()" 
         [disabled]="![proyectoForm.valid && proyectoForm.dirty]">Aceptar</button>
     <button mat-raised-button color="primary" mat-dialog-close>Cancelar</button>
 </mat-dialog-actions>

@@ -1,7 +1,7 @@
 <mat-card>
     <mat-toolbar color="primary">
         <mat-toolbar-row fxLayout="row">
-            <span class="title-center">Documentos del Proyecto</span>
+            <span class="title-center">Gestion Documentos</span>
         </mat-toolbar-row>
     </mat-toolbar>
 
@@ -35,20 +35,20 @@
 
                     <ng-container matColumnDef="Nombre">
                         <th mat-header-cell *matHeaderCellDef > Nombre</th>
-                        <td mat-cell *matCellDef="let element"> {{element.nombre}} {{element.ap_paterno }}
+                        <td mat-cell *matCellDef="let element"> {{element.nombre_documento}} 
                             {{element.ap_materno}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="Descripcion">
-                        <th mat-header-cell *matHeaderCellDef >Descripcion</th>
-                        <td mat-cell *matCellDef="let element"> {{element.rol}} </td>
+                        <th mat-header-cell *matHeaderCellDef >Comentario</th>
+                        <td mat-cell *matCellDef="let element"> {{element.comentario}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="Accion">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Acciones</th>
                         <td mat-cell *matCellDef="let element" class="action-link" >
                             <div class="d-flex align-items-center">
-                                <button mat-icon-button color="primary" matTooltip="Delete" >
+                                <button mat-icon-button color="primary" matTooltip="Delete" (click)="handleDeleteAction(element)"> 
                                     <mat-icon>delete</mat-icon>
                                 </button>
                             </div>
@@ -67,8 +67,8 @@
             </form>
             </mat-dialog-content>
             <mat-dialog-actions align="center">
-                <button mat-raised-button color="primary" type="submit" (click)="handleSubmit()"
-                    [disabled]="![DocProyectForm.valid && DocProyectForm.dirty]">{{action}}</button>
+               <!--  <button mat-raised-button color="primary" type="submit" (click)="handleSubmit()"
+                    [disabled]="![DocProyectForm.valid && DocProyectForm.dirty]">{{action}}</button> -->
                     <button mat-raised-button color="primary" mat-dialog-close>Cancelar</button>
             </mat-dialog-actions>
 

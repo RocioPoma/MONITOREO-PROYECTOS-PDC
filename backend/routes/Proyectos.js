@@ -6,6 +6,7 @@ var auth = require('../services/authentication');
 //----------para archivos-----------------------------------------------------------------------------
 multer = require('../libs/multer');
 const fs = require('fs');
+const { BADFAMILY } = require('dns');
 //-----------------------------------------------------------------------------------------------------
 
 
@@ -491,7 +492,7 @@ router.put('/updateUser', (req, res) => {
 })
 
 
-//Status Etapa 
+//Status documentos 
 router.get('/listarDoc/:id_proyecto', (req, res) => {
   const { id_proyecto } = req.params;
   const sql = `  
@@ -510,7 +511,7 @@ router.get('/listarDoc/:id_proyecto', (req, res) => {
 //---------------------------------------------------------------multer 2 
 
 // Ruta para subir archivos y guardar información
-router.post('/addDocs', [multer.array('documentos')], (req, res) => {
+/* router.post('/addDocs', [multer.array('documentos')], (req, res) => {
   const { id_proyecto, descripcion } = req.body; // Datos del proyecto
   console.log('archivos,', files);
   console.log(req.body);
@@ -536,8 +537,82 @@ router.post('/addDocs', [multer.array('documentos')], (req, res) => {
   });
 
   res.status(200).json({ message: 'Archivos y datos guardados exitosamente' });
-});
+}); */
 
+//----------------otraforma--------------------
+router.post('/upload', multer.array('files', 10), (req, res) => {
+    // req.files contiene los archivos subidos
+    const files = req.files;
+    console.log('archivos,',files);
+    console.log(req.body.comentario);
+    const comentario=req.body.comentario;
+    console.log(req.body.id_proyecto);
+    const id_proyecto=req.body.id_proyecto;
+  req.files.forEach((files) => {
+    const nombre_documento = files.filename; 
+    console.log(nombre_documento);
+    estado=true;
+    const queryDocumento = `INSERT INTO documento (nombre_documento, comentario, estado, id_proyecto) VALUES (?, ?, ?, ? );`;
+   connection.query(
+      queryDocumento,
+      [
+        nombre_documento,
+        comentario,
+        estado,
+        id_proyecto        
+      ],
+      (err, result) => {
+        if (err) {
+          res.status(500).json({ msg: "erro al insertar documentos al proyecto" });
+          throw new Error(`error al isertar: ${err}`);
+        }
+      }
+    ); 
+  })
+  // Realiza alguna lógica de manejo de archivos aquí
+
+  res.status(200).json({ message: 'Archivos subidos con éxito' });
+});
+//----------------otraforma--------------------
+
+//-------------borrar archivos----
+router.delete('/delete2/:id', (req, res) => {
+  const id = req.params.id;
+  const nombre = req.body.nombre; // Obtén el nombre del cuerpo de la solicitud
+  const rutaArchivo = `../uploads/documents/${nombre}`; // Reemplaza con la ruta real del archivo.
+
+  console.log(id,nombre);
+  // Realiza las operaciones de eliminación según sea necesario utilizando el ID y el nombre.
+
+  //eliminacion en BD
+  const sql = 'DELETE FROM documento WHERE id_documento = ?';
+  connection.query(sql, [id], (err, result) => {
+    if (err) {
+      console.error('Error al eliminar el registro: ' + err.message);
+      return;
+    }
+    console.log('Registro eliminado con éxito');
+  });
+  
+
+    // Realiza la eliminación del archivofisico
+
+
+   /*  fs.unlink(rutaArchivo, (err) => {
+      if (err) {
+        console.error('Error al borrar el archivo:', err);
+        res.status(500).json({ error: 'Error al eliminar el archivo' });
+      } else {
+        console.log('Archivo eliminado con éxito.');
+        res.json({ message: 'Archivo eliminado con éxito' });
+      }
+    });
+ */
+
+
+  res.json({ message: 'Documento eliminado correctamente' });
+});
+//-------------------------------------
 
 
 module.exports = router;

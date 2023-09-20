@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -112,14 +113,52 @@ export class ProyectoService {
     return this.httpClient.get(this.url + "/proyecto/get_tipologia")
   }
   
-  //añadir archivos
+  //-------------------------añadir archivos--------------------------------------
   addA(documento: FormData) {
-    //const fd = new FormData();
-   /*  fd.append('id_proyecto', data.id_proyecto);   
-    fd.append('Descripcion', data.Descripcion);    */
-    //fd.append("documento", documento);
-
     return this.httpClient.post(this.url +
       "/proyecto/addDocs/", documento);
   }
+
+  //-------------------forma2--------------------------
+  uploadFiles(files: File[],comentario:any, id_proyecto:any) {   
+    const formData = new FormData();
+    formData.append('comentario', comentario);
+    formData.append('id_proyecto', id_proyecto);
+     for (let i = 0; i < files.length; i++) {
+      formData.append('files', files[i], files[i].name);
+      console.log(files[i].name);
+    } 
+    
+    return this.httpClient.post<any>(this.url+"/proyecto/upload/", formData);
+  }
+
+
+
+  //-------------------------listar--------------------------------------
+  getDoc(id_proyecto: string) {
+    return this.httpClient.get(this.url + "/proyecto/listarDoc/"+ id_proyecto)
+  }
+
+
+    //----------------------API PARA ELIMINAR Documentos ------------------------------
+    delete2(id: any,nombre:any) {
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+        body: { nombre: nombre }, // Aquí pasas el nombre en el cuerpo
+      };
+    
+      // Realiza una solicitud HTTP DELETE con un cuerpo que incluye el nombre
+      return this.httpClient.delete(this.url+"/proyecto/delete2/"+id, options)
+    
+    
+    
+      /* 
+      return this.httpClient.delete(this.url +
+        "/proyecto/dele2/" + id ,{
+        headers: new HttpHeaders().set('Content-Type', "application/json")
+      }); */
+    }
+  
 }
