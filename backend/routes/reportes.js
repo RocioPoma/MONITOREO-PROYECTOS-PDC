@@ -1,42 +1,47 @@
-const express = require('express');
-const connection = require('../connection');
+const express = require("express");
+const connection = require("../connection");
 const router = express.Router();
 
-router.get('/lineas-estrategicas', (req, res) => {
-
+router.get("/lineas-estrategicas", (req, res) => {
   const query = `SELECT LNE.id_linea_estrategica,LNE.descripcion ,COUNT(PROY.id_proyecto) total FROM linea_estrategica AS LNE
 	LEFT JOIN linea_de_accion AS LNA ON LNA.id_linea_estrategica = LNE.id_linea_estrategica
 	LEFT JOIN accion_estrategica AS ACCE ON ACCE.id_linea_accion = LNA.id_linea_accion
 	LEFT JOIN proyecto AS PROY ON PROY.id_accion_estrategica = ACCE.id_accion_estrategica
 	GROUP BY LNE.id_linea_estrategica;`;
   connection.query(query, (err, result) => {
-    if (err) res.status(500).json({ msg: 'error al consultar reportes lineas estrategias', err });
-    res.json(result)
-  })
+    if (err)
+      res
+        .status(500)
+        .json({ msg: "error al consultar reportes lineas estrategias", err });
+    res.json(result);
+  });
 });
-router.get('/categorias', (req, res) => {
-
+router.get("/categorias", (req, res) => {
   const query = `SELECT CAT.nom_categoria,COUNT(PROY.id_proyecto) AS total FROM categoria AS CAT
 	LEFT JOIN proyecto AS PROY ON PROY.id_categoria = CAT.id_categoria
 	GROUP BY CAT.id_categoria;`;
   connection.query(query, (err, result) => {
-    if (err) res.status(500).json({ msg: 'error al consultar reportes categorias', err });
-    res.json(result)
-  })
+    if (err)
+      res
+        .status(500)
+        .json({ msg: "error al consultar reportes categorias", err });
+    res.json(result);
+  });
 });
-router.get('/tipologias', (req, res) => {
-
+router.get("/tipologias", (req, res) => {
   const query = `SELECT TIP.nom_tipologia,COUNT(PROY.id_proyecto) AS total FROM tipologia AS TIP
 	LEFT JOIN proyecto AS PROY ON PROY.id_tipologia = TIP.id_tipologia
 	GROUP BY TIP.id_tipologia;`;
   connection.query(query, (err, result) => {
-    if (err) res.status(500).json({ msg: 'error al consultar reportes tipologias', err });
-    res.json(result)
-  })
+    if (err)
+      res
+        .status(500)
+        .json({ msg: "error al consultar reportes tipologias", err });
+    res.json(result);
+  });
 });
 
-router.get('/pdc_etapa', (req, res) => {
-
+router.get("/pdc_etapa", (req, res) => {
   const query = `SELECT
     I.id_indicador,
     I.nombre_indicador,
@@ -90,9 +95,10 @@ ORDER BY
     I.id_indicador;
 `;
   connection.query(query, (err, result) => {
-    if (err) res.status(500).json({ msg: 'error al consultar reportes pdc', err });
-    res.json(result)
-  })
+    if (err)
+      res.status(500).json({ msg: "error al consultar reportes pdc", err });
+    res.json(result);
+  });
 });
 
 //* REPORTES DE INDICADORES
@@ -114,22 +120,19 @@ const selectParams = (query = "", params = []) => {
 };
 router.get("/indicadores", async (req, res) => {
   const query = `
-          SELECT IND.id_indicador,IND.nombre_indicador,UND.nom_unidad,
-          total_base(UND.nom_unidad, LNBC.cantidad, LNB.cantidad_glb_identificada) AS LB_2020,
-          met.cobertura_meta,
-          COUNT(PROY.id_proyecto) AS 'Acciones',ndc.nom_meta_ndc,pdes.nom_indicador_pdes,pprh.nom_indicador_pprh 
-          FROM indicador AS IND
-              INNER JOIN unidad_medicion AS UND ON IND.id_unidad_medicion = UND.id_unidad_medicion
-              LEFT JOIN ndc ON ndc.id_ndc = IND.id_ndc
-              LEFT JOIN pdes ON pdes.id_pdes = IND.id_pdes
-              LEFT JOIN pprh ON pprh.id_pprh = IND.id_pprh
-              LEFT JOIN linea_base_cobertura AS LNBC ON LNBC.id_indicador = IND.id_indicador
-              LEFT JOIN linea_base AS LNB ON LNB.id_linea_base = LNBC.id_linea_base
-              LEFT JOIN metas AS met ON met.id_indicador = IND.id_indicador
-              LEFT JOIN proyecto AS PROY ON PROY.id_indicador = IND.id_indicador
-              LEFT JOIN etapa_proyecto AS ETAP ON ETAP.id_proyecto = PROY.id_proyecto
-              LEFT JOIN etapa AS ETA ON ETA.id_etapa = ETAP.id_etapa
-              GROUP BY IND.id_indicador;
+        SELECT IND.id_indicador,IND.nombre_indicador,UND.nom_unidad,
+        LNBC.cantidad, LNB.cantidad_glb_identificada,met.cobertura_meta,
+        (SELECT COUNT(PR.id_proyecto) FROM proyecto AS PR WHERE PR.id_indicador=IND.id_indicador) AS 'Acciones',
+        ndc.nom_meta_ndc,pdes.nom_indicador_pdes,pprh.nom_indicador_pprh 
+        FROM indicador AS IND
+          INNER JOIN unidad_medicion AS UND ON IND.id_unidad_medicion = UND.id_unidad_medicion
+          LEFT JOIN ndc ON ndc.id_ndc = IND.id_ndc
+          LEFT JOIN pdes ON pdes.id_pdes = IND.id_pdes
+          LEFT JOIN pprh ON pprh.id_pprh = IND.id_pprh
+          LEFT JOIN linea_base_cobertura AS LNBC ON LNBC.id_indicador = IND.id_indicador
+          LEFT JOIN linea_base AS LNB ON LNB.id_linea_base = LNBC.id_linea_base
+          LEFT JOIN metas AS met ON met.id_indicador = IND.id_indicador
+          GROUP BY IND.id_indicador;
           `;
   const queryInd = `
     SELECT PROY.id_proyecto,
@@ -149,16 +152,16 @@ router.get("/indicadores", async (req, res) => {
     WHERE IND.id_indicador = ?;`;
   const queryPeso = `
   	SELECT SUM(ETA.peso_etapa) AS pesos_anteriores FROM etapa AS ETA
-		WHERE ETA.id_tipologia = ?	 AND ETA.id_etapa < ?`
+		WHERE ETA.id_tipologia = ?	 AND ETA.id_etapa < ?`;
   try {
     const reportes = [];
     const result = await onlySelect(query);
     for (const report_result of result) {
       const report = {
-        COD:report_result.id_indicador,
+        COD: report_result.id_indicador,
         nombre_indicador: report_result?.nombre_indicador || "",
         uni_ind: report_result?.nom_unidad || "",
-        LB_2020: report_result?.LB_2020 || 0,
+        LB_2020: 0,
         Meta_2025: report_result?.cobertura_meta || 0,
         "%_ind_efectivo": 0,
         "#Acciones": report_result?.Acciones || 0,
@@ -166,21 +169,47 @@ router.get("/indicadores", async (req, res) => {
         PDES: report_result?.nom_indicador_pdes || "",
         PPRH: report_result?.nom_indicador_pprh || "",
       };
+      
+      let total = 0;
       const result2 = await selectParams(queryInd, [
         report_result.id_indicador,
       ]);
       if (result2.length > 0) {
         const data = [];
-        for (const { id_proyecto, nom_proyecto, id_tipologia, peso_etapa, cantidad, id_etapa, nombre_etapa, avance_seguimiento_fisico, } of result2) {
-          //reportes.push({id_proyecto,nom_proyecto,id_etapa,nombre_etapa,avance_seguimiento_fisico,})
-          //console.log(id_proyecto,nom_proyecto,id_etapa,nombre_etapa,avance_seguimiento_fisico);  
+        for (const {
+          id_proyecto,
+          nom_proyecto,
+          id_tipologia,
+          peso_etapa,
+          cantidad,
+          id_etapa,
+          nombre_etapa,
+          avance_seguimiento_fisico,
+        } of result2) {
           if (data.length === 0) {
             if (id_etapa) {
               data.push({
-                id_proyecto, nom_proyecto, id_tipologia, cantidad: cantidad || 0, pesos_anteriores: 0, ultima_etapa: { id_etapa, nombre_etapa, avance_etapa: avance_seguimiento_fisico || 0, peso_etapa },
+                id_proyecto,
+                nom_proyecto,
+                id_tipologia,
+                cantidad: cantidad || 0,
+                pesos_anteriores: 0,
+                ultima_etapa: {
+                  id_etapa,
+                  nombre_etapa,
+                  avance_etapa: avance_seguimiento_fisico || 0,
+                  peso_etapa,
+                },
               });
             } else {
-              data.push({ id_proyecto, nom_proyecto, id_tipologia, cantidad: cantidad || 0, pesos_anteriores: 0, ultima_etapa: null, });
+              data.push({
+                id_proyecto,
+                nom_proyecto,
+                id_tipologia,
+                cantidad: cantidad || 0,
+                pesos_anteriores: 0,
+                ultima_etapa: null,
+              });
             }
           } else {
             const row = data.find((val) => val.id_proyecto === id_proyecto);
@@ -190,21 +219,51 @@ router.get("/indicadores", async (req, res) => {
                 //console.log(row);
                 if (row.ultima_etapa) {
                   if (row.ultima_etapa?.id_etapa === id_etapa) {
-                    row.ultima_etapa.avance_etapa = avance_seguimiento_fisico > row.ultima_etapa.avance_etapa
-                      ? avance_seguimiento_fisico
-                      : row.ultima_etapa.avance_etapa;
+                    row.ultima_etapa.avance_etapa =
+                      avance_seguimiento_fisico > row.ultima_etapa.avance_etapa
+                        ? avance_seguimiento_fisico
+                        : row.ultima_etapa.avance_etapa;
                   } else if (id_etapa > row.ultima_etapa?.id_etapa) {
-                    row.ultima_etapa = { id_etapa, nombre_etapa, avance_etapa: avance_seguimiento_fisico, peso_etapa };
+                    row.ultima_etapa = {
+                      id_etapa,
+                      nombre_etapa,
+                      avance_etapa: avance_seguimiento_fisico,
+                      peso_etapa,
+                    };
                   }
                 } else {
-                  row.ultima_etapa = { id_etapa, nombre_etapa, avance_etapa: avance_seguimiento_fisico || 0, peso_etapa };
+                  row.ultima_etapa = {
+                    id_etapa,
+                    nombre_etapa,
+                    avance_etapa: avance_seguimiento_fisico || 0,
+                    peso_etapa,
+                  };
                 }
               }
             } else {
               if (id_etapa) {
-                data.push({ id_proyecto, id_tipologia, nom_proyecto, cantidad: cantidad || 0, pesos_anteriores: 0, ultima_etapa: { id_etapa, nombre_etapa, avance_etapa: avance_seguimiento_fisico || 0, peso_etapa } });
+                data.push({
+                  id_proyecto,
+                  id_tipologia,
+                  nom_proyecto,
+                  cantidad: cantidad || 0,
+                  pesos_anteriores: 0,
+                  ultima_etapa: {
+                    id_etapa,
+                    nombre_etapa,
+                    avance_etapa: avance_seguimiento_fisico || 0,
+                    peso_etapa,
+                  },
+                });
               } else {
-                data.push({ id_proyecto, id_tipologia, nom_proyecto, cantidad: cantidad || 0, pesos_anteriores: 0, ultima_etapa: null });
+                data.push({
+                  id_proyecto,
+                  id_tipologia,
+                  nom_proyecto,
+                  cantidad: cantidad || 0,
+                  pesos_anteriores: 0,
+                  ultima_etapa: null,
+                });
               }
             }
           }
@@ -212,24 +271,136 @@ router.get("/indicadores", async (req, res) => {
         }
         for (const proy of data) {
           if (proy.ultima_etapa) {
-            const result = await selectParams(queryPeso, [proy.id_tipologia, proy.ultima_etapa.id_etapa]);
+            const result = await selectParams(queryPeso, [
+              proy.id_tipologia,
+              proy.ultima_etapa.id_etapa,
+            ]);
             proy.pesos_anteriores = result[0].pesos_anteriores || 0;
           }
         }
 
-        let indice =0;
-        for(const proy of data){
-          if(proy.ultima_etapa){
-            const peso_etapa_actual = ((proy.ultima_etapa.avance_etapa*proy.ultima_etapa.peso_etapa)/100);
-            let pes = (peso_etapa_actual+Number.parseInt(proy.pesos_anteriores)); 
-            let cantidad =proy.cantidad;
-            indice = indice+(cantidad*pes/100);
-            
+        for (const proy of data) {
+          if (proy.ultima_etapa) {
+            const peso_etapa_actual =
+              (proy.ultima_etapa.avance_etapa * proy.ultima_etapa.peso_etapa) /
+              100;
+
+            let pes =
+              peso_etapa_actual + Number.parseInt(proy.pesos_anteriores);
+            let cantidad = proy.cantidad;
+            //console.log('%',(cantidad*pes/100));
+            console.log("cantidad:", (cantidad * pes) / 100);
+            total += (cantidad * pes) / 100;
+            //indice = indice+(cantidad*pes/100);
           }
         }
-
-        report['%_ind_efectivo']=((indice*100)/(report.Meta_2025-report.LB_2020)).toFixed(2);
-
+        
+      }
+      // console.log('cantidad total:',total);
+      let formula=0;
+      let formula_Porc=0;
+      let linea_base_Porc=0;
+      report.LB_2020 = report_result.cantidad;
+      switch (report.uni_ind) {
+        case '%':
+          if(report.COD === 14){
+           // linea_base_Porc= (report_result.cantidad*100)/report.Meta_2025;
+            formula= (total)/report_result.cantidad;
+            formula_Porc =100*(total/report_result.cantidad)/(report.Meta_2025/100); 
+            report['%_ind_efectivo']=formula_Porc;
+          }else{
+            linea_base_Porc= 100*report_result.cantidad/report_result.cantidad_glb_identificada;
+            report.LB_2020=linea_base_Porc;
+            formula= (report_result.cantidad+total)/report_result.cantidad_glb_identificada;
+            formula_Porc =100*(formula-linea_base_Porc)/(report.Meta_2025-linea_base_Porc); 
+            report['%_ind_efectivo']=formula_Porc>0?formula_Porc:0;
+          }
+          //report.
+          break;
+          case 'PTAR':
+            //linea_base_Porc= (report_result.cantidad*100)/report.Meta_2025;
+            formula= total;
+            formula_Porc =100*total/(report.Meta_2025-report_result.cantidad); 
+            report['%_ind_efectivo']=formula_Porc;
+            break;
+          case 'ha':
+              if(report.COD === 12){
+                formula=total;
+                formula_Porc= 100*(total-report_result.cantidad)/(report.Meta_2025-report_result.cantidad);
+                report['%_ind_efectivo']=formula_Porc>0?formula_Porc:0;
+              }else if(report.COD === 13 || report.COD === 16){
+                formula= total+report_result.cantidad;
+                formula_Porc=100*total/(report.Meta_2025-report_result.cantidad);
+                report['%_ind_efectivo']=formula_Porc>0?formula_Porc:0;
+              }else{
+                formula=total;
+                formula_Porc= 100*(report_result.cantidad+total)/report.Meta_2025;
+                report['%_ind_efectivo']=formula_Porc>0?formula_Porc:0;
+              }
+            break;
+          case 'industrias':
+                formula=total;
+                formula_Porc=100*total/(report.Meta_2025-report_result.cantidad);
+                report['%_ind_efectivo']=formula_Porc>0?formula_Porc:0;
+                break;
+          case 'tm/ha':
+              formula=total;
+              formula_Porc = 100*(total-report_result.cantidad)/(report.Meta_2025-report_result.cantidad);
+              report['%_ind_efectivo']=formula_Porc>0?formula_Porc:0;
+              break;
+          case 'APP':
+              formula=total;
+              formula_Porc = 100*total/ (report.Meta_2025-report_result.cantidad); 
+              report['%_ind_efectivo']=formula_Porc>0?formula_Porc:0;
+              break;
+          case 'GAM':
+              formula=total;
+              formula_Porc = 100*total/(report.Meta_2025-report_result.cantidad);
+              report['%_ind_efectivo']=formula_Porc>0?formula_Porc:0;
+              break;
+          case 'hm3':
+              formula=total;
+              formula_Porc=100*(total-report_result.cantidad)/(report.Meta_2025-report_result.cantidad);
+              report['%_ind_efectivo']=formula_Porc>0?formula_Porc:0;
+              break;
+          case 'proyectos':
+              formula=total;
+              formula_Porc=100*total/(report.Meta_2025-report_result.cantidad);
+              report['%_ind_efectivo']=formula_Porc>0?formula_Porc:0;
+              break;
+          case 'ICA':
+              formula=total;
+              formula_Porc= 100*total/report.Meta_2025;
+              report['%_ind_efectivo']=formula_Porc>0?formula_Porc:0;
+              break;
+          case 'informes':
+              formula=total;
+              formula_Porc=100*total/(report.Meta_2025-report_result.cantidad);
+              report['%_ind_efectivo']=formula_Porc>0?formula_Porc:0;
+          break;
+        case 'm':
+              formula=total;
+              formula_Porc = 100*(total-report_result.cantidad)/(report.Meta_2025-report_result.cantidad);
+              report['%_ind_efectivo']=formula_Porc>0?formula_Porc:0;
+          break;
+        case 'normas_instrumentos':
+              formula=total;
+              formula_Porc=100*total/(report.Meta_2025-report_result.cantidad);
+              report['%_ind_efectivo']=formula_Porc>0?formula_Porc:0;
+          break;
+        case 'IGH':
+              formula=total;
+              formula_Porc= 100*total/report.Meta_2025;
+              report['%_ind_efectivo']=formula_Porc>0?formula_Porc:0;
+          break;
+        case 'habitantes':
+              formula=total;
+              formula_Porc= 100*total/report.Meta_2025;
+              report['%_ind_efectivo']=formula_Porc>0?formula_Porc:0;
+          break;
+        default:
+          console.log('indicador no encontrado');
+          break;
       }
       reportes.push(report);
     }
@@ -238,11 +409,9 @@ router.get("/indicadores", async (req, res) => {
   } catch (error) {
     res.status(500).json({ error, msg: "error al obtener datos" });
   }
-})
+});
 
-
-router.get('/mapa', (req, res) => {
-
+router.get("/mapa", (req, res) => {
   const query = `SELECT
 	p.id_proyecto, p.nom_proyecto AS nombre_proyecto,
     p.coordenada_x AS latitud,
@@ -256,17 +425,15 @@ router.get('/mapa', (req, res) => {
 FROM proyecto p
 INNER JOIN tipologia t ON p.id_tipologia = t.id_tipologia`;
   connection.query(query, (err, result) => {
-    if (err) res.status(500).json({ msg: 'error al consultar reportes mapa', err });
-    res.json(result)
-  })
-
+    if (err)
+      res.status(500).json({ msg: "error al consultar reportes mapa", err });
+    res.json(result);
+  });
 });
 
 //REPORTES INVERSION POR LINEA ESTRATEGICA
-router.get('/inversion_le', (req, res) => {
-
-  const query = 
-  `SELECT
+router.get("/inversion_le", (req, res) => {
+  const query = `SELECT
     le.id_linea_estrategica,
     le.descripcion AS linea_estrategica,
     COALESCE(SUM(f.costo_final), 0) AS inversion_total
@@ -278,14 +445,16 @@ router.get('/inversion_le', (req, res) => {
   LEFT JOIN financiamiento f ON ep.id_etapa_proyecto = f.id_etapa_proyecto
   GROUP BY le.id_linea_estrategica, le.descripcion`;
   connection.query(query, (err, result) => {
-    if (err) res.status(500).json({ msg: 'error al consultar reporte por linea estratégica', err });
-    res.json(result)
-  })
+    if (err)
+      res
+        .status(500)
+        .json({ msg: "error al consultar reporte por linea estratégica", err });
+    res.json(result);
+  });
 });
 
 //REPORTES INVERSION POR LINEA ESTRATEGICA DESAGREGADA POR MUNICIPIO
-router.get('/inversion_desagregada_le', (req, res) => {
-
+router.get("/inversion_desagregada_le", (req, res) => {
   const query = `SELECT
     le.id_linea_estrategica,
     le.descripcion AS linea_estrategica,
@@ -316,10 +485,15 @@ router.get('/inversion_desagregada_le', (req, res) => {
   GROUP BY le.id_linea_estrategica, le.descripcion, m.id_municipio, m.nombre_municipio
   ORDER BY le.id_linea_estrategica, m.id_municipio`;
   connection.query(query, (err, result) => {
-    if (err) res.status(500).json({ msg: 'error al consultar reportes inversión desagregada', err });
-    res.json(result)
-  })
-
+    if (err)
+      res
+        .status(500)
+        .json({
+          msg: "error al consultar reportes inversión desagregada",
+          err,
+        });
+    res.json(result);
+  });
 });
 
 module.exports = router;
