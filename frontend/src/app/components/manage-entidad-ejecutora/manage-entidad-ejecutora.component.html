@@ -45,15 +45,17 @@
             <ng-container matColumnDef="acciones">
                 <th mat-header-cell *matHeaderCellDef >Acciones</th>
                 <td class="acciones" mat-cell *matCellDef="let element" class="action-link">
-                    <button mat-icon-button color="primary" matTooltip="Edit" (click)="handleEditAction(element)">
-                        <mat-icon>edit</mat-icon>
-                    </button>
-                    <button mat-icon-button color="primary" matTooltip="Delete" (click)="handleDeleteAction(element)">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                    <mat-slide-toggle color="primary" (change)="onChange($event.checked, element.id_entidad_ejecutora)"
-                        matTooltip="Activar o Desactivar Categoría" [checked]="element.estado">
-                    </mat-slide-toggle>
+                    <div class="d-flex align-items-center">
+                        <button mat-icon-button color="primary" matTooltip="Edit" (click)="handleEditAction(element)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="primary" matTooltip="Delete" (click)="handleDeleteAction(element)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                        <mat-slide-toggle color="primary" (change)="onChange($event.checked, element.id_entidad_ejecutora)"
+                            matTooltip="Activar o Desactivar" [checked]="element.estado">
+                        </mat-slide-toggle>
+                    </div>
                 </td>
             </ng-container>
 

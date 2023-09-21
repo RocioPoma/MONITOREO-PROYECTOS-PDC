@@ -112,10 +112,6 @@ menuItems: MenuItem[] = [
         link: '/entidad-ejecutora'
       },
       {
-        title: 'Entidad/organizacion',
-        link: '/entidad-organizacion'
-      },
-      {
         title: 'Entidad/Financiera',
         link: '/entidad-financiera'
       },
@@ -126,6 +122,10 @@ menuItems: MenuItem[] = [
       {
         title: 'ADM Indicador',
         link: '/indicador'
+      },
+      {
+        title: 'Comunidad',
+        link: '/comunidad'
       }
     ]
   }

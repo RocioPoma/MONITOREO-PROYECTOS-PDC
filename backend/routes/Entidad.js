@@ -15,7 +15,7 @@ router.get('/get', (req, res) => {
     });
   });
 
-  //obtener entidadcon id
+  //obtener entidad con id
   router.get('/entidad/:id', (req, res) => {
     const { id } = req.params;
     connection.query('SELECT * FROM entidad WHERE id_entedidad = ?', [id], (err, results) => {

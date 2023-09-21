@@ -1,0 +1,34 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row fxLayout="row">
+        <span class="title-center">{{action}} Comunidad</span>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="comunidadForm">
+        <div fxFlex fxLayout="column">
+            <div fxLayout="row wrap">
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="nombre" required>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Municipio</mat-label>
+                    <mat-select formControlName="id_municipio">
+                        <mat-option *ngFor="let unidad of municipio" [value]="unidad.nombre_municipio">
+                        {{ unidad.nombre_municipio}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" type="submit" (click)="handleSubmit()"
+        [disabled]="![comunidadForm.valid && comunidadForm.dirty]">{{action}}</button>
+        <button mat-raised-button color="primary" mat-dialog-close>Cancelar</button>
+</mat-dialog-actions>

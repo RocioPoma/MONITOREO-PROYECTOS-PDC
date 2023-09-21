@@ -15,9 +15,11 @@
         <!-- <button  mat-stroked-button color="primary" class="padding">REGISTRAR</button>-->
         <button fxFlex.gt-sm="10%" mat-flat-button color="primary" class="padding"
         (click)="generateReport()">Reportes</button>
+        <div fxFlex="100%" fxFlex.gt-sm="1.33%"></div>
 
         <button fxFlex.gt-sm="10%" mat-flat-button color="primary" class="padding"
-            (click)="handleAddAction()">Registrar</button>
+        (click)="handleAddAction()">Registrar</button>
+        
     </div>
 
     <div class="mat-elevation-z4">
@@ -45,15 +47,17 @@
             <ng-container matColumnDef="acciones">
                 <th mat-header-cell *matHeaderCellDef >Acciones</th>
                 <td class="acciones" mat-cell *matCellDef="let element" class="action-link">
-                    <button mat-icon-button color="primary" matTooltip="Edit" (click)="handleEditAction(element)">
-                        <mat-icon>edit</mat-icon>
-                    </button>
-                    <button mat-icon-button color="primary" matTooltip="Delete" (click)="handleDeleteAction(element)">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                    <mat-slide-toggle color="primary" (change)="onChange($event.checked, element.id_entidad_financiera)"
-                        matTooltip="Activar o Desactivar" [checked]="element.estado">
-                    </mat-slide-toggle>
+                    <div class="icon-group">
+                        <button mat-icon-button color="primary" matTooltip="Edit" (click)="handleEditAction(element)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="primary" matTooltip="Delete" (click)="handleDeleteAction(element)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                        <mat-slide-toggle color="primary" (change)="onChange($event.checked, element.id_entidad_financiera)"
+                            matTooltip="Activar o Desactivar" [checked]="element.estado">
+                        </mat-slide-toggle>
+                    </div>
                 </td>
             </ng-container>
 

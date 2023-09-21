@@ -19,6 +19,7 @@ import { ManageIndicadorComponent } from './components/manage-indicador/manage-i
 import { ManageGestionEtapaComponent } from './components/manage-gestion-etapa/manage-gestion-etapa.component';
 import { ReportesProyectoComponent } from './components/reportes-proyecto/reportes-proyecto.component';
 import { ReportesIndicadoresComponent } from './components/reportes-indicadores/reportes-indicadores.component';
+import { ManageComunidadComponent } from './components/manage-comunidad/manage-comunidad.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent},
@@ -48,6 +49,7 @@ const routes: Routes = [
     { path: 'entidad-organizacion', component: ManageEntidadUOrganizacionComponent },
     { path: 'etapa', component: ManageGestionEtapaComponent },
     { path: 'indicador', component: ManageIndicadorComponent },
+    { path: 'comunidad', component: ManageComunidadComponent},
    //{ path: 'indicador', component: ManageIndicadorComponent }
     { path: 'reportes-proyectos',component:ReportesProyectoComponent,},
     { path: 'reportes-indicadores',component:ReportesIndicadoresComponent,},
