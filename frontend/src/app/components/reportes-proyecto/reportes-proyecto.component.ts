@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
 import * as Highcharts from 'highcharts';
-import { ReportesService } from 'src/app/services/reportes.service';
 import * as L from 'leaflet';
 
-import 'highcharts/modules/exporting';
-import 'highcharts/modules/export-data';
-import 'highcharts/modules/accessibility';
+import { ReportesService } from 'src/app/services/reportes.service';
+import HC_exporting from 'highcharts/modules/exporting';
+import HC_exportData from 'highcharts/modules/export-data';
+import HC_accessibility from 'highcharts/modules/accessibility';
 
+// Inicializa los módulos
+HC_exporting(Highcharts);
+HC_exportData(Highcharts);
+HC_accessibility(Highcharts);
 
 @Component({
   selector: 'app-reportes-proyecto',
@@ -80,7 +84,7 @@ export class ReportesProyectoComponent {
     this.reportesService.inversion_le().subscribe({
       next: (res) => {
         this.dataInversionLE = res;
-         this.createChartInversion(this.dataInversionLE);
+        this.createChartInversion(this.dataInversionLE);
       },
     });
   }
@@ -105,8 +109,30 @@ export class ReportesProyectoComponent {
         type: 'column',
       },
       title: {
-        text: 'Nro. Acciones/Proyectos por LE.',
+        text: 'Nro. Acciones/Proyectos por LE. 2020-2025',
         align: 'left',
+        style: {
+          //color: '#808B96',
+          fontSize: '18px',
+        },
+        margin:20
+      },
+      exporting: {
+        enabled: true
+      },
+      lang: {
+        viewFullscreen: 'Ver en pantalla completa',
+        exitFullscreen: 'Cerrar pantalla completa',
+        printChart: 'Imprimir gráfico',
+        downloadPNG: 'Descargar como PNG',
+        downloadJPEG: 'Descargar como JPEG',
+        downloadPDF: 'Descargar como PDF',
+        downloadSVG: 'Descargar como SVG',
+        downloadCSV: 'Descargar como CSV',
+        downloadXLS: 'Descargar como XLS',
+        hideData: 'Ocultar tabla de datos',
+        viewData: 'Ver tabla de datos',
+       
       },
       xAxis: {
         categories: data.map((item) => item.id_linea_estrategica + ' .- ' + item.descripcion),
@@ -120,7 +146,7 @@ export class ReportesProyectoComponent {
         {
           data: data.map((item) => item.total),
           type: 'column',
-          name: 'Nro de acciones/proyectos',
+          name: 'Nro de acciones/proyectos 2020-2025',
           color: '#3cb371',
         },
       ],
@@ -147,7 +173,25 @@ export class ReportesProyectoComponent {
         marginLeft: 150,
       },
       title: {
-        text: 'Nro. Acciones/Proyectos por Categoría',
+        text: 'Nro. Acciones/Proyectos por Categoría 2020-2025',
+        align: 'left',
+      },
+      exporting: {
+        enabled: true
+      },
+      lang: {
+        viewFullscreen: 'Ver en pantalla completa',
+        exitFullscreen: 'Cerrar pantalla completa',
+        printChart: 'Imprimir gráfico',
+        downloadPNG: 'Descargar como PNG',
+        downloadJPEG: 'Descargar como JPEG',
+        downloadPDF: 'Descargar como PDF',
+        downloadSVG: 'Descargar como SVG',
+        downloadCSV: 'Descargar como CSV',
+        downloadXLS: 'Descargar como XLS',
+        hideData: 'Ocultar tabla de datos',
+        viewData: 'Ver tabla de datos',
+       
       },
       xAxis: {
         categories: data.map((item) => item.nom_categoria),
@@ -192,7 +236,25 @@ export class ReportesProyectoComponent {
         marginLeft: 150,
       },
       title: {
-        text: 'Nro. Acciones/Proyectos por Tipología',
+        text: 'Nro. Acciones/Proyectos por Tipología 2020-2025',
+        align: 'left'
+      },
+      exporting: {
+        enabled: true
+      },
+      lang: {
+        viewFullscreen: 'Ver en pantalla completa',
+        exitFullscreen: 'Cerrar pantalla completa',
+        printChart: 'Imprimir gráfico',
+        downloadPNG: 'Descargar como PNG',
+        downloadJPEG: 'Descargar como JPEG',
+        downloadPDF: 'Descargar como PDF',
+        downloadSVG: 'Descargar como SVG',
+        downloadCSV: 'Descargar como CSV',
+        downloadXLS: 'Descargar como XLS',
+        hideData: 'Ocultar tabla de datos',
+        viewData: 'Ver tabla de datos',
+       
       },
       xAxis: {
         categories: data.map((item) => item.nom_tipologia),
@@ -231,8 +293,25 @@ export class ReportesProyectoComponent {
         height: 1000,
       },
       title: {
-        text: 'Nro Acciones/proyectos por indicador',
+        text: 'Nro Acciones/proyectos por indicador 2020-2025',
         align: 'left',
+      },
+      exporting: {
+        enabled: true
+      },
+      lang: {
+        viewFullscreen: 'Ver en pantalla completa',
+        exitFullscreen: 'Cerrar pantalla completa',
+        printChart: 'Imprimir gráfico',
+        downloadPNG: 'Descargar como PNG',
+        downloadJPEG: 'Descargar como JPEG',
+        downloadPDF: 'Descargar como PDF',
+        downloadSVG: 'Descargar como SVG',
+        downloadCSV: 'Descargar como CSV',
+        downloadXLS: 'Descargar como XLS',
+        hideData: 'Ocultar tabla de datos',
+        viewData: 'Ver tabla de datos',
+       
       },
       xAxis: {
         categories: data.map((item) => item.id_indicador + '.- ' + item.nombre_indicador),
@@ -315,93 +394,33 @@ export class ReportesProyectoComponent {
       }]
     });
   }
-/*
-  createChartInversion(data: any[]) {
-    Highcharts.chart('container', {
-      chart: {
-        type: 'bar',
-        height: 1000,
-      },
-      title: {
-        text: 'Inversión desagregada por Linea Estratégica',
-        align: 'left',
-      },
-      xAxis: {
-        categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania'],
-        labels: {
-          style: {
-            fontSize: '12px',
-          },
-        },
-        title: {
-          text: null
-        },
-        gridLineWidth: 1,
-        lineWidth: 0
-      },
-      yAxis: {
-        min: 0,
-        title: {
-          text: '(Millones)',
-          align: 'high'
-        },
-        labels: {
-          overflow: 'justify'
-        },
-        gridLineWidth: 0
-      },
-      tooltip: {
-        valueSuffix: ' millions'
-      },
-      plotOptions: {
-        bar: {
-          borderRadius: '50%',
-          dataLabels: {
-            enabled: true
-          },
-          groupPadding: 0.1
-        }
-      },
-      legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'top',
-        x: -40,
-        y: 80,
-        floating: true,
-        borderWidth: 1,
-        backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
-        shadow: true
-      },
-      credits: {
-        enabled: false
-      },
-      series: [{
-        name: 'EDTP',
-        type: 'bar',
-        data: [631, 727, 3202, 721, 26]
-      }, {
-        name: 'Gestion Financiamiento',
-        type: 'bar',
-        data: [814, 841, 3714, 726, 31]
-      }, {
-        name: 'Ejecución',
-        type: 'bar',
-        data: [1044, 944, 4170, 735, 40]
-      }]
-    });
-  }*/
-
-  
-  createChartInversion(data: any[]) {
  
+  createChartInversion(data: any[]) {
+
     Highcharts.chart('chart-container-inversion-LE', {
       chart: {
         type: 'bar'
       },
       title: {
-        text: 'Inversión por Linea Estratégica',
+        text: 'Inversión por Linea Estratégica 2020-2025',
         align: 'left'
+      },
+      exporting: {
+        enabled: true
+      },
+      lang: {
+        viewFullscreen: 'Ver en pantalla completa',
+        exitFullscreen: 'Cerrar pantalla completa',
+        printChart: 'Imprimir gráfico',
+        downloadPNG: 'Descargar como PNG',
+        downloadJPEG: 'Descargar como JPEG',
+        downloadPDF: 'Descargar como PDF',
+        downloadSVG: 'Descargar como SVG',
+        downloadCSV: 'Descargar como CSV',
+        downloadXLS: 'Descargar como XLS',
+        hideData: 'Ocultar tabla de datos',
+        viewData: 'Ver tabla de datos',
+       
       },
       xAxis: {
         categories: data.map((item) => item.id_linea_estrategica + ' .- ' + item.linea_estrategica),
@@ -434,7 +453,7 @@ export class ReportesProyectoComponent {
           groupPadding: 0.1
         }
       },
-      
+
       credits: {
         enabled: false
       },
@@ -447,17 +466,39 @@ export class ReportesProyectoComponent {
   }
 
   createChartInversionDesagregadaLE(data: any[]) {
- 
+
     Highcharts.chart('chart-container-inversion-LE-desagregada', {
       chart: {
         type: 'bar'
       },
       title: {
-        text: 'Inversión desagregada por Linea Estratégica',
-        align: 'left'
+        text: 'Inversión desagregada por Linea Estratégica 2020-2025',
+        align: 'left',
+        style: {
+          color: '#5D6D7E', 
+          padding: '10px' 
+        }
       },
+      exporting: {
+        enabled: true
+      },
+      lang: {
+        viewFullscreen: 'Ver en pantalla completa',
+        exitFullscreen: 'Cerrar pantalla completa',
+        printChart: 'Imprimir gráfico',
+        downloadPNG: 'Descargar como PNG',
+        downloadJPEG: 'Descargar como JPEG',
+        downloadPDF: 'Descargar como PDF',
+        downloadSVG: 'Descargar como SVG',
+        downloadCSV: 'Descargar como CSV',
+        downloadXLS: 'Descargar como XLS',
+        hideData: 'Ocultar tabla de datos',
+        viewData: 'Ver tabla de datos',
+       
+      },
+      
       xAxis: {
-        categories: ['LE1', 'LE2', 'LE3', 'LE4','LE5'],
+        categories: ['LE1', 'LE2', 'LE3', 'LE4', 'LE5'],
         title: {
           text: null
         },
@@ -467,7 +508,7 @@ export class ReportesProyectoComponent {
       yAxis: {
         min: 0,
         title: {
-          text: '(Millions)',
+          text: '(Milliones)',
           align: 'high'
         },
         labels: {
