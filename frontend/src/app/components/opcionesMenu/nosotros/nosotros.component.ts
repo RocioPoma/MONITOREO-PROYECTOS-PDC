@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./nosotros.component.scss']
 })
 export class NosotrosComponent {
+  currentYear: number = new Date().getFullYear();
 
 }

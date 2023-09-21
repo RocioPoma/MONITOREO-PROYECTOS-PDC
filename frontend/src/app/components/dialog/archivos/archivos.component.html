@@ -21,7 +21,9 @@
 
         <!-- aqui es el nuevo  -->
         <div fxLayout="row wrap">
-        <input type="file" (change)="onFileSelected($event)" multiple>
+        <input type="file" (change)="onFileSelected($event)" multiple
+        accept=".ppt, .xlsx, .rar, .jpg, .jpeg, .png, .gif, .pdf, .doc, .docx, .dwg, .dxf, .skp, .rvt, .rfa, .rte, .pln, .gsm, .ifc, .cobie, .nwd, .bimx, .3ds, .3dm, .shp"
+        >
 
                             <div *ngFor="let file of files; let i = index">
                             <img [src]="file.preview" alt="Vista previa">

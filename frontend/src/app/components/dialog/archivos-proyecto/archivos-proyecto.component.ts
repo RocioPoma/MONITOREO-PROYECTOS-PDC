@@ -27,7 +27,7 @@ export class ArchivosProyectoComponent {
 
   //varibles
   user: any = [];
-  displayedColumns: string[] = ['numero', 'Nombre', 'Descripcion','Accion']; 
+  displayedColumns: string[] = ['numero', 'Nombre','Files', 'Descripcion','Accion']; 
   dataSource: any;
   entidad: any;
  
@@ -40,7 +40,7 @@ export class ArchivosProyectoComponent {
   tabla:any;
   logoDataUrl: string;
   infoFiltrada:any;
-
+  
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -153,5 +153,25 @@ handleAddAction(){
       this.tableData();
     })
 }
+
+
+
+//-------------------------descargar archivo--------------------------------
+
+descargar(nombre:any){
+this.users.downloadFile(nombre)
+.subscribe(blob => {
+  const a = document.createElement('a');
+  const objectUrl = URL.createObjectURL(blob);
+  a.href = objectUrl;
+  a.download = nombre;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(objectUrl);
+});
+}
+
+//-------------------------descargar archivo--------------------------------
 
 }

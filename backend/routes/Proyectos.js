@@ -2,7 +2,7 @@ const express = require('express');
 const connection = require('../connection');
 const router = express.Router();
 var auth = require('../services/authentication');
-
+const path = require('path');
 //----------para archivos-----------------------------------------------------------------------------
 multer = require('../libs/multer');
 const fs = require('fs');
@@ -579,9 +579,9 @@ router.post('/upload', multer.array('files', 10), (req, res) => {
 router.delete('/delete2/:id', (req, res) => {
   const id = req.params.id;
   const nombre = req.body.nombre; // Obtén el nombre del cuerpo de la solicitud
-  const rutaArchivo = `../uploads/documents/${nombre}`; // Reemplaza con la ruta real del archivo.
+  const rutaArchivo = `./uploads/documents/${nombre}`; // Reemplaza con la ruta real del archivo.
 
-  console.log(id,nombre);
+  console.log(id,nombre,rutaArchivo);
   // Realiza las operaciones de eliminación según sea necesario utilizando el ID y el nombre.
 
   //eliminacion en BD
@@ -596,23 +596,42 @@ router.delete('/delete2/:id', (req, res) => {
   
 
     // Realiza la eliminación del archivofisico
-
-
-   /*  fs.unlink(rutaArchivo, (err) => {
-      if (err) {
-        console.error('Error al borrar el archivo:', err);
-        res.status(500).json({ error: 'Error al eliminar el archivo' });
-      } else {
-        console.log('Archivo eliminado con éxito.');
-        res.json({ message: 'Archivo eliminado con éxito' });
-      }
-    });
- */
-
-
+    fs.unlinkSync(rutaArchivo);
+ 
   res.json({ message: 'Documento eliminado correctamente' });
 });
 //-------------------------------------
 
+
+
+//--------------------------------------descargar ek archuvi
+// Ruta para la descarga de archivos
+router.get('/download/:nombreArchivo', (req, res) => {
+  const nombreArchivo = req.params.nombreArchivo;
+ 
+  const rutaArchivo = path.join(__dirname, '../uploads/documents', nombreArchivo); // Cambia 'archivos' a tu directorio de archivos
+  console.log(rutaArchivo);
+  // Verificar si el archivo existe
+
+  if (fs.existsSync(rutaArchivo)) {
+    // Configurar encabezados de respuesta para la descarga
+    res.setHeader('Content-Disposition', `attachment; filename="${nombreArchivo}"`);
+    res.setHeader('Content-Type', 'application/octet-stream');
+    
+    // Crear un flujo de lectura y enviar el archivo como respuesta
+    const archivoStream = fs.createReadStream(rutaArchivo);
+    archivoStream.pipe(res);
+   
+  } else {
+
+    res.status(404).send('Archivo no encontrado');
+  }
+});
+
+
+
+
+
+//--------------------------------------descargar ek archuvi
 
 module.exports = router;

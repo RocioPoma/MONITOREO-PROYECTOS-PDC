@@ -151,14 +151,13 @@ export class ProyectoService {
     
       // Realiza una solicitud HTTP DELETE con un cuerpo que incluye el nombre
       return this.httpClient.delete(this.url+"/proyecto/delete2/"+id, options)
-    
-    
-    
-      /* 
-      return this.httpClient.delete(this.url +
-        "/proyecto/dele2/" + id ,{
-        headers: new HttpHeaders().set('Content-Type', "application/json")
-      }); */
+       
+    }
+
+     //----------------------API PARA DESCAGAR Documentos ------------------------------
+     downloadFile(filename: string): Observable<Blob> {
+      const url = (this.url+ '/proyecto/download/'+filename);
+      return this.httpClient.get(url, { responseType: 'blob' });
     }
   
 }

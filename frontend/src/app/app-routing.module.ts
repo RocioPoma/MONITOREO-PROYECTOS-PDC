@@ -22,7 +22,7 @@ import { ReportesIndicadoresComponent } from './components/reportes-indicadores/
 import { ManageComunidadComponent } from './components/manage-comunidad/manage-comunidad.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent},
+  { path: '', redirectTo: '/nosotros', pathMatch: 'full' },
   {
     path: '', // Ruta para el HomeComponent
     component: HomeComponent,
