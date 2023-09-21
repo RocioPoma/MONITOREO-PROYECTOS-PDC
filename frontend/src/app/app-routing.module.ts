@@ -21,7 +21,7 @@ import { ReportesProyectoComponent } from './components/reportes-proyecto/report
 import { ReportesIndicadoresComponent } from './components/reportes-indicadores/reportes-indicadores.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent},
+  { path: '', redirectTo: '/nosotros', pathMatch: 'full' },
   {
     path: '', // Ruta para el HomeComponent
     component: HomeComponent,

@@ -19,6 +19,11 @@ export class ArchivosComponent {
   files: { file: File, preview: string }[] = [];
   selectedFiles: File[] = [];
 
+
+  //limitador de archivos
+  extensionesPermitidas = ['ppt','xlsx','rar','jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx','dwg','dxf','skp','rvt' ,'rfa','rte','pln','gsm','ifc','cobie','nwd','bimx','3ds','3dm','shp'];
+
+
   constructor(@Inject(MAT_DIALOG_DATA) public dialogData: any,
     private formBuilder: FormBuilder,
     private dialogRef:MatDialogRef<ArchivosComponent>,
@@ -83,11 +88,20 @@ uploadFiles(): void {
   var formD = this.proyectoForm.value;
   if (this.selectedFiles.length > 0) {
     this.proyectoService.uploadFiles(this.selectedFiles,formD.Descripcion,this.dialogData.data,)
-      .subscribe(response => {
-        console.log('Archivos subidos con éxito', response);
-        // Realiza alguna acción después de subir los archivos
-      }, error => {
-        console.error('Error al subir archivos', error);
+      .subscribe((response:any) => {
+        this.dialogRef.close();
+        this.onAddArchivos.emit();
+        this.responseMessage = response.message;
+        this.snackbarService.openSnackBar(this.responseMessage,"success");
+      },(error:any)=>{
+        this.dialogRef.close();
+        if(error.error?.message){
+          this.responseMessage = error.error?.message;
+        }
+        else{
+          this.responseMessage = GlobalCostants.genericError;
+        }
+        this.snackbarService.openSnackBar(this.responseMessage,GlobalCostants.error);
       });
   }
 }
