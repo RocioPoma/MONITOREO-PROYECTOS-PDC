@@ -4,7 +4,7 @@ import { ReportesService } from 'src/app/services/reportes.service';
 @Component({
   selector: 'app-reportes-indicadores',
   templateUrl: './reportes-indicadores.component.html',
-  styleUrls: ['./reportes-indicadores.component.scss']
+  styleUrls: ['./reportes-indicadores.component.scss'],
 })
 export class ReportesIndicadoresComponent {
 

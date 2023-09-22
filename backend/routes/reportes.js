@@ -281,6 +281,7 @@ router.get("/indicadores", async (req, res) => {
 
         for (const proy of data) {
           if (proy.ultima_etapa) {
+            console.log('indicador: ',report.nombre_indicador);
             console.log(report.uni_ind);
             console.log('proyecto: ',proy);
             const peso_etapa_actual =
@@ -304,20 +305,24 @@ router.get("/indicadores", async (req, res) => {
       let formula_Porc=0;
       let linea_base_Porc=0;
       report.LB_2020 = report_result.cantidad;
-
+      
       switch (report.uni_ind) {
         case '%':
           if(report.COD === 14){
            // linea_base_Porc= (report_result.cantidad*100)/report.Meta_2025;
             formula= (total)/report_result.cantidad;
             formula_Porc =100*(total/report_result.cantidad)/(report.Meta_2025/100); 
-            report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+            if(report["#Acciones"]>0){
+              report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+            }
           }else{
             linea_base_Porc= (100*report_result.cantidad/report_result.cantidad_glb_identificada).toFixed(2);
             report.LB_2020=linea_base_Porc;
             formula= (report_result.cantidad+total)/report_result.cantidad_glb_identificada;
             formula_Porc =100*(formula-linea_base_Porc)/(report.Meta_2025-linea_base_Porc); 
-            report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+            if(report["#Acciones"]>0){
+              report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+            }
           }
           //report.
           break;
@@ -328,82 +333,114 @@ router.get("/indicadores", async (req, res) => {
             formula= total;
             formula_Porc =100*total/(report.Meta_2025-report_result.cantidad); 
             console.log('es PTAR formula',formula_Porc);
-            report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+            if(report["#Acciones"]>0){
+              report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+            }
             break;
           case 'ha':
               if(report.COD === 12){
                 formula=total;
                 formula_Porc= 100*(total-report_result.cantidad)/(report.Meta_2025-report_result.cantidad);
-                report['%_ind_efectivo']=formula_Porc>0?formula_Porc:0;
+                if(report["#Acciones"]>0){
+                  report['%_ind_efectivo']=formula_Porc>0?formula_Porc:0;
+                }
               }else if(report.COD === 13 || report.COD === 16){
                 formula= total+report_result.cantidad;
                 formula_Porc=100*total/(report.Meta_2025-report_result.cantidad);
-                report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+                if(report["#Acciones"]>0){
+                  report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+                }
               }else{
                 formula=total;
                 formula_Porc= 100*(report_result.cantidad+total)/report.Meta_2025;
-                report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+                if(report["#Acciones"]>0){
+                  report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+                }
               }
             break;
           case 'Industrias':
                 formula=total;
                 formula_Porc=100*total/(report.Meta_2025-report_result.cantidad);
-                report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+                if(report["#Acciones"]>0){
+                  report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+                }
                 break;
           case 'tm/ha':
               formula=total;
               formula_Porc = 100*(total-report_result.cantidad)/(report.Meta_2025-report_result.cantidad);
-              report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+              if(report["#Acciones"]>0){
+                report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+              }
               break;
           case 'APP':
               formula=total;
               formula_Porc = 100*total/ (report.Meta_2025-report_result.cantidad); 
-              report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+              if(report["#Acciones"]>0){
+                report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+              }
               break;
           case 'GAM':
               formula=total;
               formula_Porc = 100*total/(report.Meta_2025-report_result.cantidad);
-              report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+              if(report["#Acciones"]>0){
+                report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+              }
               break;
           case 'hm3':
               formula=total;
               formula_Porc=100*(total-report_result.cantidad)/(report.Meta_2025-report_result.cantidad);
-              report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+              if(report["#Acciones"]>0){
+                report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+              }
               break;
           case 'proyectos':
               formula=total;
               formula_Porc=100*total/(report.Meta_2025-report_result.cantidad);
-              report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+              if(report["#Acciones"]>0){
+                report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+              }
               break;
           case 'ICA':
               formula=total;
               formula_Porc= 100*total/report.Meta_2025;
-              report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+              if(report["#Acciones"]>0){
+                report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+              }
               break;
           case 'Informes':
               formula=total;
               formula_Porc=100*total/(report.Meta_2025-report_result.cantidad);
-              report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+              if(report["#Acciones"]>0){
+                report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+              }
           break;
         case 'm':
               formula=total;
               formula_Porc = 100*(total-report_result.cantidad)/(report.Meta_2025-report_result.cantidad);
-              report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+              if(report["#Acciones"]>0){
+                report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+              }
           break;
         case 'normas_instrumentos':
               formula=total;
               formula_Porc=100*total/(report.Meta_2025-report_result.cantidad);
-              report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+              if(report["#Acciones"]>0){
+                report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+              }
           break;
         case 'IGH':
               formula=total;
               formula_Porc= 100*total/report.Meta_2025;
-              report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+              if(report["#Acciones"]>0){
+                report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+              }
           break;
         case 'habitantes':
               formula=total;
               formula_Porc= 100*total/report.Meta_2025;
-              report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+              if(report["#Acciones"]>0){
+                report['%_ind_efectivo']=formula_Porc>0?formula_Porc.toFixed(2):0;
+              }
           break;
         default:
           console.log('indicador:',report.nombre_indicador);
