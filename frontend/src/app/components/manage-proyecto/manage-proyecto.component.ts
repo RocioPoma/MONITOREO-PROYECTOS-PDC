@@ -521,8 +521,8 @@ export class ManageProyectoComponent {
         {
           columns: [
             {
-              image: this.logoDataUrl, width: 40,
-              height: 40, margin: [5, 5]
+             /*  image: this.logoDataUrl, width: 40,
+              height: 40, margin: [5, 5] */
             },
             {
               text: `Fecha: ${currentDate}`, alignment: 'right', margin: [0, 20, 10, 10],  //0 , Y
@@ -544,7 +544,7 @@ export class ManageProyectoComponent {
       },
       //contenido tablas e informacion
       content: [
-        'Datos de Indicadores\n\n',
+        'Datos de Proyectos\n\n',
         {
 
           table: {

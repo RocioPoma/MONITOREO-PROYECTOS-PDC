@@ -40,7 +40,11 @@ export class ArchivosProyectoComponent {
   tabla:any;
   logoDataUrl: string;
   infoFiltrada:any;
-  
+  //variable para publico y usaurio
+  publico:boolean;
+
+  tipologia:any;
+  nombre_proyecto:any;
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -55,6 +59,11 @@ export class ArchivosProyectoComponent {
 ) {}
 
 ngOnInit():void{
+//llamar a las vairbla es titulo
+  this.tipologia=this.dialogData.data.nom_tipologia;
+  this.nombre_proyecto=this.dialogData.data.nom_proyecto;
+
+
 
   this.DocProyectForm = this.formBuilder.group({
     // Define aquí tus otros campos del formulario si los tienes
@@ -62,14 +71,17 @@ ngOnInit():void{
     opcionRadio: [null, [Validators.required]]
   });
 
-  console.log(this.dialogData.data.id_proyecto);
+  console.log(this.dialogData.data);
   this.tableData();
-  if (this.dialogData.action === 'Edit') {
-    this.dialogAction = "Edit";
-    this.action = "Actualizar";      
-    this.DocProyectForm.patchValue(this.dialogData.data);
-    console.log(this.dialogData.data);
-    
+  if (this.dialogData.action === 'principal') {
+    console.log(this.dialogData.action);   
+    /* this.DocProyectForm.patchValue(this.dialogData.data);
+    console.log(this.dialogData.data) */;
+    this.publico=true;
+    this.displayedColumns = ['numero', 'Nombre','Files', 'Descripcion']; 
+  }else{
+    console.log('no es principal');
+    this.publico=false;
   }
 
 }
@@ -144,7 +156,7 @@ handleAddAction(){
       data: this.dialogData.data.id_proyecto
     }
     console.log(this.dialogData.data.id_proyecto);
-    dialogConfig.width = "820px";
+    dialogConfig.width = "520px";
     const dialogRef = this.dialog.open(ArchivosComponent, dialogConfig);
     this.router.events.subscribe(() => {
       dialogRef.close();

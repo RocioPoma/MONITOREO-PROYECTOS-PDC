@@ -14,6 +14,9 @@ import { MatSort } from '@angular/material/sort';
 import { MunicipioService } from 'src/app/services/municipio.service';
 
 
+import { ArchivosProyectoComponent } from '../../dialog/archivos-proyecto/archivos-proyecto.component';
+
+
 
 //pdf importaciones
 import * as pdfMake from 'pdfmake/build/pdfmake';
@@ -353,6 +356,28 @@ export class BasedeDatosComponent {
     pdfMake.createPdf(documentDefinition).open();
   }
 
+
+
+  //--------------------parte de documentos menu---------------------------------
+  handleAddDoc(values: any) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      action: 'principal',
+      tipo: 'publico',
+      data: values
+    }
+    console.log(values);
+    dialogConfig.width = "820px";
+    const dialogRef = this.dialog.open(ArchivosProyectoComponent, dialogConfig);
+    this.router.events.subscribe(() => {
+      dialogRef.close();
+    });
+    const sub = dialogRef.componentInstance.onAddDocProyect.subscribe((response) => {
+      this.tableData();
+    })
+  }
+
+  //--------------------parte de documentos menu---------------------------------
 
 
 }

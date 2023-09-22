@@ -1,22 +1,25 @@
-<mat-card>
-    <mat-toolbar color="primary">
-        <mat-toolbar-row fxLayout="row">
-            <span class="title-center">Gestion Documentos</span>
-        </mat-toolbar-row>
-    </mat-toolbar>
+
+<div class="titleForm">
+    <span class="accion"> Documentos {{tipologia}}:</span>
+           <p class="nomProy"> "{{nombre_proyecto}}"</p>
+       
+</div>
 
 
-    <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutWrap="wrap" fxLayoutAlign="start center">
+    <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutWrap="wrap" fxLayoutAlign=" center">
         <mat-form-field fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
             <mat-label>Filter</mat-label>
             <input matInput (keyup)="applyFilter($event)" placeholder="Ex. prueba" #input>
         </mat-form-field>
 
-        <div fxFlex="100%" fxFlex.gt-sm="33.33%"></div>
-      
-             
-        <button fxFlex.gt-sm="10%" mat-flat-button color="primary" class="padding"
-            (click)="handleAddAction()">Registrar</button>
+        <div fxFlex="100%" fxFlex.gt-sm="33.33%"></div>        
+        <button fxFlex.gt-sm="10%" mat-flat-button color="primary" class="padding"        
+        *ngIf="publico === false"
+            (click)="handleAddAction()">Subir</button>
+            
+        <div fxFlex="100%" fxFlex.gt-sm="5.33%"></div> 
+        <button mat-raised-button color="primary" class="padding" mat-dialog-close>Cerrar</button>
+        <div fxFlex="100%" fxFlex.gt-sm="5.33%"></div> 
       
     </div>
     <div>
@@ -59,7 +62,8 @@
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Acciones</th>
                         <td mat-cell *matCellDef="let element" class="action-link" >
                             <div class="d-flex align-items-center">
-                                <button mat-icon-button color="primary" matTooltip="Delete" (click)="handleDeleteAction(element)"> 
+                                <button mat-icon-button color="primary" matTooltip="Delete" (click)="handleDeleteAction(element)"
+                                *ngIf="publico === false"> 
                                     <mat-icon>delete</mat-icon>
                                 </button>
                             </div>
@@ -80,7 +84,7 @@
             <mat-dialog-actions align="center">
                <!--  <button mat-raised-button color="primary" type="submit" (click)="handleSubmit()"
                     [disabled]="![DocProyectForm.valid && DocProyectForm.dirty]">{{action}}</button> -->
-                    <button mat-raised-button color="primary" mat-dialog-close>Cancelar</button>
+                    <!-- <button mat-raised-button color="primary" mat-dialog-close>Cerrar</button> -->
             </mat-dialog-actions>
 
             </div>
@@ -91,4 +95,3 @@
     </div>
 
 
-</mat-card>

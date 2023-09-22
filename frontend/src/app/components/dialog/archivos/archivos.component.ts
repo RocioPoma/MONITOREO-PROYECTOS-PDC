@@ -34,7 +34,7 @@ export class ArchivosComponent {
   ngOnInit():void{
     console.log(this.dialogData.data);
     this.proyectoForm = this.formBuilder.group({   
-      Descripcion: [null, [Validators.required]],   
+      Descripcion: [null],   
       documento: [null],
      
     });
@@ -136,7 +136,7 @@ uploadFiles(): void {
 
 // Función para eliminar un archivo de la lista
 removeFile(index: number): void {
-  this.files.splice(index, 1);
+  this.selectedFiles.splice(index, 1);
 }
 
 }
