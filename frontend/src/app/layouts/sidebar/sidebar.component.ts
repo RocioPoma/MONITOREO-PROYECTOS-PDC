@@ -125,7 +125,11 @@ menuItems: MenuItem[] = [
       },
       {
         title: 'Comunidad',
-        link: '/comunidad'
+        link: '/comunidad'      
+      },
+      {
+        title: 'Nosotros',
+        link: '/gestion-nosotros'
       }
     ]
   }

@@ -1,0 +1,65 @@
+<mat-card>
+    <mat-toolbar color="primary">
+        <mat-toolbar-row fxLayout="row">
+            <span class="title-center"> Subir Documentos</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-dialog-content class="mat-typography">
+        <form [formGroup]="NosotrosForm">
+            <div fxFlex fxLayout="column">                
+                   
+                        <mat-form-field appearance="fill" fxFlex>
+                            <mat-label>Comentarios</mat-label>
+                            <input matInput formControlName="descripcion" >               
+                        </mat-form-field>
+
+                        <mat-form-field appearance="fill" fxFlex>
+                            <mat-label>URL video</mat-label>
+                            <input matInput formControlName="link_video" >               
+                        </mat-form-field>
+
+                        <mat-form-field class="columns">  
+                            <input matInput disabled>
+                            <button  mat-flat-button color="primary" class="padding"  matSuffix (click)="fileInput.click()">
+                                <mat-label>Documento General</mat-label>
+                            </button>
+                        <input hidden (change)="onFileSelected($event)" #fileInput type="file">
+                        <span>{{selectedFile?.name}}</span>                                          
+                        </mat-form-field >
+
+                        <mat-form-field class="columns">  
+                            <input matInput disabled>
+                            <button  mat-flat-button color="primary" class="padding"  matSuffix (click)="fileInput2.click()">
+                                <mat-label>Manual de usuario</mat-label>
+                            </button>
+                        <input hidden (change)="onFileSelected2($event)" #fileInput2 type="file">
+                        <span>{{selectedFile2?.name}}</span>                                          
+                        </mat-form-field >
+
+                        <mat-form-field class="columns">  
+                            <input matInput disabled>
+                            <button  mat-flat-button color="primary" class="padding"  matSuffix (click)="fileInput3.click()">
+                                <mat-label>Manual de desarrollo</mat-label>
+                            </button>
+                        <input hidden (change)="onFileSelected3($event)" #fileInput3 type="file">
+                        <span>{{selectedFile3?.name}}</span>                                          
+                        </mat-form-field >
+
+
+                        <mat-form-field class="columns">  
+                            <input matInput disabled>
+                            <button  mat-flat-button color="primary" class="padding"  matSuffix (click)="fileInput4.click()">
+                                <mat-label>IEEE 830</mat-label>
+                            </button>
+                        <input hidden (change)="onFileSelected4($event)" #fileInput4 type="file">
+                        <span>{{selectedFile4?.name}}</span>                                          
+                        </mat-form-field >
+            </div>
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-actions align="center">
+        <button mat-raised-button color="primary" type="submit" (click)="uploadFiles()" 
+            [disabled]="![NosotrosForm.valid && NosotrosForm.dirty]">Aceptar</button>
+        <button mat-raised-button color="primary" mat-dialog-close>Cancelar</button>
+    </mat-dialog-actions>
+</mat-card>

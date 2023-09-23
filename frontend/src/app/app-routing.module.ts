@@ -20,6 +20,7 @@ import { ManageGestionEtapaComponent } from './components/manage-gestion-etapa/m
 import { ReportesProyectoComponent } from './components/reportes-proyecto/reportes-proyecto.component';
 import { ReportesIndicadoresComponent } from './components/reportes-indicadores/reportes-indicadores.component';
 import { ManageComunidadComponent } from './components/manage-comunidad/manage-comunidad.component';
+import { ManageNosotrosComponent } from './components/manage-nosotros/manage-nosotros.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/nosotros', pathMatch: 'full' },
@@ -53,6 +54,7 @@ const routes: Routes = [
    //{ path: 'indicador', component: ManageIndicadorComponent }
     { path: 'reportes-proyectos',component:ReportesProyectoComponent,},
     { path: 'reportes-indicadores',component:ReportesIndicadoresComponent,},
+    { path: 'gestion-nosotros',component:ManageNosotrosComponent,},
     ] 
   },
 /* 
