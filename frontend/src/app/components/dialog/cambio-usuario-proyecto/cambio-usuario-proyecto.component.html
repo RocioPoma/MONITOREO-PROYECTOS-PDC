@@ -8,7 +8,7 @@
 
     <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutWrap="wrap" fxLayoutAlign="start center">
         <mat-form-field fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
-            <mat-label>Filter</mat-label>
+            <mat-label>Filtrar</mat-label>
             <input matInput (keyup)="applyFilter($event)" placeholder="Ex. prueba" #input>
         </mat-form-field>
 
@@ -81,7 +81,7 @@
             </mat-dialog-content>
             <mat-dialog-actions align="center">
                 <button mat-raised-button color="primary" type="submit" (click)="handleSubmit()"
-                    [disabled]="![UserProyectForm.valid && UserProyectForm.dirty]">{{action}}</button>
+                    [disabled]="![UserProyectForm.valid && UserProyectForm.dirty]">Guardar</button>
                     <button mat-raised-button color="primary" mat-dialog-close>Cancelar</button>
             </mat-dialog-actions>
 

@@ -5,12 +5,12 @@
 
     <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutWrap="wrap" fxLayoutAlign="start center">
         <mat-form-field fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
-            <mat-label>Filter</mat-label>
+            <mat-label>Buscar</mat-label>
             <input matInput (keyup)="applyFilter($event)" placeholder="Buscar ..." #input>
         </mat-form-field>
 
         <mat-form-field fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
-            <mat-label>Nombre Municipio</mat-label>
+            <mat-label>Área/municipio</mat-label>
             <mat-select (selectionChange)="applyMunicipioFilter($event.value)">
                 <mat-option value="">Todos</mat-option>
                 <mat-option *ngFor="let municipio of municipios" [value]="municipio.nombre_municipio">{{
@@ -48,7 +48,7 @@
                 <table mat-table [dataSource]="dataSource" matSort style="table-layout: auto; width: 100%;">
 
                     <!-- ID Column -->
-                    <ng-container matColumnDef="Nro">
+                    <ng-container matColumnDef="Nro" sticky>
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Nro </th>
                         <td class="td_btn" mat-cell *matCellDef="let element; index as i"
                             (click)="openEtapasProyecto(element)">
@@ -56,7 +56,7 @@
                     </ng-container>
 
                     <!-- NombreProyecto Column -->
-                    <ng-container matColumnDef="NombreProyecto">
+                    <ng-container matColumnDef="NombreProyecto" sticky>
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> NombreProyecto </th>
                         <td class="nomProy td_btn" mat-cell *matCellDef="let element"
                             (click)="openEtapasProyecto(element)">

@@ -6,15 +6,14 @@
     <div class="mat-elevation-z4">
       <div class="table-wrapper">
         <table *ngIf="dataSource.length>0" mat-table [dataSource]="dataSource" matSort
-          style="table-layout: auto; width: 100%"
-        >
-          <ng-container matColumnDef="COD" >
+          style="table-layout: auto; width: 100%">
+          <ng-container matColumnDef="COD">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="header table-text">COD</th>
             <td class="td_btn header" mat-cell *matCellDef="let element">
               {{ element.COD }}
             </td>
           </ng-container>
-          <ng-container matColumnDef="nombre_indicador" >
+          <ng-container matColumnDef="nombre_indicador">
             <th mat-header-cell *matHeaderCellDef class="header table-text">
               Nombre de Indicador
             </th>
@@ -49,7 +48,8 @@
                 <span>
                   {{ element['%_ind_efectivo'] }}
                 </span>
-                  <i class="large material-icons" [ngClass]="efectividad(element['%_ind_efectivo'])">fiber_manual_record</i>
+                <i class="large material-icons"
+                  [ngClass]="efectividad(element['%_ind_efectivo'])">fiber_manual_record</i>
               </div>
             </td>
           </ng-container>
@@ -71,15 +71,15 @@
               {{ element.PDES }}
             </td>
           </ng-container>
-          <ng-container matColumnDef="PPRH" >
+          <ng-container matColumnDef="PPRH">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class=" header table-text">PPRH</th>
             <td class="td_btn" mat-cell *matCellDef="let element">
               {{ element.PPRH }}
             </td>
           </ng-container>
-          <tr mat-header-row *matHeaderRowDef="displayedColumns" ></tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
-          
+
         </table>
       </div>
     </div>
