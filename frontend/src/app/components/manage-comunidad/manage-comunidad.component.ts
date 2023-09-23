@@ -57,7 +57,7 @@ export class ManageComunidadComponent {
 
 ngOnInit(): void {
   this.tableData();
-  //para usaurio de pdf    
+  //para usuario de pdf    
   const nombreString = localStorage.getItem('nombre');
   const ApString = localStorage.getItem('ap_paterno');
   const AmString = localStorage.getItem('ap_materno');

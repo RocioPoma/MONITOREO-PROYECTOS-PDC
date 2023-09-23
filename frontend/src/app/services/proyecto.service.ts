@@ -120,7 +120,7 @@ export class ProyectoService {
   }
 
   //-------------------forma2--------------------------
-  uploadFiles(files: File[],comentario:any, id_proyecto:any) {   
+  uploadFiles(files: File[], comentario:any, id_proyecto:any) {   
     const formData = new FormData();
     formData.append('comentario', comentario);
     formData.append('id_proyecto', id_proyecto);

@@ -23,6 +23,7 @@ const fuente_informacion_Route=require('./routes/fuente_de_informacion');
 const etapa_Route=require('./routes/Etapa');
 const tipologia_Route=require('./routes/tipologia');
 const reportes_Route=require('./routes/reportes');
+const nosotros_Route=require('./routes/nosotros');
 
 
 //const path = require('path');
@@ -55,5 +56,6 @@ app.use('/fuente_informacion',fuente_informacion_Route);
 app.use('/etapa',etapa_Route);
 app.use('/tipologia',tipologia_Route);
 app.use('/reportes',reportes_Route);
+app.use('/nosotros',nosotros_Route);
 
 module.exports=app;

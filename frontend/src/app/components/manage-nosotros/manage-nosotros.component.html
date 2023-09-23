@@ -1,0 +1,81 @@
+<mat-card>
+    <div class="title">
+        <b><span class="color-text">GESTIÓN NOSOTROS</span></b>
+    </div>
+    <!-- buscadores -->
+
+    <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutWrap="wrap" fxLayoutAlign="start center">
+        <mat-form-field fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
+            <mat-label>Filter</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Ex. prueba" #input>
+        </mat-form-field>
+
+        <div fxFlex="100%" fxFlex.gt-sm="33.33%"></div>
+        <button fxFlex.gt-sm="10%" mat-flat-button color="primary" class="padding"
+            (click)="handleAddAction()">Registrar</button>
+            <div fxFlex="100%" fxFlex.gt-sm="5.33%"></div>
+
+        <button fxFlex.gt-sm="10%" mat-flat-button color="primary" class="padding"
+        (click)="handleEditAction()">Editar</button>
+    </div>
+
+    <div>
+        <div class="mat-elevation-z4">
+            <div class="table-wrapper">
+                <table mat-table [dataSource]="dataSource" matSort class="custom-table">
+                    <ng-container matColumnDef="numero">
+                        <th mat-header-cell *matHeaderCellDef>No.</th>
+                        <td mat-cell *matCellDef="let element; index as i">{{i+1}}</td>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="descripcion">
+                        <th mat-header-cell *matHeaderCellDef>Descripcion</th>
+                        <td mat-cell *matCellDef="let element">{{element.descripcion}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="link_video">
+                        <th mat-header-cell *matHeaderCellDef>Video</th>
+                        <td mat-cell *matCellDef="let element">{{element.link_video}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="documentos_general">
+                        <th mat-header-cell *matHeaderCellDef>Documentos generales</th>
+                        <td mat-cell *matCellDef="let element">{{element.documento_general}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="manual_usuario">
+                        <th mat-header-cell *matHeaderCellDef>Manual de usaurio</th>
+                        <td mat-cell *matCellDef="let element">{{element.manual_usuario}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="manual_desarrollo">
+                        <th mat-header-cell *matHeaderCellDef>Manual de desarrollo</th>
+                        <td mat-cell *matCellDef="let element">{{element.manual_desarrollo}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="iee_830">
+                        <th mat-header-cell *matHeaderCellDef>IEE-830</th>
+                        <td mat-cell *matCellDef="let element">{{element.ieee_830}}</td>
+                    </ng-container>
+
+                   <!--  <ng-container matColumnDef="acciones">
+                        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                        <td class="acciones" mat-cell *matCellDef="let element" class="action-link">
+                            <div class="d-flex align-items-center">
+                                <button mat-icon-button color="primary" matTooltip="Edit" (click)="handleEditAction(element)">
+                                    <mat-icon>edit</mat-icon>
+                                </button>                          
+                             
+                            </div>  
+                        </td>
+                    </ng-container> -->
+        
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns" class="center-header"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns" class="center-data"></tr>
+        
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="4">No se encontró "{{input.value}}"</td>
+                    </tr>
+                </table>
+            </div>
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of dataSource"></mat-paginator>
+        </div>
+        
+        
+    </div>
+</mat-card>

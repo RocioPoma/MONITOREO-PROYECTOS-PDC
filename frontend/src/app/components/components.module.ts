@@ -45,6 +45,8 @@ import { ArchivosProyectoComponent } from './dialog/archivos-proyecto/archivos-p
 import { ArchivosComponent } from './dialog/archivos/archivos.component';
 import { ManageComunidadComponent } from './manage-comunidad/manage-comunidad.component';
 import { ComunidadComponent } from './dialog/comunidad/comunidad.component';
+import { ManageNosotrosComponent } from './manage-nosotros/manage-nosotros.component';
+import { ArchivosNosotrosComponent } from './dialog/archivos-nosotros/archivos-nosotros.component';
 //import { ComponentsRoutingModule } from './components-routing.module';
 
 
@@ -81,7 +83,9 @@ import { ComunidadComponent } from './dialog/comunidad/comunidad.component';
     ArchivosProyectoComponent,
     ArchivosComponent,
     ManageComunidadComponent,
-    ComunidadComponent
+    ComunidadComponent,
+    ManageNosotrosComponent,
+    ArchivosNosotrosComponent
   ],
   imports: [
     CommonModule,
