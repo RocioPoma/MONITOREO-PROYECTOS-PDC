@@ -21,8 +21,8 @@ export class ComunidadService {
   
   //----------------------API PARA EDITAR COMUNIDADES O CIUDADES------------------------------
   update(data: any) {
-    return this.httpClient.put(this.url +
-      "/comunidad/update/", data, {
+    return this.httpClient.patch(this.url +
+      "/comunidad/update", data, {
       headers: new HttpHeaders().set('Content-Type', "application/json")
     });
   }
@@ -30,7 +30,7 @@ export class ComunidadService {
   //----------------------API PARA AGREGAR COMUNIDADES O CIUDADES------------------------------
   add(data: any) {
     return this.httpClient.post(this.url +
-      "/comunidad/create/", data, {
+      "/comunidad/create", data, {
       headers: new HttpHeaders().set('Content-Type', "application/json")
     });
   }

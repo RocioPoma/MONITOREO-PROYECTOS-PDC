@@ -45,7 +45,7 @@ router.post('/create', (req, res) => {
   });
 
 //modificar ciudad_comunidad
-router.put('/update/', (req, res) => {   
+router.patch('/update', (req, res) => {   
     const {  nombre, id_municipio} = req.body;
     connection.query('UPDATE CIUDAD_O_COMUNIDAD SET nombre = ?, id_municipio = ? WHERE id = ?', [nombre, id_municipio], (err) => {
       if (err) {
