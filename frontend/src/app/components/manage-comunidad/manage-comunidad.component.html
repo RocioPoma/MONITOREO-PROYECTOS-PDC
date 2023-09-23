@@ -51,8 +51,9 @@
                                 (click)="handleDeleteAction(element)">
                                 <mat-icon>delete</mat-icon>
                             </button>
-                            <mat-slide-toggle color="primary" (change)="onChange($event.checked, element.id_etapa)"
-                                matTooltip="Activar o Desactivar" [checked]="element.estado"></mat-slide-toggle>
+                            <mat-slide-toggle color="primary" (change)="onChange($event.checked, element.id_comunidad)"
+                                matTooltip="Activar o Desactivar" [checked]="element.estado">
+                            </mat-slide-toggle>
                         </div>
                     </td>
                 </ng-container>
