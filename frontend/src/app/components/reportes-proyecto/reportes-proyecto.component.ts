@@ -469,7 +469,8 @@ export class ReportesProyectoComponent {
 
     Highcharts.chart('chart-container-inversion-LE-desagregada', {
       chart: {
-        type: 'bar'
+        type: 'bar',
+        height: 550,
       },
       title: {
         text: 'Inversión desagregada por Linea Estratégica 2020-2025',
@@ -498,7 +499,7 @@ export class ReportesProyectoComponent {
       },
       
       xAxis: {
-        categories: ['LE1', 'LE2', 'LE3', 'LE4', 'LE5'],
+        categories: data.map((item) => item.id_linea_estrategica + ' .- ' + item.linea_estrategica),
         title: {
           text: null
         },
@@ -545,19 +546,23 @@ export class ReportesProyectoComponent {
       series: [{
         name: 'Tarija',
         type: 'bar',
-        data: [814, 841, 3714, 726]
+        data: data.map((item) => item.Tarija),
+        color: '#E449F1'
       }, {
         name: 'San Lorenzo',
         type: 'bar',
-        data: [814, 841, 3714, 726]
+        data: data.map((item) => item.SanLorenzo),
+        color: '#127293'
       }, {
         name: 'Padcaya',
         type: 'bar',
-        data: [1044, 944, 4170, 735]
+        data: data.map((item) => item.Padcaya),
+        color: '#27AD39'
       }, {
         name: 'Uriondo',
         type: 'bar',
-        data: [1276, 1007, 4561, 746]
+        data: data.map((item) => item.Uriondo),
+        color: '#49C6F1'
       }]
     });
   }

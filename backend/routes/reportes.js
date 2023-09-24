@@ -502,34 +502,35 @@ router.get("/inversion_le", (req, res) => {
 //REPORTES INVERSION POR LINEA ESTRATEGICA DESAGREGADA POR MUNICIPIO
 router.get("/inversion_desagregada_le", (req, res) => {
   const query = `SELECT
-    le.id_linea_estrategica,
-    le.descripcion AS linea_estrategica,
-    m.id_municipio,
-    m.nombre_municipio,
-    COALESCE(SUM(f.costo_final), 0) AS monto_municipio,
-    SUM(SUM(COALESCE(f.costo_final, 0))) OVER (PARTITION BY le.id_linea_estrategica) AS inversion_total_linea
-  FROM
-    linea_estrategica le
-  CROSS JOIN municipio m
-  LEFT JOIN proyecto p ON p.id_accion_estrategica IN (
-    SELECT ae.id_accion_estrategica
-    FROM accion_estrategica ae
-    WHERE ae.id_linea_accion IN (
-        SELECT la.id_linea_accion
-        FROM linea_de_accion la
-        WHERE la.id_linea_estrategica = le.id_linea_estrategica
-    )
+  le.id_linea_estrategica,
+  le.descripcion AS linea_estrategica,
+  SUM(CASE WHEN m.nombre_municipio = 'Tarija' THEN COALESCE(f.costo_final, 0) ELSE 0 END) AS Tarija,
+  SUM(CASE WHEN m.nombre_municipio = 'San Lorenzo' THEN COALESCE(f.costo_final, 0) ELSE 0 END) AS "SanLorenzo",
+  SUM(CASE WHEN m.nombre_municipio = 'Padcaya' THEN COALESCE(f.costo_final, 0) ELSE 0 END) AS Padcaya,
+  SUM(CASE WHEN m.nombre_municipio = 'Uriondo' THEN COALESCE(f.costo_final, 0) ELSE 0 END) AS Uriondo,
+  SUM(COALESCE(f.costo_final, 0)) AS inversion_total_linea
+FROM
+  linea_estrategica le
+CROSS JOIN municipio m
+LEFT JOIN proyecto p ON p.id_accion_estrategica IN (
+  SELECT ae.id_accion_estrategica
+  FROM accion_estrategica ae
+  WHERE ae.id_linea_accion IN (
+      SELECT la.id_linea_accion
+      FROM linea_de_accion la
+      WHERE la.id_linea_estrategica = le.id_linea_estrategica
   )
-  LEFT JOIN etapa_proyecto ep ON p.id_proyecto = ep.id_proyecto
-  LEFT JOIN financiamiento f ON ep.id_etapa_proyecto = f.id_etapa_proyecto
-  AND m.id_municipio = (
-    SELECT DISTINCT c.id_municipio
-    FROM ciudad_o_comunidad c
-    INNER JOIN proyecto_ciudad_o_comunidad pcc ON c.id = pcc.id_ciudad_comunidad
-    WHERE pcc.id_proyecto = p.id_proyecto
-  )
-  GROUP BY le.id_linea_estrategica, le.descripcion, m.id_municipio, m.nombre_municipio
-  ORDER BY le.id_linea_estrategica, m.id_municipio`;
+)
+LEFT JOIN etapa_proyecto ep ON p.id_proyecto = ep.id_proyecto
+LEFT JOIN financiamiento f ON ep.id_etapa_proyecto = f.id_etapa_proyecto
+AND m.id_municipio = (
+  SELECT DISTINCT c.id_municipio
+  FROM ciudad_o_comunidad c
+  INNER JOIN proyecto_ciudad_o_comunidad pcc ON c.id = pcc.id_ciudad_comunidad
+  WHERE pcc.id_proyecto = p.id_proyecto
+)
+GROUP BY le.id_linea_estrategica, le.descripcion
+ORDER BY le.id_linea_estrategica`;
   connection.query(query, (err, result) => {
     if (err)
       res
