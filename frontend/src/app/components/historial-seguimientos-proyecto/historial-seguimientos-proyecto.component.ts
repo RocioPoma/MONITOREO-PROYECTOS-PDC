@@ -7,6 +7,8 @@ export interface PeriodicElement {
   fecha_seguimiento: string;
   avance_seguimiento_fisico: number;
   avance_seguimiento_financiero:number;
+  adjunto_fisico:string;
+  adjunto_financiero:string;
   monto_total:string;
   coste_final:string;
   fuente_de_informacion: string;
@@ -16,6 +18,9 @@ export interface PeriodicHistorialElement {
   nombre_etapa: string;
   fecha_seguimiento_fisico: string;
   avance_seguimiento_fisico: number;
+  adjunto_fisico:string;
+  adjunto_financiero:string;
+  avance_seguimiento_financiero: string;
 }
 @Component({
   selector: 'app-historial-seguimientos-proyecto',
@@ -30,8 +35,8 @@ export class HistorialSeguimientosProyectoComponent {
   proyecto:any;
   etapa_proyecto:any;
   openHistorialEtapa=false;
-  displayedColumns: string[] = ['nro','historial','nombre_etapa','coste_final','avance_seguimiento_fisico','avance_seguimiento_financiero', 'fecha_seguimiento', 'monto_total', 'fuente_de_informacion'];
-  displayedSeguimientoColumns: string[] = ['nro','nombre_etapa', 'fecha_seguimiento', 'avance_seguimiento_fisico'];
+  displayedColumns: string[] = ['nro','historial','nombre_etapa','coste_final','avance_seguimiento_fisico','avance_seguimiento_financiero', 'fecha_seguimiento', 'monto_total', 'fuente_de_informacion','adjunto_fisico','adjunto_financiero'];
+  displayedSeguimientoColumns: string[] = ['nro','nombre_etapa', 'fecha_seguimiento', 'avance_seguimiento_fisico','avance_seguimiento_financiero','adjunto_financiero','adjunto_fisico'];
   clickedRows = new Set<PeriodicElement>();
   clickedSeguimientosRows = new Set<PeriodicHistorialElement>();
   constructor(private readonly seguimientoProyectoService:SeguimientoProyectoService){}
@@ -80,4 +85,17 @@ export class HistorialSeguimientosProyectoComponent {
       return ((element.monto_total*100)/element.coste_final).toFixed(2)
     } return 0
   }
+  downloadFile(nombre:any){
+    this.seguimientoProyectoService.downloadFileSeguimiento(nombre)
+    .subscribe(blob => {
+      const a = document.createElement('a');
+      const objectUrl = URL.createObjectURL(blob);
+      a.href = objectUrl;
+      a.download = nombre;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(objectUrl);
+    });
+    }
 }

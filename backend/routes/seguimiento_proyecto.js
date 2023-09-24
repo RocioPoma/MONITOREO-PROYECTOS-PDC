@@ -1,10 +1,19 @@
 const express = require("express");
 const connection = require("../connection");
 const router = express.Router();
+const path = require('path');
 var auth = require("../services/authentication");
 
 const multer = require('../libs/multer');
 const fs = require('fs');
+const selectParams = (query = "", params = []) => {
+  return new Promise((resolve, reject) => {
+    connection.query(query, params, (error, result) => {
+      if (error) return reject(error);
+      return resolve(result);
+    });
+  });
+};
 //obtener Etapa por id de Tipología
 router.get("/getByIdTipologia/:id_tipologia", (req, res) => {
   const id_tipologia = req.params.id_tipologia;
@@ -47,19 +56,23 @@ router.get("/getEtapaByIdEtapaProyecto", (req, res) => {
 });
 router.get("/getEtapasByIdProyecto/:id_proyecto", (req, res) => {
   const { id_proyecto } = req.params;
-  const query = `SELECT ETP.id_etapa_proyecto,ETP.fuente_de_informacion,
-  ETA.nombre_etapa,DATE_FORMAT(ETP.fecha_seguimiento, '%d-%m-%Y') AS fecha_seguimiento, 
-  SEGF.avance_seguimiento_fisico FROM ETAPA_PROYECTO AS ETP 
-  JOIN ETAPA AS ETA ON ETA.id_etapa = ETP.id_etapa 
-  JOIN SEGUIMIENTO_FISICO AS SEGF ON SEGF.id_etapa_proyecto = ETP.id_etapa_proyecto
-  JOIN FINANCIAMIENTO AS FIN ON FIN.id_etapa_proyecto = ETP.id_etapa_proyecto
-  WHERE ETP.id_proyecto = ?;`;
+    const query = `	SELECT ETP.id_etapa_proyecto,ETP.fuente_de_informacion,
+    ETA.nombre_etapa,DATE_FORMAT(ETP.fecha_seguimiento, '%d-%m-%Y') AS fecha_seguimiento,SEGF.adjunto_fisico,FIN.id_financiamiento,
+    SEGF.avance_seguimiento_fisico FROM ETAPA_PROYECTO AS ETP 
+    JOIN ETAPA AS ETA ON ETA.id_etapa = ETP.id_etapa 
+    JOIN SEGUIMIENTO_FISICO AS SEGF ON SEGF.id_etapa_proyecto = ETP.id_etapa_proyecto
+    JOIN FINANCIAMIENTO AS FIN ON FIN.id_etapa_proyecto = ETP.id_etapa_proyecto
+    WHERE ETP.id_proyecto = ?;`;
+    const queryAdjFin=`
+    SELECT SEGFIN.adjunto_financiero FROM seguimiento_financiero AS SEGFIN 
+    WHERE SEGFIN.id_financiamiento = ? ORDER BY SEGFIN.id_seguimiento_financiero DESC LIMIT 1;`;
   connection.query(query, [id_proyecto], async (err, result) => {
     if (err)
       res.status(500).json({ msg: "error al consultar - etap by idProyecto" });
 
     avanceEtapas = [];
     for (avance of result) {
+      avance.adjunto_financiero=null;
       // console.log(avance);
       if (avanceEtapas.length === 0) {
         avanceEtapas.push(avance);
@@ -68,10 +81,17 @@ router.get("/getEtapasByIdProyecto/:id_proyecto", (req, res) => {
           (val) => val.nombre_etapa === avance.nombre_etapa
         );
         if (ava) {
-          ava.avance_seguimiento_fisico =
-            avance.avance_seguimiento_fisico > ava.avance_seguimiento_fisico
-              ? avance.avance_seguimiento_fisico
-              : ava.avance_seguimiento_fisico;
+         
+          if(avance.avance_seguimiento_fisico > ava.avance_seguimiento_fisico){
+            ava.avance_seguimiento_fisico = avance.avance_seguimiento_fisico;
+            ava.adjunto_fisico = avance.adjunto_fisico;   
+
+            const resultado = await selectParams(queryAdjFin,[avance.id_financiamiento]);
+            console.log(resultado);
+            console.log(avance);
+            if(resultado.length>0)
+            ava.adjunto_financiero = resultado[0].adjunto_financiero;
+          }
         } else {
           avanceEtapas.push(avance);
         }
@@ -122,14 +142,45 @@ router.get("/getMontos/:id_etapa_proyecto", (req, res) => {
 });
 router.get("/get_seguimientos/:id_etapa_proyecto", (req, res) => {
   const { id_etapa_proyecto } = req.params;
-  const query = `SELECT SEGF.avance_seguimiento_fisico,DATE_FORMAT(SEGF.fecha_seguimiento_fisico, '%d-%m-%Y') AS fecha_seguimiento_fisico 
-  FROM SEGUIMIENTO_FISICO AS SEGF WHERE SEGF.id_etapa_proyecto = ? ORDER BY SEGF.avance_seguimiento_fisico ASC `;
-  connection.query(query, [id_etapa_proyecto], (err, result) => {
+  const query = `SELECT SEGF.id_etapa_proyecto,SEGF.avance_seguimiento_fisico,
+  DATE_FORMAT(SEGF.fecha_seguimiento_fisico, '%d-%m-%Y') AS fecha_seguimiento_fisico,SEGF.adjunto_fisico, 
+    (SELECT COUNT(FIN.id_financiamiento) FROM financiamiento AS FIN WHERE FIN.id_etapa_proyecto = ?) AS 'nro_financiamientos'
+    FROM SEGUIMIENTO_FISICO AS SEGF 
+    WHERE SEGF.id_etapa_proyecto = ? ORDER BY SEGF.avance_seguimiento_fisico ASC;`;
+  const queryFin =`
+  SELECT FIN.id_financiamiento,FIN.costo_inicial,FIN.costo_final,SEGF.id_seguimiento_financiero,SEGF.monto ,SEGF.adjunto_financiero FROM financiamiento AS FIN 
+	INNER JOIN seguimiento_financiero AS SEGF ON SEGF.id_financiamiento = FIN.id_financiamiento
+	WHERE FIN.id_etapa_proyecto= ? ORDER BY SEGF.id_seguimiento_financiero ASC;`;
+  connection.query(query, [id_etapa_proyecto,id_etapa_proyecto], (err, result) => {
     if (err)
       res
         .status(500)
         .json({ err, msg: "error al obtener seguiminetos fisicos" });
-    res.json(result);
+    connection.query(queryFin,[id_etapa_proyecto],(err,result2)=>{
+      if(err) res.status(500).json({err,msg:'error al consultar financiamiento'});
+      const seguimientos=[];
+      for(let i=0;i<result.length;i++){
+        const historial_seguimientos={
+          avance_seguimiento_fisico:result[i].avance_seguimiento_fisico,
+          avance_seguimiento_financiero:0,
+          fecha_seguimiento_fisico:result[i].fecha_seguimiento_fisico,
+          adjunto_fisico:result[i].adjunto_fisico,
+          adjunto_financiero:null,
+        }
+        let total_financiado =0;
+        let costo_final=0;
+        //console.log((i+1)*result[i].nro_financiamientos);
+        for(let j =i*result[i].nro_financiamientos;j<(i+1)*result[i].nro_financiamientos;j++){
+          total_financiado+=Number.parseFloat(result2[j].monto);
+          costo_final+=Number.parseFloat(result2[j].costo_final);
+        }
+        const calc = (100*total_financiado/costo_final).toFixed(2);
+        historial_seguimientos.avance_seguimiento_financiero=calc;
+        historial_seguimientos.adjunto_financiero = result2[i*result[i].nro_financiamientos].adjunto_financiero;
+        seguimientos.push(historial_seguimientos);
+      }
+      res.json(seguimientos);
+    })    
   });
 });
 
@@ -325,4 +376,25 @@ router.post("/registrarAvanceSeguimientoProyecto", [multer.array('documentos')],
     res.status(201).json({ msg: "insertados exitosamente" });
   });
 });
+
+router.get('/adjunto/:filename',(req,res)=>{
+
+  const{filename} = req.params;
+  //console.log(filename);
+  const rutaArchivo = path.join(__dirname, '../uploads/documents', filename); // Cambia 'archivos' a tu directorio de archivos
+  console.log(rutaArchivo);
+  if (fs.existsSync(rutaArchivo)) {
+    // Configurar encabezados de respuesta para la descarga
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'application/octet-stream');
+    
+    // Crear un flujo de lectura y enviar el archivo como respuesta
+    const archivoStream = fs.createReadStream(rutaArchivo);
+    archivoStream.pipe(res);
+   
+  } else {
+
+    res.status(404).send(`Archivo con nombre: ${filename} no encontrado`);
+  }
+})
 module.exports = router;

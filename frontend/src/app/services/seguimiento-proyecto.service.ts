@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -21,7 +22,7 @@ export class SeguimientoProyectoService {
     return this.httpClient.get<any>(`${this.url}/getFinanciamiento/${id_etapa_proyecto}`);
   }
   createSeguimientoProyecto(seguimientoForm:any,files:File[]){
-    console.log('los archivitos :v');
+    //console.log('los archivitos :v');
     const fd=new FormData();
     files.forEach(file=>{
       fd.append('documentos',file)
@@ -31,13 +32,13 @@ export class SeguimientoProyectoService {
     return this.httpClient.post<any>(`${this.url}/registrarEtapa_Proyecto`,fd)
   }
   registerSeguimientoEtapa(seguimientoForm:any,files:File[]){
-    console.log('los archivitos :v');
+    //console.log('los archivitos :v');
     const fd=new FormData();
     files.forEach(file=>{
       fd.append('documentos',file)
     })
     const form = JSON.stringify(seguimientoForm);
-    console.log('stringyfiado',form);
+    //console.log('stringyfiado',form);
     fd.append('seguimiento',form);
     return this.httpClient.post(`${this.url}/registrarAvanceSeguimientoProyecto`,fd);
   }
@@ -50,5 +51,8 @@ export class SeguimientoProyectoService {
   }
   getHistorialSeguimientoEtapa(id_etapa_proyecto:number){
     return this.httpClient.get<any>(`${this.url}/get_seguimientos/${id_etapa_proyecto}`);
+  }
+  downloadFileSeguimiento(filename: string): Observable<Blob> {
+    return this.httpClient.get(`${this.url}/adjunto/${filename}`, { responseType: 'blob' });
   }
 }
