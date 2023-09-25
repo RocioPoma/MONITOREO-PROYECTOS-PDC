@@ -142,11 +142,19 @@ export class SeguimientoProyectoComponent {
     });
     return total;
   }
+  montoInicialTotal(){
+    const values=this.financiamientoArray.value as Array<any>
+    let total:number=0;
+    values.forEach(val=>{
+      total = total+val.monto_inicial
+    });
+    return total;
+  }
   montoInicial(i:number){
     // console.log(i);
     if(this.montoFinalTotal()===0) return '';
     const monto=this.financiamientoArray.at(i).get('monto_inicial')?.value;
-    return ((monto*100)/this.montoFinalTotal()).toFixed(2);
+    return ((monto*100)/this.montoInicialTotal()).toFixed(2);
   }
   montoFinal(i:number){
     // console.log(i);
@@ -156,11 +164,11 @@ export class SeguimientoProyectoComponent {
   }
   montoSeg(i:number){
     if(this.montoFinalTotal()===0) return '';
-    const montoFinal =this.financiamientoArray.at(i).get('monto_inicial')?.value;
+    const montoFinal =this.financiamientoArray.at(i).get('monto_final')?.value;
     const montoSeguimiento = this.seguimientoFinanciamientoArray.at(i).get('monto')?.value;
     return ((montoSeguimiento*100)/montoFinal).toFixed(2)
   }
-  
+  typeFiles='.jpg, .png, .jpeg, .rar, .pdf, .docx, .xlsx';
   add() {
     
     this.seguimientoForm1.markAllAsTouched();
@@ -233,21 +241,38 @@ export class SeguimientoProyectoComponent {
   entidades(index: number) {
     return this.EntidadFinanciera.find(item => item.id_entidad_financiera === this.financiamientoArray.at(index).get('id_entidad_financiera')?.value)
   }
+  maxFileMb=10;
   //--------------- SELECCIONAR ARCHIVO ------------------
   selectFile(event: any,index:number): any {
-    this._sanitizer.bypassSecurityTrustStyle(event.target.files);
-    if (event.target.files && event.target.files[0]) {
-      const file = this.files[index];
-      if(file){
-        this.files[index] =(<File>event.target.files[0]);
-      }else{
-        this.files.push((<File>event.target.files[0]));
+    console.log(event.target.files);
+    const archivo = event.target.files;
+    if(archivo.length>0){
+      const extend = archivo[0].name.split('.')[1];
+      //console.log(extend);
+      if(!this.typeFiles.includes(extend)){
+        this.responseMessage =`Extension ${extend} no permitida`;
+        this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+        return;
       }
-      //File preview
-      const reader = new FileReader();
-      reader.onload = e => this.fileSelected = reader.result;
-      
-      reader.readAsDataURL(this.files[index]);
+      if(archivo[0].size>1048576*this.maxFileMb ){
+        this.responseMessage =`Tamaño maximo: ${this.maxFileMb} Mb`;
+        this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+        return;
+      }
+      this._sanitizer.bypassSecurityTrustStyle(event.target.files);
+      if (event.target.files && event.target.files[0]) {
+        const file = this.files[index];
+        if(file){
+          this.files[index] =(<File>event.target.files[0]);
+        }else{
+          this.files.push((<File>event.target.files[0]));
+        }
+        //File preview
+        const reader = new FileReader();
+        reader.onload = e => this.fileSelected = reader.result;
+        
+        reader.readAsDataURL(this.files[index]);
+      }
     }
   }
   //------------- FIN SELECCIONAR ARCHIVO ---------------------
