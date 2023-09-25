@@ -22,20 +22,6 @@ export class SidebarComponent  implements OnDestroy{
 //array
 menuItems: MenuItem[] = [
   {
-    title: 'Home',
-    icon: 'home',
-    submenus: [      
-      {
-        title: 'Acción 1',
-        link: '/accion1'
-      },
-      {
-        title: 'Acción 2',
-        link: '/accion2'
-      }
-    ]
-  },
-  {
     title: 'Usuarios',
     icon: 'group',
     submenus: [

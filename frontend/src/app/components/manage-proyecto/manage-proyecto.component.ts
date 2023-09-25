@@ -220,17 +220,6 @@ export class ManageProyectoComponent {
       this.dataSource.paginator.firstPage();
     }
   }
-  /*
-  filterSelection($event: any) {
-    let filterData = _.filtar(this.apiResponse, (item) => {
-      return item.NombreMunicipio.toLowerCase() == $event.value.toLowerCase();
-    })
-    if ($event.value == 'Todos') {
-      this.tableData();
-    } else {
-      this.dataSource = new MatTableDataSource(filterData);
-    }
-  }*/
 
 
   handleAddAction() {
@@ -637,17 +626,6 @@ export class ManageProyectoComponent {
       this.tableData();
     })
   }
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

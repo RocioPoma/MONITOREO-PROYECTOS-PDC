@@ -1,19 +1,20 @@
-<mat-card [ngStyle]="{ 'min-width': '2156px','padding':'20px 10px 10px 10px' }">
+<!--<mat-card [ngStyle]="{ 'min-width': '2156px','padding':'20px 10px 10px 10px' }">-->
+<!-- <mat-card [ngStyle]="{'padding':'20px 10px 10px 10px' }">
   <div class="title">
     <b><span class="color-text">REPORTES DE INDICADORES</span></b>
   </div>
   <div>
-    <div class="mat-elevation-z4">
+   <div class="mat-elevation-z4">
       <div class="table-wrapper">
-        <table *ngIf="dataSource.length>0" mat-table [dataSource]="dataSource" matSort
-          style="table-layout: auto; width: 100%">
-          <ng-container matColumnDef="COD">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="header table-text">COD</th>
+        
+        <table *ngIf="dataSource.length>0" mat-table [dataSource]="dataSource" class="center-table" >
+          <ng-container matColumnDef="COD" sticky>
+            <th mat-header-cell *matHeaderCellDef class="header table-text">COD</th>
             <td class="td_btn header" mat-cell *matCellDef="let element">
               {{ element.COD }}
             </td>
           </ng-container>
-          <ng-container matColumnDef="nombre_indicador">
+          <ng-container matColumnDef="nombre_indicador" sticky>
             <th mat-header-cell *matHeaderCellDef class="header table-text">
               Nombre de Indicador
             </th>
@@ -22,25 +23,25 @@
             </td>
           </ng-container>
           <ng-container matColumnDef="uni_ind">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="header table-text">uni_ind</th>
+            <th mat-header-cell *matHeaderCellDef  class="header table-text">uni_ind</th>
             <td class="td_btn" mat-cell *matCellDef="let element">
               {{ element.uni_ind }}
             </td>
           </ng-container>
           <ng-container matColumnDef="LB_2020">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class=" header table-text">LB_2020</th>
+            <th mat-header-cell *matHeaderCellDef  class=" header table-text">LB_2020</th>
             <td class="td_btn table-text" mat-cell *matCellDef="let element">
               {{ element.LB_2020 }}
             </td>
           </ng-container>
           <ng-container matColumnDef="Meta_2025">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class=" header table-text">Meta_2025</th>
+            <th mat-header-cell *matHeaderCellDef  class=" header table-text">Meta_2025</th>
             <td class="td_btn table-text" mat-cell *matCellDef="let element">
               {{ element.Meta_2025 }}
             </td>
           </ng-container>
           <ng-container matColumnDef="%_ind_efectivo">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class=" header table-text">
+            <th mat-header-cell *matHeaderCellDef  class=" header table-text">
               %_ind_efectivo
             </th>
             <td class="td_btn table-text" mat-cell *matCellDef="let element">
@@ -54,25 +55,25 @@
             </td>
           </ng-container>
           <ng-container matColumnDef="#Acciones">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class=" header table-text">#Acciones</th>
+            <th mat-header-cell *matHeaderCellDef class=" header table-text">#Acciones</th>
             <td class="td_btn table-text" mat-cell *matCellDef="let element">
               {{ element['#Acciones'] }}
             </td>
           </ng-container>
           <ng-container matColumnDef="NDC">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class=" header table-text">NDC</th>
+            <th mat-header-cell *matHeaderCellDef class=" header table-text">NDC</th>
             <td class="td_btn" mat-cell *matCellDef="let element">
               {{ element.NDC }}
             </td>
           </ng-container>
           <ng-container matColumnDef="PDES">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class=" header table-text">PDES</th>
+            <th mat-header-cell *matHeaderCellDef class=" header table-text">PDES</th>
             <td class="td_btn" mat-cell *matCellDef="let element">
               {{ element.PDES }}
             </td>
           </ng-container>
           <ng-container matColumnDef="PPRH">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class=" header table-text">PPRH</th>
+            <th mat-header-cell *matHeaderCellDef  class=" header table-text">PPRH</th>
             <td class="td_btn" mat-cell *matCellDef="let element">
               {{ element.PPRH }}
             </td>
@@ -82,6 +83,93 @@
 
         </table>
       </div>
+    </div>
+  </div>
+</mat-card>-->
+<mat-card [ngStyle]="{'padding':'20px 10px 10px 10px' }">
+  <div class="title">
+    <b><span class="color-text">REPORTES DE INDICADORES</span></b>
+  </div>
+
+  <div class="mat-elevation-z4">
+    <div class="table-wrapper">
+      <section class="indicadores-container mat-elevation-z8" tabindex="1">
+        <table *ngIf="dataSource.length>0" mat-table [dataSource]="dataSource" class="center-table">
+          <ng-container matColumnDef="COD" sticky>
+            <th mat-header-cell *matHeaderCellDef class="header table-text">COD</th>
+            <td class="td_btn header" mat-cell *matCellDef="let element">
+              {{ element.COD }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="nombre_indicador" sticky>
+            <th mat-header-cell *matHeaderCellDef class="header table-text">
+              Nombre de Indicador
+            </th>
+            <td class="td_btn header" mat-cell *matCellDef="let element">
+              {{ element.nombre_indicador }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="uni_ind">
+            <th mat-header-cell *matHeaderCellDef class="header table-text">uni_ind</th>
+            <td class="td_btn" mat-cell *matCellDef="let element">
+              {{ element.uni_ind }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="LB_2020">
+            <th mat-header-cell *matHeaderCellDef class=" header table-text">LB_2020</th>
+            <td class="td_btn table-text" mat-cell *matCellDef="let element">
+              {{ element.LB_2020 }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="Meta_2025">
+            <th mat-header-cell *matHeaderCellDef class=" header table-text">Meta_2025</th>
+            <td class="td_btn table-text" mat-cell *matCellDef="let element">
+              {{ element.Meta_2025 }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="%_ind_efectivo">
+            <th mat-header-cell *matHeaderCellDef class=" header table-text">
+              %_ind_efectivo
+            </th>
+            <td class="td_btn table-text" mat-cell *matCellDef="let element">
+              <div>
+                <span>
+                  {{ element['%_ind_efectivo'] }}
+                </span>
+                <i class="large material-icons"
+                  [ngClass]="efectividad(element['%_ind_efectivo'])">fiber_manual_record</i>
+              </div>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="#Acciones">
+            <th mat-header-cell *matHeaderCellDef class=" header table-text">#Acciones</th>
+            <td class="td_btn table-text" mat-cell *matCellDef="let element">
+              {{ element['#Acciones'] }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="NDC">
+            <th mat-header-cell *matHeaderCellDef class=" header table-text">NDC</th>
+            <td class="td_btn" mat-cell *matCellDef="let element">
+              {{ element.NDC }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="PDES">
+            <th mat-header-cell *matHeaderCellDef class=" header table-text">PDES</th>
+            <td class="td_btn" mat-cell *matCellDef="let element">
+              {{ element.PDES }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="PPRH">
+            <th mat-header-cell *matHeaderCellDef class=" header table-text">PPRH</th>
+            <td class="td_btn" mat-cell *matCellDef="let element">
+              {{ element.PPRH }}
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+
+        </table>
+      </section>
     </div>
   </div>
 </mat-card>

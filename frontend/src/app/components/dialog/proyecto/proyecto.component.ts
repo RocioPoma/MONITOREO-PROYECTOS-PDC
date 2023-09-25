@@ -681,8 +681,8 @@ export class ProyectoComponent implements OnInit {
       if (coords) {
 
         this.proyectoForm.patchValue({
-          coordenada_x: coords.lat,
-          coordenada_y: coords.lng
+          coordenada_x: coords.lng,
+          coordenada_y: coords.lat
         });
 
         console.log('Coordenadas:', coords);

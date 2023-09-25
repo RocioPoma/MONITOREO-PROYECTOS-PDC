@@ -27,11 +27,7 @@
     width: 100%;
 }
 
-.float-right {
-    float: right;
-    margin-top: -8px;
-    margin-right: 10px;
-}
+
 
 th {
     align-items: center;
@@ -40,10 +36,6 @@ th {
 
 td {
     font-size: 12px;
-}
-
-.nomProy {
-    font-size: 11px;
 }
 
 .title {
@@ -56,12 +48,6 @@ td {
     color: #A6ACAF;
 }
 
-mat-card {
-    padding-top: 20px;
-    padding-left: 70px;
-    padding-right: 70px;
-    padding-bottom: 70px;
-}
 
 .padding {
     padding: 20px;
@@ -73,122 +59,85 @@ span {
     text-align: center;
 }
 
-mat-form-field {
-    padding: 5px;
-}
-
-.img {
-    background-size: cover;
-    border-radius: 50%;
-    margin: 0 auto;
-}
-
-
-//para las opciones
-
-.icon-group {
-    display: flex;
-    align-items: center;
-    gap: -1cm;
-    /* Espacio entre los iconos */
-}
-
-.icon {
-    margin-left: -15px;
-    margin-right: -4px;
-}
-
-/* Asegurar que los botones y los iconos tengan el mismo tamaño */
-
-
-
-/* Ajustar el margen del mat-slide-toggle */
-.mat-slide-toggle {
-    margin-top: -8px;
-    /* Ajusta el margen superior según tus necesidades */
-    width: 8px;
-    height: 5px;
-}
-
-.sub-title {
-    text-align: left;
-    display: inline;
-}
-
-.icon-display {
-    transform: scale(.8);
-}
-
-.flex-column {
-    display: flex;
-}
-
-.DivToScroll {
-    background-color: #F5F5F5;
-    border: 1px solid #DDDDDD;
-    border-radius: 4px 0 4px 0;
-    color: #3B3C3E;
-    font-size: 12px;
-    font-weight: bold;
-    left: -1px;
-    padding: 10px 7px 5px;
-}
-
-.DivWithScroll {
-    height: 380px;
-    min-width: 380px;
-    overflow: scroll;
-    overflow-x: scroll;
-}
-
-//
-.DivToScroll {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
 
 .DivContent {
     flex-grow: 1;
 }
 
-.container-reporte {
-    height: 400px;
-    min-width: 320px;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.scroller {
-    margin: 10px 10px;
-    min-width: 95%;
-    min-height: 468px;
-    max-width: 468px;
-    overflow-y: scroll;
-}
-
-.scroller-x {
-    min-width: 95%;
-    overflow-x: scroll;
-}
-
 .pdc_etapa {
     margin-bottom: 20px;
 }
+
 i.icon-color {
     color: #ff1a1a;
 }
+
 i.icon-color-30 {
     color: #ffc34d;
 }
+
 i.icon-color-60 {
     color: #1aff1a;
 }
-.header{
+
+.header {
     background-color: #262626 !important;
     color: white;
+   // position: sticky;
+    //top: 0; /* Controla la posición pegajosa */
+   // background-color: white; /* Opcional: ajusta el color de fondo del encabezado */
+   // z-index: 1;
+
 }
-.table-text{
+
+.table-text {
     text-align: right;
-    
+
 }
+
+//-----------------
+
+.indicadores-container {
+    height: 550px;
+    max-height: 1200px;
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
+  }
+  
+
+table {
+    width: 2000px;
+    height: 500px;
+}
+
+td.mat-column-COD {
+    width: 10px;
+    padding-right: 8px;
+}
+
+td.mat-column-nombre_indicador {
+    max-width: 1200px;
+    min-width: 100px;
+    padding-right: 8px;
+}
+@media (max-width: 767px) {
+    td.mat-column-nombre_indicador {
+      min-width: 100px; 
+      position: static;
+    }
+  }
+
+
+.mat-mdc-table-sticky-border-elem-right {
+    border-left: 1px solid #e0e0e0;
+}
+
+.mat-mdc-table-sticky-border-elem-left {
+    border-right: 1px solid #e0e0e0;
+}
+
+.center-table th {
+    text-align: center; /* Centra horizontalmente el contenido del encabezado */
+  }
+

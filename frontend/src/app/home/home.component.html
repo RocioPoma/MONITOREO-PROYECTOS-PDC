@@ -11,10 +11,11 @@
   <mat-toolbar color="primary" class="navbar">
     <mat-toolbar-row class="navbar-row">
       <div class="left-options">
-        <button mat-button class="option"><mat-icon>home</mat-icon>Logo</button>
         <button mat-button class="option" (click)="navigateTo('nosotros')"><mat-icon>info</mat-icon>Nosotros</button>
         <button mat-button class="option"
           (click)="navigateTo('reportes')"><mat-icon>bar_chart</mat-icon>Reportes</button>
+          <button mat-button class="option"
+          (click)="navigateTo('reporte-indicador')"><mat-icon>summarize</mat-icon>Reporte-Indicador</button>
         <button mat-button class="option" (click)="navigateTo('bd')"><mat-icon>storage</mat-icon>Base de Datos</button>
        <!-- <button mat-button class="option" (click)="click('Otros')"><mat-icon>more_vert</mat-icon>Otros</button>-->
       </div>

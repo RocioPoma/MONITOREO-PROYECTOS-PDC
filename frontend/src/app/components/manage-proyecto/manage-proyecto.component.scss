@@ -128,3 +128,20 @@ mat-form-field {
 .highlighted-row {
     background-color: #999999; /* Color de fondo cuando el registro está resaltado */
 }
+
+.mat-mdc-table-sticky-border-elem-right {
+    border-left: 1px solid #e0e0e0;
+}
+
+.mat-mdc-table-sticky-border-elem-left {
+    border-right: 1px solid #e0e0e0;
+}
+
+td.mat-column {
+   // max-width: 10px;
+    padding-right: 0px;
+}
+td.mat-column-NombreProyecto {
+    max-width: 400px;
+    padding-right: 4px;
+}

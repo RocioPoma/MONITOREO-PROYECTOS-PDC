@@ -30,6 +30,7 @@ const routes: Routes = [
     children: [
       { path: 'nosotros', component: NosotrosComponent }, // Rutas secundarias para Nosotros, Reportes, Base de Datos y Otros
       { path: 'reportes', component: ReportesComponent },
+      { path: 'reporte-indicador', component: ReportesIndicadoresComponent },
       { path: 'bd', component: BasedeDatosComponent }
     ]
   },  

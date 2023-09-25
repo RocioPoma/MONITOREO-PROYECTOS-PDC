@@ -47,6 +47,7 @@ import { ManageComunidadComponent } from './manage-comunidad/manage-comunidad.co
 import { ComunidadComponent } from './dialog/comunidad/comunidad.component';
 import { ManageNosotrosComponent } from './manage-nosotros/manage-nosotros.component';
 import { ArchivosNosotrosComponent } from './dialog/archivos-nosotros/archivos-nosotros.component';
+import { ReporteIndicadorComponent } from './opcionesMenu/reporte-indicador/reporte-indicador.component';
 //import { ComponentsRoutingModule } from './components-routing.module';
 
 
@@ -85,7 +86,8 @@ import { ArchivosNosotrosComponent } from './dialog/archivos-nosotros/archivos-n
     ManageComunidadComponent,
     ComunidadComponent,
     ManageNosotrosComponent,
-    ArchivosNosotrosComponent
+    ArchivosNosotrosComponent,
+    ReporteIndicadorComponent
   ],
   imports: [
     CommonModule,

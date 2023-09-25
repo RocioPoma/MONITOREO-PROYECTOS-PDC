@@ -56,11 +56,11 @@ export class MapModalComponent {
            // Agrega marcadores en coordenada_x y coordenada_y
            if (this.coordenada_x && this.coordenada_y) {
 
-            const xMarker = L.marker([this.coordenada_x, this.coordenada_y], { icon: myIcon }).addTo(map);
+            const xMarker = L.marker([this.coordenada_y,this.coordenada_x], { icon: myIcon }).addTo(map);
             xMarker.bindPopup('Punto de coordenadas').openPopup();
 
             const polygonBounds = this.polygon.getBounds();
-            const point = L.latLng(this.coordenada_x, this.coordenada_y);
+            const point = L.latLng(this.coordenada_y,this.coordenada_x);
 
             if (polygonBounds.contains(point)) {
               console.log('El punto está dentro de la cuenca.');
