@@ -178,8 +178,8 @@
                 *ngIf="seguimientoForm1.get('id_entidad_ejecutora').enabled">
                 <span class="subTitle" style="margin-right: 2.7cm; ">Adjunto (Opcional)</span>
                 <!-- <input onchange="console.log(event.target.files)" formControlName="adjunto_fisico" class="form-control-file" type="file"> -->
-                <input type="file" class="file-input" (change)="selectFile($event,0)" #fileUpload>
-                <div class="file-upload">{{files[0]?.name || "Solo archivos con extension:"}}
+                <input type="file" class="file-input" (change)="selectFile($event,0)" #fileUpload [accept]="typeFiles">
+                <div class="file-upload">{{files[0]?.name || "Solo archivos con extension: "+typeFiles }}
                     <button mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
                         <mat-icon>publish</mat-icon>
                     </button>
@@ -229,8 +229,8 @@
                 *ngIf="seguimientoForm1.get('id_entidad_ejecutora').enabled">
                 <span class="subTitle" style="margin-right: 2.7cm; ">Adjunto (Opcional)</span>
                 <!-- <input onchange="console.log(event.target.files)" formControlName="adjunto_fisico" class="form-control-file" type="file"> -->
-                <input type="file" class="file-input" (change)="selectFile($event,1)" #fileUpload>
-                <div class="file-upload">{{files[1]?.name || "Solo archivos con extension:"}}
+                <input type="file" class="file-input" (change)="selectFile($event,1)" #fileUpload [accept]="typeFiles">
+                <div class="file-upload">{{files[1]?.name || "Solo archivos con extension: "+typeFiles}}
                     <button mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
                         <mat-icon>publish</mat-icon>
                     </button>
