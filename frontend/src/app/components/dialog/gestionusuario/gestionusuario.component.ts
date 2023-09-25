@@ -42,19 +42,22 @@ export class GestionusuarioComponent {
   ngOnInit(): void {
     this.entidades();  
     this.usuarioForm = this.formBuilder.group({
-      nombre: [null, [Validators.required]],
-      ap_paterno: [null, [Validators.required]],
-      ap_materno: [null, [Validators.required]],
-      celular: [null, [Validators.required]],
+    nombre: [null, [Validators.required, Validators.pattern(/^[a-zA-Z0-9]+$/), Validators.maxLength(50)]],
+    ap_paterno: [null, [Validators.required, Validators.pattern(/^[a-zA-Z0-9]+$/)]],
+    ap_materno: [null, [Validators.required, Validators.pattern(/^[a-zA-Z0-9]+$/)]],
+    ci: [null, [Validators.required, Validators.pattern(/^[a-zA-Z0-9]+$/)]],
+      
       fecha_registro: [null, [Validators.required]],
       password: [null, [Validators.required]],
-      email: [null, [Validators.required]],
-      telefono: [null, [Validators.required]],
+      email: [null, [Validators.required, Validators.email]],
+      
+      telefono: [null, [Validators.required, Validators.pattern(/^\d{6}$/)]],
+      celular: [null, [Validators.required, Validators.pattern(/^\d{8}$/)]],
       genero: [null, [Validators.required]],
       rol: [null, [Validators.required]],
       estado: [null, [Validators.required]],
-      id_entidad_ejecutora: [null, [Validators.required]],
-      ci: [null, [Validators.required]]
+      id_entidad_ejecutora: [null, [Validators.required]]
+    
       
     });
     if(this.dialogData.action ==='Edit') {

@@ -408,7 +408,7 @@ export class ManageProyectoComponent {
       // Coordenadas geográficas (latitud y longitud)
       const latitud = parseFloat(item.coordenada_x);
       const longitud = parseFloat(item.coordenada_y);
-
+     
       const coordenadasUTM = proj4("EPSG:4326", "EPSG:32720", [latitud, longitud]);
 
       // coordenadasUTM es un array con [Este, Norte]
@@ -445,7 +445,7 @@ export class ManageProyectoComponent {
   
     // Crea un objeto de hoja de cálculo
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataForExcel);
-  
+    const currentDate = this.pipe.transform(Date.now(), 'M/d/yy, h:mm a');
     // Aplica el estilo de negrita a las celdas de encabezado y ajusta el ancho de las columnas
     const headerCellStyle = {
       font: { bold: true },
@@ -474,7 +474,7 @@ export class ManageProyectoComponent {
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1'); // 'Sheet1' es el nombre de la hoja de cálculo
   
     // Guarda el archivo Excel
-    XLSX.writeFile(wb, 'reporte.xlsx');
+    XLSX.writeFile(wb, 'reporte'+currentDate+'.xlsx');
   
     // Opcional: Puedes volver a renderizar la MatTable para actualizar la vista
     this.table.renderRows();

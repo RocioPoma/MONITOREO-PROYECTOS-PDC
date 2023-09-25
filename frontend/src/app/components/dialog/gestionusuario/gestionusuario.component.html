@@ -54,7 +54,7 @@
 
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Telefono</mat-label>
-                    <input type="number" matInput formControlName="telefono" required>
+                    <input  matInput formControlName="telefono" required maxlength="7">
                     <mat-error *ngIf="usuarioForm.controls.telefono.touched && usuarioForm.controls.telefono.invalid">
                         <span *ngIf="usuarioForm.controls.telefono.errors.required">Este campo es obligatorio.</span>
                     </mat-error>
@@ -65,7 +65,7 @@
                 
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Celular</mat-label>
-                    <input type="number" matInput formControlName="celular" required>
+                    <input  matInput formControlName="celular" required maxlength="8">
                     <mat-error *ngIf="usuarioForm.controls.celular.touched && usuarioForm.controls.celular.invalid">
                         <span *ngIf="usuarioForm.controls.celular.errors.required">Este campo es obligatorio.</span>
                     </mat-error>
@@ -94,7 +94,7 @@
             <div fxLayout="row wrap">
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Email(Usuario)</mat-label>
-                    <input type="email" matInput formControlName="email" required>
+                    <input  matInput formControlName="email" required>
                     <mat-error *ngIf="usuarioForm.controls.email.touched && usuarioForm.controls.email.invalid">
                         <span *ngIf="usuarioForm.controls.email.errors.required">Este campo es obligatorio.</span>
                     </mat-error>

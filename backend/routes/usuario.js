@@ -36,15 +36,45 @@ router.get('/buscar/:ci',auth.authenticateToken, (req, res) => {
 //crear usuario
 router.post('/create/',auth.authenticateToken, (req, res) => {
   console.log(req.body);
-    const { ci, nombre, ap_paterno, ap_materno, password, email, telefono, genero, rol, estado, id_entidad_ejecutora,celular,fecha_registro } = req.body;
-    connection.query('INSERT INTO USUARIO (ci, nombre, ap_paterno, ap_materno, password, email, telefono, genero, rol, estado, id_entidad_ejecutora,celular,fecha_registro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [ci, nombre, ap_paterno, ap_materno, password, email, telefono, genero, rol, estado,id_entidad_ejecutora,celular,fecha_registro ], (err, results) => {
-      if (!err) {
-        return res.status(200).json({ message: "Usuario agregado con exito" });
-      }
-      else {
-        return res.status(500).json(err);
-      }
-    });
+     const { ci, nombre, ap_paterno, ap_materno, password, email, telefono, genero, rol, estado, id_entidad_ejecutora,celular,fecha_registro } = req.body;
+   
+    //nuevo 
+    // Antes de realizar la inserción, verifica si el email ya está en uso.
+connection.query('SELECT * FROM USUARIO WHERE email = ?', [email], (err, results) => {
+  if (!err) {
+    if (results.length > 0) {
+      // Ya existe un usuario con el mismo email, devuelve un mensaje de error.
+      return res.status(400).json({ message: "El email ya está en uso." });
+    } else {
+      // El email es único, ahora verifica si el ci es único.
+      connection.query('SELECT * FROM USUARIO WHERE ci = ?', [ci], (err, results) => {
+        if (!err) {
+          if (results.length > 0) {
+            // Ya existe un usuario con el mismo ci, devuelve un mensaje de error.
+            return res.status(400).json({ message: "El número de cédula ya está en uso." });
+          } else {
+            // El email y el ci son únicos, procede con la inserción.
+            // ... Tu código de inserción aquí ...
+            //------------------------------------------------------------------------------------------------
+            connection.query('INSERT INTO USUARIO (ci, nombre, ap_paterno, ap_materno, password, email, telefono, genero, rol, estado, id_entidad_ejecutora,celular,fecha_registro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [ci, nombre, ap_paterno, ap_materno, password, email, telefono, genero, rol, estado,id_entidad_ejecutora,celular,fecha_registro ], (err, results) => {
+              if (!err) {
+                return res.status(200).json({ message: "Usuario agregado con exito" });
+              }
+              else {
+                return res.status(500).json(err);
+              }
+            }); 
+            //------------------------------------------------------------------------------------------------
+          }
+        } else {
+          return res.status(500).json(err);
+        }
+      });
+    }
+  } else {
+    return res.status(500).json(err);
+  }
+});
   });
 
 //actualizar usuario
