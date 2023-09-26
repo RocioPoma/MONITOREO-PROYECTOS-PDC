@@ -18,11 +18,18 @@ export class ArchivosNosotrosComponent {
   dialogAction:any="Add";
   action:any="Registrar";
   responseMessage:any;
-  selectedFile: any = null;
+  selectedFile: File  ;
   selectedFile2: any = null;
   selectedFile3: any = null;
   selectedFile4: any = null;
   id_nosotros:any;
+
+  initialFile:any;
+  initialFile2:any;
+  initialFile3:any;
+  initialFile4:any;
+  
+ 
   
   constructor(@Inject(MAT_DIALOG_DATA) public dialogData:any,
   private formBuilder:FormBuilder,
@@ -44,7 +51,19 @@ export class ArchivosNosotrosComponent {
       this.action ="Actualizar";
       this.NosotrosForm.patchValue(this.dialogData.data);
       console.log(this.dialogData.data);
-   
+      //this.selectedFile=this.dialogData.data.documento_general;
+       // Crear un nuevo objeto File con el nombre inicial
+     this.initialFile = new File([new Blob()], this.dialogData.data.documento_general);
+     this.selectedFile=this.initialFile;
+
+     this.initialFile2 = new File([new Blob()], this.dialogData.data.manual_usuario);
+     this.selectedFile2=this.initialFile2;
+
+     this.initialFile3 = new File([new Blob()], this.dialogData.data.manual_desarrollo);
+     this.selectedFile3=this.initialFile3;
+
+     this.initialFile4 = new File([new Blob()], this.dialogData.data.ieee_830);
+     this.selectedFile4=this.initialFile4;
     }
   }
 
@@ -134,7 +153,9 @@ export class ArchivosNosotrosComponent {
 
   //subida de archivo
     onFileSelected(event: any): void {
+      this.selectedFile=null;
         this.selectedFile = event.target.files[0] ?? null;
+        console.log(this.selectedFile);
     }
     
     onFileSelected2(event: any): void {

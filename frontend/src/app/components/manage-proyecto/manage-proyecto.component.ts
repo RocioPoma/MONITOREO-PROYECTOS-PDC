@@ -433,8 +433,18 @@ export class ManageProyectoComponent {
     });
   
     // Crea un objeto de hoja de cálculo
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataForExcel);
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
     const currentDate = this.pipe.transform(Date.now(), 'M/d/yy, h:mm a');
+    
+    //-------------------------------------------------------
+     // Establecer estilos para aparentar centrado
+     ws['A1'] = { t: 's', v: 'TABLA DE DATOS DE PROYECTOS', s: { font: { bold: true }, alignment: { horizontal: 'center' } } };
+     // Combinar las celdas para el título
+     ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 12 } }];    
+     XLSX.utils.sheet_add_json(ws, dataForExcel, { origin: 'A2' });   
+
+    //-------------------------------------------------------
+    
     // Aplica el estilo de negrita a las celdas de encabezado y ajusta el ancho de las columnas
     const headerCellStyle = {
       font: { bold: true },

@@ -24,7 +24,9 @@
                                 <mat-label>Documento General</mat-label>
                             </button>
                         <input hidden (change)="onFileSelected($event)" #fileInput type="file">
+                 
                         <span>{{selectedFile?.name}}</span>                                          
+                        <!-- <span>{{selectedFile}}</span>   -->                                 
                         </mat-form-field >
 
                         <mat-form-field class="columns">  
