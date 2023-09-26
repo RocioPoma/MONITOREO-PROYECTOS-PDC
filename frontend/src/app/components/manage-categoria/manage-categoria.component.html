@@ -8,7 +8,7 @@
     <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutWrap="wrap" fxLayoutAlign="start center">
         <mat-form-field fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
             <mat-label>Filter</mat-label>
-            <input matInput (keyup)="applyFilter($event)" placeholder="Ex. prueba" #input>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Ej. Agua Potable" #input>
         </mat-form-field>
 
 
@@ -48,11 +48,11 @@
                     <th  mat-header-cell *matHeaderCellDef mat-sort-header>Acciones</th>
                     <td mat-cell *matCellDef="let element" class="action-link">
                         <div class="d-flex align-items-center">
-                            <button color="primary" mat-icon-button matTooltip="Edit"
+                            <button color="primary" mat-icon-button matTooltip="Editar"
                                 (click)="handleEditAction(element)">
                                 <mat-icon>edit</mat-icon>
                             </button>
-                            <button color="primary" mat-icon-button matTooltip="Delete"
+                            <button color="primary" mat-icon-button matTooltip="Eliminar"
                                 (click)="handleDeleteAction(element)">
                                 <mat-icon>delete</mat-icon>
                             </button>

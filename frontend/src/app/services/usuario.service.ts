@@ -12,12 +12,12 @@ export class UsuarioService {
   constructor(private httpClient: HttpClient) { }
 
   
-  //----------------------API PARA LISTAR CATEGORÍA ------------------------------
+  //----------------------API PARA LISTAR USUARIOS ------------------------------
   getusuario() {
     return this.httpClient.get(this.url + "/usuarios/list")
   }
 
-  //----------------------API PARA AGREGAR CATEGORÍA ------------------------------
+  //----------------------API PARA AGREGAR USUARIOS ------------------------------
   add(data: any) {
     return this.httpClient.post(this.url +
       "/usuarios/create/", data, {
@@ -34,7 +34,7 @@ export class UsuarioService {
   }
 
  
-  //----------------------API PARA ELIMINAR CATEGORÍA ------------------------------
+  //----------------------API PARA ELIMINAR USUARIO ------------------------------
   delete(id: any) {
     return this.httpClient.delete(this.url +
       "/usuarios/delete/" + id, {
