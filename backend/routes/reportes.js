@@ -480,16 +480,17 @@ INNER JOIN tipologia t ON p.id_tipologia = t.id_tipologia`;
 //REPORTES INVERSION POR LINEA ESTRATEGICA
 router.get("/inversion_le", (req, res) => {
   const query = `SELECT
-    le.id_linea_estrategica,
-    le.descripcion AS linea_estrategica,
-    COALESCE(SUM(f.costo_final), 0) AS inversion_total
-  FROM linea_estrategica le
-  LEFT JOIN linea_de_accion la ON le.id_linea_estrategica = la.id_linea_estrategica
-  LEFT JOIN accion_estrategica ae ON la.id_linea_accion = ae.id_linea_accion
-  LEFT JOIN proyecto p ON ae.id_accion_estrategica = p.id_accion_estrategica
-  LEFT JOIN etapa_proyecto ep ON p.id_proyecto = ep.id_proyecto
-  LEFT JOIN financiamiento f ON ep.id_etapa_proyecto = f.id_etapa_proyecto
-  GROUP BY le.id_linea_estrategica, le.descripcion`;
+  le.id_linea_estrategica,
+  le.Inversion_meta_2025,
+  le.descripcion AS linea_estrategica,
+  COALESCE(SUM(f.costo_final), 0) AS inversion_total
+FROM linea_estrategica le
+LEFT JOIN linea_de_accion la ON le.id_linea_estrategica = la.id_linea_estrategica
+LEFT JOIN accion_estrategica ae ON la.id_linea_accion = ae.id_linea_accion
+LEFT JOIN proyecto p ON ae.id_accion_estrategica = p.id_accion_estrategica
+LEFT JOIN etapa_proyecto ep ON p.id_proyecto = ep.id_proyecto
+LEFT JOIN financiamiento f ON ep.id_etapa_proyecto = f.id_etapa_proyecto
+GROUP BY le.id_linea_estrategica, le.descripcion`;
   connection.query(query, (err, result) => {
     if (err)
       res

@@ -396,14 +396,38 @@ export class ReportesProyectoComponent {
   }
  
   createChartInversion(data: any[]) {
+    // Obtén la fecha actual
+const currentDate = new Date();
+
+// Obtiene el año actual
+const currentYear = currentDate.getFullYear();
+
+// Obtiene el mes actual (0 = enero, 11 = diciembre)
+const currentMonth = currentDate.getMonth();
+
+let yearToDisplay: any;
+
+// Comprueba si estamos en diciembre (mes 11)
+if (currentMonth === 11) {
+  // Si estamos en diciembre, muestra el año actual (sin cambios)
+  yearToDisplay = currentYear;
+} else {
+  // Si no estamos en diciembre, muestra el año anterior
+  yearToDisplay = currentYear - 1;
+}
 
     Highcharts.chart('chart-container-inversion-LE', {
-      chart: {
-        type: 'bar'
+       chart: {
+        type: 'bar',
+        height: 550,
       },
       title: {
-        text: 'Inversión por Linea Estratégica 2020-2025',
-        align: 'left'
+        text: 'Comparación de inversiones por LE',
+        align: 'left',
+        style: {
+          color: '#5D6D7E', 
+          padding: '10px' 
+        }
       },
       exporting: {
         enabled: true
@@ -422,6 +446,7 @@ export class ReportesProyectoComponent {
         viewData: 'Ver tabla de datos',
        
       },
+      
       xAxis: {
         categories: data.map((item) => item.id_linea_estrategica + ' .- ' + item.linea_estrategica),
         title: {
@@ -433,7 +458,7 @@ export class ReportesProyectoComponent {
       yAxis: {
         min: 0,
         title: {
-          text: '(Millones)',
+          text: '(Bs.)',
           align: 'high'
         },
         labels: {
@@ -442,7 +467,7 @@ export class ReportesProyectoComponent {
         gridLineWidth: 0
       },
       tooltip: {
-        valueSuffix: ' millones'
+        valueSuffix: ' Bs.'
       },
       plotOptions: {
         bar: {
@@ -453,14 +478,30 @@ export class ReportesProyectoComponent {
           groupPadding: 0.1
         }
       },
-
+      legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'top',
+        x: -40,
+        y: 80,
+        floating: true,
+        borderWidth: 1,
+        backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+        shadow: true
+      },
       credits: {
         enabled: false
       },
       series: [{
-        name: 'Inversión',
+        name: 'Inversión al '+yearToDisplay.toString(),
         type: 'bar',
-        data: data.map((item) => item.inversion_total)
+        data: data.map((item) => item.inversion_total),
+        color: '#E449F1'
+      }, {
+        name: 'Inversión meta al 2025',
+        type: 'bar',
+        data: data.map((item) => item.Inversion_meta_2025),
+        color: '#27AD39'
       }]
     });
   }

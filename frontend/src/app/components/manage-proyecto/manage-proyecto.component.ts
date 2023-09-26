@@ -35,6 +35,9 @@ import { environment } from 'src/environments/environment';
 
 //convertir los coordenadas
 import proj4 from 'proj4';
+import { CategoriaComponent } from '../dialog/categoria/categoria.component';
+import { CategoriaService } from 'src/app/services/categoria.service';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-manage-proyecto',
@@ -49,6 +52,7 @@ export class ManageProyectoComponent {
   responseMessage: any;
   proyecto: any;
   municipios: any = [];
+  categoria: any = [];
   openSeguimientosProyecto = false; //ABRIR LOS SEGUIMIENTOS DE ETAPAS DE PROYECTO
   apiResponse: any = []; //para filtrar con el select
   estadoP: any;
@@ -70,6 +74,15 @@ export class ManageProyectoComponent {
   logoDataUrl: string;
   infoFiltrada: any;
   pipe = new DatePipe('en-US');
+/*
+  @ViewChild('input') input: HTMLInputElement;
+  @ViewChild('municipioSelect') municipioSelect: MatSelect;
+  @ViewChild('categoriaSelect') categoriaSelect: MatSelect;
+  */
+  searchFilter: string = '';
+  municipioFilter: string = '';
+  categoriaFilter: string = '';
+
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -79,6 +92,7 @@ export class ManageProyectoComponent {
   constructor(
     private ProyectoServices: ProyectoService,
     private MunicipioService: MunicipioService,
+    private CategoriaService: CategoriaService,
     private dialog: MatDialog,
     private snackbarService: SnackbarService,
     private router: Router
@@ -114,10 +128,12 @@ export class ManageProyectoComponent {
     if (this.rol === 'Operador') {
       this.tableData2(this.ci);
       this.getMunicipio();
+      this.getCategoria();
     } else {
       console.log(this.rol);
       this.tableData();
       this.getMunicipio();
+      this.getCategoria();
     }
 
   }
@@ -191,11 +207,28 @@ export class ManageProyectoComponent {
     });
   }
 
+    //------------------- OBTENEMOS CATEGORIA
+    getCategoria() {
+      this.CategoriaService.getCategoria().subscribe((response: any) => {
+        this.categoria = response;
+      }, (error: any) => {
+        if (error.error?.message) {
+          this.responseMessage = error.error?.message;
+        }
+        else {
+          this.responseMessage = GlobalCostants.genericError;
+        }
+        this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+  
+      });
+    }
+
   //---------------------------------Fitrador----------------------------------------------------
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-    //pdf
+     //pdf
     //dar valor a variables para su impresion
     console.log(this.dataSource.filteredData);
     this.infoFiltrada = this.dataSource.filteredData;
@@ -204,22 +237,142 @@ export class ManageProyectoComponent {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+  applyMunicipioFilter(filterValue: string) {
+    filterValue = filterValue.trim().toLowerCase();
+    this.dataSource.filterPredicate = (data: any, filter: string) =>
+      data.nombre_municipio.trim().toLowerCase().includes(filter);
+  
+    // Aplicar el filtro de municipio
+    this.dataSource.filter = filterValue;
+  
+    // Si también hay un filtro de categoría activo, aplicar el filtro de categoría
+    if (this.categoriaFilter) {
+      this.applyCategoriaFilter(this.categoriaFilter);
+    }
+     //pdf
+    //dar valor a variables para su impresion
+    console.log(this.dataSource.filteredData);
+    this.infoFiltrada = this.dataSource.filteredData;
+    this.tabla = this.infoFiltrada;
+    //pdf
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+  
+  applyCategoriaFilter(filterValue: string) {
+    filterValue = filterValue.trim().toLowerCase();
+    this.categoriaFilter = filterValue; // Almacenar el valor del filtro de categoría
+  
+    // Si hay un filtro de municipio activo, aplicar el filtro de municipio primero
+    if (this.municipioFilter) {
+      this.applyMunicipioFilter(this.municipioFilter);
+    } else {
+      // Si no hay filtro de municipio activo, aplicar solo el filtro de categoría
+      this.dataSource.filterPredicate = (data: any, filter: string) =>
+        data.nom_categoria.trim().toLowerCase().includes(filter);
+      this.dataSource.filter = filterValue;
+    }
+     //pdf
+    //dar valor a variables para su impresion
+    console.log(this.dataSource.filteredData);
+    this.infoFiltrada = this.dataSource.filteredData;
+    this.tabla = this.infoFiltrada;
+    //pdf
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+  
+
+  /*applyFilter(event: any) {
+    const filterValue = (event.target.value as string).trim().toLowerCase();
+    this.searchFilter = filterValue;
+    this.applyCombinedFilters();
+  }
+
+  applyMunicipioFilter(filterValue: string) {
+    this.municipioFilter = filterValue;
+    this.applyCombinedFilters();
+  }
+
+  applyCategoriaFilter(filterValue: string) {
+    this.categoriaFilter = filterValue;
+    this.applyCombinedFilters();
+  }
+
+  applyCombinedFilters() {
+    // Aplica los filtros de manera acumulativa
+    this.dataSource.filterPredicate = (data: any) => {
+      const searchMatch = !this.searchFilter || data.nombre.includes(this.searchFilter);
+      const municipioMatch = !this.municipioFilter || data.nombre_municipio.includes(this.municipioFilter);
+      const categoriaMatch = !this.categoriaFilter || data.nom_categoria.includes(this.categoriaFilter);
+
+      return searchMatch && municipioMatch && categoriaMatch;
+    };
+
+    this.dataSource.filter = 'triggerFilter'; // Cambia esto para forzar la recarga del filtro
+  }
+
+  clearFilters() {
+    this.searchFilter = '';
+    this.municipioFilter = '';
+    this.categoriaFilter = '';
+    this.input.value = '';
+    this.municipioSelect.value = '';
+    this.categoriaSelect.value = '';
+    this.applyCombinedFilters();
+  }*/
+
+ /*applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.applyCombinedFilters();
+}
+
+applyMunicipioFilter(filterValue: String) {
+    filterValue = filterValue.trim().toLowerCase();
+    this.filterData('nombre_municipio', filterValue);
+    this.applyCombinedFilters();
+}
+
+applyCategoriaFilter(filterValue: String) {
+    filterValue = filterValue.trim().toLowerCase();
+    this.filterData('nom_categoria', filterValue);
+    this.applyCombinedFilters();
+}
+
+filterData(column: string, value: String) {
+    this.dataSource.filterPredicate = (data: any, filter: string) =>
+        data[column].trim().toLowerCase().includes(filter);
+    this.dataSource.filter = value;
+}
+
+applyCombinedFilters() {
+    // Aquí puedes agregar lógica adicional para combinar los filtros si es necesario.
+    // Por ejemplo, si deseas que los filtros de municipio y categoría se apliquen en conjunto.
+}
+
+*/
+  
+  /*applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   applyMunicipioFilter(filterValue: String) {
     filterValue = filterValue.trim().toLowerCase();
     this.dataSource.filterPredicate = (data: any, filter: string) => data.nombre_municipio.trim().toLowerCase() === filter;
     this.dataSource.filter = filterValue;
-    //pdf
-    //dar valor a variables para su impresion
-    console.log(this.dataSource.filteredData);
-    this.infoFiltrada = this.dataSource.filteredData;
-    this.tabla = this.infoFiltrada;
-    //pdf
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
   }
+
+  applyCategoriaFilter(filterValue: String) {
+    filterValue = filterValue.trim().toLowerCase();
+    this.dataSource.filterPredicate = (data: any, filter: string) => data.nom_categoria.trim().toLowerCase() === filter;
+    this.dataSource.filter = filterValue;
+  }*/
+
 
 
   handleAddAction() {
@@ -351,8 +504,8 @@ export class ManageProyectoComponent {
     for (let i = 0; i < this.tabla.length; i++) {
       const person = this.tabla[i];
       // Coordenadas geográficas (latitud y longitud)
-      const latitud = parseFloat(person.coordenada_x); // Por ejemplo, París
-      const longitud = parseFloat(person.coordenada_y);
+      const latitud = parseFloat(person.coordenada_y); // Por ejemplo, París
+      const longitud = parseFloat(person.coordenada_x);
 
       const coordenadasUTM = proj4("EPSG:4326", "EPSG:32720", [latitud, longitud]);
 
@@ -387,17 +540,17 @@ export class ManageProyectoComponent {
   exportToExcel() {
     const fechaActual = new Date();
     const añoActual = fechaActual.getFullYear();
-  
+
     console.log(this.dataSource.data);
-  
+
     const dataForExcel = this.dataSource.filteredData.map(item => {
       // Definir proyecciones
       proj4.defs("EPSG:4326", "+proj=longlat +datum=WGS84 +no_defs");
       proj4.defs("EPSG:32720", "+proj=utm +zone=20 +south +datum=WGS84 +units=m +no_defs");
       // Coordenadas geográficas (latitud y longitud)
-      const latitud = parseFloat(item.coordenada_x);
-      const longitud = parseFloat(item.coordenada_y);
-     
+      const latitud = parseFloat(item.coordenada_y);
+      const longitud = parseFloat(item.coordenada_x);
+
       const coordenadasUTM = proj4("EPSG:4326", "EPSG:32720", [latitud, longitud]);
 
       // coordenadasUTM es un array con [Este, Norte]
@@ -431,54 +584,67 @@ export class ManageProyectoComponent {
         "INDICADOR": item["nombre_indicador"],
       };
     });
-  
+
     // Crea un objeto de hoja de cálculo
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
     const currentDate = this.pipe.transform(Date.now(), 'M/d/yy, h:mm a');
-    
-    //-------------------------------------------------------
-     // Establecer estilos para aparentar centrado
-     ws['A1'] = { t: 's', v: 'TABLA DE DATOS DE PROYECTOS', s: { font: { bold: true }, alignment: { horizontal: 'center' } } };
-     // Combinar las celdas para el título
-     ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 12 } }];    
-     XLSX.utils.sheet_add_json(ws, dataForExcel, { origin: 'A2' });   
 
-    //-------------------------------------------------------
-    
-    // Aplica el estilo de negrita a las celdas de encabezado y ajusta el ancho de las columnas
+    // Establecer estilos para aparentar centrado y negrita para el título
+    const titleCellStyle = {
+      font: { bold: true },
+      alignment: { horizontal: 'center' }
+    };
+
+    // Combinar las celdas para el título
+    ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 12 } }];
+    ws['A1'] = { t: 's', v: 'TABLA DE DATOS DE PROYECTOS', s: titleCellStyle };
+
+    // Agregar los datos a la hoja de cálculo
+    XLSX.utils.sheet_add_json(ws, dataForExcel, { origin: 'A2' });
+
+    // Aplicar el estilo de negrita a las celdas de encabezado y ajustar el ancho de las columnas
     const headerCellStyle = {
       font: { bold: true },
-      border: { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } },
       alignment: { horizontal: 'center', vertical: 'center' },
+      border: { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } }
     };
-  
+
     const columnWidths = [
       { wch: 20 }, // Ajusta el ancho de la primera columna
-      { wch: 20 }, // Ajusta el ancho de la segunda columna
-      // Agrega más ancho de columna según sea necesario
+      { wch: 40 }, // Ajusta el ancho de la segunda columna
+      { wch: 20 }, 
+      { wch: 20 }, 
+      { wch: 20 }, 
+      { wch: 20 }, 
+      { wch: 20 }, 
+      { wch: 20 }, 
+      { wch: 20 }, 
+      { wch: 20 }, 
+      { wch: 40 }, 
+      // Agregar más ancho de columna según sea necesario
     ];
-  
-    // Aplica el estilo de encabezado y ajusta el ancho de las columnas
+
+    // Aplicar el estilo de encabezado y ajustar el ancho de las columnas
     const headerKeys = Object.keys(ws).filter(key => key.startsWith('A1:'));
     headerKeys.forEach(key => {
       ws[key].s = headerCellStyle;
-      ws[key].s.border.color = { auto: 1 };
     });
-  
-    // Aplica el ancho de las columnas
+
+    // Aplicar el ancho de las columnas
     ws['!cols'] = columnWidths;
-  
-    // Crea un libro de trabajo y agrega la hoja de cálculo
+
+    // Crear un libro de trabajo y agregar la hoja de cálculo
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1'); // 'Sheet1' es el nombre de la hoja de cálculo
-  
-    // Guarda el archivo Excel
-    XLSX.writeFile(wb, 'reporte'+currentDate+'.xlsx');
-  
+
+    // Guardar el archivo Excel
+    XLSX.writeFile(wb, 'reporte' + currentDate + '.xlsx');
+
     // Opcional: Puedes volver a renderizar la MatTable para actualizar la vista
     this.table.renderRows();
   }
-  
+
+
   //pdf
 
   generateReport() {
@@ -520,8 +686,8 @@ export class ManageProyectoComponent {
         {
           columns: [
             {
-             /*  image: this.logoDataUrl, width: 40,
-              height: 40, margin: [5, 5] */
+              /*  image: this.logoDataUrl, width: 40,
+               height: 40, margin: [5, 5] */
             },
             {
               text: `Fecha: ${currentDate}`, alignment: 'right', margin: [0, 20, 10, 10],  //0 , Y

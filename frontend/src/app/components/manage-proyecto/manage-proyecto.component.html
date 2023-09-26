@@ -17,13 +17,38 @@
                     municipio.nombre_municipio }}</mat-option>
             </mat-select>
         </mat-form-field>
+  
+        <mat-form-field fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
+            <mat-label>Filtrar por categoría</mat-label>
+            <mat-select (selectionChange)="applyCategoriaFilter($event.value)">
+                <mat-option value="">Todos</mat-option>
+                <mat-option *ngFor="let categoria of categoria" [value]="categoria.nom_categoria">{{
+                    categoria.nom_categoria}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+          
+       
         <!--
         <mat-form-field fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
-            <mat-label>Filtrar por ...</mat-label>
+            <mat-label>Buscar</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Buscar ..." #input>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
+            <mat-label>Área/municipio</mat-label>
             <mat-select (selectionChange)="applyMunicipioFilter($event.value)">
                 <mat-option value="">Todos</mat-option>
                 <mat-option *ngFor="let municipio of municipios" [value]="municipio.nombre_municipio">{{
                     municipio.nombre_municipio }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+  
+        <mat-form-field fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
+            <mat-label>Filtrar por categoría</mat-label>
+            <mat-select (selectionChange)="applyCategoriaFilter($event.value)">
+                <mat-option value="">Todos</mat-option>
+                <mat-option *ngFor="let categoria of categoria" [value]="categoria.nom_categoria">{{
+                    categoria.nom_categoria}}</mat-option>
             </mat-select>
         </mat-form-field>-->
 
