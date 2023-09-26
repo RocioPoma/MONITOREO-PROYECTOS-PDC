@@ -11,12 +11,12 @@ export class MunicipioService {
   constructor(private httpClient: HttpClient) { }
 
   
-  //----------------------API PARA LISTAR CATEGORÍA ------------------------------
+  //----------------------API PARA LISTAR MUNICIPIOS ------------------------------
   getMunicipio() {
     return this.httpClient.get(this.url + "/municipio/get/")
   }
 
-  //----------------------API PARA AGREGAR CATEGORÍA ------------------------------
+  //----------------------API PARA AGREGAR MUNICIPIOS ------------------------------
   add(data: any) {
     return this.httpClient.post(this.url +
       "/municipio/create/", data, {
@@ -24,7 +24,7 @@ export class MunicipioService {
     });
   }
 
-  //----------------------API PARA EDITAR CATEGORÍA ------------------------------
+  //----------------------API PARA EDITAR MUNICIPIOS ------------------------------
   update(data: any) {
     return this.httpClient.patch(this.url +
       "/municipio/update/", data, {
@@ -33,7 +33,7 @@ export class MunicipioService {
   }
 
  
-  //----------------------API PARA ELIMINAR CATEGORÍA ------------------------------
+  //----------------------API PARA ELIMINAR MUNICIPIO ------------------------------
   delete(id: any) {
     return this.httpClient.delete(this.url +
       "/municipio/delete/" + id, {

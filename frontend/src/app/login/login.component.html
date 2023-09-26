@@ -18,7 +18,7 @@
           </mat-form-field>
 
           <mat-form-field appearance="fill" fxFlex>
-              <mat-label>Contareseña</mat-label>
+              <mat-label>Contraseña</mat-label>
               <input matInput formControlName="password" type="password" required>
               <mat-error *ngIf="loginForm.controls.password.touched && loginForm.controls.password.invalid">
                   <span *ngIf="loginForm.controls.password.errors.required">Este campo es obligatorio.</span>

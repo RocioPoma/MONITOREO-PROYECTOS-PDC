@@ -139,16 +139,16 @@ export class ManageMunicipioComponent {
   handleDeleteAction(values: any) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      message: ' eliminar Categoria ' + values.nombre_municipio
+      message: ' eliminar Municipio ' + values.nombre_municipio
     };
     const dialogRef = this.dialog.open(ConfirmationComponent, dialogConfig);
     const sub = dialogRef.componentInstance.onEmitStatusChange.subscribe((response) => {
-      this.deleteCategoria(values.id_municipio);
+      this.deleteMunicipio(values.id_municipio);
       dialogRef.close();
     });
   }
 
-  deleteCategoria(id_municipio: any) {
+  deleteMunicipio(id_municipio: any) {
     this.MunicipioServices.delete(id_municipio).subscribe((response: any) => {
       this.tableData();
       this.responseMessage = response?.message;
