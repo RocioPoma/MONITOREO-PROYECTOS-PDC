@@ -32,115 +32,110 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
   styleUrls: ['./manage-nosotros.component.scss']
 })
 export class ManageNosotrosComponent {
-//variables 
-displayedColumns: string[] = ['numero', 'descripcion', 'link_video', 'documentos_general', 'manual_usuario', 'manual_desarrollo', 'iee_830'];
-dataSource: any;
-responseMessage: any;
+  //variables 
+  displayedColumns: string[] = ['numero', 'descripcion', 'link_video', 'documentos_general', 'manual_usuario', 'manual_desarrollo', 'iee_830'];
+  dataSource: any;
+  responseMessage: any;
 
-//variables para pdf
-usuario: any;
-ap:any;
-am:any;
-tabla:any;
-logoDataUrl: string;
-infoFiltrada:any;
-pipe = new DatePipe('en-US');
-archivo:any;
+  //variables para pdf
+  usuario: any;
+  ap: any;
+  am: any;
+  tabla: any;
+  logoDataUrl: string;
+  infoFiltrada: any;
+  pipe = new DatePipe('en-US');
+  archivo: any;
 
-@ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-@ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatSort) sort!: MatSort;
 
-constructor(
-  private nosotros: NosotrosService,
-  private dialog: MatDialog,
-  private snackbarService: SnackbarService,
-  private router: Router) { }
+  constructor(
+    private nosotros: NosotrosService,
+    private dialog: MatDialog,
+    private snackbarService: SnackbarService,
+    private router: Router) { }
 
-ngOnInit(): void {
-  this.tableData();
-  //para usaurio de pdf    
-  const nombreString = localStorage.getItem('nombre');
-  const ApString = localStorage.getItem('ap_paterno');
-  const AmString = localStorage.getItem('ap_materno');
-  this.usuario = nombreString? (nombreString): null;
-  this.ap = ApString ? (ApString ): null;
-  this.am = AmString? (AmString): null;
-  //------------------------------------
-}
-
-
-tableData() {
-  this.nosotros.getNosotros().subscribe((response: any) => {
-    this.dataSource = new MatTableDataSource(response);
-    this.tabla=response[0];
-    console.log(response[0]);
-    this.archivo=response[0];
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }, (error: any) => {
-    if (error.error?.message) {
-      this.responseMessage = error.error?.message;
-    }
-    else {
-      this.responseMessage = GlobalCostants.genericError;
-    }
-    this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
-  })
-  
-}
-//---------------------------------Fitrador----------------------------------------------------
-applyFilter(event: Event) {
-  const filterValue = (event.target as HTMLInputElement).value;
-  this.dataSource.filter = filterValue.trim().toLowerCase();
-//pdf
-  //dar valor a variables para su impresion
-  console.log(this.dataSource.filteredData);   
-  this.infoFiltrada=this.dataSource.filteredData;
-  this.tabla=this.infoFiltrada;
-  //pdf
-  if (this.dataSource.paginator) {
-    this.dataSource.paginator.firstPage();
-  }
-}
-
-
-handleAddAction() {
-  const dialogConfig = new MatDialogConfig();
-  dialogConfig.data = {
-    action: 'Add'
-  }
-  dialogConfig.width = "700px";
-  const dialogRef = this.dialog.open(ArchivosNosotrosComponent, dialogConfig);
-  this.router.events.subscribe(() => {
-    dialogRef.close();
-  });
-  const sub = dialogRef.componentInstance.onAddNosotros.subscribe((response) => {
+  ngOnInit(): void {
     this.tableData();
-  })
-}
-
-handleEditAction() {
-  
-  const dialogConfig = new MatDialogConfig();
-  dialogConfig.data = {
-    action: 'Edit',
-    data: this.archivo
+    //para usaurio de pdf    
+    const nombreString = localStorage.getItem('nombre');
+    const ApString = localStorage.getItem('ap_paterno');
+    const AmString = localStorage.getItem('ap_materno');
+    this.usuario = nombreString ? (nombreString) : null;
+    this.ap = ApString ? (ApString) : null;
+    this.am = AmString ? (AmString) : null;
+    //------------------------------------
   }
 
-  dialogConfig.width = "700px";
-  const dialogRef = this.dialog.open(ArchivosNosotrosComponent, dialogConfig);
-  this.router.events.subscribe(() => {
-    dialogRef.close();
-  });
-  const sub = dialogRef.componentInstance.onEditNosotros.subscribe((response) => {
-    this.tableData();
-  })
-}
+
+  tableData() {
+    this.nosotros.getNosotros().subscribe((response: any) => {
+      this.dataSource = new MatTableDataSource(response);
+      this.tabla = response[0];
+      console.log(response[0]);
+      this.archivo = response[0];
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    }, (error: any) => {
+      if (error.error?.message) {
+        this.responseMessage = error.error?.message;
+      }
+      else {
+        this.responseMessage = GlobalCostants.genericError;
+      }
+      this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+    })
+
+  }
+  //---------------------------------Fitrador----------------------------------------------------
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    //pdf
+    //dar valor a variables para su impresion
+    console.log(this.dataSource.filteredData);
+    this.infoFiltrada = this.dataSource.filteredData;
+    this.tabla = this.infoFiltrada;
+    //pdf
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
 
 
+  handleAddAction() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      action: 'Add'
+    }
+    dialogConfig.width = "700px";
+    const dialogRef = this.dialog.open(ArchivosNosotrosComponent, dialogConfig);
+    this.router.events.subscribe(() => {
+      dialogRef.close();
+    });
+    const sub = dialogRef.componentInstance.onAddNosotros.subscribe((response) => {
+      this.tableData();
+    })
+  }
 
+  handleEditAction() {
 
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      action: 'Edit',
+      data: this.archivo
+    }
 
+    dialogConfig.width = "700px";
+    const dialogRef = this.dialog.open(ArchivosNosotrosComponent, dialogConfig);
+    this.router.events.subscribe(() => {
+      dialogRef.close();
+    });
+    const sub = dialogRef.componentInstance.onEditNosotros.subscribe((response) => {
+      this.tableData();
+    })
+  }
 
 }
