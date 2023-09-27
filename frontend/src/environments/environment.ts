@@ -1,4 +1,4 @@
 export const environment = {
-    production: false,
-    apiUrl: 'http://localhost:4000'
+    production: true,
+    apiUrl: 'https://pdcg-api.dev.404.codes/'
 };
