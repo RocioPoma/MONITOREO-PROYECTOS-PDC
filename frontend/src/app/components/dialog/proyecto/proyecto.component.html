@@ -285,23 +285,34 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <div fxLayout="row wrap">
-                    <mat-form-field appearance="fill">
-                        <mat-label>Cantidad</mat-label>
-                        <input matInput >
-                        <mat-error
-                            *ngIf="proyectoForm.controls.nom_proyecto.touched && proyectoForm.controls.nom_proyecto.invalid">
-                            <span *ngIf="proyectoForm.controls.nom_proyecto.errors.required">Este campo es
-                                obligatorio.</span>
-                        </mat-error>
-                    </mat-form-field>
+                <ng-container formArrayName="alcance">
+                    <div fxLayout="row wrap" [formGroupName]="0">
+                        <mat-form-field appearance="fill" fxFlex fxFlex.gt-sm="24%">
+                            <mat-label>Cantidad</mat-label>
+                            <input matInput formControlName="cantidad" required (change)="cantidadInd(alcancetoArray.at(0).value)">
+                            <mat-error
+                                *ngIf="alcancetoArray.at(0)?.get('cantidad')?.touched && alcancetoArray.at(0)?.get('cantidad')?.invalid">
+                                <span *ngIf="alcancetoArray.at(0)?.get('cantidad')?.errors?.['required']">Este
+                                    campo es obligatorio.</span>
+                            </mat-error>
+                        </mat-form-field>
 
-                    <mat-form-field appearance="fill">
-                        <mat-label>Unidad</mat-label>
-                        <input matInput formControlName="unidad">
-                    </mat-form-field>
-
-                </div>
+                        <mat-form-field appearance="fill" fxFlex fxFlex.gt-sm="24.22%">
+                            <mat-label>Unidad de Medición</mat-label>
+                            <mat-select formControlName="id_unidad_medicion" [contentEditable]="false">
+                                <mat-option *ngFor="let item of unidad" [value]="item.id_unidad_medicion">
+                                    {{item.nom_unidad}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error
+                                *ngIf="alcancetoArray.at(0)?.get('id_unidad_medicion')?.touched && alcancetoArray.at(0)?.get('id_unidad_medicion')?.invalid">
+                                <span
+                                    *ngIf="alcancetoArray.at(0)?.get('id_unidad_medicion')?.errors?.['required']">Este
+                                    campo es obligatorio.</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </ng-container>
             </div>
         </div>
     </form>

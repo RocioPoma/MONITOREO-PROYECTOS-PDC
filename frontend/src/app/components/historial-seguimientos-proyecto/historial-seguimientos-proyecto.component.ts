@@ -7,8 +7,6 @@ export interface PeriodicElement {
   fecha_seguimiento: string;
   avance_seguimiento_fisico: number;
   avance_seguimiento_financiero:number;
-  adjunto_fisico:string;
-  adjunto_financiero:string;
   monto_total:string;
   coste_final:string;
   fuente_de_informacion: string;
@@ -35,7 +33,7 @@ export class HistorialSeguimientosProyectoComponent {
   proyecto:any;
   etapa_proyecto:any;
   openHistorialEtapa=false;
-  displayedColumns: string[] = ['nro','historial','nombre_etapa','coste_final','avance_seguimiento_fisico','avance_seguimiento_financiero', 'fecha_seguimiento', 'monto_total', 'fuente_de_informacion','adjunto_fisico','adjunto_financiero'];
+  displayedColumns: string[] = ['nro','historial','nombre_etapa','coste_final','avance_seguimiento_fisico','avance_seguimiento_financiero', 'fecha_seguimiento', 'monto_total', 'fuente_de_informacion'];
   displayedSeguimientoColumns: string[] = ['nro','nombre_etapa', 'fecha_seguimiento', 'avance_seguimiento_fisico','avance_seguimiento_financiero','adjunto_financiero','adjunto_fisico'];
   clickedRows = new Set<PeriodicElement>();
   clickedSeguimientosRows = new Set<PeriodicHistorialElement>();

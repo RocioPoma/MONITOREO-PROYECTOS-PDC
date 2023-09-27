@@ -191,7 +191,7 @@ export class ProyectoComponent implements OnInit {
       alcance: this.formBuilder.array([
         this.formBuilder.group({
           cantidad: [null, [Validators.required]],
-          id_unidad_medicion: [{ value: null }, [Validators.required, Validators.min(1)]],
+          id_unidad_medicion: [ null, [Validators.required, Validators.min(1)]],
         })
       ], [Validators.required]),
       alcance_cantidad: [null, [Validators.required]],
@@ -316,7 +316,7 @@ export class ProyectoComponent implements OnInit {
 
   //----------- PARA QUITAR CAMPOS INPUT(CANTIDAD Y UNIDAD)
   removeInput() {
-    if (this.alcancetoArray.length > 0) {
+    if (this.alcancetoArray.length > 1) {
       this.alcancetoArray.removeAt(this.alcancetoArray.length - 1);
     }
   }
@@ -531,21 +531,27 @@ export class ProyectoComponent implements OnInit {
 
   // Agrega un método para manejar el cambio de indicador
   onIndicadorChange() {
+    this.alcancetoArray.at(0).reset();
     const selectedIndicador = this.indicador.find(
       (indicador) => indicador.id_indicador === this.proyectoForm.value.id_indicador
     );
     if (selectedIndicador) {
-      this.proyectoForm.get('unidad').setValue(selectedIndicador.nom_unidad);
+      //this.proyectoForm.get('unidad').setValue(selectedIndicador.nom_unidad);
+      console.log(selectedIndicador);
+      this.alcancetoArray.at(0).get('id_unidad_medicion')?.setValue(selectedIndicador.id_unidad_medicion);
+      console.log(this.alcancetoArray.at(0));
     }
   }
-
+  cantidadInd(medida:any){
+    console.log(medida);
+    this.alcancetoArray.at(0).get('cantidad')?.setValue(medida.cantidad);
+  }
   //------------------- AGREGAR PROYECTO
   add() {
     var formData = this.proyectoForm.value;
     this.finicio = this.datePipe.transform(formData.fecha_inicio, 'yyyy-MM-dd')
     this.ffin = this.datePipe.transform(formData.fecha_fin, 'yyyy-MM-dd')
-    console.log(this.fechaActualString);
-
+    
     // Llamar a la función validateCoordinates
     const estaDentroLaCuenca = this.validateCoordinates(formData.coordenada_x, formData.coordenada_y);
 
@@ -711,7 +717,7 @@ export class ProyectoComponent implements OnInit {
 
   validateCoordinates(latitude: number, longitude: number): boolean {
     if (latitude !== undefined && longitude !== undefined && this.polygonData) {
-      const point = turf.point([longitude, latitude]);
+      const point = turf.point([latitude,longitude]);
 
       // Utiliza la función "booleanPointInPolygon" de Turf.js para verificar si el punto está dentro del polígono
       const isInside = turf.booleanPointInPolygon(point, this.polygonData.features[0].geometry);

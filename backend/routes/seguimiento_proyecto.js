@@ -56,25 +56,25 @@ router.get("/getEtapaByIdEtapaProyecto", (req, res) => {
 });
 router.get("/getEtapasByIdProyecto/:id_proyecto", (req, res) => {
   const { id_proyecto } = req.params;
-    const query = `	SELECT ETP.id_etapa_proyecto,ETP.fuente_de_informacion,
-    ETA.nombre_etapa,DATE_FORMAT(ETP.fecha_seguimiento, '%d-%m-%Y') AS fecha_seguimiento,SEGF.adjunto_fisico,FIN.id_financiamiento,
+    const query = `SELECT ETP.id_etapa_proyecto,ETP.fuente_de_informacion,
+    ETA.nombre_etapa,DATE_FORMAT(ETP.fecha_seguimiento, '%d-%m-%Y') AS fecha_seguimiento,
     SEGF.avance_seguimiento_fisico FROM ETAPA_PROYECTO AS ETP 
     JOIN ETAPA AS ETA ON ETA.id_etapa = ETP.id_etapa 
     JOIN SEGUIMIENTO_FISICO AS SEGF ON SEGF.id_etapa_proyecto = ETP.id_etapa_proyecto
     JOIN FINANCIAMIENTO AS FIN ON FIN.id_etapa_proyecto = ETP.id_etapa_proyecto
     WHERE ETP.id_proyecto = ?;`;
-    const queryAdjFin=`
-    SELECT SEGFIN.adjunto_financiero FROM seguimiento_financiero AS SEGFIN 
-    WHERE SEGFIN.id_financiamiento = ? ORDER BY SEGFIN.id_seguimiento_financiero DESC LIMIT 1;`;
+    // const queryAdjFin=`
+    // SELECT SEGFIN.monto FROM seguimiento_financiero AS SEGFIN 
+    // WHERE SEGFIN.id_financiamiento IN(?) ORDER BY SEGFIN.id_seguimiento_financiero DESC LIMIT ?;`;
   connection.query(query, [id_proyecto], async (err, result) => {
     if (err)
       res.status(500).json({ msg: "error al consultar - etap by idProyecto" });
 
-    avanceEtapas = [];
-    for (avance of result) {
-      avance.adjunto_financiero=null;
-      // console.log(avance);
+    const avanceEtapas = [];
+    for (const avance of result) {
+      
       if (avanceEtapas.length === 0) {
+        //const res = await selectParams(queryAdjFin,[avance.id_etapa_proyecto])
         avanceEtapas.push(avance);
       } else {
         const ava = avanceEtapas.find(
@@ -84,13 +84,8 @@ router.get("/getEtapasByIdProyecto/:id_proyecto", (req, res) => {
          
           if(avance.avance_seguimiento_fisico > ava.avance_seguimiento_fisico){
             ava.avance_seguimiento_fisico = avance.avance_seguimiento_fisico;
-            ava.adjunto_fisico = avance.adjunto_fisico;   
-
-            const resultado = await selectParams(queryAdjFin,[avance.id_financiamiento]);
-            console.log(resultado);
-            console.log(avance);
-            if(resultado.length>0)
-            ava.adjunto_financiero = resultado[0].adjunto_financiero;
+            //ava['%_avance_financiero']
+            //const res = await selectParams(queryTotalFin,[avance.id_etapa_proyecto])
           }
         } else {
           avanceEtapas.push(avance);
@@ -113,24 +108,26 @@ router.get("/getMontos/:id_etapa_proyecto", (req, res) => {
   connection.query(queryFn, [id_etapa_proyecto], (err, result1) => {
     if (err)
       res.status(500).json({ msg: "error al obtener en financiamiento", err });
-    // console.log(result)
+    console.log(result1)
     connection.query(queryFnIds, [id_etapa_proyecto], (err, result2) => {
       if(err){
         res.status(500).json({msg:'error - obtener financiamientos ids',err})
         throw new Error(err)
       }
+      console.log(result2);
       let valores=[];
-      for(const index in result2){
-        valores.push(result2[index].id_financiamiento)
+      for(const {id_financiamiento} of result2){
+        valores.push(id_financiamiento)
       }
+      console.log(valores);
       connection.query(querySigFn, [valores,result2.length], (err, result3) => {
         if (err){
           res.status(500).json({ msg: "error al obtener en seguimiento financiero", err });
         }
         console.log(result3);
         let monto_total=0;
-        for(let monto of result3){
-          monto_total=monto_total+Number.parseInt(monto.monto);
+        for(let {monto} of result3){
+          monto_total=monto_total+Number.parseInt(monto);
         }
         res.status(200).json({
           coste_final: result1[0].coste_final,
@@ -166,6 +163,7 @@ router.get("/get_seguimientos/:id_etapa_proyecto", (req, res) => {
           fecha_seguimiento_fisico:result[i].fecha_seguimiento_fisico,
           adjunto_fisico:result[i].adjunto_fisico,
           adjunto_financiero:null,
+          
         }
         let total_financiado =0;
         let costo_final=0;
@@ -370,10 +368,11 @@ router.post("/registrarAvanceSeguimientoProyecto", [multer.array('documentos')],
             res.status(500).json({ msg: "error al insertar seguimiento" });
             throw new Error(`error: ${err}`);
           }
+          
         }
-      );
-    }
-    res.status(201).json({ msg: "insertados exitosamente" });
+        );
+      }
+      res.status(201).json({ msg: "insertados exitosamente" });
   });
 });
 
