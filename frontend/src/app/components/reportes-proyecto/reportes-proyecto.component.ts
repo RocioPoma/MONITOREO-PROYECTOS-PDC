@@ -550,7 +550,7 @@ if (currentMonth === 11) {
       yAxis: {
         min: 0,
         title: {
-          text: '(Milliones)',
+          text: '(Bs.)',
           align: 'high'
         },
         labels: {
@@ -559,7 +559,7 @@ if (currentMonth === 11) {
         gridLineWidth: 0
       },
       tooltip: {
-        valueSuffix: ' millones'
+        valueSuffix: ' Bs.'
       },
       plotOptions: {
         bar: {

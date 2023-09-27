@@ -19,7 +19,7 @@
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Municipio</mat-label>
                     <mat-select formControlName="id_municipio">
-                        <mat-option *ngFor="let unidad of municipio" [value]="unidad.nombre_municipio">
+                        <mat-option *ngFor="let unidad of municipio" [value]="unidad.id_municipio">
                         {{ unidad.nombre_municipio}}
                         </mat-option>
                     </mat-select>

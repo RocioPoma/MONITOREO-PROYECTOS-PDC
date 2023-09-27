@@ -8,7 +8,7 @@ router.get('/get', (req, res) => {
   connection.query('SELECT * FROM ACCIONES_ESTRATEGICAS', (err, results) => {
     if (err) {
       console.error(err);
-      res.status(500).json({ message: 'Hubo un error al obtener los LINEAS_ESTRATEGICAS' });
+      res.status(500).json({ message: 'Hubo un error al obtener las LINEAS_ESTRATEGICAS' });
     } else {
       res.json(results);
     }

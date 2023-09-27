@@ -74,11 +74,11 @@ export class ManageProyectoComponent {
   logoDataUrl: string;
   infoFiltrada: any;
   pipe = new DatePipe('en-US');
-/*
-  @ViewChild('input') input: HTMLInputElement;
-  @ViewChild('municipioSelect') municipioSelect: MatSelect;
-  @ViewChild('categoriaSelect') categoriaSelect: MatSelect;
-  */
+  /*
+    @ViewChild('input') input: HTMLInputElement;
+    @ViewChild('municipioSelect') municipioSelect: MatSelect;
+    @ViewChild('categoriaSelect') categoriaSelect: MatSelect;
+    */
   searchFilter: string = '';
   municipioFilter: string = '';
   categoriaFilter: string = '';
@@ -207,28 +207,28 @@ export class ManageProyectoComponent {
     });
   }
 
-    //------------------- OBTENEMOS CATEGORIA
-    getCategoria() {
-      this.CategoriaService.getCategoria().subscribe((response: any) => {
-        this.categoria = response;
-      }, (error: any) => {
-        if (error.error?.message) {
-          this.responseMessage = error.error?.message;
-        }
-        else {
-          this.responseMessage = GlobalCostants.genericError;
-        }
-        this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
-  
-      });
-    }
+  //------------------- OBTENEMOS CATEGORIA
+  getCategoria() {
+    this.CategoriaService.getCategoria().subscribe((response: any) => {
+      this.categoria = response;
+    }, (error: any) => {
+      if (error.error?.message) {
+        this.responseMessage = error.error?.message;
+      }
+      else {
+        this.responseMessage = GlobalCostants.genericError;
+      }
+      this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+
+    });
+  }
 
   //---------------------------------Fitrador----------------------------------------------------
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-     //pdf
+    //pdf
     //dar valor a variables para su impresion
     console.log(this.dataSource.filteredData);
     this.infoFiltrada = this.dataSource.filteredData;
@@ -242,15 +242,15 @@ export class ManageProyectoComponent {
     filterValue = filterValue.trim().toLowerCase();
     this.dataSource.filterPredicate = (data: any, filter: string) =>
       data.nombre_municipio.trim().toLowerCase().includes(filter);
-  
+
     // Aplicar el filtro de municipio
     this.dataSource.filter = filterValue;
-  
+
     // Si también hay un filtro de categoría activo, aplicar el filtro de categoría
     if (this.categoriaFilter) {
       this.applyCategoriaFilter(this.categoriaFilter);
     }
-     //pdf
+    //pdf
     //dar valor a variables para su impresion
     console.log(this.dataSource.filteredData);
     this.infoFiltrada = this.dataSource.filteredData;
@@ -260,11 +260,11 @@ export class ManageProyectoComponent {
       this.dataSource.paginator.firstPage();
     }
   }
-  
+
   applyCategoriaFilter(filterValue: string) {
     filterValue = filterValue.trim().toLowerCase();
     this.categoriaFilter = filterValue; // Almacenar el valor del filtro de categoría
-  
+
     // Si hay un filtro de municipio activo, aplicar el filtro de municipio primero
     if (this.municipioFilter) {
       this.applyMunicipioFilter(this.municipioFilter);
@@ -274,7 +274,8 @@ export class ManageProyectoComponent {
         data.nom_categoria.trim().toLowerCase().includes(filter);
       this.dataSource.filter = filterValue;
     }
-     //pdf
+
+    //pdf
     //dar valor a variables para su impresion
     console.log(this.dataSource.filteredData);
     this.infoFiltrada = this.dataSource.filteredData;
@@ -284,7 +285,7 @@ export class ManageProyectoComponent {
       this.dataSource.paginator.firstPage();
     }
   }
-  
+
 
   /*applyFilter(event: any) {
     const filterValue = (event.target.value as string).trim().toLowerCase();
@@ -325,37 +326,37 @@ export class ManageProyectoComponent {
     this.applyCombinedFilters();
   }*/
 
- /*applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    this.applyCombinedFilters();
-}
+  /*applyFilter(event: Event) {
+     const filterValue = (event.target as HTMLInputElement).value;
+     this.dataSource.filter = filterValue.trim().toLowerCase();
+     this.applyCombinedFilters();
+ }
+ 
+ applyMunicipioFilter(filterValue: String) {
+     filterValue = filterValue.trim().toLowerCase();
+     this.filterData('nombre_municipio', filterValue);
+     this.applyCombinedFilters();
+ }
+ 
+ applyCategoriaFilter(filterValue: String) {
+     filterValue = filterValue.trim().toLowerCase();
+     this.filterData('nom_categoria', filterValue);
+     this.applyCombinedFilters();
+ }
+ 
+ filterData(column: string, value: String) {
+     this.dataSource.filterPredicate = (data: any, filter: string) =>
+         data[column].trim().toLowerCase().includes(filter);
+     this.dataSource.filter = value;
+ }
+ 
+ applyCombinedFilters() {
+     // Aquí puedes agregar lógica adicional para combinar los filtros si es necesario.
+     // Por ejemplo, si deseas que los filtros de municipio y categoría se apliquen en conjunto.
+ }
+ 
+ */
 
-applyMunicipioFilter(filterValue: String) {
-    filterValue = filterValue.trim().toLowerCase();
-    this.filterData('nombre_municipio', filterValue);
-    this.applyCombinedFilters();
-}
-
-applyCategoriaFilter(filterValue: String) {
-    filterValue = filterValue.trim().toLowerCase();
-    this.filterData('nom_categoria', filterValue);
-    this.applyCombinedFilters();
-}
-
-filterData(column: string, value: String) {
-    this.dataSource.filterPredicate = (data: any, filter: string) =>
-        data[column].trim().toLowerCase().includes(filter);
-    this.dataSource.filter = value;
-}
-
-applyCombinedFilters() {
-    // Aquí puedes agregar lógica adicional para combinar los filtros si es necesario.
-    // Por ejemplo, si deseas que los filtros de municipio y categoría se apliquen en conjunto.
-}
-
-*/
-  
   /*applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -564,18 +565,18 @@ applyCombinedFilters() {
         "ETAPA": item["ultima_etapa"],
         "FECHA INICIO": item["fecha_inicio_convert"],
         "FECHA FINAL": item["fecha_fin_convert"],
-        "AÑO DE EVALUACIÓN": añoActual,
+        "AÑO DE EV.": añoActual,
         "DEPARTAMENTO": 'TARIJA',
         "MUNICIPIO": item["nombre_municipio"],
         "CIUDAD/COMUNIDAD": item["nombre_comunidades"],
         "ÁREA": item["area"],
-        "COORDENADA X DECIMAL": item["coordenada_x"],
-        "COORDENADA Y DECIMAL": item["coordenada_y"],
+        "COORDENADA X DEC.": item["coordenada_x"],
+        "COORDENADA Y DEC.": item["coordenada_y"],
         "ZONA": '20S',
         "ESTE - UTM": este,
         "NORTE - UTM": norte,
         "FUENTES FINANCIAMIENTO": item["fuentes_financiamiento"],
-        "TOTAL Hab.": item["cantidad"],
+        "TOTAL HAB.": item["cantidad"],
         "MUJERES": item["mujeres"],
         "HOMBRES": item["hombres"],
         "LÍNEA DE ACCIÓN": item["linea_de_accion"],
@@ -584,32 +585,69 @@ applyCombinedFilters() {
         "INDICADOR": item["nombre_indicador"],
       };
     });
-  
 
-   // const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
+    // Crea un objeto de hoja de cálculo
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
     const currentDate = this.pipe.transform(Date.now(), 'M/d/yy, h:mm a');
 
+    // Establecer estilos para aparentar centrado y negrita para el título
+    const titleCellStyle = {
+      font: { bold: true },
+      alignment: { horizontal: 'center' }
+    };
 
-    // Crear una hoja de cálculo de Excel
-  const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
+    // Combinar las celdas para el título
+    ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 23 } }];
+    ws['A1'] = { t: 's', v: 'TABLA DE DATOS DE PROYECTOS', s: titleCellStyle };
 
- 
+    // Agregar los datos a la hoja de cálculo
+    XLSX.utils.sheet_add_json(ws, dataForExcel, { origin: 'A2' });
 
+    // Aplicar el estilo de negrita a las celdas de encabezado y ajustar el ancho de las columnas
+    const headerCellStyle = {
+      font: { bold: true },
+      alignment: { horizontal: 'center', vertical: 'center' },
+      border: { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } }
+    };
 
-ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 23 } }];
+    const columnWidths = [
+      { wch: 18 }, // Ajusta el ancho de la primera columna
+      { wch: 55 }, // Ajusta el ancho de la segunda columna
+      { wch: 15 }, //tipologia
+      { wch: 20 }, //categoria
+      { wch: 20 }, //etapa
+      { wch: 12 }, //fecha inicio
+      { wch: 12 }, //fecha fin
+      { wch: 12 }, //anio de evaluacion
+      { wch: 15 }, // departamento
+      { wch: 15 }, // municipio
+      { wch: 40 }, // ciudad comunidad
+      { wch: 15 }, // area
+      { wch: 20 }, // coordenada x
+      { wch: 20 }, // coordenada y
+      { wch: 10 }, // zona
+      { wch: 15 }, // este utm
+      { wch: 15 }, // norte utm
+      { wch: 27 }, // Fuente de financiamiento
+      { wch: 15 }, // total hab
+      { wch: 12 }, //mujeres 
+      { wch: 12 }, // hombres
+      { wch: 40 }, // Linea de accion
+      { wch: 40 }, // linea estrategica
+      { wch: 40 }, // accion estrategica
+      { wch: 40 }, // Indicador
+      // Agregar más ancho de columna según sea necesario
+    ];
 
-ws['A1'] = { t: 's', v: 'TABLA DE DATOS DE PROYECTOS' }; // Aplica estilo de título    // Agregar los datos a la hoja de cálculo
-    // Configurar el estilo de alineación para centrar horizontal y verticalmente
+    // Aplicar el estilo de encabezado y ajustar el ancho de las columnas
+    const headerKeys = Object.keys(ws).filter(key => key.startsWith('A1:'));
+    headerKeys.forEach(key => {
+      ws[key].s = headerCellStyle;
+    });
 
-XLSX.utils.sheet_add_json(ws, dataForExcel, { origin: 'A2'});
+    // Aplicar el ancho de las columnas
+    ws['!cols'] = columnWidths;
 
- 
-
-    //-------------------------------------------------------------------------------------------
-
-   
-
-    //-------------------------------------------------------------------------------------------
     // Crear un libro de trabajo y agregar la hoja de cálculo
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1'); // 'Sheet1' es el nombre de la hoja de cálculo

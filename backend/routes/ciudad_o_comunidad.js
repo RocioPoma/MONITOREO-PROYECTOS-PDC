@@ -39,20 +39,20 @@ router.post('/create', (req, res) => {
         console.error(err);
         res.status(500).json({ message: 'Hubo un error al crear la comunidad ' });
       } else {
-        res.json({ message: 'Comunidad fue creada correctamente' });
+        res.json({ message: 'Comunidad/Ciudad creada con exito' });
       }
     });
   });
 
 //modificar ciudad_comunidad
 router.patch('/update', (req, res) => {   
-    const {  nombre, id_municipio} = req.body;
-    connection.query('UPDATE CIUDAD_O_COMUNIDAD SET nombre = ?, id_municipio = ? WHERE id = ?', [nombre, id_municipio], (err) => {
+    let comunidad = req.body;
+    connection.query('UPDATE CIUDAD_O_COMUNIDAD SET nombre = ?, id_municipio = ? WHERE id = ?', [comunidad.nombre, comunidad.id_municipio, comunidad.id], (err) => {
       if (err) {
         console.error(err);
         res.status(500).json({ message: 'Hubo un error al actualizar la ciudad ' });
       } else {
-        res.json({ message: 'Ciudad actualizada correctamente' });
+        res.json({ message: 'La actualización se realizo con éxito' });
       }
     });
   });
@@ -64,7 +64,7 @@ router.delete('/delete/:id', (req, res) =>{
     connection.query('DELETE FROM CIUDAD_O_COMUNIDAD WHERE id=?', [id], (err) =>{
         if (err) {
             console.error(err);
-            res.status(500).json({ message: 'Hubo un error al eliminar la comunidad' });
+            res.status(500).json({ message: 'No se puede eliminar debido a que se esta utilizando en proyectos' });
         } 
         else {
             res.json({ message: 'Comunidad eliminada correctamente' });

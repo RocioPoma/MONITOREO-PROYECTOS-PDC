@@ -82,9 +82,9 @@ ngOnInit(): void {
       this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
     })
      //llamar a logo y convertilo
-    Utils.getImageDataUrlFromLocalPath1('../../../assets/img/logo_sihita.png').then(
+   /* Utils.getImageDataUrlFromLocalPath1('../../../assets/img/logo_sihita.png').then(
     result => this.logoDataUrl = result
-    )
+    )*/
   }
 
 
