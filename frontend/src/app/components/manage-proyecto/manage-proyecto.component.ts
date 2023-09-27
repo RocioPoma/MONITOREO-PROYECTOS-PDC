@@ -584,55 +584,32 @@ applyCombinedFilters() {
         "INDICADOR": item["nombre_indicador"],
       };
     });
+  
 
-    // Crea un objeto de hoja de cálculo
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
+   // const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
     const currentDate = this.pipe.transform(Date.now(), 'M/d/yy, h:mm a');
 
-    // Establecer estilos para aparentar centrado y negrita para el título
-    const titleCellStyle = {
-      font: { bold: true },
-      alignment: { horizontal: 'center' }
-    };
 
-    // Combinar las celdas para el título
-    ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 12 } }];
-    ws['A1'] = { t: 's', v: 'TABLA DE DATOS DE PROYECTOS', s: titleCellStyle };
+    // Crear una hoja de cálculo de Excel
+  const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
 
-    // Agregar los datos a la hoja de cálculo
-    XLSX.utils.sheet_add_json(ws, dataForExcel, { origin: 'A2' });
+ 
 
-    // Aplicar el estilo de negrita a las celdas de encabezado y ajustar el ancho de las columnas
-    const headerCellStyle = {
-      font: { bold: true },
-      alignment: { horizontal: 'center', vertical: 'center' },
-      border: { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } }
-    };
 
-    const columnWidths = [
-      { wch: 20 }, // Ajusta el ancho de la primera columna
-      { wch: 40 }, // Ajusta el ancho de la segunda columna
-      { wch: 20 }, 
-      { wch: 20 }, 
-      { wch: 20 }, 
-      { wch: 20 }, 
-      { wch: 20 }, 
-      { wch: 20 }, 
-      { wch: 20 }, 
-      { wch: 20 }, 
-      { wch: 40 }, 
-      // Agregar más ancho de columna según sea necesario
-    ];
+ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 23 } }];
 
-    // Aplicar el estilo de encabezado y ajustar el ancho de las columnas
-    const headerKeys = Object.keys(ws).filter(key => key.startsWith('A1:'));
-    headerKeys.forEach(key => {
-      ws[key].s = headerCellStyle;
-    });
+ws['A1'] = { t: 's', v: 'TABLA DE DATOS DE PROYECTOS' }; // Aplica estilo de título    // Agregar los datos a la hoja de cálculo
+    // Configurar el estilo de alineación para centrar horizontal y verticalmente
 
-    // Aplicar el ancho de las columnas
-    ws['!cols'] = columnWidths;
+XLSX.utils.sheet_add_json(ws, dataForExcel, { origin: 'A2'});
 
+ 
+
+    //-------------------------------------------------------------------------------------------
+
+   
+
+    //-------------------------------------------------------------------------------------------
     // Crear un libro de trabajo y agregar la hoja de cálculo
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1'); // 'Sheet1' es el nombre de la hoja de cálculo
