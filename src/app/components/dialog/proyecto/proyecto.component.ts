@@ -90,6 +90,8 @@ export class ProyectoComponent implements OnInit {
   isDropdownOpen = false;
 
   comunidadesSeleccionadas = []; //se utilizo
+  cantidadesSeleccionadas = []; //se utilizo
+  unidadMedicionesSeleccionadas = []; //se utilizo
 
 
   ComunidadMultiCtrl = new FormControl();
@@ -188,12 +190,7 @@ export class ProyectoComponent implements OnInit {
       documento: [null],
       comunidad: [],
       //para alcance
-      alcance: this.formBuilder.array([
-        this.formBuilder.group({
-          cantidad: [null, [Validators.required]],
-          id_unidad_medicion: [ null, [Validators.required, Validators.min(1)]],
-        })
-      ], [Validators.required]),
+      alcance: this.formBuilder.array([], [Validators.required]),
       alcance_cantidad: [null, [Validators.required]],
       alcance_id_unidad_medicion: [null, [Validators.required]],
       unidad: [{ value: '', disabled: false }, Validators.required],
@@ -206,11 +203,13 @@ export class ProyectoComponent implements OnInit {
 
       //para comunidades
       this.comunidadesSeleccionadas = this.dialogData.data.comunidades.split(',').map(Number);
-
+      this.cantidadesSeleccionadas = this.dialogData.data.cantidades.split(',');
+      this.unidadMedicionesSeleccionadas = this.dialogData.data.mediciones.split(',').map(Number);
+      this.addAlcances(this.cantidadesSeleccionadas,this.unidadMedicionesSeleccionadas);
       // Configura las comunidades seleccionadas en el formulario
       this.proyectoForm.get('comunidad').setValue(this.comunidadesSeleccionadas);
       //fin comunidades
-
+      
       //PDC
       this.proyectoForm.id_linea_estrategica = this.dialogData.data.id_linea_estrategica;
       this.getLineaDeAccion(this.dialogData.data.id_linea_estrategica);
@@ -219,11 +218,17 @@ export class ProyectoComponent implements OnInit {
       this.proyectoForm.id_accion_estrategica = this.dialogData.data.id_accion_estrategica;
 
 
-      this.onIndicadorChange();
 
       console.log(this.dialogData.data)
       this.getComunidad(this.dialogData.data.id_municipio);
-    }
+    }else{
+      this.alcancetoArray.setControl(0,
+        this.formBuilder.group({
+          cantidad: [null, [Validators.required]],
+          id_unidad_medicion: [ null, [Validators.required, Validators.min(1)]],
+        })
+        )
+      }
 
 
     //---------- Filtrar Select -------------------------
@@ -330,6 +335,16 @@ export class ProyectoComponent implements OnInit {
   }
 
   //
+  addAlcances(alcances:any[],mediciones:any[]){
+    for(let i = 0;i<alcances.length;i++){
+      const alcanceItem = this.formBuilder.group({
+        cantidad: [alcances[i], [Validators.required]],
+        id_unidad_medicion: [mediciones[i], [Validators.required]],
+      })
+      this.alcancetoArray.push(alcanceItem);
+    }
+
+  }
   addAlcance() {
     const alcanceItem = this.formBuilder.group({
       cantidad: [null, [Validators.required]],
@@ -531,7 +546,9 @@ export class ProyectoComponent implements OnInit {
 
   // Agrega un método para manejar el cambio de indicador
   onIndicadorChange() {
-    this.alcancetoArray.at(0).reset();
+    console.log(event);
+      this.alcancetoArray.at(0).reset();
+    
     const selectedIndicador = this.indicador.find(
       (indicador) => indicador.id_indicador === this.proyectoForm.value.id_indicador
     );
