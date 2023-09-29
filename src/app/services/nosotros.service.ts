@@ -18,6 +18,10 @@ export class NosotrosService {
   getNosotros() {
     return this.httpClient.get(this.url + "/nosotros/listar")
   }
+  //----------------------API PARA LISTAR archivos------------------------------
+  AddNosotros(file: FormData) {
+    return this.httpClient.post(this.url + "/nosotros/add",file)
+  }
 
   upload(file: FormData){
     return this.httpClient.put(this.url+"/nosotros/update",file);

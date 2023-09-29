@@ -56,11 +56,20 @@
                         <input hidden (change)="onFileSelected4($event)" #fileInput4 type="file">
                         <span>{{selectedFile4?.name}}</span>                                          
                         </mat-form-field >
+
+                        <mat-form-field class="columns">  
+                            <input matInput disabled>
+                            <button  mat-flat-button color="primary" class="padding"  matSuffix (click)="fileInput5.click()">
+                                <mat-label>Documento del sistema</mat-label>
+                            </button>
+                        <input hidden (change)="onFileSelected5($event)" #fileInput5 type="file">
+                        <span>{{selectedFile5?.name}}</span>                                          
+                        </mat-form-field >
             </div>
         </form>
     </mat-dialog-content>
     <mat-dialog-actions align="center">
-        <button mat-raised-button color="primary" type="submit" (click)="uploadFiles()" 
+        <button mat-raised-button color="primary" type="submit" (click)="handleSubmit()" 
             [disabled]="![NosotrosForm.valid && NosotrosForm.dirty]">Aceptar</button>
         <button mat-raised-button color="primary" mat-dialog-close>Cancelar</button>
     </mat-dialog-actions>

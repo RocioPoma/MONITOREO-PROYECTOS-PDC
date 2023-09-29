@@ -18,16 +18,18 @@ export class ArchivosNosotrosComponent {
   dialogAction:any="Add";
   action:any="Registrar";
   responseMessage:any;
-  selectedFile: File  ;
-  selectedFile2: any = null;
-  selectedFile3: any = null;
-  selectedFile4: any = null;
+  selectedFile:  any  ;
+  selectedFile2: any ;
+  selectedFile3: any ;
+  selectedFile4: any ;
+  selectedFile5: any ;
   id_nosotros:any;
 
   initialFile:any;
   initialFile2:any;
   initialFile3:any;
   initialFile4:any;
+  initialFile5:any;
   
  
   
@@ -62,8 +64,11 @@ export class ArchivosNosotrosComponent {
      this.initialFile3 = new File([new Blob()], this.dialogData.data.manual_desarrollo);
      this.selectedFile3=this.initialFile3;
 
-     this.initialFile4 = new File([new Blob()], this.dialogData.data.ieee_830);
+     this.initialFile4 = new File([new Blob()], this.dialogData.data.eee_830);
      this.selectedFile4=this.initialFile4;
+
+     this.initialFile5 = new File([new Blob()], this.dialogData.data.documento_sistema);
+     this.selectedFile5=this.initialFile5;
     }
   }
 
@@ -77,14 +82,18 @@ export class ArchivosNosotrosComponent {
   }
 
   add(){
-    var formData = this.NosotrosForm.value;
-    var data ={
-      nom_categoria: formData.nom_categoria,
-      desc_categoria: formData.desc_categoria,
-    }
-    this.categoriaService.add(data).subscribe((response:any)=>{
+    var formData2 = this.NosotrosForm.value;
+    const formData = new FormData();  
+    formData.append('descripcion', formData2.descripcion);
+    formData.append('link_video',formData2.link_video);
+    formData.append('files1', this.selectedFile);
+    formData.append('files2', this.selectedFile2);
+    formData.append('files3', this.selectedFile3);
+    formData.append('files4', this.selectedFile4);
+    formData.append('files5', this.selectedFile5);
+    this.nosotrosService.AddNosotros(formData).subscribe((response:any)=>{
       this.dialogRef.close();
-      this.onAddNosotros.emit();
+      this.onEditNosotros.emit();
       this.responseMessage = response.message;
       this.snackbarService.openSnackBar(this.responseMessage,"success");
     },(error:any)=>{
@@ -96,10 +105,10 @@ export class ArchivosNosotrosComponent {
         this.responseMessage = GlobalCostants.genericError;
       }
       this.snackbarService.openSnackBar(this.responseMessage,GlobalCostants.error);
-    })
+    });
   }
 
-  edit(){
+ /*  edit(){
     var formData = this.NosotrosForm.value;
     console.log(this.dialogData.data);
     var data ={
@@ -122,17 +131,24 @@ export class ArchivosNosotrosComponent {
       }
       this.snackbarService.openSnackBar(this.responseMessage,GlobalCostants.error);
     })
-  }
-  uploadFiles(){
+  } */
+  edit(){
         var formData2 = this.NosotrosForm.value;
         const formData = new FormData();
-        formData.append('id',this.dialogData.data.id);
+        formData.append('id',this.dialogData.data.id_nosotros);
         formData.append('descripcion', formData2.descripcion);
         formData.append('link_video',formData2.link_video);
         formData.append('files1', this.selectedFile);
         formData.append('files2', this.selectedFile2);
         formData.append('files3', this.selectedFile3);
         formData.append('files4', this.selectedFile4);
+        formData.append('files5', this.selectedFile5);
+        formData.append('files6', this.dialogData.data.documento_general);
+        formData.append('files7', this.dialogData.data.manual_usuario);
+        formData.append('files8', this.dialogData.data.manual_desarrollo);
+        formData.append('files9', this.dialogData.data.documento_sistema);
+        formData.append('files10', this.dialogData.data.eee_830);
+        
         this.nosotrosService.upload(formData).subscribe((response:any)=>{
           this.dialogRef.close();
           this.onEditNosotros.emit();
@@ -153,9 +169,9 @@ export class ArchivosNosotrosComponent {
 
   //subida de archivo
     onFileSelected(event: any): void {
-      this.selectedFile=null;
+     
         this.selectedFile = event.target.files[0] ?? null;
-        console.log(this.selectedFile);
+       // console.log(this.selectedFile);
     }
     
     onFileSelected2(event: any): void {
@@ -168,6 +184,10 @@ export class ArchivosNosotrosComponent {
   
     onFileSelected4(event: any): void {
         this.selectedFile4 = event.target.files[0] ?? null;
+    }
+
+    onFileSelected5(event: any): void {
+        this.selectedFile5 = event.target.files[0] ?? null;
     }
 
 }

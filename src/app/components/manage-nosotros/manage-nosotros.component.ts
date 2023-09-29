@@ -33,7 +33,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 })
 export class ManageNosotrosComponent {
   //variables 
-  displayedColumns: string[] = ['numero', 'descripcion', 'link_video', 'documentos_general', 'manual_usuario', 'manual_desarrollo', 'iee_830'];
+  displayedColumns: string[] = ['numero', 'descripcion', 'link_video', 'documento_sistema', 'documentos_general', 'manual_usuario', 'manual_desarrollo', 'iee_830'];
   dataSource: any;
   responseMessage: any;
 
