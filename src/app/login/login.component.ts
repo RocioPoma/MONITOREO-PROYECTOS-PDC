@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
    
     const email = this.loginForm.get('email')?.value;
     const password = this.loginForm.get('password')?.value;
-    //console.log(email,password);
+    ////console.log(email,password);
 
     this.userService.login(email, password).subscribe(
       (response) => {
@@ -52,15 +52,15 @@ export class LoginComponent implements OnInit {
         this.userService.setEstado(response.data.estado);
         this.userService.setEntidad(response.data.nombre_entidad);
         this.userService.setCi(response.data.ci);
-        console.log(response);
-        console.log('Token:', response.token);
+        //console.log(response);
+        //console.log('Token:', response.token);
         this.userService.setAuthToken(response.token);
         this.router.navigate(['/layout/pproyecto']);   
         
       },
       (error) => {
         // Maneja el error si falla la autenticación
-        console.error('Error:', error);
+        //console.error('Error:', error);
         this.openSnackBar('Nombre de usuario o contraseña incorrecta', 'Cerrar');
       }
     );
@@ -100,7 +100,7 @@ export class LoginComponent implements OnInit {
     // Aquí puedes implementar la lógica de autenticación con los datos ingresados
     // Por ejemplo, puedes enviar los datos al servidor para validar el inicio de sesión
     // Si la autenticación es exitosa, puedes cerrar el diálogo y realizar otras acciones necesarias
-    console.log(username, password);
+    //console.log(username, password);
     this.router.navigateByUrl('/dashboard');
     this.dialogRef.close();
   }*/

@@ -93,7 +93,7 @@ export class ManageMunicipioComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   //pdf
     //dar valor a variables para su impresion
-    console.log(this.dataSource.filteredData);   
+   // console.log(this.dataSource.filteredData);   
     this.infoFiltrada=this.dataSource.filteredData;
     this.tabla=this.infoFiltrada;
     //pdf
@@ -119,7 +119,7 @@ export class ManageMunicipioComponent {
   }
 
   handleEditAction(values: any) {
-    console.log(values);
+    //console.log(values);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       action: 'Edit',
@@ -169,7 +169,7 @@ export class ManageMunicipioComponent {
       estado: status.toString(),
       id_municipio: id_municipio
     }
-    console.log(data);
+    //console.log(data);
     this.MunicipioServices.updateStatus(data).subscribe((response: any) => {
       this.tableData();
       this.responseMessage = response?.message;

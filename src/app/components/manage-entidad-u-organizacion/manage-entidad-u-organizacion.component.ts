@@ -89,7 +89,7 @@ export class ManageEntidadUOrganizacionComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
     //pdf
     //dar valor a variables para su impresion
-    console.log(this.dataSource.filteredData);   
+    //console.log(this.dataSource.filteredData);   
     this.infoFiltrada=this.dataSource.filteredData;
     this.tabla=this.infoFiltrada;
     //pdf

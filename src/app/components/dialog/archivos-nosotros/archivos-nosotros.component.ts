@@ -52,7 +52,7 @@ export class ArchivosNosotrosComponent {
       this.dialogAction="Edit";
       this.action ="Actualizar";
       this.NosotrosForm.patchValue(this.dialogData.data);
-      console.log(this.dialogData.data);
+      //console.log(this.dialogData.data);
       //this.selectedFile=this.dialogData.data.documento_general;
        // Crear un nuevo objeto File con el nombre inicial
      this.initialFile = new File([new Blob()], this.dialogData.data.documento_general);

@@ -94,7 +94,7 @@ export class BasedeDatosComponent {
     this.getMunicipio();
     this.getCategoria();
 
-    console.log("url: " + this.fileURL);
+    //console.log("url: " + this.fileURL);
     //para usaurio de pdf    
     const nombreString = localStorage.getItem('nombre');
     const entidadString = localStorage.getItem('entidad');
@@ -108,7 +108,7 @@ export class BasedeDatosComponent {
     this.am = AmString ? (AmString) : null;
     this.estado = estadoString ? (estadoString) : null;
     this.rol = rolString ? (rolString) : null;
-    console.log(this.rol);
+    //console.log(this.rol);
     //------------------------------------
   }
 
@@ -175,7 +175,7 @@ export class BasedeDatosComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
     //pdf
     //dar valor a variables para su impresion
-    console.log(this.dataSource.filteredData);
+    //console.log(this.dataSource.filteredData);
     this.infoFiltrada = this.dataSource.filteredData;
     this.tabla = this.infoFiltrada;
     //pdf
@@ -197,7 +197,7 @@ export class BasedeDatosComponent {
     }
     //pdf
     //dar valor a variables para su impresion
-    console.log(this.dataSource.filteredData);
+    //console.log(this.dataSource.filteredData);
     this.infoFiltrada = this.dataSource.filteredData;
     this.tabla = this.infoFiltrada;
     //pdf
@@ -222,7 +222,7 @@ export class BasedeDatosComponent {
 
     //pdf
     //dar valor a variables para su impresion
-    console.log(this.dataSource.filteredData);
+    //console.log(this.dataSource.filteredData);
     this.infoFiltrada = this.dataSource.filteredData;
     this.tabla = this.infoFiltrada;
     //pdf
@@ -235,8 +235,8 @@ export class BasedeDatosComponent {
 
   openEtapasProyecto(proyecto: any) {
     this.proyecto = proyecto;
-    console.log(proyecto);
-    // console.log(this.openSeguimientosProyecto);
+    //console.log(proyecto);
+    // //console.log(this.openSeguimientosProyecto);
     if (this.openSeguimientosProyecto) {
       this.openSeguimientosProyecto = false;
       // this.openSeguimientosProyecto=true;
@@ -249,7 +249,7 @@ export class BasedeDatosComponent {
     const fechaActual = new Date();
     const añoActual = fechaActual.getFullYear();
 
-    console.log(this.dataSource.data);
+    //console.log(this.dataSource.data);
 
     const dataForExcel = this.dataSource.filteredData.map(item => {
       // Definir proyecciones
@@ -488,7 +488,7 @@ export class BasedeDatosComponent {
       tipo: 'publico',
       data: values
     }
-    console.log(values);
+    //console.log(values);
     dialogConfig.width = "820px";
     const dialogRef = this.dialog.open(ArchivosProyectoComponent, dialogConfig);
     this.router.events.subscribe(() => {

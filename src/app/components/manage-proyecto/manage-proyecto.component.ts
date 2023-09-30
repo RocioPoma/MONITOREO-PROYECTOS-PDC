@@ -103,7 +103,7 @@ export class ManageProyectoComponent {
   ngOnInit(): void {
     const ciString = localStorage.getItem('ci');
     this.ci = ciString ? (ciString) : null;
-    console.log(this.ci);
+    ////console.log(this.ci);
     /*  this.tableData();
      this.getMunicipio(); */
 
@@ -120,17 +120,17 @@ export class ManageProyectoComponent {
     this.am = AmString ? (AmString) : null;
     this.estado = estadoString ? (estadoString) : null;
     this.rol = rolString ? (rolString) : null;
-    // console.log(this.rol);
+    // //console.log(this.rol);
     //------------------------------------
 
 
-    //console.log("url: " + this.fileURL);
+    ////console.log("url: " + this.fileURL);
     if (this.rol === 'Operador') {
       this.tableData2(this.ci);
       this.getMunicipio();
       this.getCategoria();
     } else {
-      console.log(this.rol);
+      ////console.log(this.rol);
       this.tableData();
       this.getMunicipio();
       this.getCategoria();
@@ -142,9 +142,9 @@ export class ManageProyectoComponent {
   tableData() {
     this.ProyectoServices.getProyecto().subscribe((response: any) => {
       this.tabla = response;
-      //console.log(response);
+      ////console.log(response);
       this.estadoP = response[0].estado;
-      //console.log(this.estadoP);
+      ////console.log(this.estadoP);
       this.dataSource = new MatTableDataSource(response);
       // this.dataSource =response;
       this.dataSource.paginator = this.paginator;
@@ -169,9 +169,9 @@ export class ManageProyectoComponent {
   tableData2(ci: string) {
     this.ProyectoServices.getProyecto2(ci).subscribe((response: any) => {
       this.tabla = response;
-      console.log(response);
+      //console.log(response);
       this.estadoP = response[0].estado;
-      console.log(this.estadoP);
+      //console.log(this.estadoP);
       this.dataSource = new MatTableDataSource(response);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -230,7 +230,7 @@ export class ManageProyectoComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
     //pdf
     //dar valor a variables para su impresion
-    console.log(this.dataSource.filteredData);
+    //console.log(this.dataSource.filteredData);
     this.infoFiltrada = this.dataSource.filteredData;
     this.tabla = this.infoFiltrada;
     //pdf
@@ -252,7 +252,7 @@ export class ManageProyectoComponent {
     }
     //pdf
     //dar valor a variables para su impresion
-    console.log(this.dataSource.filteredData);
+    //console.log(this.dataSource.filteredData);
     this.infoFiltrada = this.dataSource.filteredData;
     this.tabla = this.infoFiltrada;
     //pdf
@@ -277,7 +277,7 @@ export class ManageProyectoComponent {
 
     //pdf
     //dar valor a variables para su impresion
-    console.log(this.dataSource.filteredData);
+    //console.log(this.dataSource.filteredData);
     this.infoFiltrada = this.dataSource.filteredData;
     this.tabla = this.infoFiltrada;
     //pdf
@@ -398,7 +398,7 @@ export class ManageProyectoComponent {
       action: 'Edit',
       data: values
     }
-    console.log(values);
+    //console.log(values);
     dialogConfig.width = "700px";
     const dialogRef = this.dialog.open(ProyectoComponent, dialogConfig);
     this.router.events.subscribe(() => {
@@ -416,7 +416,7 @@ export class ManageProyectoComponent {
       action: 'seguimiento',
       data: values
     }
-    console.log(values);
+    //console.log(values);
     dialogConfig.width = "820px";
     const dialogRef = this.dialog.open(SeguimientoProyectoComponent, dialogConfig);
     this.router.events.subscribe(() => {
@@ -428,7 +428,7 @@ export class ManageProyectoComponent {
   }
 
   handleDeleteAction(values: any) {
-    console.log(values);
+    //console.log(values);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       message: ' eliminar proyecto ' + values.nom_proyecto
@@ -480,8 +480,8 @@ export class ManageProyectoComponent {
 
   openEtapasProyecto(proyecto: any) {
     this.proyecto = proyecto;
-    console.log(proyecto);
-    // console.log(this.openSeguimientosProyecto);
+    //console.log(proyecto);
+    // //console.log(this.openSeguimientosProyecto);
     if (this.openSeguimientosProyecto) {
       this.openSeguimientosProyecto = false;
       // this.openSeguimientosProyecto=true;
@@ -513,7 +513,7 @@ export class ManageProyectoComponent {
       // coordenadasUTM es un array con [Este, Norte]
       const este = coordenadasUTM[0];
       const norte = coordenadasUTM[1];
-      //console.log(este,norte);
+      ////console.log(este,norte);
       tableBody.push([i + 1, person.linea_estrategica, i + 1, person.linea_de_accion, person.nom_proyecto, 'Tarija', person.nombre_municipio, '20S', este, norte, añoActual, person.ultima_etapa, person.fuentes_financiamiento]);
     }
 
@@ -542,7 +542,7 @@ export class ManageProyectoComponent {
     const fechaActual = new Date();
     const añoActual = fechaActual.getFullYear();
 
-    console.log(this.dataSource.data);
+    //console.log(this.dataSource.data);
 
     const dataForExcel = this.dataSource.filteredData.map(item => {
       // Definir proyecciones
@@ -785,7 +785,7 @@ export class ManageProyectoComponent {
       action: 'Change',
       data: values
     }
-    console.log(values);
+    //console.log(values);
     dialogConfig.width = "700px";
     const dialogRef = this.dialog.open(CambioUsuarioProyectoComponent, dialogConfig);
     this.router.events.subscribe(() => {
@@ -807,7 +807,7 @@ export class ManageProyectoComponent {
       action: 'Documentos',
       data: values
     }
-    console.log(values);
+    //console.log(values);
     dialogConfig.width = "820px";
     const dialogRef = this.dialog.open(ArchivosProyectoComponent, dialogConfig);
     this.router.events.subscribe(() => {

@@ -85,7 +85,7 @@ export class GestionEtapaComponent {
       id_tipologia:formData.id_tipologia,
       estado: this.dialogData.data.estado     
     }
-    console.log(data);
+  
      this.etapaService.update(data).subscribe((response:any)=>{
       this.dialogRef.close();
       this.onEditEtapa.emit();
@@ -105,7 +105,7 @@ export class GestionEtapaComponent {
 
         llamarTipologia(){
           this.tipoService.geTipologia().subscribe((response:any)=>{
-            console.log(response);
+           
            this.tipologia=response;
           }) 
         }

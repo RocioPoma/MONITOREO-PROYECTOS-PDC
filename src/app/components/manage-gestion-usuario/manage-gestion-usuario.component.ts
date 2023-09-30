@@ -72,13 +72,13 @@ export class ManageGestionUsuarioComponent {
     this.rol = rolString? (rolString): null;
     //------------------------------------
   
-    console.log(this.rol);
+    //console.log(this.rol);
    
   }
 
   tableData() {
     this.usuarioService.getusuario().subscribe((response: any) => {
-      console.log(response);
+      //console.log(response);
       this.tabla=response;
       this.dataSource = new MatTableDataSource(response);
       this.dataSource.paginator = this.paginator;
@@ -100,7 +100,7 @@ export class ManageGestionUsuarioComponent {
 
   entidades() {
     this.entidadServices.get().subscribe((response: any) => {
-      console.log(response);
+      //.log(response);
       this.entidad=response;    
     })
   }
@@ -110,7 +110,7 @@ applyFilter(event: Event) {
   const filterValue = (event.target as HTMLInputElement).value;
   this.dataSource.filter = filterValue.trim().toLowerCase();
   //dar valor a variables para su impresion
-  console.log(this.dataSource.filteredData);   
+  //console.log(this.dataSource.filteredData);   
   this.infoFiltrada=this.dataSource.filteredData;
   this.tabla=this.infoFiltrada;
   if (this.dataSource.paginator) {   

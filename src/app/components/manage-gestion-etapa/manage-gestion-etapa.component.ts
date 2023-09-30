@@ -98,7 +98,7 @@ export class ManageGestionEtapaComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
     //pdf
     //dar valor a variables para su impresion
-    console.log(this.dataSource.filteredData);   
+    //console.log(this.dataSource.filteredData);   
     this.infoFiltrada=this.dataSource.filteredData;
     this.tabla=this.infoFiltrada;
     //pdf
@@ -129,7 +129,7 @@ export class ManageGestionEtapaComponent {
       estado: status.toString(),
       id_etapa: id_etapa
     }
-    console.log(data);
+    //console.log(data);
     this.etapaService.updateStatus(data).subscribe((response: any) => {
       this.tableData();
       this.responseMessage = response?.message;

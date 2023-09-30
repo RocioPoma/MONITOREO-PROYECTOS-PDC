@@ -63,7 +63,7 @@ export class MapModalComponent {
             const point = L.latLng(this.coordenada_y,this.coordenada_x);
 
             if (polygonBounds.contains(point)) {
-              console.log('El punto está dentro de la cuenca.');
+              //console.log('El punto está dentro de la cuenca.');
             } else {
               alert('El punto no está dentro de la cuenca.');
             }
@@ -72,7 +72,7 @@ export class MapModalComponent {
           map.on('click', (e) => {
             const latlng = e.latlng;
             if (this.polygon.getBounds().contains(latlng)) {
-              console.log('El punto está dentro del polígono.');
+              //console.log('El punto está dentro del polígono.');
 
               // Eliminar el marcador anterior si existe
               if (this.marker) {
@@ -99,7 +99,7 @@ export class MapModalComponent {
                 const coords = e.latlng;
                 // Envía las coordenadas de regreso al componente padre
                 this.dialogRef.close(coords);
-                console.log('Aceptar clicado');
+                //console.log('Aceptar clicado');
               });
 
               document.getElementById('btn-cerrar').addEventListener('click', () => {
@@ -112,11 +112,11 @@ export class MapModalComponent {
           });
 
         } else {
-          console.error('El GeoJSON no contiene un polígono válido.');
+         // console.error('El GeoJSON no contiene un polígono válido.');
         }
       })
       .catch(error => {
-        console.error('Error al cargar el GeoJSON:', error);
+       // console.error('Error al cargar el GeoJSON:', error);
       });
   }
 }

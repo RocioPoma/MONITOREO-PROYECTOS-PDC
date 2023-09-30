@@ -71,16 +71,16 @@ ngOnInit():void{
     opcionRadio: [null, [Validators.required]]
   });
 
-  console.log(this.dialogData.data);
+  //console.log(this.dialogData.data);
   this.tableData();
   if (this.dialogData.action === 'principal') {
-    console.log(this.dialogData.action);   
+    //console.log(this.dialogData.action);   
     /* this.DocProyectForm.patchValue(this.dialogData.data);
     console.log(this.dialogData.data) */;
     this.publico=true;
     this.displayedColumns = ['numero', 'Nombre','Files', 'Descripcion']; 
   }else{
-    console.log('no es principal');
+   // console.log('no es principal');
     this.publico=false;
   }
 
@@ -92,7 +92,7 @@ applyFilter(event: Event) {
   const filterValue = (event.target as HTMLInputElement).value;
   this.dataSource.filter = filterValue.trim().toLowerCase();
   //dar valor a variables para su impresion
-  console.log(this.dataSource.filteredData);   
+  //console.log(this.dataSource.filteredData);   
   this.infoFiltrada=this.dataSource.filteredData;
   this.tabla=this.infoFiltrada;
   if (this.dataSource.paginator) {   
@@ -102,7 +102,7 @@ applyFilter(event: Event) {
 
     tableData() {
       this.users.getDoc(this.dialogData.data.id_proyecto).subscribe((response: any) => {
-        console.log(response);    
+       //console.log(response);    
         this.usu=response;
         this.dataSource = new MatTableDataSource(response);
         this.dataSource.paginator = this.paginator;
@@ -132,7 +132,7 @@ applyFilter(event: Event) {
     }
 
     deleteDocumento(id_proyecto: any,nombre_documento:any) {
-      console.log(id_proyecto,nombre_documento);
+      //console.log(id_proyecto,nombre_documento);
        this.users.delete2(id_proyecto,nombre_documento).subscribe((response: any) => {
         this.tableData();
         this.responseMessage = response?.message;
@@ -155,7 +155,7 @@ handleAddAction(){
       action: 'Documentos',
       data: this.dialogData.data.id_proyecto
     }
-    console.log(this.dialogData.data.id_proyecto);
+    //console.log(this.dialogData.data.id_proyecto);
     dialogConfig.width = "520px";
     const dialogRef = this.dialog.open(ArchivosComponent, dialogConfig);
     this.router.events.subscribe(() => {

@@ -56,14 +56,14 @@ export class CambioUsuarioProyectoComponent {
       // ...
       opcionRadio: ['']
     });
-    console.log(this.dialogData.data);
+    //console.log(this.dialogData.data);
     this.codigo=this.dialogData.data.ci;
     this.tableData();
     if (this.dialogData.action === 'Edit') {
       this.dialogAction = "Edit";
       this.action = "Actualizar";      
       this.UserProyectForm.patchValue(this.dialogData.data);
-      console.log(this.dialogData.data);
+      //console.log(this.dialogData.data);
       
     }
 
@@ -75,7 +75,7 @@ applyFilter(event: Event) {
   const filterValue = (event.target as HTMLInputElement).value;
   this.dataSource.filter = filterValue.trim().toLowerCase();
   //dar valor a variables para su impresion
-  console.log(this.dataSource.filteredData);   
+  //console.log(this.dataSource.filteredData);   
   this.infoFiltrada=this.dataSource.filteredData;
   this.tabla=this.infoFiltrada;
   if (this.dataSource.paginator) {   
@@ -85,7 +85,7 @@ applyFilter(event: Event) {
 
     tableData() {
       this.users.getusuario().subscribe((response: any) => {
-        console.log(response);    
+       // console.log(response);    
         this.usu=response;
         this.dataSource = new MatTableDataSource(response);
         this.dataSource.paginator = this.paginator;
@@ -113,7 +113,7 @@ handleSubmit(){
     id_proyecto:this.dialogData.data.id_proyecto,
     ci: this.UserProyectForm.value.opcionRadio.ci    
   }
-  console.log(data);
+  //console.log(data);
   //aqui el servicio
   
    this.users.updateUser(data).subscribe((response:any)=>{

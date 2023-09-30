@@ -32,7 +32,7 @@ export class ArchivosComponent {
   ) {}
 
   ngOnInit():void{
-    console.log(this.dialogData.data);
+    //console.log(this.dialogData.data);
     this.proyectoForm = this.formBuilder.group({   
       Descripcion: [null],   
       documento: [null],

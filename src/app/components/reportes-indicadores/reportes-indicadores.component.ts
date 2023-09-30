@@ -21,12 +21,12 @@ export class ReportesIndicadoresComponent {
     this.reportesService.report_indicadores().subscribe({
       next:res=>{
         this.dataSource=res;
-        console.log(this.dataSource);
+        //console.log(this.dataSource);
       }
     })
   }
   efectividad(indice:number){
-    console.log(Number.isNaN(indice));
+    //console.log(Number.isNaN(indice));
     if(Number.isNaN(indice)) return 'icon-color';
     return indice<30?'icon-color': indice<60 ? 'icon-color-30':'icon-color-60'
   }

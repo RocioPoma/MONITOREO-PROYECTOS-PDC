@@ -28,6 +28,6 @@ export class HomeComponent {
   }
 
   click(page: string){
-    console.log(page);
+   // console.log(page);
   };
 }

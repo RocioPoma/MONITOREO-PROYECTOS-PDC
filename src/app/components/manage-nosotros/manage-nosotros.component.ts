@@ -74,7 +74,7 @@ export class ManageNosotrosComponent {
     this.nosotros.getNosotros().subscribe((response: any) => {
       this.dataSource = new MatTableDataSource(response);
       this.tabla = response[0];
-      console.log(response[0]);
+      //console.log(response[0]);
       this.archivo = response[0];
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -95,7 +95,7 @@ export class ManageNosotrosComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
     //pdf
     //dar valor a variables para su impresion
-    console.log(this.dataSource.filteredData);
+    //console.log(this.dataSource.filteredData);
     this.infoFiltrada = this.dataSource.filteredData;
     this.tabla = this.infoFiltrada;
     //pdf

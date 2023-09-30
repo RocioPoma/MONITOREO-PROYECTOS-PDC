@@ -64,7 +64,7 @@ export class GestionusuarioComponent {
       this.dialogAction="Edit";
       this.action ="Actualizar";
       this.usuarioForm.patchValue(this.dialogData.data);
-      console.log(this.dialogData.data);
+      
     }
   }
 
@@ -104,7 +104,7 @@ export class GestionusuarioComponent {
       id_entidad_ejecutora: formData.id_entidad_ejecutora,
       ci: formData.ci
     }
-    console.log(data);
+    
     this.usuarioService.add(data).subscribe((response:any)=>{
       this.dialogRef.close();
       this.onAddUser.emit();

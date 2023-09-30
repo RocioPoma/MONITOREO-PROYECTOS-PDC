@@ -94,7 +94,7 @@ export class ManageCategoriaComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
     //pdf
     //dar valor a variables para su impresion
-    console.log(this.dataSource.filteredData);   
+   
     this.infoFiltrada=this.dataSource.filteredData;
     this.tabla=this.infoFiltrada;
     //pdf
@@ -121,7 +121,7 @@ export class ManageCategoriaComponent {
   }
 
   handleEditAction(values: any) {
-    console.log(values);
+    
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       action: 'Edit',

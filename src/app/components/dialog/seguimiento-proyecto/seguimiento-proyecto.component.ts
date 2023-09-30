@@ -83,15 +83,14 @@ export class SeguimientoProyectoComponent {
   });
   ngOnInit(): void {
 
-    // console.log(this.fechaActualString);
+   
     // this.seguimientoForm1.disable();
     this.getEntidadEjecutora();
     this.getEntidadFinanciera();
 
-    // console.log(this.dialogData.action);
+   
     if (this.dialogData.action === 'seguimiento') {
-      console.log('seguimiento');
-      console.log(this.dialogData.data);
+   
       // this.dialogAction = "Edit";
       this.action = this.dialogData.data.nom_tipologia;
       this.nombreProyecto = this.dialogData.data.nom_proyecto;
@@ -125,8 +124,7 @@ export class SeguimientoProyectoComponent {
 
   //------------- PARA LLAMAR A LA FUNCION (GREGAR O EDITAR) ---------------------
   handleSubmit() {
-    // console.log(this.seguimientoForm1);
-    console.log(this.dialogAction);
+  
     if (this.dialogAction === 'Edit') {
       this.update();
     }
@@ -151,13 +149,13 @@ export class SeguimientoProyectoComponent {
     return total;
   }
   montoInicial(i:number){
-    // console.log(i);
+  
     if(this.montoFinalTotal()===0) return '';
     const monto=this.financiamientoArray.at(i).get('monto_inicial')?.value;
     return ((monto*100)/this.montoInicialTotal()).toFixed(2);
   }
   montoFinal(i:number){
-    // console.log(i);
+   
     if(this.montoFinalTotal()===0) return '';
     const monto=this.financiamientoArray.at(i).get('monto_final')?.value;
     return ((monto*100)/this.montoFinalTotal()).toFixed(2);
@@ -172,30 +170,26 @@ export class SeguimientoProyectoComponent {
   add() {
     
     this.seguimientoForm1.markAllAsTouched();
-    console.log('add');
-    console.log(this.seguimientoForm1);
-    console.log(JSON.stringify(this.seguimientoForm1.value));
+  
 
     //return;
     if (this.seguimientoForm1.invalid) return;
 
     this.SeguimientoProyectoService.createSeguimientoProyecto(JSON.stringify(this.seguimientoForm1.value),this.files).subscribe({
       next: res => {
-        console.log(res);
+     
         this.dialogRef.close();
         this.responseMessage = "Se registro correctamente el seguimiento";
         this.snackbarService.openSnackBar(this.responseMessage, "success");
       },
       error: err => {
-        console.log(err);
+       // console.log(err);
       }
     })
   }
   update(){
     this.seguimientoForm1.markAllAsTouched();
-    console.log('edit');
-    console.log(this.seguimientoForm1);
-    console.log(this.seguimientoForm1.value);
+
     if(this.seguimientoForm1.invalid) return;
     const {avance_seguimiento_fisico,
       comentario_seguimiento_financiero,
@@ -209,7 +203,7 @@ export class SeguimientoProyectoComponent {
                                                               fecha_seguimiento,
                                                               seguimiento_financiamiento},this.files).subscribe({
       next:res=>{
-        console.log(res);
+       
         this.responseMessage = "Se registro correctamente el seguimiento de etapa";
         this.snackbarService.openSnackBar(this.responseMessage, "success");
         this.seguimientoForm1.get('fecha_seguimiento').reset();
@@ -219,16 +213,15 @@ export class SeguimientoProyectoComponent {
         this.seguimientoFinanciamientoArray.reset();
       },
       error:err=>{
-        console.log(err);
+       // console.log(err);
       }
     })
   }
   dateFormateado($event:any) {
     // console.log('fecha:D');
-    console.log($event.value);
-    console.log(this.datePipe);
+   
     this.seguimientoForm1.get('fecha_seguimiento')?.setValue(this.datePipe.transform($event.value, 'yyyy-MM-dd'));
-    console.log(this.seguimientoForm1.value);
+
   }
  get dateDisabled(){
     // console.log('format date',this.seguimientoForm1);
@@ -244,7 +237,7 @@ export class SeguimientoProyectoComponent {
   maxFileMb=10;
   //--------------- SELECCIONAR ARCHIVO ------------------
   selectFile(event: any,index:number): any {
-    console.log(event.target.files);
+   
     const archivo = event.target.files;
     if(archivo.length>0){
       const extend = archivo[0].name.split('.')[1];
@@ -285,7 +278,7 @@ export class SeguimientoProyectoComponent {
     }
   }
   mostrarDatos() {
-    console.log(this.Financiamiento);
+
   }
 
   /*---------------------INICIO SERVICIOS EXTRAS --------------*/
@@ -323,7 +316,7 @@ export class SeguimientoProyectoComponent {
           }
         },
         error: err => {
-          console.log(err);
+          //console.log(err);
         }
       })
   }
@@ -364,7 +357,7 @@ export class SeguimientoProyectoComponent {
         this.seguimientoForm1.reset({ 'id_etapa': etapaValue, 'id_proyecto': this.id_proyecto });
         this.seguimientoForm1.enable();
         if (res) {
-          console.log(res);
+        
           this.dialogAction = "Edit";
           this.id_etapa_proyecto = res.id_etapa_proyecto;
           this.addListFinanciamiento(this.id_etapa_proyecto);
@@ -372,7 +365,7 @@ export class SeguimientoProyectoComponent {
           // this.seguimientoForm1.get('fecha_seguimiento')?.setValue(res.fecha_seguimiento);
           this.seguimientoForm1.get('fuente_de_informacion')?.setValue(res.fuente_de_informacion);
           this.seguimientoForm1.get('id_entidad_ejecutora')?.setValue(res.id_entidad_ejecutora);
-          console.log(this.seguimientoForm1.value);
+        
           // this.seguimientoForm1.get('id_proyecto')?.setValue(res.id_proyecto);
         } else {
           this.dialogAction = "Add";
@@ -386,7 +379,7 @@ export class SeguimientoProyectoComponent {
         }
       },
       error: err => {
-        console.log(err);
+        //console.log(err);
       }
     })
   }

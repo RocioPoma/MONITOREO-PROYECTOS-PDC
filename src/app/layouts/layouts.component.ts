@@ -49,7 +49,7 @@ export class LayoutsComponent {
     this.am = AmString? (AmString): null;
     this.rol = rolString? (rolString): null;
     //this.usuario = this.activeR.snapshot.paramMap.get('xnom');
-    console.log('Usuario: ' + localStorage.getItem('nombre'))
+    //console.log('Usuario: ' + localStorage.getItem('nombre'))
     
     //recuperacion de nombre y usaurio del servicio usuario
     // Obtener los datos del servicio compartido
@@ -58,7 +58,7 @@ export class LayoutsComponent {
 
     this.activeR.params.subscribe(para => {
       //this.usuario = para['xnom'];
-      //console.log('Usuario: ' + this.usuario)
+      ////console.log('Usuario: ' + this.usuario)
     });
 
     //this.usuario='Rocio Poma Silvestre'
@@ -67,7 +67,7 @@ export class LayoutsComponent {
     /*
     this.usuario='Rocio Poma Silve'
     this.userService.disparadorDeUser.subscribe(data=>{
-      console.log('Usuario: ' + data);
+      //console.log('Usuario: ' + data);
       this.usuario=data;
     })*/
 

@@ -154,7 +154,7 @@ export class ProyectoComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // console.log(this.fechaActualString);
+  
     this.getTipologia();
     this.getCategoria();
     this.getCuenca();
@@ -219,7 +219,7 @@ export class ProyectoComponent implements OnInit {
 
 
 
-      console.log(this.dialogData.data)
+     
       this.getComunidad(this.dialogData.data.id_municipio);
     }else{
       this.alcancetoArray.setControl(0,
@@ -326,7 +326,7 @@ export class ProyectoComponent implements OnInit {
     }
   }
   mostrarDatos() {
-    console.log(this.alcances);
+   
   }
 
   //---------- ALCANCE
@@ -459,7 +459,7 @@ export class ProyectoComponent implements OnInit {
 
   /*------Obtenemos Comunidades de un municipio */
   changeMunicipio(id_municipio: any) {
-    console.log("Id del municipio", id_municipio);
+    
   }
 
   //------------------- OBTENEMOS LINEA ESTRATEGICA
@@ -481,7 +481,7 @@ export class ProyectoComponent implements OnInit {
 
   //------------------- OBTENEMOS LINEA DE ACCION segun id_linea_estrategica
   getLineaDeAccion(id_linea_estrategica: any) {
-    console.log("Id Linea Estrategica " + id_linea_estrategica);
+   
     this.LineasEstrategicasService.getLineaDeAccion(id_linea_estrategica).subscribe((response: any) => {
       this.LineaDeAccion = response;
       this.filterLineaDeAccion = response;
@@ -499,7 +499,7 @@ export class ProyectoComponent implements OnInit {
 
   //------------------- OBTENEMOS ACCION ESTRATEGICA segun id_linea_accion
   getAccionEstrategica(id_linea_accion: any) {
-    console.log("Id Linea de accion " + id_linea_accion);
+   
     this.LineasEstrategicasService.getAccionEstrategica(id_linea_accion).subscribe((response: any) => {
       this.AccionEstrategica = response;
       this.filterAccionEstrategica = response;
@@ -532,7 +532,7 @@ export class ProyectoComponent implements OnInit {
   }
 
   onComunidadesSelectionChange(data: any) {
-    console.log(data);
+   
     this.comunidades = data;
     // Actualizar el filtro
     this.searchComunidad.setValue('');
@@ -546,7 +546,7 @@ export class ProyectoComponent implements OnInit {
 
   // Agrega un método para manejar el cambio de indicador
   onIndicadorChange() {
-    console.log(event);
+    
       this.alcancetoArray.at(0).reset();
     
     const selectedIndicador = this.indicador.find(
@@ -554,13 +554,13 @@ export class ProyectoComponent implements OnInit {
     );
     if (selectedIndicador) {
       //this.proyectoForm.get('unidad').setValue(selectedIndicador.nom_unidad);
-      console.log(selectedIndicador);
+     
       this.alcancetoArray.at(0).get('id_unidad_medicion')?.setValue(selectedIndicador.id_unidad_medicion);
-      console.log(this.alcancetoArray.at(0));
+     
     }
   }
   cantidadInd(medida:any){
-    console.log(medida);
+  
     this.alcancetoArray.at(0).get('cantidad')?.setValue(medida.cantidad);
   }
   //------------------- AGREGAR PROYECTO
@@ -594,10 +594,10 @@ export class ProyectoComponent implements OnInit {
       alcance: JSON.stringify(this.proyectoForm.value.alcance) //Enviamos un objeto de alcances
     }
 
-    console.log(data);
+    
     if (estaDentroLaCuenca) {
       // El punto está dentro del polígono
-      console.log('El punto está dentro de la cuenca.');
+     
       this.ProyectoService.add1(data, this.file).subscribe((response: any) => {
         this.dialogRef.close();
         this.onAddProyecto.emit();
@@ -625,7 +625,7 @@ export class ProyectoComponent implements OnInit {
     var formData = this.proyectoForm.value;
     this.finicio = this.datePipe.transform(formData.fecha_inicio, 'yyyy-MM-dd')
     this.ffin = this.datePipe.transform(formData.fecha_fin, 'yyyy-MM-dd')
-    console.log(this.fechaActualString);
+   
 
     // Llamar a la función validateCoordinates
     const estaDentroLaCuenca = this.validateCoordinates(formData.coordenada_x, formData.coordenada_y);
@@ -654,7 +654,7 @@ export class ProyectoComponent implements OnInit {
       alcance: JSON.stringify(this.proyectoForm.value.alcance) //Enviamos un objeto de alcances
     }
 
-    console.log(data);
+   
     if (estaDentroLaCuenca){
       this.ProyectoService.update(data, this.file).subscribe((response: any) => {
         this.dialogRef.close();
@@ -708,9 +708,7 @@ export class ProyectoComponent implements OnInit {
           coordenada_y: coords.lat
         });
 
-        console.log('Coordenadas:', coords);
-        console.log('Coordenada x :', coords.lat);
-        console.log('Coordenada y:', coords.lng);
+      
 
       }
     });
@@ -728,7 +726,7 @@ export class ProyectoComponent implements OnInit {
         this.polygonData = geojson;
       })
       .catch(error => {
-        console.error('Error al cargar el GeoJSON:', error);
+        
       });
   }
 
@@ -752,8 +750,7 @@ export class ProyectoComponent implements OnInit {
 
   //selectores
   onCuencaSelected(event: any) {
-    console.log('Event')
-    console.log(event.value);
+   
     const selectedValue = event.value;
     // Aquí puedes poner la lógica para determinar cuándo mostrar los selectores adicionales.
     // Por ejemplo, si el valor seleccionado es "opcion1", muestras los tres selectores adicionales.
