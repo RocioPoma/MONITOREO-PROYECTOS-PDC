@@ -1,64 +1,84 @@
 .mat-typography mat-form-field+mat-form-field {
-    margin-left: 8px;
+  margin-left: 8px;
 }
 
 .titleForm {
-    text-align: center;
-    color: aliceblue;
-    background-color:forestgreen;
-    padding-top: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-    //padding-bottom: 2px;
+  text-align: center;
+  color: aliceblue;
+  background-color: forestgreen;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  //padding-bottom: 2px;
 }
 
 .accion {
-   // background-color: black;
-    font-weight: bold;
-    padding-bottom: -10px;
+  // background-color: black;
+  font-weight: bold;
+  padding-bottom: -10px;
 }
-.nomProy{
-    font-size: 14px;
-    //background-color: aqua;
-    padding-bottom: 10px;
+
+.nomProy {
+  font-size: 14px;
+  //background-color: aqua;
+  padding-bottom: 10px;
 
 }
 
-input{
-    font-size: 12px;
+input {
+  font-size: 12px;
 }
 
 .mat-typography mat-form-field+mat-form-field {
-    margin-left: 8px;
-  }
-  
-  .title-center {
-    flex: 1 1 auto;
-    text-align: center;
-  }
-  
-  .subTitle {
-    //background-color: aqua;
-    margin-bottom: 6px;
-    margin-left: 2px;
-  }
-  
-  .subTitle1 {
-    background-color: aqua;
-    margin-bottom: 160px;
-    margin-left: 2px;
-  }
-  
-  .btn-icon:hover {
-    cursor: pointer;
-    /* Cambia el cursor a la mano */
-  }
+  margin-left: 8px;
+}
 
-  .center-aligned {
-    display: block;
-    text-align: center;
-    margin: 0 auto;
-  }
+.title-center {
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+.subTitle {
+  //background-color: aqua;
+  margin-bottom: 6px;
+  margin-left: 2px;
+}
+
+.subTitle1 {
+  background-color: aqua;
+  margin-bottom: 160px;
+  margin-left: 2px;
+}
+
+.btn-icon:hover {
+  cursor: pointer;
+  /* Cambia el cursor a la mano */
+}
+
+.center-aligned {
+  display: block;
+  text-align: center;
+  margin: 0 auto;
+}
+
 .file-input {
-   display: none;
-  }
+  display: none;
+}
+
+/* Alinea verticalmente el botón y el nombre del archivo */
+.custom-button {
+  vertical-align: middle;
+}
+
+/* Estilo para el contenedor del nombre del archivo */
+.file-upload{
+  position: absolute; /* Coloca el nombre de archivo en una posición absoluta */
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0px;/* Ajusta el margen según tus preferencias */
+}
+
+/* Estilo para el nombre del archivo */
+.file-upload {
+  vertical-align: middle;
+}

@@ -496,12 +496,12 @@ if (currentMonth === 11) {
         name: 'Inversión al '+yearToDisplay.toString(),
         type: 'bar',
         data: data.map((item) => item.inversion_total),
-        color: '#E449F1'
+        color: '#DAF7A6'
       }, {
         name: 'Inversión meta al 2025',
         type: 'bar',
         data: data.map((item) => item.Inversion_meta_2025),
-        color: '#27AD39'
+        color: '#3cb371'
       }]
     });
   }
@@ -588,7 +588,7 @@ if (currentMonth === 11) {
         name: 'Tarija',
         type: 'bar',
         data: data.map((item) => item.Tarija),
-        color: '#E449F1'
+        color: '#D568FB'
       }, {
         name: 'San Lorenzo',
         type: 'bar',
@@ -598,12 +598,12 @@ if (currentMonth === 11) {
         name: 'Padcaya',
         type: 'bar',
         data: data.map((item) => item.Padcaya),
-        color: '#27AD39'
+        color: '#3cb371'
       }, {
         name: 'Uriondo',
         type: 'bar',
         data: data.map((item) => item.Uriondo),
-        color: '#49C6F1'
+        color: '#8EEAD5'
       }]
     });
   }

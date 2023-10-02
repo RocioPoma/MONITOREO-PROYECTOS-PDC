@@ -1,30 +1,32 @@
 <mat-card>
-<mat-toolbar color="primary">
-    <mat-toolbar-row fxLayout="row">
-        <span class="title-center"> Subir Documentos</span>
-    </mat-toolbar-row>
-</mat-toolbar>
-<mat-dialog-content class="mat-typography">
-    <form [formGroup]="proyectoForm">
-        <div fxFlex fxLayout="column">
-            
-        <!-- aqui es el nuevo  -->
+    <mat-toolbar color="primary">
+        <mat-toolbar-row fxLayout="row">
+            <span class="title-center"> Subir Documentos</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-dialog-content class="mat-typography">
+        <form [formGroup]="proyectoForm">
+            <div fxFlex fxLayout="column">
 
-    <mat-form-field class="columns">  
-        <input matInput disabled>
-        <button fxFlex.gt-sm="10%" mat-flat-button color="primary" class="padding"  matSuffix (click)="fileInput.click()">
-            <mat-label>Cargar</mat-label>
-        </button>
-        <input hidden type="file"  (change)="onFileSelected($event)" #fileInput multiple
-            accept=".ppt, .xlsx, .rar, .jpg, .jpeg, .png, .gif, .pdf, .doc, .docx, .dwg, .dxf, .skp, .rvt, .rfa, .rte, .pln, .gsm, .ifc, .cobie, .nwd, .bimx, .3ds, .3dm, .shp">
-             <div *ngFor="let file of selectedFiles; let i = index">
-                                <!-- <img [src]="file.preview" alt="Vista previa"> -->
-                         <span>{{ file.name }}</span>
-                       <!--          <button (click)="removeFile(i)">Eliminar</button>  -->   </div>
-  
-    </mat-form-field >
-        <!-- aqui opcion 2 -->
-      <!--   <div class="container">
+                <!-- aqui es el nuevo  -->
+
+                <mat-form-field class="columns">
+
+                    <div class="file-name-container" *ngFor="let file of selectedFiles; let i = index">
+                        <span class="file-name">{{ file.name }}</span>
+                    </div>
+                    <button mat-stroked-button mat-flat-button (click)="fileInput.click()" class="padding custom-button"
+                        matSuffix><mat-label>Cargar</mat-label></button>
+
+                    <input matInput disabled>
+
+                    <input hidden type="file" (change)="onFileSelected($event)" #fileInput multiple
+                        accept=".ppt, .xlsx, .rar, .jpg, .jpeg, .png, .gif, .pdf, .doc, .docx, .dwg, .dxf, .skp, .rvt, .rfa, .rte, .pln, .gsm, .ifc, .cobie, .nwd, .bimx, .3ds, .3dm, .shp">
+
+                </mat-form-field>
+
+                <!-- aqui opcion 2 -->
+                <!--   <div class="container">
             <div class="row mt-5">
               <div class="col-md-4">
                 <div class="mb-3">
@@ -38,22 +40,22 @@
 
 
 
-            <div fxLayout="row wrap">
-        <mat-form-field appearance="fill" fxFlex>
-            <mat-label>Comentarios</mat-label>
-            <input matInput formControlName="Descripcion" >
-           
-        </mat-form-field>
-        </div>
-     
+                <div fxLayout="row wrap">
+                    <mat-form-field appearance="fill" fxFlex>
+                        <mat-label>Comentarios</mat-label>
+                        <input matInput formControlName="Descripcion">
 
-        </div>
-    </form>
-</mat-dialog-content>
+                    </mat-form-field>
+                </div>
 
-<mat-dialog-actions align="center">
-    <button mat-raised-button color="primary" type="submit" (click)="uploadFiles()" 
-        [disabled]="![proyectoForm.valid && proyectoForm.dirty]">Aceptar</button>
-    <button mat-raised-button color="primary" mat-dialog-close>Cancelar</button>
-</mat-dialog-actions>
+
+            </div>
+        </form>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="center">
+        <button mat-raised-button color="primary" type="submit" (click)="uploadFiles()"
+            [disabled]="![proyectoForm.valid && proyectoForm.dirty]">Aceptar</button>
+        <button mat-raised-button color="primary" mat-dialog-close>Cancelar</button>
+    </mat-dialog-actions>
 </mat-card>
