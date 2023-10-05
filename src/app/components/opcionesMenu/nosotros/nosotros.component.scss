@@ -156,11 +156,49 @@
   //----footer
   .footer {
     background-color: #43A047;
-    color: white; 
+    color: white;
     text-align: center;
-    padding: 20px 0; 
-    font-size: 16px; 
-}
+    padding: 20px 0;
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Centrar verticalmente */
+    flex-wrap: wrap;
+  }
+  
+  .contact-left, .contact-right {
+    flex: 1;
+    text-align: left;
+    padding: 10px;
+  }
+  
+  .icon {
+    vertical-align: middle;
+    font-size: 24px;
+    margin-right: 10px;
+  }
+  
+  .small-text {
+    font-size: 12px;
+    margin: 0;
+  }
+  
+  a {
+    color: white;
+    text-decoration: underline;
+  }
+  
+  a:hover {
+    text-decoration: none;
+  }
+  
+  .centered {
+    display: flex;
+    align-items: center; /* Centrar verticalmente */
+  }
+  
+  
+//////
 
 .footer::before {
   //  content: "\00a9";

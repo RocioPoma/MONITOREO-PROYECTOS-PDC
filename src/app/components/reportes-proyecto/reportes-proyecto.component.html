@@ -1,9 +1,31 @@
 <mat-card [ngStyle]="{'min-width':'100%'}">
 
-
     <div class="title">
         <b><span class="color-text">REPORTES DE ACCIONES/PROYECTOS</span></b>
     </div>
+    <div style="display: flex; justify-content: flex-end; margin-bottom: -15px; margin-top: -10px;">
+            <h3>Periodo de Análisis</h3>
+    </div>
+    <div style="display: flex; justify-content: flex-end; margin-bottom: -20px; ">
+        <div fxLayout="row wrap">
+            <mat-form-field  fxFlex>
+                <mat-label>Fecha Inicio</mat-label>
+                <input matInput [matDatepicker]="inicioPicker" [(ngModel)]="fechaInicio"
+                    (ngModelChange)="validarFechas()">
+                <mat-datepicker-toggle matSuffix [for]="inicioPicker"></mat-datepicker-toggle>
+                <mat-datepicker #inicioPicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field  fxFlex>
+                <mat-label>Fecha Fin</mat-label>
+                <input matInput [matDatepicker]="finPicker" [(ngModel)]="fechaFin" (ngModelChange)="validarFechas()">
+                <mat-datepicker-toggle matSuffix [for]="finPicker"></mat-datepicker-toggle>
+                <mat-datepicker #finPicker></mat-datepicker>
+            </mat-form-field>
+        </div>
+    </div>
+    
+
     <div class="div">
         <div id="chart-container-lineas"></div>
     </div>

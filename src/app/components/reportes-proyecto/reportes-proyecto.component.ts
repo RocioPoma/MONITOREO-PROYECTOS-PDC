@@ -6,6 +6,8 @@ import { ReportesService } from 'src/app/services/reportes.service';
 import HC_exporting from 'highcharts/modules/exporting';
 import HC_exportData from 'highcharts/modules/export-data';
 import HC_accessibility from 'highcharts/modules/accessibility';
+import { DateAdapter } from '@angular/material/core';
+import { DatePipe } from '@angular/common';
 
 // Inicializa los módulos
 HC_exporting(Highcharts);
@@ -27,25 +29,61 @@ export class ReportesProyectoComponent {
   dataMap: any[] = [];
   map: any;
 
-  constructor(private readonly reportesService: ReportesService) { }
+  fechaInicio: Date;
+  fechaFin: Date;
+  fechaInicioAnalisis: any='2020-01-01';
+  fechaFinAnalisis: any='2025-12-31';
+  fechaInicioA: any='01-01-2020';
+  fechaFinA: any='31-12-2025';
 
-  ngOnInit(): void {
-    this.getDataLE();
-    this.getDataPDC();
-    this.getDataCat();
-    this.getDataTip();
-    this.getDataInversionLE();
-    this.getDataInversionDesagregadaLE();
-
-    this.map = L.map('map').setView([-16.5000, -64.0000], 6);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(this.map);
+  constructor(private readonly reportesService: ReportesService,
+    private datePipe: DatePipe,
+    private dateAdapter: DateAdapter<Date>) {
+    //Convierte la fecha en formato //dd/MM/yyyy
+    this.dateAdapter.setLocale('en-GB'); //dd/MM/yyyy
   }
 
-  getDataLE() {
-    this.reportesService.lineasEstrategicas().subscribe({
+  ngOnInit(): void {
+    this.getDataLE(this.fechaInicioAnalisis,this.fechaFinAnalisis);
+    this.getDataPDC(this.fechaInicioAnalisis,this.fechaFinAnalisis);
+    this.getDataCat(this.fechaInicioAnalisis,this.fechaFinAnalisis);
+    this.getDataTip(this.fechaInicioAnalisis,this.fechaFinAnalisis);
+    this.getDataInversionLE(this.fechaInicioAnalisis,this.fechaFinAnalisis);
+    this.getDataInversionDesagregadaLE(this.fechaInicioAnalisis,this.fechaFinAnalisis);
+
+  }
+
+  validarFechas() {
+    if (this.fechaInicio && this.fechaFin && this.fechaInicio < this.fechaFin) {
+      // Ambas fechas son correctas
+      this.fechaInicioAnalisis = this.datePipe.transform(this.fechaInicio, 'yyyy-MM-dd');
+      this.fechaFinAnalisis = this.datePipe.transform(this.fechaFin, 'yyyy-MM-dd');
+      this.fechaInicioA = this.datePipe.transform(this.fechaInicio, 'dd-MM-yyyy');
+      this.fechaFinA = this.datePipe.transform(this.fechaFin, 'dd-MM-yyyy');
+
+      console.log("Fecha de Inicio:", this.fechaInicio);
+      console.log("Fecha de Fin:", this.fechaFin);
+      this.getDataLE(this.fechaInicioAnalisis,this.fechaFinAnalisis);
+      this.getDataCat(this.fechaInicioAnalisis,this.fechaFinAnalisis);
+      this.getDataInversionDesagregadaLE(this.fechaInicioAnalisis,this.fechaFinAnalisis);
+      this.getDataInversionLE(this.fechaInicioAnalisis,this.fechaFinAnalisis);
+      this.getDataPDC(this.fechaInicioAnalisis,this.fechaFinAnalisis);
+      this.getDataTip(this.fechaInicioAnalisis,this.fechaFinAnalisis);
+    } else if (this.fechaFin == null) {
+      console.log('falta fecha fin')
+    } else {
+      console.error("La fecha de inicio debe ser anterior a la fecha de fin.");
+      alert("La fecha de inicio debe ser anterior a la fecha de fin.")
+      this.fechaInicio = null;
+    }
+  }
+
+  getDataLE(fechaInicioAnalisis:any,fechaFinAnalisis:any) {
+    let data={
+      fechaInicioAnalisis:fechaInicioAnalisis,
+      fechaFinAnalisis:fechaFinAnalisis
+    }
+    this.reportesService.lineasEstrategicas(data).subscribe({
       next: (res) => {
         this.dataLE = res;
         this.createChartLE(this.dataLE);
@@ -53,8 +91,8 @@ export class ReportesProyectoComponent {
     });
   }
 
-  getDataCat() {
-    this.reportesService.categorias().subscribe({
+  getDataCat(fechaInicioAnalisis:any,fechaFinAnalisis:any) {
+    this.reportesService.categorias(fechaInicioAnalisis,fechaFinAnalisis).subscribe({
       next: (res) => {
         this.dataCat = res;
         this.createChartCategoria(this.dataCat);
@@ -62,8 +100,8 @@ export class ReportesProyectoComponent {
     });
   }
 
-  getDataTip() {
-    this.reportesService.tipologias().subscribe({
+  getDataTip(fechaInicioAnalisis:any,fechaFinAnalisis:any) {
+    this.reportesService.tipologias(fechaInicioAnalisis,fechaFinAnalisis).subscribe({
       next: (res) => {
         this.dataTip = res;
         this.createChartTipologia(this.dataTip);
@@ -71,7 +109,7 @@ export class ReportesProyectoComponent {
     });
   }
 
-  getDataPDC() {
+  getDataPDC(fechaInicioAnalisis:any,fechaFinAnalisis:any) {
     this.reportesService.pdc_etapa().subscribe({
       next: (res) => {
         this.dataIndicador = res;
@@ -80,7 +118,7 @@ export class ReportesProyectoComponent {
     });
   }
 
-  getDataInversionLE() {
+  getDataInversionLE(fechaInicioAnalisis:any,fechaFinAnalisis:any) {
     this.reportesService.inversion_le().subscribe({
       next: (res) => {
         this.dataInversionLE = res;
@@ -89,7 +127,7 @@ export class ReportesProyectoComponent {
     });
   }
 
-  getDataInversionDesagregadaLE() {
+  getDataInversionDesagregadaLE(fechaInicioAnalisis:any,fechaFinAnalisis:any) {
     this.reportesService.inversion_desagregada_le().subscribe({
       next: (res) => {
         this.dataInversionDesagregadaLE = res;
@@ -99,6 +137,7 @@ export class ReportesProyectoComponent {
   }
 
   createChartLE(data: any[]) {
+
     const seriesData = data.map((item) => ({
       name: item.descripcion,
       data: item.total,
@@ -109,13 +148,13 @@ export class ReportesProyectoComponent {
         type: 'column',
       },
       title: {
-        text: 'Nro. Acciones/Proyectos por LE. 2020-2025',
+        text: 'Nro. Acciones/Proyectos por LE. Del '+ this.fechaInicioA+' al '+this.fechaFinA,
         align: 'left',
         style: {
           //color: '#808B96',
           fontSize: '18px',
         },
-        margin:20
+        margin: 20
       },
       exporting: {
         enabled: true
@@ -132,7 +171,7 @@ export class ReportesProyectoComponent {
         downloadXLS: 'Descargar como XLS',
         hideData: 'Ocultar tabla de datos',
         viewData: 'Ver tabla de datos',
-       
+
       },
       xAxis: {
         categories: data.map((item) => item.id_linea_estrategica + ' .- ' + item.descripcion),
@@ -146,7 +185,7 @@ export class ReportesProyectoComponent {
         {
           data: data.map((item) => item.total),
           type: 'column',
-          name: 'Nro de acciones/proyectos 2020-2025',
+          name: 'Nro de acciones/proyectos',
           color: '#3cb371',
         },
       ],
@@ -173,7 +212,7 @@ export class ReportesProyectoComponent {
         marginLeft: 150,
       },
       title: {
-        text: 'Nro. Acciones/Proyectos por Categoría 2020-2025',
+        text: 'Nro. Acciones/Proyectos del '+ this.fechaInicioA+' al '+this.fechaFinA,
         align: 'left',
       },
       exporting: {
@@ -191,7 +230,7 @@ export class ReportesProyectoComponent {
         downloadXLS: 'Descargar como XLS',
         hideData: 'Ocultar tabla de datos',
         viewData: 'Ver tabla de datos',
-       
+
       },
       xAxis: {
         categories: data.map((item) => item.nom_categoria),
@@ -236,7 +275,7 @@ export class ReportesProyectoComponent {
         marginLeft: 150,
       },
       title: {
-        text: 'Nro. Acciones/Proyectos por Tipología 2020-2025',
+        text: 'Nro. Acciones/Proyectos por Tipología del ' + this.fechaInicioA+' al '+this.fechaFinA,
         align: 'left'
       },
       exporting: {
@@ -254,7 +293,7 @@ export class ReportesProyectoComponent {
         downloadXLS: 'Descargar como XLS',
         hideData: 'Ocultar tabla de datos',
         viewData: 'Ver tabla de datos',
-       
+
       },
       xAxis: {
         categories: data.map((item) => item.nom_tipologia),
@@ -293,7 +332,7 @@ export class ReportesProyectoComponent {
         height: 1000,
       },
       title: {
-        text: 'Nro Acciones/proyectos por indicador 2020-2025',
+        text: 'Nro Acciones/proyectos por indicador del ' + this.fechaInicioA+' al '+this.fechaFinA,
         align: 'left',
       },
       exporting: {
@@ -311,7 +350,7 @@ export class ReportesProyectoComponent {
         downloadXLS: 'Descargar como XLS',
         hideData: 'Ocultar tabla de datos',
         viewData: 'Ver tabla de datos',
-       
+
       },
       xAxis: {
         categories: data.map((item) => item.id_indicador + '.- ' + item.nombre_indicador),
@@ -394,30 +433,30 @@ export class ReportesProyectoComponent {
       }]
     });
   }
- 
+
   createChartInversion(data: any[]) {
     // Obtén la fecha actual
-const currentDate = new Date();
+    const currentDate = new Date();
 
-// Obtiene el año actual
-const currentYear = currentDate.getFullYear();
+    // Obtiene el año actual
+    const currentYear = currentDate.getFullYear();
 
-// Obtiene el mes actual (0 = enero, 11 = diciembre)
-const currentMonth = currentDate.getMonth();
+    // Obtiene el mes actual (0 = enero, 11 = diciembre)
+    const currentMonth = currentDate.getMonth();
 
-let yearToDisplay: any;
+    let yearToDisplay: any;
 
-// Comprueba si estamos en diciembre (mes 11)
-if (currentMonth === 11) {
-  // Si estamos en diciembre, muestra el año actual (sin cambios)
-  yearToDisplay = currentYear;
-} else {
-  // Si no estamos en diciembre, muestra el año anterior
-  yearToDisplay = currentYear - 1;
-}
+    // Comprueba si estamos en diciembre (mes 11)
+    if (currentMonth === 11) {
+      // Si estamos en diciembre, muestra el año actual (sin cambios)
+      yearToDisplay = currentYear;
+    } else {
+      // Si no estamos en diciembre, muestra el año anterior
+      yearToDisplay = currentYear - 1;
+    }
 
     Highcharts.chart('chart-container-inversion-LE', {
-       chart: {
+      chart: {
         type: 'bar',
         height: 550,
       },
@@ -425,8 +464,8 @@ if (currentMonth === 11) {
         text: 'Comparación de inversiones por LE',
         align: 'left',
         style: {
-          color: '#5D6D7E', 
-          padding: '10px' 
+          color: '#5D6D7E',
+          padding: '10px'
         }
       },
       exporting: {
@@ -444,9 +483,9 @@ if (currentMonth === 11) {
         downloadXLS: 'Descargar como XLS',
         hideData: 'Ocultar tabla de datos',
         viewData: 'Ver tabla de datos',
-       
+
       },
-      
+
       xAxis: {
         categories: data.map((item) => item.id_linea_estrategica + ' .- ' + item.linea_estrategica),
         title: {
@@ -493,7 +532,7 @@ if (currentMonth === 11) {
         enabled: false
       },
       series: [{
-        name: 'Inversión al '+yearToDisplay.toString(),
+        name: 'Inversión al ' + yearToDisplay.toString(),
         type: 'bar',
         data: data.map((item) => item.inversion_total),
         color: '#DAF7A6'
@@ -514,11 +553,11 @@ if (currentMonth === 11) {
         height: 550,
       },
       title: {
-        text: 'Inversión desagregada por Linea Estratégica 2020-2025',
+        text: 'Inversión desagregada por Linea Estratégica del ' + this.fechaInicioA+' al '+this.fechaFinA,
         align: 'left',
         style: {
-          color: '#5D6D7E', 
-          padding: '10px' 
+          color: '#5D6D7E',
+          padding: '10px'
         }
       },
       exporting: {
@@ -536,9 +575,9 @@ if (currentMonth === 11) {
         downloadXLS: 'Descargar como XLS',
         hideData: 'Ocultar tabla de datos',
         viewData: 'Ver tabla de datos',
-       
+
       },
-      
+
       xAxis: {
         categories: data.map((item) => item.id_linea_estrategica + ' .- ' + item.linea_estrategica),
         title: {
