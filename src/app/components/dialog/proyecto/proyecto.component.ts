@@ -196,6 +196,7 @@ export class ProyectoComponent implements OnInit {
       //para comunidades
       this.comunidadesSeleccionadas = this.dialogData.data.comunidades;
       this.alcancesSeleccionadas = this.dialogData.data.alcances;
+      //AGREGA ALCANCES AL FORM 
       this.addAlcances();
       // Configura las comunidades seleccionadas en el formulario
       this.proyectoForm.get('comunidad').setValue(this.comunidadesSeleccionadas);
