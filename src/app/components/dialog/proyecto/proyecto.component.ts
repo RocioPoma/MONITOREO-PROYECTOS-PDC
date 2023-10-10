@@ -90,8 +90,7 @@ export class ProyectoComponent implements OnInit {
   isDropdownOpen = false;
 
   comunidadesSeleccionadas = []; //se utilizo
-  cantidadesSeleccionadas = []; //se utilizo
-  unidadMedicionesSeleccionadas = []; //se utilizo
+  alcancesSeleccionadas = []; //se utilizo
 
 
   ComunidadMultiCtrl = new FormControl();
@@ -176,13 +175,8 @@ export class ProyectoComponent implements OnInit {
       coordenada_x: [null, [Validators.required]],
       coordenada_y: [null, [Validators.required]],
       estado: [null, [Validators.required]],
-      mujeres: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
-      hombres: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
-      cantidad: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
-      id_ciudad_comunidad: [null, [Validators.required]],
       id_municipio: [null, [Validators.required]],
       //nuevos casillas  
-      id_unidad_medicion: [7, [Validators.required]],
       id_linea_estrategica: [null],
       id_linea_accion: [null],
       id_accion_estrategica: [null, [Validators.required]],
@@ -191,21 +185,19 @@ export class ProyectoComponent implements OnInit {
       comunidad: [],
       //para alcance
       alcance: this.formBuilder.array([], [Validators.required]),
-      alcance_cantidad: [null, [Validators.required]],
-      alcance_id_unidad_medicion: [null, [Validators.required]],
-      unidad: [{ value: '', disabled: false }, Validators.required],
+      
     });
     if (this.dialogData.action === 'Edit') {
       this.dialogAction = "Edit";
       this.action = "Actualizar";
       this.showSelectors(true);
       this.proyectoForm.patchValue(this.dialogData.data);
-
+      console.log(this.dialogData.data);
       //para comunidades
-      this.comunidadesSeleccionadas = this.dialogData.data.comunidades.split(',').map(Number);
-      this.cantidadesSeleccionadas = this.dialogData.data.cantidades.split(',');
-      this.unidadMedicionesSeleccionadas = this.dialogData.data.mediciones.split(',').map(Number);
-      this.addAlcances(this.cantidadesSeleccionadas,this.unidadMedicionesSeleccionadas);
+      this.comunidadesSeleccionadas = this.dialogData.data.comunidades;
+      this.alcancesSeleccionadas = this.dialogData.data.alcances;
+      //AGREGA ALCANCES AL FORM 
+      this.addAlcances();
       // Configura las comunidades seleccionadas en el formulario
       this.proyectoForm.get('comunidad').setValue(this.comunidadesSeleccionadas);
       //fin comunidades
@@ -222,15 +214,14 @@ export class ProyectoComponent implements OnInit {
      
       this.getComunidad(this.dialogData.data.id_municipio);
     }else{
-      this.alcancetoArray.setControl(0,
+      this.alcancetoArray.push(
         this.formBuilder.group({
           cantidad: [null, [Validators.required]],
-          id_unidad_medicion: [ null, [Validators.required, Validators.min(1)]],
-        })
-        )
+          id_unidad_medicion: [ 7, [Validators.required, Validators.min(1)]],
+          mujeres: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+          hombres: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+        }));
       }
-
-
     //---------- Filtrar Select -------------------------
     this.searchLineaEstrategica.valueChanges.subscribe(searchTerm => {
       this.filterOptions(searchTerm);
@@ -321,7 +312,7 @@ export class ProyectoComponent implements OnInit {
 
   //----------- PARA QUITAR CAMPOS INPUT(CANTIDAD Y UNIDAD)
   removeInput() {
-    if (this.alcancetoArray.length > 1) {
+    if (this.alcancetoArray.length > this.limiteAlcance) {
       this.alcancetoArray.removeAt(this.alcancetoArray.length - 1);
     }
   }
@@ -335,12 +326,18 @@ export class ProyectoComponent implements OnInit {
   }
 
   //
-  addAlcances(alcances:any[],mediciones:any[]){
-    for(let i = 0;i<alcances.length;i++){
+  addAlcances(){
+    for(let i = 0;i<this.alcancesSeleccionadas.length;i++){
       const alcanceItem = this.formBuilder.group({
-        cantidad: [alcances[i], [Validators.required]],
-        id_unidad_medicion: [mediciones[i], [Validators.required]],
+        cantidad: [this.alcancesSeleccionadas[i].cantidad, [Validators.required]],
+        id_unidad_medicion: [this.alcancesSeleccionadas[i].id_unidad_medicion, [Validators.required]],
+        hombres:[null],
+        mujeres:[null],
       })
+      if(i===0){
+        alcanceItem.setControl('hombres',this.formBuilder.nonNullable.control(this.alcancesSeleccionadas[i].hombres,[Validators.required, Validators.pattern(/^[0-9]+$/)]));
+        alcanceItem.setControl('mujeres',this.formBuilder.nonNullable.control(this.alcancesSeleccionadas[i].mujeres,[Validators.required, Validators.pattern(/^[0-9]+$/)]));
+      }
       this.alcancetoArray.push(alcanceItem);
     }
 
@@ -543,19 +540,41 @@ export class ProyectoComponent implements OnInit {
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
-
+  limiteAlcance=1;
   // Agrega un método para manejar el cambio de indicador
-  onIndicadorChange() {
-    
-      this.alcancetoArray.at(0).reset();
+  onIndicadorChange(event:any) {
+    console.log(event);
     
     const selectedIndicador = this.indicador.find(
-      (indicador) => indicador.id_indicador === this.proyectoForm.value.id_indicador
+      (indicador) => indicador.id_indicador === event.value
     );
     if (selectedIndicador) {
-      //this.proyectoForm.get('unidad').setValue(selectedIndicador.nom_unidad);
-     
-      this.alcancetoArray.at(0).get('id_unidad_medicion')?.setValue(selectedIndicador.id_unidad_medicion);
+      if(selectedIndicador.id_indicador===1 || selectedIndicador.id_indicador ===2 || selectedIndicador.id_indicador === 26){
+        this.limiteAlcance=1;
+        if(this.alcancetoArray.length>1)
+        for(let i=this.limiteAlcance;i<this.alcancetoArray.length;i++){
+          this.alcancetoArray.removeAt(i)
+        }
+      }else if (selectedIndicador.id_indicador ===14){
+        this.alcancetoArray.setControl(1,
+          this.formBuilder.group({
+            cantidad: [null, [Validators.required]],
+            id_unidad_medicion: [ 5, [Validators.required, Validators.min(1)]],
+            mujeres: [null],
+            hombres: [null],
+          }))
+          this.limiteAlcance=2;
+
+      }else{
+        this.alcancetoArray.setControl(1,
+          this.formBuilder.group({
+            cantidad: [null, [Validators.required]],
+            id_unidad_medicion: [ selectedIndicador.id_unidad_medicion, [Validators.required, Validators.min(1)]],
+            mujeres: [null],
+            hombres: [null],
+          }))
+        this.limiteAlcance=2;
+      }
      
     }
   }
@@ -568,7 +587,8 @@ export class ProyectoComponent implements OnInit {
     var formData = this.proyectoForm.value;
     this.finicio = this.datePipe.transform(formData.fecha_inicio, 'yyyy-MM-dd')
     this.ffin = this.datePipe.transform(formData.fecha_fin, 'yyyy-MM-dd')
-    
+    console.log(this.proyectoForm.value);
+    // return;
     // Llamar a la función validateCoordinates
     const estaDentroLaCuenca = this.validateCoordinates(formData.coordenada_x, formData.coordenada_y);
 
@@ -580,12 +600,8 @@ export class ProyectoComponent implements OnInit {
       area: formData.area,
       coordenada_x: formData.coordenada_x,
       coordenada_y: formData.coordenada_y,
-      cantidad: formData.cantidad,
-      hombres: formData.hombres,
-      mujeres: formData.mujeres,
       id_categoria: formData.id_categoria,
       id_tipologia: formData.id_tipologia,
-      id_unidad_medicion: formData.id_unidad_medicion,
       id_indicador: formData.id_indicador,
       id_cuenca: formData.id_cuenca,
       id_accion_estrategica: formData.id_accion_estrategica,
@@ -625,7 +641,8 @@ export class ProyectoComponent implements OnInit {
     var formData = this.proyectoForm.value;
     this.finicio = this.datePipe.transform(formData.fecha_inicio, 'yyyy-MM-dd')
     this.ffin = this.datePipe.transform(formData.fecha_fin, 'yyyy-MM-dd')
-   
+    console.log(this.proyectoForm.value);
+    // return;
 
     // Llamar a la función validateCoordinates
     const estaDentroLaCuenca = this.validateCoordinates(formData.coordenada_x, formData.coordenada_y);
@@ -639,12 +656,8 @@ export class ProyectoComponent implements OnInit {
       area: formData.area,
       coordenada_x: formData.coordenada_x,
       coordenada_y: formData.coordenada_y,
-      cantidad: formData.cantidad,
-      hombres: formData.hombres,
-      mujeres: formData.mujeres,
       id_categoria: formData.id_categoria,
       id_tipologia: formData.id_tipologia,
-      id_unidad_medicion: formData.id_unidad_medicion,
       id_indicador: formData.id_indicador,
       id_cuenca: formData.id_cuenca,
       id_accion_estrategica: formData.id_accion_estrategica,
