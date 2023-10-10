@@ -597,11 +597,11 @@ export class ManageProyectoComponent {
     };
 
     // Combinar las celdas para el título
-    ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 23 } }];
-    ws['A1'] = { t: 's', v: 'TABLA DE DATOS DE PROYECTOS', s: titleCellStyle };
+    // ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 23 } }];
+    // ws['A1'] = { t: 's', v: 'TABLA DE DATOS DE PROYECTOS', s: titleCellStyle };
 
     // Agregar los datos a la hoja de cálculo
-    XLSX.utils.sheet_add_json(ws, dataForExcel, { origin: 'A2' });
+    XLSX.utils.sheet_add_json(ws, dataForExcel, { origin: 'A1' });
 
     // Aplicar el estilo de negrita a las celdas de encabezado y ajustar el ancho de las columnas
     const headerCellStyle = {
@@ -632,10 +632,10 @@ export class ManageProyectoComponent {
       { wch: 15 }, // total hab
       { wch: 12 }, //mujeres 
       { wch: 12 }, // hombres
-      { wch: 40 }, // Linea de accion
-      { wch: 40 }, // linea estrategica
-      { wch: 40 }, // accion estrategica
-      { wch: 40 }, // Indicador
+      { wch: 50 }, // Linea de accion
+      { wch: 50 }, // linea estrategica
+      { wch: 50 }, // accion estrategica
+      { wch: 50 }, // Indicador
       // Agregar más ancho de columna según sea necesario
     ];
 

@@ -31,10 +31,11 @@ export class ReportesProyectoComponent {
 
   fechaInicio: Date;
   fechaFin: Date;
-  fechaInicioAnalisis: any='2020-01-01';
-  fechaFinAnalisis: any='2025-12-31';
-  fechaInicioA: any='01-01-2020';
-  fechaFinA: any='31-12-2025';
+  fechaInicioAnalisis: any = '2020-01-01';
+  fechaFinAnalisis: any = '2025-12-31';
+  fechaInicioA: any = '01-01-2020';
+  //fechaFinA: any= new Date();
+  fechaFinA: any = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
   constructor(private readonly reportesService: ReportesService,
     private datePipe: DatePipe,
@@ -44,12 +45,12 @@ export class ReportesProyectoComponent {
   }
 
   ngOnInit(): void {
-    this.getDataLE(this.fechaInicioAnalisis,this.fechaFinAnalisis);
-    this.getDataPDC(this.fechaInicioAnalisis,this.fechaFinAnalisis);
-    this.getDataCat(this.fechaInicioAnalisis,this.fechaFinAnalisis);
-    this.getDataTip(this.fechaInicioAnalisis,this.fechaFinAnalisis);
-    this.getDataInversionLE(this.fechaInicioAnalisis,this.fechaFinAnalisis);
-    this.getDataInversionDesagregadaLE(this.fechaInicioAnalisis,this.fechaFinAnalisis);
+    this.getDataLE(this.fechaInicioAnalisis, this.fechaFinAnalisis);
+    this.getDataPDC(this.fechaInicioAnalisis, this.fechaFinAnalisis);
+    this.getDataCat(this.fechaInicioAnalisis, this.fechaFinAnalisis);
+    this.getDataTip(this.fechaInicioAnalisis, this.fechaFinAnalisis);
+    this.getDataInversionLE(this.fechaInicioAnalisis, this.fechaFinAnalisis);
+    this.getDataInversionDesagregadaLE(this.fechaInicioAnalisis, this.fechaFinAnalisis);
 
   }
 
@@ -63,12 +64,12 @@ export class ReportesProyectoComponent {
 
       console.log("Fecha de Inicio:", this.fechaInicio);
       console.log("Fecha de Fin:", this.fechaFin);
-      this.getDataLE(this.fechaInicioAnalisis,this.fechaFinAnalisis);
-      this.getDataCat(this.fechaInicioAnalisis,this.fechaFinAnalisis);
-      this.getDataInversionDesagregadaLE(this.fechaInicioAnalisis,this.fechaFinAnalisis);
-      this.getDataInversionLE(this.fechaInicioAnalisis,this.fechaFinAnalisis);
-      this.getDataPDC(this.fechaInicioAnalisis,this.fechaFinAnalisis);
-      this.getDataTip(this.fechaInicioAnalisis,this.fechaFinAnalisis);
+      this.getDataLE(this.fechaInicioAnalisis, this.fechaFinAnalisis);
+      this.getDataCat(this.fechaInicioAnalisis, this.fechaFinAnalisis);
+      this.getDataInversionDesagregadaLE(this.fechaInicioAnalisis, this.fechaFinAnalisis);
+      this.getDataInversionLE(this.fechaInicioAnalisis, this.fechaFinAnalisis);
+      this.getDataPDC(this.fechaInicioAnalisis, this.fechaFinAnalisis);
+      this.getDataTip(this.fechaInicioAnalisis, this.fechaFinAnalisis);
     } else if (this.fechaFin == null) {
       console.log('falta fecha fin')
     } else {
@@ -78,10 +79,10 @@ export class ReportesProyectoComponent {
     }
   }
 
-  getDataLE(fechaInicioAnalisis:any,fechaFinAnalisis:any) {
-    let data={
-      fechaInicioAnalisis:fechaInicioAnalisis,
-      fechaFinAnalisis:fechaFinAnalisis
+  getDataLE(fechaInicioAnalisis: any, fechaFinAnalisis: any) {
+    let data = {
+      fechaInicioAnalisis: fechaInicioAnalisis,
+      fechaFinAnalisis: fechaFinAnalisis
     }
     this.reportesService.lineasEstrategicas(data).subscribe({
       next: (res) => {
@@ -91,8 +92,8 @@ export class ReportesProyectoComponent {
     });
   }
 
-  getDataCat(fechaInicioAnalisis:any,fechaFinAnalisis:any) {
-    this.reportesService.categorias(fechaInicioAnalisis,fechaFinAnalisis).subscribe({
+  getDataCat(fechaInicioAnalisis: any, fechaFinAnalisis: any) {
+    this.reportesService.categorias(fechaInicioAnalisis, fechaFinAnalisis).subscribe({
       next: (res) => {
         this.dataCat = res;
         this.createChartCategoria(this.dataCat);
@@ -100,8 +101,8 @@ export class ReportesProyectoComponent {
     });
   }
 
-  getDataTip(fechaInicioAnalisis:any,fechaFinAnalisis:any) {
-    this.reportesService.tipologias(fechaInicioAnalisis,fechaFinAnalisis).subscribe({
+  getDataTip(fechaInicioAnalisis: any, fechaFinAnalisis: any) {
+    this.reportesService.tipologias(fechaInicioAnalisis, fechaFinAnalisis).subscribe({
       next: (res) => {
         this.dataTip = res;
         this.createChartTipologia(this.dataTip);
@@ -109,8 +110,8 @@ export class ReportesProyectoComponent {
     });
   }
 
-  getDataPDC(fechaInicioAnalisis:any,fechaFinAnalisis:any) {
-    this.reportesService.pdc_etapa().subscribe({
+  getDataPDC(fechaInicioAnalisis: any, fechaFinAnalisis: any) {
+    this.reportesService.pdc_etapa(fechaInicioAnalisis, fechaFinAnalisis).subscribe({
       next: (res) => {
         this.dataIndicador = res;
         this.createChartPdc(this.dataIndicador);
@@ -118,8 +119,8 @@ export class ReportesProyectoComponent {
     });
   }
 
-  getDataInversionLE(fechaInicioAnalisis:any,fechaFinAnalisis:any) {
-    this.reportesService.inversion_le().subscribe({
+  getDataInversionLE(fechaInicioAnalisis: any, fechaFinAnalisis: any) {
+    this.reportesService.inversion_le(fechaInicioAnalisis,fechaFinAnalisis).subscribe({
       next: (res) => {
         this.dataInversionLE = res;
         this.createChartInversion(this.dataInversionLE);
@@ -127,8 +128,8 @@ export class ReportesProyectoComponent {
     });
   }
 
-  getDataInversionDesagregadaLE(fechaInicioAnalisis:any,fechaFinAnalisis:any) {
-    this.reportesService.inversion_desagregada_le().subscribe({
+  getDataInversionDesagregadaLE(fechaInicioAnalisis: any, fechaFinAnalisis: any) {
+    this.reportesService.inversion_desagregada_le(fechaInicioAnalisis,fechaFinAnalisis).subscribe({
       next: (res) => {
         this.dataInversionDesagregadaLE = res;
         this.createChartInversionDesagregadaLE(this.dataInversionDesagregadaLE);
@@ -148,7 +149,7 @@ export class ReportesProyectoComponent {
         type: 'column',
       },
       title: {
-        text: 'Nro. Acciones/Proyectos por LE. Del '+ this.fechaInicioA+' al '+this.fechaFinA,
+        text: 'Nro. Acciones/Proyectos por LE. Del ' + this.fechaInicioA + ' al ' + this.fechaFinA,
         align: 'left',
         style: {
           //color: '#808B96',
@@ -212,7 +213,7 @@ export class ReportesProyectoComponent {
         marginLeft: 150,
       },
       title: {
-        text: 'Nro. Acciones/Proyectos del '+ this.fechaInicioA+' al '+this.fechaFinA,
+        text: 'Nro. Acciones/Proyectos del ' + this.fechaInicioA + ' al ' + this.fechaFinA,
         align: 'left',
       },
       exporting: {
@@ -275,7 +276,7 @@ export class ReportesProyectoComponent {
         marginLeft: 150,
       },
       title: {
-        text: 'Nro. Acciones/Proyectos por Tipología del ' + this.fechaInicioA+' al '+this.fechaFinA,
+        text: 'Nro. Acciones/Proyectos por Tipología del ' + this.fechaInicioA + ' al ' + this.fechaFinA,
         align: 'left'
       },
       exporting: {
@@ -332,7 +333,7 @@ export class ReportesProyectoComponent {
         height: 1000,
       },
       title: {
-        text: 'Nro Acciones/proyectos por indicador del ' + this.fechaInicioA+' al '+this.fechaFinA,
+        text: 'Nro Acciones/proyectos por indicador del ' + this.fechaInicioA + ' al ' + this.fechaFinA,
         align: 'left',
       },
       exporting: {
@@ -532,7 +533,8 @@ export class ReportesProyectoComponent {
         enabled: false
       },
       series: [{
-        name: 'Inversión al ' + yearToDisplay.toString(),
+        //name: 'Inversión al ' + yearToDisplay.toString(),
+        name: 'Inversion del ' + this.fechaInicioA + ' al ' + this.fechaFinA,
         type: 'bar',
         data: data.map((item) => item.inversion_total),
         color: '#DAF7A6'
@@ -553,7 +555,7 @@ export class ReportesProyectoComponent {
         height: 550,
       },
       title: {
-        text: 'Inversión desagregada por Linea Estratégica del ' + this.fechaInicioA+' al '+this.fechaFinA,
+        text: 'Inversión desagregada por Linea Estratégica del ' + this.fechaInicioA + ' al ' + this.fechaFinA,
         align: 'left',
         style: {
           color: '#5D6D7E',

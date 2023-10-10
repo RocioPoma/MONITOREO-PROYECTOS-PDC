@@ -37,39 +37,30 @@ export class ReportesService {
   //   return this.http.get<any>(`${this.url}/tipologias`);
   // }
 
-  // pdc_etapa(fechaInicioAnalisis:any, fechaFinAnalisis:any) {
-  //   const params = new HttpParams()
-  //     .set('fechaInicioAnalisis', fechaInicioAnalisis)
-  //     .set('fechaFinAnalisis', fechaFinAnalisis);
-  //   return this.http.get<any>(`${this.url}/pdc_etapa`, { params });
-  // }
-  pdc_etapa(){
-    return this.http.get<any>(`${this.url}/pdc_etapa`);
+  pdc_etapa(fechaInicioAnalisis:any, fechaFinAnalisis:any) {
+    return this.http.get<any>(`${this.url}/pdc_etapa/`+fechaInicioAnalisis+'/'+fechaFinAnalisis);
   }
+  // pdc_etapa(){
+  //   return this.http.get<any>(`${this.url}/pdc_etapa`);
+  // }
 
   mapa_proyecto(){
     return this.http.get<any>(`${this.url}/mapa`);
   }
 
-  // inversion_le(fechaInicioAnalisis:any, fechaFinAnalisis:any) {
-  //   const params = new HttpParams()
-  //     .set('fechaInicioAnalisis', fechaInicioAnalisis)
-  //     .set('fechaFinAnalisis', fechaFinAnalisis);
-  //   return this.http.get<any>(`${this.url}/inversion_le`+fechaInicioAnalisis+'/'+fechaFinAnalisis);
-  // }
-  inversion_le(){
-    return this.http.get<any>(`${this.url}/inversion_le`);
+  inversion_le(fechaInicioAnalisis:any, fechaFinAnalisis:any) {
+    return this.http.get<any>(`${this.url}/inversion_le/`+fechaInicioAnalisis+'/'+fechaFinAnalisis);
   }
+  // inversion_le(){
+  //   return this.http.get<any>(`${this.url}/inversion_le`);
+  // }
   
-  // inversion_desagregada_le(fechaInicioAnalisis:any, fechaFinAnalisis:any) {
-  //   const params = new HttpParams()
-  //     .set('fechaInicioAnalisis', fechaInicioAnalisis)
-  //     .set('fechaFinAnalisis', fechaFinAnalisis);
-  //   return this.http.get<any>(`${this.url}/inversion_desagregada_le`, { params });
-  // }
-  inversion_desagregada_le(){
-    return this.http.get<any>(`${this.url}/inversion_desagregada_le`);
+  inversion_desagregada_le(fechaInicioAnalisis:any, fechaFinAnalisis:any) {
+    return this.http.get<any>(`${this.url}/inversion_desagregada_le/`+fechaInicioAnalisis+'/'+fechaFinAnalisis);
   }
+  // inversion_desagregada_le(){
+  //   return this.http.get<any>(`${this.url}/inversion_desagregada_le`);
+  // }
   
   
   report_indicadores(){

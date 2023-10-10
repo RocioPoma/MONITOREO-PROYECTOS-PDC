@@ -154,55 +154,339 @@
   }
 
   //----footer
-  .footer {
-    background-color: #43A047;
-    color: white;
-    text-align: center;
-    padding: 20px 0;
-    font-size: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center; /* Centrar verticalmente */
-    flex-wrap: wrap;
-  }
+  // .footer {
+  //   background-color: green;
+  //   color: white;
+  //   text-align: center;
+  //   padding: 20px 0;
+  //   font-size: 16px;
+  //   display: flex;
+  //   justify-content: space-between;
+  //   align-items: center; /* Centrar verticalmente */
+  //   flex-wrap: wrap;
+  // }
   
-  .contact-left, .contact-right {
-    flex: 1;
-    text-align: left;
-    padding: 10px;
-  }
+  // .contact-left, .contact-right {
+  //   flex: 1;
+  //   text-align: left;
+  //   padding: 10px;
+  // }
   
-  .icon {
-    vertical-align: middle;
-    font-size: 24px;
-    margin-right: 10px;
-  }
+  // .icon {
+  //   vertical-align: middle;
+  //   font-size: 24px;
+  //   margin-right: 10px;
+  // }
   
-  .small-text {
-    font-size: 12px;
-    margin: 0;
-  }
+  // .small-text {
+  //   font-size: 12px;
+  //   margin: 0;
+  // }
   
-  a {
-    color: white;
-    text-decoration: underline;
-  }
+  // a {
+  //   color: white;
+  //   text-decoration: underline;
+  // }
   
-  a:hover {
-    text-decoration: none;
-  }
+  // a:hover {
+  //   text-decoration: none;
+  // }
   
-  .centered {
-    display: flex;
-    align-items: center; /* Centrar verticalmente */
-  }
+  // .centered {
+  //   display: flex;
+  //   align-items: center; /* Centrar verticalmente */
+  // }
   
   
 //////
+// .footer {
+//   background-color: green;
+//   color: white;
+//   padding: 20px;
+//   text-align: left; /* Alinear a la izquierda */
+//   display: flex; /* Utilizar flexbox para centrar verticalmente */
+//   flex-direction: column; /* Alinear elementos verticalmente */
+//   align-items: center; /* Alinear elementos horizontalmente al centro */
+// }
 
-.footer::before {
-  //  content: "\00a9";
-    font-size: 20px; 
-    margin-right: 5px; 
+// .contact-info p, .development-contact p {
+//   display: flex; /* Utilizar flexbox para alinear íconos y texto horizontalmente */
+//   align-items: center; /* Alinear íconos y texto verticalmente al centro */
+//   margin: 5px 0;
+// }
+
+// .icon {
+//   margin-right: 5px; /* Espacio entre el ícono y el texto */
+// }
+
+// a {
+//   color: white;
+//   text-decoration: none;
+// }
+
+// .copyright {
+//   margin-top: 20px; /* Espacio entre el contenido principal y los derechos de autor */
+// }
+
+///////
+// .footer {
+//   background-color: green;
+//   color: white;
+//   padding: 20px;
+//   text-align: left;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+// }
+
+// .contact-info a, .development-contact a {
+//   display: flex;
+//   align-items: center;
+//   margin: 5px 0;
+//   color: white;
+//   text-decoration: none;
+//   transition: color 0.2s; /* Agregamos una transición de color al pasar el mouse */
+// }
+
+// .contact-info a:hover, .development-contact a:hover {
+//   color: yellow; /* Cambiamos el color al pasar el mouse */
+// }
+
+// .icon {
+//   margin-right: 5px;
+//   font-size: 18px; /* Tamaño del ícono */
+// }
+
+// a {
+//   color: white;
+//   text-decoration: none;
+// }
+
+// .copyright {
+//   margin-top: 20px;
+// }
+ 
+/// ---------------------------------------------------
+// .footer {
+//   background-color: green;
+//   color: white;
+//   padding: 18px;
+//   font-size: 12px;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   text-align: center;
+// }
+
+// .contact-columns {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   margin: 20px 0;
+// }
+
+// .contact-info {
+//   text-align: left;
+//   margin-right: 40px;
+// }
+
+// .contact-social-icons {
+//   display: flex;
+//   align-items: center;
+//   justify-content: flex-end; /* Alinea los íconos de las redes sociales a la derecha */
+//   flex-grow: 1;
+//   margin: 0 20px;
+// }
+
+// .development-contact {
+//   text-align: right; /* Alinea el texto a la derecha */
+//   margin-left: auto; /* Empuja todo el contenido a la derecha */
+// }
+
+// .contact-icons {
+//   text-align: right; /* Alinea los íconos y enlaces de contacto a la derecha */
+// }
+
+// .contact-info a,
+// .development-contact a {
+//   display: flex;
+//   align-items: center;
+//   margin: 5px 0;
+//   color: white;
+//   text-decoration: none;
+//   transition: color 0.2s;
+// }
+
+// .contact-info a:hover,
+// .development-contact a:hover {
+//   color: yellow;
+// }
+
+// .icon,
+// .social-icon {
+//   margin-right: 5px;
+//   font-size: 18px;
+// }
+
+// a {
+//   color: white;
+//   text-decoration: none;
+// }
+
+// .copyright {
+//   margin-top: 20px;
+// }
+
+/// =------------------------------------------------------------
+// .footer {
+//   background-color: green;
+//   color: white;
+//   padding: 18px;
+//   font-size: 12px;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//  // text-align: center;
+// }
+
+// .contact-columns {
+//   display: flex;
+//   justify-content: space-between;
+//  // align-items: center;
+//   margin: 20px 0;
+// }
+
+// .contact-info {
+//   text-align: left;
+//   margin-right: 40px;
+// }
+
+// .contact-social-icons {
+//   display: flex;
+//   align-items: center;
+//  // justify-content: flex-end; /* Alinea los íconos de las redes sociales a la derecha */
+//   flex-grow: 1;
+//   margin-right: 10px;
+//   // padding: auto;
+//   // margin: 0 20px;
+// }
+
+// .contact-social-icons a {
+//   margin-right: 20px; /* Aumenta la separación entre los íconos de las redes sociales */
+// }
+
+// .contact-social-icons i.fa {
+//   font-size: 24px; /* Aumenta el tamaño de los iconos de las redes sociales */
+// }
+
+// .development-contact {
+//   text-align: right; /* Alinea el texto a la derecha */
+//   margin-left: auto; /* Empuja todo el contenido a la derecha */
+// }
+
+// .contact-icons {
+//   text-align: right; /* Alinea los íconos y enlaces de contacto a la derecha */
+// }
+
+// .contact-info a,
+// .development-contact a {
+//   display: flex;
+//  // align-items: center;
+//   margin: 5px 0;
+//   color: white;
+//   text-decoration: none;
+//   transition: color 0.2s;
+// }
+
+// .contact-info a:hover,
+// .development-contact a:hover {
+//   color: yellow;
+// }
+
+// .icon,
+// .social-icon {
+//   margin-right: 5px;
+//   font-size: 18px;
+// }
+
+// a {
+//   color: white;
+//   text-decoration: none;
+// }
+
+// .copyright {
+//   margin-top: 20px;
+// }
+
+//-------------------------------------------
+.footer {
+  background-color: green;
+  color: white;
+  padding: 18px;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between; /* Distribuye las columnas de igual tamaño */
+  text-align: center;
+  font-weight:100
 }
-  
+
+.footer-column {
+  text-align: center;
+ // flex: 1; /* Distribuye el espacio igualmente entre las tres columnas */
+  padding: 0 10px; /* Agrega un espacio entre las columnas */
+}
+
+.contact-info{
+  text-align: left;
+  padding-left: 40px;
+}
+
+.contact-social-icons{
+  text-align: center;
+}
+
+.development-contact {
+  align-items: center;
+  padding-right: 90px;
+ // text-align: right;
+}
+
+
+
+.contact-info a,
+.development-contact a {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+  color: white;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.contact-social-icons a {
+  margin-right: 20px; /* Aumenta la separación entre los íconos de las redes sociales */
+}
+
+.contact-info a:hover,
+.development-contact a:hover {
+  color: yellow;
+}
+
+.icon,
+.social-icon {
+  margin-right: 5px;
+  font-size: 18px;
+}
+
+.fa {
+  font-size: 24px;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+.copyright {
+  margin-top: 20px;
+}
