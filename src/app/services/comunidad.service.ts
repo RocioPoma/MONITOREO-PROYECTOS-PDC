@@ -10,6 +10,9 @@ export class ComunidadService {
 
   constructor(private httpClient: HttpClient) { }
 
+  getComunidades(){
+    return this.httpClient.get(`${this.url}/comunidad/`);
+  }
   GetComunidades(){
     return this.httpClient.get(this.url + "/comunidad/get");
   }
