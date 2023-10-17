@@ -267,7 +267,7 @@ export class ManageProyectoComponent {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
-  }
+  }}
 
   applyCategoriaFilter(filterValue: string) {
     filterValue = filterValue.trim().toLowerCase();

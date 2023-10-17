@@ -1,5 +1,5 @@
 export const environment = {
-    //Prod
+
     production: true,
     apiUrl: 'https://pdcg-api.dev.404.codes'
 

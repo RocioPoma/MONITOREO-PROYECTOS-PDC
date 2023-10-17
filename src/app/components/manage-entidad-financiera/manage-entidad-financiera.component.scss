@@ -21,27 +21,11 @@
 }
 //---fin respopnsividad
 
-.mat-mdc-form-field {
-  font-size: 14px;
-  width: 100%;
-}
 
-.float-right {
-  float: right;
-  margin-top: -8px;
-  margin-right: 10px;
-}
-
-th{
-  align-items: center;
-  text-align: center; 
-}
 td{
   font-size: 12px; 
 }
-.nomProy{
-  font-size: 11px;
-}
+
 .title{
   align-items: center;
   text-align: center; 
@@ -69,20 +53,11 @@ mat-form-field {
   padding: 5px;
 }
 
-.img {
-  background-size: cover;
-  border-radius: 50%;
-  margin: 0 auto;
-}
-
-
-
-
 //para las opciones
 
 .icon-group {
-  display: flex;
   align-items: center;
+  display: inline-flex;
  // gap: 10px; /* Espacio entre los iconos */
 }
 
@@ -95,42 +70,10 @@ mat-form-field {
   justify-content: center;
 }
 
-.box{
-  width: 70px;
-  height: 70px;
-  //background: #CCC;
-  border-radius: 50%;
-}
-
-
-.mat-typography mat-form-field+mat-form-field {
-margin-left: 8px;
-}
-
-.title-center {
-flex: 1 1 auto;
-text-align: center;
-}
-
-.subTitle {
-//background-color: aqua;
-margin-bottom: 6px;
-margin-left: 2px;
-}
-
-.subTitle1 {
-background-color: aqua;
-margin-bottom: 160px;
-margin-left: 2px;
-}
 
 .btn-icon:hover {
 cursor: pointer;
 /* Cambia el cursor a la mano */
-}
-.mat-sort-header-container {
-  display:flex;
-  justify-content:center;
 }
 
 td, th {
@@ -138,5 +81,8 @@ td, th {
   vertical-align: middle !important;
 }
 
+.d-flex {
+  display: inline-flex;
+}
 
 
