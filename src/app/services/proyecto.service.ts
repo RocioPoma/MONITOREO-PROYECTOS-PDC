@@ -45,6 +45,7 @@ export class ProyectoService {
     fd.append('mujeres', data.mujeres);
     fd.append('id_categoria', data.id_categoria);
     fd.append('id_tipologia', data.id_tipologia);
+    fd.append('id_unidad_medicion', data.id_unidad_medicion);
     fd.append('id_indicador', data.id_indicador);
     fd.append('id_cuenca', data.id_cuenca);
     fd.append('id_accion_estrategica', data.id_accion_estrategica);
@@ -52,6 +53,7 @@ export class ProyectoService {
     fd.append('comunidad', data.comunidad);
     fd.append("alcance", data.alcance);
     fd.append("documento", documento);
+
     return this.httpClient.post(this.url +
       "/proyecto/add/", fd);
   }
@@ -68,8 +70,12 @@ export class ProyectoService {
     fd.append('area', data.area);
     fd.append('coordenada_x', data.coordenada_x);
     fd.append('coordenada_y', data.coordenada_y);
+    fd.append('cantidad', data.cantidad);
+    fd.append('hombres', data.hombres);
+    fd.append('mujeres', data.mujeres);
     fd.append('id_categoria', data.id_categoria);
     fd.append('id_tipologia', data.id_tipologia);
+    fd.append('id_unidad_medicion', data.id_unidad_medicion);
     fd.append('id_indicador', data.id_indicador);
     fd.append('id_cuenca', data.id_cuenca);
     fd.append('id_accion_estrategica', data.id_accion_estrategica);
@@ -78,6 +84,8 @@ export class ProyectoService {
     fd.append("alcance", data.alcance);
     fd.append("nombre_documento", data.nombre_documento);
     fd.append("documento", documento);
+
+
     return this.httpClient.patch(this.url +
       "/proyecto/update/", fd);
   }
