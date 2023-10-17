@@ -256,6 +256,8 @@ export class ManageProyectoComponent {
     if (this.categoriaFilter) {
       this.applyCategoriaFilter(this.categoriaFilter);
     }
+    if(this.fechaInicio || this.fechaFin) {
+      this.fechaFin=null 
     //pdf
     //dar valor a variables para su impresion
     //console.log(this.dataSource.filteredData);
@@ -275,12 +277,14 @@ export class ManageProyectoComponent {
     if (this.municipioFilter) {
       this.applyMunicipioFilter(this.municipioFilter);
     } else {
-      // Si no hay filtro de municipio activo, aplicar solo el filtro de categoría
       this.dataSource.filterPredicate = (data: any, filter: string) =>
         data.nom_categoria.trim().toLowerCase().includes(filter);
       this.dataSource.filter = filterValue;
+      // Si no hay filtro de municipio activo, aplicar solo el filtro de categoría
     }
-
+    if(this.fechaInicio || this.fechaFin) {
+      this.fechaFin=null 
+      this.fechaInicio=null}
     //pdf
     //dar valor a variables para su impresion
     //console.log(this.dataSource.filteredData);
@@ -293,20 +297,23 @@ export class ManageProyectoComponent {
   }
   validarFechas() {
     if(this.fechaInicio && this.fechaFin){
-      // this.dataSource.filter={fechaInicioTime:this.fechaInicio.getTime(),fechaFinTime:this.fechaFin.getTime()}
-      // this.dataSource.filterPredicate = (data: any, filter: any) =>
-      // data.fecha_inicio.getTime()>=filter.fechaInicioTime && data.fecha_inicio.getTime()<=filter.fechaFinTime;
-      // if (this.municipioFilter.length>0) {
-      //   this.applyMunicipioFilter(this.municipioFilter);
-      // } else if (this.categoriaFilter.length>0) {
-      //   this.applyCategoriaFilter(this.categoriaFilter);
-      // }
-      // this.infoFiltrada = this.dataSource.filteredData;
-      // this.tabla = this.infoFiltrada;
-      // //pdf
-      // if (this.dataSource.paginator) {
-      //   this.dataSource.paginator.firstPage();
-      // }
+      this.dataSource.filterPredicate = (data: any, filter: any) =>{
+        const fechaInicioProy= new Date(data.fecha_inicio);
+        return fechaInicioProy.getTime()>=filter.fechaInicioTime && fechaInicioProy.getTime()<=filter.fechaFinTime;
+      }
+      this.dataSource.filter={fechaInicioTime:this.fechaInicio.getTime(),fechaFinTime:this.fechaFin.getTime()}
+      if (this.municipioFilter.length>0) {
+        this.municipioFilter='';
+      } 
+      if (this.categoriaFilter.length>0) {
+        this.categoriaFilter='';
+      }
+      this.infoFiltrada = this.dataSource.filteredData;
+      this.tabla = this.infoFiltrada;
+      //pdf
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
     }
   }
 

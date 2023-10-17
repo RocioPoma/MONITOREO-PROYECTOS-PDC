@@ -1,8 +1,21 @@
 <mat-card>
-    <div class="title">
-        <b><span class="color-text">GESTIÓN PROYECTOS/ACCIÓN</span></b>
+    
+    <div class="buttons-inter" fxLayout="row">
+        <div class="title" [fxFlex]="66" [fxFlexOffset]="15">
+            <b><span class="color-text">GESTIÓN PROYECTOS/ACCIÓN</span></b>
+        </div>
+        <button  mat-fab color="primary"
+        (click)=" exportToExcel()"><mat-icon ><i class="fa fa-file-excel-o"></i></mat-icon></button>
+        
+        <!-- <button  mat-stroked-button color="primary" class="padding">REGISTRAR</button>-->
+        <button mat-fab color="primary"
+        (click)="generateReport()"><mat-icon ><i class="fa fa-file-pdf-o"></i></mat-icon></button>
+        
+        
+        <!-- <button  mat-stroked-button color="primary" class="padding">REGISTRAR</button>-->
+        <button mat-fab color="primary"
+        (click)="handleAddAction()"><mat-icon ><i class="fa fa-plus"></i></mat-icon></button>
     </div>
-
     <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutWrap="wrap" fxLayoutAlign="start center">
         <mat-form-field fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
             <mat-label>Buscar</mat-label>
@@ -39,45 +52,9 @@
             <mat-datepicker-toggle matSuffix [for]="finPicker"></mat-datepicker-toggle>
             <mat-datepicker #finPicker></mat-datepicker>
         </mat-form-field>
-          
-       
-        <!--
-        <mat-form-field fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
-            <mat-label>Buscar</mat-label>
-            <input matInput (keyup)="applyFilter($event)" placeholder="Buscar ..." #input>
-        </mat-form-field>
-
-        <mat-form-field fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
-            <mat-label>Área/municipio</mat-label>
-            <mat-select (selectionChange)="applyMunicipioFilter($event.value)">
-                <mat-option value="">Todos</mat-option>
-                <mat-option *ngFor="let municipio of municipios" [value]="municipio.nombre_municipio">{{
-                    municipio.nombre_municipio }}</mat-option>
-            </mat-select>
-        </mat-form-field>
-  
-        <mat-form-field fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
-            <mat-label>Filtrar por categoría</mat-label>
-            <mat-select (selectionChange)="applyCategoriaFilter($event.value)">
-                <mat-option value="">Todos</mat-option>
-                <mat-option *ngFor="let categoria of categoria" [value]="categoria.nom_categoria">{{
-                    categoria.nom_categoria}}</mat-option>
-            </mat-select>
-        </mat-form-field>-->
 
         <div fxFlex="100%" fxFlex.gt-sm="33.33%"></div>
 
-        <button fxFlex.gt-sm="10%" mat-flat-button color="primary" class="padding"
-            (click)=" exportToExcel()">Excel</button>
-        <div fxFlex="100%" fxFlex.gt-sm="1.33%"></div>
-        <!-- <button  mat-stroked-button color="primary" class="padding">REGISTRAR</button>-->
-        <button fxFlex.gt-sm="10%" mat-flat-button color="primary" class="padding"
-            (click)="generateReport()">Reportes</button>
-        <div fxFlex="100%" fxFlex.gt-sm="1.33%"></div>
-
-        <!-- <button  mat-stroked-button color="primary" class="padding">REGISTRAR</button>-->
-        <button fxFlex.gt-sm="10%" mat-flat-button color="primary" class="padding"
-            (click)="handleAddAction()">Registrar</button>
     </div>
 
     <div>
