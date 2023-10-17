@@ -74,11 +74,6 @@ mat-form-field {
     padding: 5px;
 }
 
-.img {
-    background-size: cover;
-    border-radius: 50%;
-    margin: 0 auto;
-}
 
 
 //para las opciones
@@ -129,13 +124,6 @@ mat-form-field {
     background-color: #999999; /* Color de fondo cuando el registro está resaltado */
 }
 
-// .mat-mdc-table-sticky-border-elem-right {
-//     border-left: 1px solid #e0e0e0;
-// }
-
-// .mat-mdc-table-sticky-border-elem-left {
-//     border-right: 1px solid #e0e0e0;
-// }
 
 td.mat-column {
    // max-width: 10px;
@@ -151,3 +139,39 @@ td.mat-column-NombreProyecto {
 .button-flex{
     justify-content: space-between;
 }
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .title {
+    flex: 1; /* Toma el espacio disponible a la izquierda */
+    text-align: center;
+  }
+  
+  .icons {
+    display: flex;
+    gap: 10px; /* Espacio entre los botones */
+  }
+  
+  .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  flex: 1; 
+  text-align: center;
+}
+
+.icons {
+  display: flex;
+  gap: 0px; /* Espacio entre los botones */
+}
+
+.small-icon {
+    font-size: 21px; /* Ajusta el tamaño según tus preferencias */
+  }
