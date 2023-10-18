@@ -122,7 +122,7 @@
                             <ngx-mat-select-search [formControl]="searchComunidad"
                                 placeholderLabel="Buscar opción"></ngx-mat-select-search>
                         </mat-option>
-                        <mat-option *ngFor="let comunidad of comunidad" [value]="comunidad.id">
+                        <mat-option *ngFor="let comunidad of filterComunidad" [value]="comunidad.id">
                             {{ comunidad.nombre }}
                         </mat-option>
                     </mat-select>

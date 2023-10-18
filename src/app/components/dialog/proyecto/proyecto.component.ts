@@ -293,8 +293,7 @@ export class ProyectoComponent implements OnInit {
 
   filterOptionsComunidad(searchTerm: string): void {
     this.filterComunidad = this.comunidad.filter(option =>
-      option.nombre.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+       option.nombre.toLowerCase().includes(searchTerm.toLowerCase()));
   }
   //--------------- Fin Filtrar Select--------------------
 
@@ -444,7 +443,7 @@ export class ProyectoComponent implements OnInit {
   getComunidad(id_municipio: any) {
     this.ComunidadService.getComunidad(id_municipio).subscribe((response: any) => {
       this.comunidad = response;
-
+      this.filterComunidad=response;
     }, (error: any) => {
       if (error.error?.message) {
         this.responseMessage = error.error?.message;
