@@ -1,21 +1,21 @@
 <mat-card>
-
-    <div class="container">
-        <div class="title">
-          <b><span class="color-text">GESTIÓN PROYECTOS/ACCIÓN</span></b>
+    
+    <div class="buttons-inter" fxLayout="row">
+        <div class="title" [fxFlex]="66" [fxFlexOffset]="15">
+            <b><span class="color-text">GESTIÓN PROYECTOS/ACCIÓN</span></b>
         </div>
-        <div class="icons">
-          <button mat-icon-button color="primary" (click)="exportToExcel()">
-            <mat-icon class="small-icon"><i class="fa fa-file-excel-o"></i></mat-icon>
-          </button>
-          <button mat-icon-button color="primary" (click)="generateReport()">
-            <mat-icon class="small-icon"><i class="fa fa-file-pdf-o"></i></mat-icon>
-          </button>
-          <button mat-icon-button color="primary" (click)="handleAddAction()">
-            <mat-icon><i class="fa fa-plus"></i></mat-icon>
-          </button>
-        </div>
-      </div>
+        <button  mat-fab color="primary"
+        (click)=" exportToExcel()"><mat-icon ><i class="fa fa-file-excel-o"></i></mat-icon></button>
+        
+        <!-- <button  mat-stroked-button color="primary" class="padding">REGISTRAR</button>-->
+        <button mat-fab color="primary"
+        (click)="generateReport()"><mat-icon ><i class="fa fa-file-pdf-o"></i></mat-icon></button>
+        
+        
+        <!-- <button  mat-stroked-button color="primary" class="padding">REGISTRAR</button>-->
+        <button mat-fab color="primary"
+        (click)="handleAddAction()"><mat-icon ><i class="fa fa-plus"></i></mat-icon></button>
+    </div>
     <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutWrap="wrap" fxLayoutAlign="start center">
         <mat-form-field fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
             <mat-label>Buscar</mat-label>
@@ -30,7 +30,7 @@
                     municipio.nombre_municipio }}</mat-option>
             </mat-select>
         </mat-form-field>
-
+  
         <mat-form-field fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
             <mat-label>Filtrar por categoría</mat-label>
             <mat-select (selectionChange)="applyCategoriaFilter($event.value)">
@@ -39,20 +39,21 @@
                     categoria.nom_categoria}}</mat-option>
             </mat-select>
         </mat-form-field>
-        <mat-form-field fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
+        <mat-form-field  fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
             <mat-label>Fecha Inicio</mat-label>
-            <input matInput [matDatepicker]="inicioPicker" [(ngModel)]="fechaInicio" (ngModelChange)="validarFechas()">
+            <input matInput [matDatepicker]="inicioPicker" [(ngModel)]="fechaInicio"
+                (ngModelChange)="validarFechas()">
             <mat-datepicker-toggle matSuffix [for]="inicioPicker"></mat-datepicker-toggle>
             <mat-datepicker #inicioPicker></mat-datepicker>
         </mat-form-field>
-        <mat-form-field fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
+        <mat-form-field  fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
             <mat-label>Fecha Fin</mat-label>
             <input matInput [matDatepicker]="finPicker" [(ngModel)]="fechaFin" (ngModelChange)="validarFechas()">
             <mat-datepicker-toggle matSuffix [for]="finPicker"></mat-datepicker-toggle>
             <mat-datepicker #finPicker></mat-datepicker>
         </mat-form-field>
 
-
+        <div fxFlex="100%" fxFlex.gt-sm="33.33%"></div>
 
     </div>
 
@@ -131,9 +132,9 @@
                         <th mat-header-cell *matHeaderCellDef>Doc.</th>
                         <td mat-cell *matCellDef="let element">
                             <button mat-icon-button color="accent" matTooltip="Archivos"
-                                (click)="handleAddDoc(element)">
-                                <mat-icon>folder_copy</mat-icon>
-                            </button>
+                             (click)="handleAddDoc(element)">
+                            <mat-icon>folder_copy</mat-icon>
+                        </button>
                         </td>
                     </ng-container>
 
@@ -142,7 +143,7 @@
                         <th mat-header-cell *matHeaderCellDef>Seg.</th>
                         <td mat-cell *matCellDef="let element" class="action-link">
                             <button mat-icon-button color="accent" matTooltip="Seguimiento"
-                                (click)="handleSeguimientoAction(element)">
+                                 (click)="handleSeguimientoAction(element)">
                                 <mat-icon>edit_square</mat-icon>
                             </button>
                         </td>
@@ -166,8 +167,7 @@
                         <th mat-header-cell *matHeaderCellDef>Acciones</th>
                         <td mat-cell *matCellDef="let element" class="action-link">
                             <div class="icon-group">
-                                <button mat-icon-button color="primary" matTooltip="Edit"
-                                    [disabled]="element.estado==='false'&& rol==='Operador' "
+                                <button mat-icon-button color="primary" matTooltip="Edit" [disabled]="element.estado==='false'&& rol==='Operador' "
                                     (click)="handleEditAction(element)">
                                     <mat-icon>edit</mat-icon>
                                 </button>
@@ -176,8 +176,7 @@
                                 <mat-icon>account_circle</mat-icon>
                                 </button>  -->
                                 <button mat-icon-button color="primary" matTooltip="Delete" class="icon"
-                                    [disabled]="element.estado==='false' && rol==='Operador'"
-                                    (click)="handleDeleteAction(element)">
+                                    [disabled]="element.estado==='false' && rol==='Operador'" (click)="handleDeleteAction(element)">
                                     <mat-icon>delete</mat-icon>
                                 </button>
                                 <button mat-icon-button color="primary" matTooltip="Cambio User" class="icon"
