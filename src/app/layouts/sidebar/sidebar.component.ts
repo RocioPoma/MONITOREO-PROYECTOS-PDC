@@ -72,10 +72,6 @@ menuItems: MenuItem[] = [
         link: '/reportes-indicadores'
       },
       {
-        title: 'Lineas Estr.',
-        // link: '/proyecto2'
-      },
-      {
         title: 'Proyectos',
         link: '/reportes-proyectos'
       },

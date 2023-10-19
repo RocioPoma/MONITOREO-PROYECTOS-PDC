@@ -453,26 +453,6 @@ export class BasedeDatosComponent {
       //margenes
 
 
-
-      //footer pie de pagina
-      /*  footer: function(currentPage, pageCount) {
-         return {                
-           text: currentPage.toString() + '/' + pageCount,
-           alignment: 'right', // Align the pagination to the center
-           margin: [10, 0] // Adjust margin as needed                
-         };
-       }, */
-      /*  footer: () => ({
-         columns: [
-           { text: `Impreso por: ${this.usuario+' '+this.ap+' '+this.am}`, alignment: 'left', margin: [5, 5],  fontSize: 8,italics: true },
-             
-         ],
-        
-        
-       }) */
-
-
-
     };
 
     pdfMake.createPdf(documentDefinition).open();
