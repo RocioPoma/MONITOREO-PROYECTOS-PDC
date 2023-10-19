@@ -139,11 +139,7 @@ menuItems2: MenuItem[] = [
     submenus: [
       {
         title: 'Indicadores',
-        // link: '/proyecto1'
-      },
-      {
-        title: 'Lineas Estr.',
-        // link: '/proyecto2'
+        link: '/reportes-indicadores'
       },
       {
         title: 'Proyectos',
