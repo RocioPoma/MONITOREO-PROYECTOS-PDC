@@ -121,21 +121,7 @@ menuItems: MenuItem[] = [
 
 
 //array
-menuItems2: MenuItem[] = [
-  {
-    title: 'Home',
-    icon: 'home',
-    submenus: [      
-      {
-        title: 'Acción 1',
-        link: '/accion1'
-      },
-      {
-        title: 'Acción 2',
-        link: '/accion2'
-      }
-    ]
-  }, 
+menuItems2: MenuItem[] = [ 
   {
     title: 'Proyectos/acciones',
     icon: 'home',
