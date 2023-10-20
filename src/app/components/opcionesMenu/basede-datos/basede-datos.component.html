@@ -26,7 +26,18 @@
                     categoria.nom_categoria}}</mat-option>
             </mat-select>
         </mat-form-field>
-
+        <mat-form-field fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
+            <mat-label>Fecha Inicio</mat-label>
+            <input matInput [matDatepicker]="inicioPicker" [(ngModel)]="fechaInicio" (ngModelChange)="validarFechas()">
+            <mat-datepicker-toggle matSuffix [for]="inicioPicker"></mat-datepicker-toggle>
+            <mat-datepicker #inicioPicker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field fxFlex="100%" fxLayout="column" fxLayoutAlign="start start" class="pading">
+            <mat-label>Fecha Fin</mat-label>
+            <input matInput [matDatepicker]="finPicker" [(ngModel)]="fechaFin" (ngModelChange)="validarFechas()">
+            <mat-datepicker-toggle matSuffix [for]="finPicker"></mat-datepicker-toggle>
+            <mat-datepicker #finPicker></mat-datepicker>
+        </mat-form-field>
 
         <div fxFlex="100%" fxFlex.gt-sm="33.33%"></div>
 

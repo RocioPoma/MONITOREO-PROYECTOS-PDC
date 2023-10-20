@@ -258,6 +258,8 @@ export class ManageProyectoComponent {
     }
     if(this.fechaInicio || this.fechaFin) {
       this.fechaFin=null 
+      this.fechaInicio=null
+    }
     //pdf
     //dar valor a variables para su impresion
     //console.log(this.dataSource.filteredData);
@@ -267,7 +269,8 @@ export class ManageProyectoComponent {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
-  }}
+  
+}
 
   applyCategoriaFilter(filterValue: string) {
     filterValue = filterValue.trim().toLowerCase();
@@ -284,7 +287,8 @@ export class ManageProyectoComponent {
     }
     if(this.fechaInicio || this.fechaFin) {
       this.fechaFin=null 
-      this.fechaInicio=null}
+      this.fechaInicio=null
+    }
     //pdf
     //dar valor a variables para su impresion
     //console.log(this.dataSource.filteredData);

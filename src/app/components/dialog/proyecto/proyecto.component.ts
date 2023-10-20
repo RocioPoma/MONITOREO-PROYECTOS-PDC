@@ -64,7 +64,8 @@ export class ProyectoComponent implements OnInit {
   AccionEstrategica: any[] = [];
   indicador: any[] = [];
   comunidades: any[] = [];
-
+  comunidadesSeleccionadas:any[]=[];
+  alcancesSeleccionadas:any[]=[];
   //-------Para filtrar LineaEstrategica
   filterLineaEstrategica: any[] = [];
   //-------selectedOptionControl = new FormControl();
@@ -89,9 +90,9 @@ export class ProyectoComponent implements OnInit {
   selectedComunidadesControl = new FormControl();
   isDropdownOpen = false;
 
-  comunidadesSeleccionadas = []; //se utilizo
-  cantidadesSeleccionadas = []; //se utilizo
-  unidadMedicionesSeleccionadas = []; //se utilizo
+  // comunidadesSeleccionadas = []; //se utilizo
+  // cantidadesSeleccionadas = []; //se utilizo
+  // unidadMedicionesSeleccionadas = []; //se utilizo
 
 
   ComunidadMultiCtrl = new FormControl();
@@ -176,13 +177,8 @@ export class ProyectoComponent implements OnInit {
       coordenada_x: [null, [Validators.required]],
       coordenada_y: [null, [Validators.required]],
       estado: [null, [Validators.required]],
-      mujeres: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
-      hombres: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
-      cantidad: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
       id_ciudad_comunidad: [null, [Validators.required]],
       id_municipio: [null, [Validators.required]],
-      //nuevos casillas  
-      id_unidad_medicion: [7, [Validators.required]],
       id_linea_estrategica: [null],
       id_linea_accion: [null],
       id_accion_estrategica: [null, [Validators.required]],
@@ -191,9 +187,6 @@ export class ProyectoComponent implements OnInit {
       comunidad: [],
       //para alcance
       alcance: this.formBuilder.array([], [Validators.required]),
-      alcance_cantidad: [null, [Validators.required]],
-      alcance_id_unidad_medicion: [null, [Validators.required]],
-      unidad: [{ value: '', disabled: false }, Validators.required],
     });
     if (this.dialogData.action === 'Edit') {
       this.dialogAction = "Edit";
@@ -202,14 +195,12 @@ export class ProyectoComponent implements OnInit {
       this.proyectoForm.patchValue(this.dialogData.data);
 
       //para comunidades
-      this.comunidadesSeleccionadas = this.dialogData.data.comunidades.split(',').map(Number);
-      this.cantidadesSeleccionadas = this.dialogData.data.cantidades.split(',');
-      this.unidadMedicionesSeleccionadas = this.dialogData.data.mediciones.split(',').map(Number);
-      this.addAlcances(this.cantidadesSeleccionadas,this.unidadMedicionesSeleccionadas);
-      // Configura las comunidades seleccionadas en el formulario
-      this.proyectoForm.get('comunidad').setValue(this.comunidadesSeleccionadas);
+      this.proyectoForm.get('comunidad').setValue(this.dialogData.data.comunidades);
+      this.comunidadesSeleccionadas = this.dialogData.data.comunidades;
+      this.alcancesSeleccionadas = this.dialogData.data.alcances;
+      this.addAlcances();
       //fin comunidades
-      
+      //para alcances
       //PDC
       this.proyectoForm.id_linea_estrategica = this.dialogData.data.id_linea_estrategica;
       this.getLineaDeAccion(this.dialogData.data.id_linea_estrategica);
@@ -217,17 +208,16 @@ export class ProyectoComponent implements OnInit {
       this.getAccionEstrategica(this.dialogData.data.id_linea_accion);
       this.proyectoForm.id_accion_estrategica = this.dialogData.data.id_accion_estrategica;
 
-
-
-     
       this.getComunidad(this.dialogData.data.id_municipio);
+      if(this.dialogData.data.id_indicador === 1|| this.dialogData.data.id_indicador === 2 || this.dialogData.data.id_indicador === 26){
+        this.limiteAlcance=1;
+      }else this.limiteAlcance=2;
     }else{
-      this.alcancetoArray.setControl(0,
-        this.formBuilder.group({
-          cantidad: [null, [Validators.required]],
-          id_unidad_medicion: [ null, [Validators.required, Validators.min(1)]],
-        })
-        )
+      this.alcancetoArray.push(this.formBuilder.group({
+        cantidad: [null, [Validators.required]], id_unidad_medicion: [ 7, [Validators.required, Validators.min(1)]],
+        mujeres: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+        hombres: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+      }));
       }
 
 
@@ -319,8 +309,9 @@ export class ProyectoComponent implements OnInit {
   }*/
 
   //----------- PARA QUITAR CAMPOS INPUT(CANTIDAD Y UNIDAD)
+  limiteAlcance = 1;
   removeInput() {
-    if (this.alcancetoArray.length > 1) {
+    if (this.alcancetoArray.length > this.limiteAlcance) {
       this.alcancetoArray.removeAt(this.alcancetoArray.length - 1);
     }
   }
@@ -334,15 +325,20 @@ export class ProyectoComponent implements OnInit {
   }
 
   //
-  addAlcances(alcances:any[],mediciones:any[]){
-    for(let i = 0;i<alcances.length;i++){
+  addAlcances(){
+    for(let i = 0;i<this.alcancesSeleccionadas.length;i++){
       const alcanceItem = this.formBuilder.group({
-        cantidad: [alcances[i], [Validators.required]],
-        id_unidad_medicion: [mediciones[i], [Validators.required]],
+        cantidad: [this.alcancesSeleccionadas[i].cantidad, [Validators.required]],
+        id_unidad_medicion: [this.alcancesSeleccionadas[i].id_unidad_medicion, [Validators.required]],
+        hombres:[null],
+        mujeres:[null],
       })
+      if(i===0){
+        alcanceItem.setControl('hombres',this.formBuilder.nonNullable.control(this.alcancesSeleccionadas[i].hombres,[Validators.required, Validators.pattern(/^[0-9]+$/)]));
+        alcanceItem.setControl('mujeres',this.formBuilder.nonNullable.control(this.alcancesSeleccionadas[i].mujeres,[Validators.required, Validators.pattern(/^[0-9]+$/)]));
+      }
       this.alcancetoArray.push(alcanceItem);
     }
-
   }
   addAlcance() {
     const alcanceItem = this.formBuilder.group({
@@ -544,18 +540,37 @@ export class ProyectoComponent implements OnInit {
   }
 
   // Agrega un método para manejar el cambio de indicador
-  onIndicadorChange() {
-    
-      this.alcancetoArray.at(0).reset();
-    
+  onIndicadorChange(event:any) {
+   
     const selectedIndicador = this.indicador.find(
-      (indicador) => indicador.id_indicador === this.proyectoForm.value.id_indicador
+      (indicador) => indicador.id_indicador === event.value
     );
     if (selectedIndicador) {
-      //this.proyectoForm.get('unidad').setValue(selectedIndicador.nom_unidad);
-     
-      this.alcancetoArray.at(0).get('id_unidad_medicion')?.setValue(selectedIndicador.id_unidad_medicion);
-     
+      if(selectedIndicador.id_indicador===1 || selectedIndicador.id_indicador ===2 || selectedIndicador.id_indicador === 26){
+        this.limiteAlcance=1;
+        if(this.alcancetoArray.length>1)
+        for(let i=this.limiteAlcance;i<this.alcancetoArray.length;i++){
+          this.alcancetoArray.removeAt(i)
+        }
+      }else if (selectedIndicador.id_indicador ===14){
+        this.alcancetoArray.setControl(1,
+          this.formBuilder.group({
+            cantidad: [null, [Validators.required]],
+            id_unidad_medicion: [ 5, [Validators.required, Validators.min(1)]],
+            mujeres: [null],
+            hombres: [null],
+          }))
+          this.limiteAlcance=2;
+      }else{
+        this.alcancetoArray.setControl(1,
+          this.formBuilder.group({
+            cantidad: [null, [Validators.required]],
+            id_unidad_medicion: [ selectedIndicador.id_unidad_medicion, [Validators.required, Validators.min(1)]],
+            mujeres: [null],
+            hombres: [null],
+          }))
+        this.limiteAlcance=2;
+      }
     }
   }
   cantidadInd(medida:any){
@@ -768,4 +783,5 @@ export class ProyectoComponent implements OnInit {
 
   }
 
+  
 }

@@ -137,45 +137,66 @@
                 <mat-icon class="btn-icon" style="color: #85929E;" (click)="removeInput()">remove_circle</mat-icon>
             </div>
 
-            <div fxLayout="row wrap">
-                <mat-form-field appearance="fill" fxFlex>
-                    <mat-label>Cantidad</mat-label>
-                    <input type="number" matInput formControlName="cantidad" required>
-                    <mat-error *ngIf="proyectoForm.controls.cantidad.touched && proyectoForm.controls.cantidad.invalid">
-                        <span *ngIf="proyectoForm.controls.cantidad.errors.required">Este campo es obligatorio.</span>
-                    </mat-error>
-                </mat-form-field>
-
-                <mat-form-field appearance="fill" fxFlex>
-                    <mat-label>Unidad</mat-label>
-                    <mat-select formControlName="id_unidad_medicion">
-                        <mat-option *ngFor="let unidad of unidad" [value]="unidad.id_unidad_medicion">
-                            {{unidad.nom_unidad}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-
-                <mat-form-field appearance="fill" fxFlex>
-                    <mat-label>Hombres</mat-label>
-                    <input type="number" matInput formControlName="hombres" required>
-                    <mat-error *ngIf="proyectoForm.controls.hombres.touched && proyectoForm.controls.hombres.invalid">
-                        <span *ngIf="proyectoForm.controls.hombres.errors.required">Este campo es obligatorio.</span>
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="fill" fxFlex>
-                    <mat-label>mujeres</mat-label>
-                    <input type="number" matInput formControlName="mujeres" required>
-                    <mat-error *ngIf="proyectoForm.controls.mujeres.touched && proyectoForm.controls.mujeres.invalid">
-                        <span *ngIf="proyectoForm.controls.mujeres.errors.required">Este campo es obligatorio.</span>
-                    </mat-error>
-                </mat-form-field>
-            </div>
-
             <div>
                 <!--Aregar y quitar campos de Input-->
                 <ng-container formArrayName="alcance">
                     <ng-container *ngFor="let finForm of alcancetoArray.controls; let i = index">
-                        <div [formGroupName]="i" fxLayout="row wrap">
+                        <div [formGroupName]="i" fxLayout="row wrap" *ngIf="i===0; else alcances">
+                            <mat-form-field appearance="fill" fxFlex>
+                                <mat-label>Cantidad</mat-label>
+                                <input type="number" matInput formControlName="cantidad" required>
+                                <mat-error
+                                    *ngIf="alcancetoArray.at(i)?.get('cantidad')?.touched && alcancetoArray.at(i)?.get('cantidad')?.invalid">
+                                    <span *ngIf="alcancetoArray.at(i)?.get('cantidad')?.errors?.['required']">Este
+                                        campo es obligatorio.</span>
+                                </mat-error>
+                            </mat-form-field>
+            
+                            <mat-form-field appearance="fill" fxFlex>
+                                <mat-label>Unidad</mat-label>
+                                <mat-select formControlName="id_unidad_medicion">
+                                    <mat-option *ngFor="let unidad of unidad" [value]="unidad.id_unidad_medicion">
+                                        {{unidad.nom_unidad}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error
+                                    *ngIf="alcancetoArray.at(i)?.get('id_unidad_medicion')?.touched && alcancetoArray.at(i)?.get('id_unidad_medicion')?.invalid">
+                                    <span
+                                        *ngIf="alcancetoArray.at(i)?.get('id_unidad_medicion')?.errors?.['required']">Este
+                                        campo es obligatorio.</span>
+                                </mat-error>
+                            </mat-form-field>
+            
+                            <mat-form-field appearance="fill" fxFlex>
+                                <mat-label>Hombres</mat-label>
+                                <input type="number" matInput formControlName="hombres" required>
+                                <mat-error
+                                    *ngIf="alcancetoArray.at(i)?.get('hombres')?.touched && alcancetoArray.at(i)?.get('hombres')?.invalid">
+                                    <span
+                                        *ngIf="alcancetoArray.at(i)?.get('hombres')?.errors?.['required']">Este
+                                        campo es obligatorio.</span>
+                                    <span
+                                        *ngIf="alcancetoArray.at(i)?.get('hombres')?.errors?.['pattern']">
+                                        Caracteres no validos.</span>
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" fxFlex>
+                                <mat-label>mujeres</mat-label>
+                                <input type="number" matInput formControlName="mujeres" required>
+                                <mat-error
+                                    *ngIf="alcancetoArray.at(i)?.get('mujeres')?.touched && alcancetoArray.at(i)?.get('mujeres')?.invalid">
+                                    <span
+                                        *ngIf="alcancetoArray.at(i)?.get('mujeres')?.errors?.['required']">Este
+                                        campo es obligatorio.</span>
+                                        <span
+                                        *ngIf="alcancetoArray.at(i)?.get('mujeres')?.errors?.['pattern']">
+                                        caracteres no validos</span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <ng-template #alcances>
+                            <div [formGroupName]="i" fxLayout="row wrap" >
+                              
                             <mat-form-field appearance="fill" fxFlex fxFlex.gt-sm="24%">
                                 <mat-label>Cantidad {{i + 1}}</mat-label>
                                 <input matInput formControlName="cantidad" required>
@@ -200,8 +221,8 @@
                                         campo es obligatorio.</span>
                                 </mat-error>
                             </mat-form-field>
-
                         </div>
+                        </ng-template>
                     </ng-container>
                 </ng-container>
                 <!---->
@@ -275,7 +296,7 @@
                     <div *ngIf="showSelector1">
                         <mat-form-field fxFlex>
                             <mat-label>Indicador</mat-label>
-                            <mat-select formControlName="id_indicador" (selectionChange)="onIndicadorChange()">
+                            <mat-select formControlName="id_indicador" (selectionChange)="onIndicadorChange($event)">
                                 <mat-option><ngx-mat-select-search [formControl]="searchIndicador"
                                         placeholderLabel="Buscar opción"></ngx-mat-select-search></mat-option>
                                 <mat-option *ngFor="let option of filterIndicador" [value]="option.id_indicador">
@@ -285,34 +306,6 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <ng-container formArrayName="alcance">
-                    <div fxLayout="row wrap" [formGroupName]="0">
-                        <mat-form-field appearance="fill" fxFlex fxFlex.gt-sm="24%">
-                            <mat-label>Cantidad</mat-label>
-                            <input matInput formControlName="cantidad" required (change)="cantidadInd(alcancetoArray.at(0).value)">
-                            <mat-error
-                                *ngIf="alcancetoArray.at(0)?.get('cantidad')?.touched && alcancetoArray.at(0)?.get('cantidad')?.invalid">
-                                <span *ngIf="alcancetoArray.at(0)?.get('cantidad')?.errors?.['required']">Este
-                                    campo es obligatorio.</span>
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="fill" fxFlex fxFlex.gt-sm="24.22%">
-                            <mat-label>Unidad de Medición</mat-label>
-                            <mat-select formControlName="id_unidad_medicion" [contentEditable]="false">
-                                <mat-option *ngFor="let item of unidad" [value]="item.id_unidad_medicion">
-                                    {{item.nom_unidad}}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error
-                                *ngIf="alcancetoArray.at(0)?.get('id_unidad_medicion')?.touched && alcancetoArray.at(0)?.get('id_unidad_medicion')?.invalid">
-                                <span
-                                    *ngIf="alcancetoArray.at(0)?.get('id_unidad_medicion')?.errors?.['required']">Este
-                                    campo es obligatorio.</span>
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                </ng-container>
             </div>
         </div>
     </form>
