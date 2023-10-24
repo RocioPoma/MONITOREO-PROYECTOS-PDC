@@ -51,8 +51,8 @@ export class EntidadOrganizacionComponent {
   add(){
     var formData = this.entidadForm.value;
     var data ={
-      nombre_entidad: formData.nombre_entidad,
-      comentario: formData.comentario,
+      nombre_entidad: formData.nombre_entidad.toUpperCase(),
+      comentario: formData.comentario.toUpperCase(),
       estado : true
     }
     this.EntidadServices.add(data).subscribe((response:any)=>{
@@ -76,8 +76,8 @@ export class EntidadOrganizacionComponent {
     var formData = this.entidadForm.value;
     var data ={
       id_entidad:this.dialogData.data.id_entidad,
-      nombre_entidad: formData.nombre_entidad,
-      comentario: formData.comentario,
+      nombre_entidad: formData.nombre_entidad.toUpperCase(),
+      comentario: formData.comentario.toUpperCase(),
       estado : true
     }
     this.EntidadServices.update(data).subscribe((response:any)=>{

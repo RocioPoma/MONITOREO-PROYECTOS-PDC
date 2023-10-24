@@ -587,19 +587,15 @@ export class ProyectoComponent implements OnInit {
     const estaDentroLaCuenca = this.validateCoordinates(formData.coordenada_x, formData.coordenada_y);
 
     var data = {
-      nom_proyecto: formData.nom_proyecto,
+      nom_proyecto: formData.nom_proyecto.toUpperCase(),
       fecha_inicio: this.finicio,
       fecha_fin: this.ffin,
       fecha_registro: this.fechaActualString,
       area: formData.area,
       coordenada_x: formData.coordenada_x,
       coordenada_y: formData.coordenada_y,
-      cantidad: formData.cantidad,
-      hombres: formData.hombres,
-      mujeres: formData.mujeres,
       id_categoria: formData.id_categoria,
       id_tipologia: formData.id_tipologia,
-      id_unidad_medicion: formData.id_unidad_medicion,
       id_indicador: formData.id_indicador,
       id_cuenca: formData.id_cuenca,
       id_accion_estrategica: formData.id_accion_estrategica,
@@ -643,22 +639,18 @@ export class ProyectoComponent implements OnInit {
 
     // Llamar a la función validateCoordinates
     const estaDentroLaCuenca = this.validateCoordinates(formData.coordenada_x, formData.coordenada_y);
-
+    
     var data = {
       id_proyecto: this.dialogData.data.id_proyecto,
-      nom_proyecto: formData.nom_proyecto,
+      nom_proyecto: formData.nom_proyecto.toUpperCase(),
       fecha_inicio: this.finicio,
       fecha_fin: this.ffin,
       fecha_registro: this.fechaActualString,
       area: formData.area,
       coordenada_x: formData.coordenada_x,
       coordenada_y: formData.coordenada_y,
-      cantidad: formData.cantidad,
-      hombres: formData.hombres,
-      mujeres: formData.mujeres,
       id_categoria: formData.id_categoria,
       id_tipologia: formData.id_tipologia,
-      id_unidad_medicion: formData.id_unidad_medicion,
       id_indicador: formData.id_indicador,
       id_cuenca: formData.id_cuenca,
       id_accion_estrategica: formData.id_accion_estrategica,

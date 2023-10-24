@@ -52,7 +52,7 @@ export class ComunidadComponent {
   add() {
     var formData = this.comunidadForm.value;
     var data ={
-      nombre: formData.nombre,
+      nombre: formData.nombre.toUpperCase(),
       id_municipio: formData.id_municipio
     }
     this.comunidadService.add(data).subscribe((response:any)=>{
@@ -76,7 +76,7 @@ export class ComunidadComponent {
     var formData = this.comunidadForm.value;
     var data ={
       id:this.dialogData.data.id,
-      nombre: formData.nombre,
+      nombre: formData.nombre.toUpperCase(),
       id_municipio: formData.id_municipio,
     }
     this.comunidadService.update(data).subscribe((response:any)=>{

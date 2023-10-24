@@ -56,8 +56,8 @@ export class IndicadorComponent implements OnInit {
     var formData = this. indicadorForm.value;
     var data = {
       id_indicador : this.dialogData.data.id_indicador,
-      nombre_indicador : formData.nombre_indicador,
-      desc_indicador : formData.desc_indicador,
+      nombre_indicador : formData.nombre_indicador.toUpperCase(),
+      desc_indicador : formData.desc_indicador.toUpperCase(),
       id_unidad_medicion : formData.id_unidad_medicion,
       estado: true
     }

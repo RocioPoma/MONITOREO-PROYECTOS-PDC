@@ -48,8 +48,8 @@ export class CategoriaComponent {
   add(){
     var formData = this.categoriaForm.value;
     var data ={
-      nom_categoria: formData.nom_categoria,
-      desc_categoria: formData.desc_categoria,
+      nom_categoria: formData.nom_categoria.toUpperCase(),
+      desc_categoria: formData.desc_categoria.toUpperCase(),
     }
     this.categoriaService.add(data).subscribe((response:any)=>{
       this.dialogRef.close();
@@ -72,8 +72,8 @@ export class CategoriaComponent {
     var formData = this.categoriaForm.value;
     var data ={
       id_categoria:this.dialogData.data.id_categoria,
-      nom_categoria: formData.nom_categoria,
-      desc_categoria: formData.desc_categoria,
+      nom_categoria: formData.nom_categoria.toUpperCase(),
+      desc_categoria: formData.desc_categoria.toUpperCase(),
     }
     this.categoriaService.update(data).subscribe((response:any)=>{
       this.dialogRef.close();

@@ -21,7 +21,7 @@
                     <mat-label>Etapa</mat-label>
                     <mat-select formControlName="id_etapa" required (valueChange)="changeEtapa($event)">
                         <mat-option *ngFor="let etapa of Etapa" [value]="etapa.id_etapa">
-                            {{etapa.nombre_etapa}}
+                            {{etapa.nombre_etapa }}
                         </mat-option>
                     </mat-select>
                     <mat-error

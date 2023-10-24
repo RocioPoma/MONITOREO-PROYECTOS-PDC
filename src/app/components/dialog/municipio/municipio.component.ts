@@ -56,7 +56,7 @@ export class MunicipioComponent {
   add(){
     var formData = this.municipioForm.value;
     var data ={
-      nombre_municipio: formData.nombre_municipio
+      nombre_municipio: formData.nombre_municipio.toUpperCase()
      
     }
     this.municipioService.add(data).subscribe((response:any)=>{
@@ -80,7 +80,7 @@ export class MunicipioComponent {
     var formData = this.municipioForm.value;
     var data ={
       id_municipio:this.dialogData.data.id_municipio,
-      nombre_municipio: formData.nombre_municipio
+      nombre_municipio: formData.nombre_municipio.toUpperCase()
       
     }
     this.municipioService.update(data).subscribe((response:any)=>{

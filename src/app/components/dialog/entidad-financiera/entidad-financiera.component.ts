@@ -50,8 +50,8 @@ export class EntidadFinancieraComponent {
   add(){
     var formData = this.entidadFinanForm.value;
     var data ={
-      nom_entidad_financiera: formData.nom_entidad_financiera,
-      desc_entidad_financiera: formData.desc_entidad_financiera,
+      nom_entidad_financiera: formData.nom_entidad_financiera.toUpperCase(),
+      desc_entidad_financiera: formData.desc_entidad_financiera.toUpperCase(),
       estado : true
     }
     this.entidadFinancieraServices.add(data).subscribe((response:any)=>{
@@ -75,8 +75,8 @@ export class EntidadFinancieraComponent {
     var formData = this.entidadFinanForm.value;
     var data ={
       id_entidad_financiera:this.dialogData.data.id_entidad_financiera,
-      nom_entidad_financiera: formData.nom_entidad_financiera,
-      desc_entidad_financiera: formData.desc_entidad_financiera,
+      nom_entidad_financiera: formData.nom_entidad_financiera.toUpperCase(),
+      desc_entidad_financiera: formData.desc_entidad_financiera.toUpperCase(),
       estado : true
     }
     this.entidadFinancieraServices.update(data).subscribe((response:any)=>{

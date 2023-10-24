@@ -49,8 +49,8 @@ export class EntidadEjecutoraComponent {
   add(){
     var formData = this.entidadEjeForm.value;
     var data ={
-      nom_entidad_ejecutora: formData.nom_entidad_ejecutora,
-      desc_entidad_ejecutora: formData.desc_entidad_ejecutora,
+      nom_entidad_ejecutora: formData.nom_entidad_ejecutora.toUpperCase(),
+      desc_entidad_ejecutora: formData.desc_entidad_ejecutora.toUpperCase(),
       estado : true
     }
     this.entidadEjecutoraServices.add(data).subscribe((response:any)=>{
@@ -74,8 +74,8 @@ export class EntidadEjecutoraComponent {
     var formData = this.entidadEjeForm.value;
     var data ={
       id_entidad_ejecutora:this.dialogData.data.id_entidad_ejecutora,
-      nom_entidad_ejecutora: formData.nom_entidad_ejecutora,
-      desc_entidad_ejecutora: formData.desc_entidad_ejecutora,
+      nom_entidad_ejecutora: formData.nom_entidad_ejecutora.toUpperCase(),
+      desc_entidad_ejecutora: formData.desc_entidad_ejecutora.toUpperCase(),
       estado : true
     }
     this.entidadEjecutoraServices.update(data).subscribe((response:any)=>{

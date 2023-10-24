@@ -86,17 +86,16 @@ export class GestionusuarioComponent {
   }
 
   add(){
-    
     var formData = this.usuarioForm.value;
     this.fnac = this.datePipe.transform(formData.fecha_nacimiento, 'yyyy-MM-dd')
     var data ={            
-      nombre: formData.nombre,
-      ap_paterno: formData.ap_paterno,
-      ap_materno: formData.ap_materno,
+      nombre: formData.nombre.toUpperCase(),
+      ap_paterno: formData.ap_paterno.toUpperCase(),
+      ap_materno: formData.ap_materno.toUpperCase(),
       celular: formData.celular,
       fecha_registro: this.fechaActualString,
       password: formData.password,
-      email: formData.email,
+      email: formData.email.toLocaleLowerCase(),
       telefono: formData.telefono,
       genero: formData.genero,
       rol: formData.rol,
@@ -127,13 +126,13 @@ export class GestionusuarioComponent {
     this.fnac = this.datePipe.transform(formData.fecha_nacimiento, 'yyyy-MM-dd');
     this.fechaActualString = this.datePipe.transform(formData.fecha_registro, 'yyyy-MM-dd');
     var data ={
-      nombre: formData.nombre,
-      ap_paterno: formData.ap_paterno,
-      ap_materno: formData.ap_materno,
+      nombre: formData.nombre.toUpperCase(),
+      ap_paterno: formData.ap_paterno.toUpperCase(),
+      ap_materno: formData.ap_materno.toUpperCase(),
       celular: formData.celular,
       fecha_registro:  this.fechaActualString,
       password: formData.password,
-      email: formData.email,
+      email: formData.email.toLocaleLowerCase(),
       telefono: formData.telefono,
       genero: formData.genero,
       rol: formData.rol,

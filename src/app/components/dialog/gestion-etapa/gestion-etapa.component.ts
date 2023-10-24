@@ -79,9 +79,9 @@ export class GestionEtapaComponent {
     var formData = this.etapaForm.value;
     var data ={
       id_etapa:this.dialogData.data.id_etapa,
-      nombre_etapa: formData.nombre_etapa,
+      nombre_etapa: formData.nombre_etapa.toUpperCase(),
       peso_etapa: formData.peso_etapa,
-      descripcion_etapa: formData.descripcion_etapa,
+      descripcion_etapa: formData.descripcion_etapa.toUpperCase(),
       id_tipologia:formData.id_tipologia,
       estado: this.dialogData.data.estado     
     }
