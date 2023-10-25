@@ -70,7 +70,7 @@ export class ProyectoComponent implements OnInit {
   filterLineaEstrategica: any[] = [];
   //-------selectedOptionControl = new FormControl();
   searchLineaEstrategica = new FormControl();
-
+  ciUser:any;
   //-------Para filtrar LineaDeAccion
   filterLineaDeAccion: any[] = [];
   searchLineaDeAccion = new FormControl();
@@ -114,6 +114,9 @@ export class ProyectoComponent implements OnInit {
   showSelector2 = false;
   showSelector3 = false;
 
+  indexLE:number;
+  indexLA:number;
+  indexAE:number;
   //--------------------Mapa --------------------------------------
   polygonData: any; // Variable para almacenar los datos del polígono
 
@@ -154,8 +157,7 @@ export class ProyectoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-  
+    this.ciUser = localStorage.getItem('ci') || null;
     this.getTipologia();
     this.getCategoria();
     this.getCuenca();
@@ -476,10 +478,12 @@ export class ProyectoComponent implements OnInit {
 
   //------------------- OBTENEMOS LINEA DE ACCION segun id_linea_estrategica
   getLineaDeAccion(id_linea_estrategica: any) {
-   
     this.LineasEstrategicasService.getLineaDeAccion(id_linea_estrategica).subscribe((response: any) => {
       this.LineaDeAccion = response;
       this.filterLineaDeAccion = response;
+      this.indexLE=this.LineaEstrategica.findIndex(val=>val.id_linea_estrategica === id_linea_estrategica)+1;
+      
+      // console.log(response);
     }, (error: any) => {
       if (error.error?.message) {
         this.responseMessage = error.error?.message;
@@ -494,10 +498,12 @@ export class ProyectoComponent implements OnInit {
 
   //------------------- OBTENEMOS ACCION ESTRATEGICA segun id_linea_accion
   getAccionEstrategica(id_linea_accion: any) {
-   
     this.LineasEstrategicasService.getAccionEstrategica(id_linea_accion).subscribe((response: any) => {
       this.AccionEstrategica = response;
       this.filterAccionEstrategica = response;
+    
+      this.indexLA=this.LineaDeAccion.findIndex(val=>val.id_linea_accion === id_linea_accion)+1;
+      
     }, (error: any) => {
       if (error.error?.message) {
         this.responseMessage = error.error?.message;
@@ -582,10 +588,11 @@ export class ProyectoComponent implements OnInit {
     var formData = this.proyectoForm.value;
     this.finicio = this.datePipe.transform(formData.fecha_inicio, 'yyyy-MM-dd')
     this.ffin = this.datePipe.transform(formData.fecha_fin, 'yyyy-MM-dd')
-    
+    // console.log(this.proyectoForm.value);
+    // return;
     // Llamar a la función validateCoordinates
     const estaDentroLaCuenca = this.validateCoordinates(formData.coordenada_x, formData.coordenada_y);
-
+    console.log(this.proyectoForm.value);
     var data = {
       nom_proyecto: formData.nom_proyecto.toUpperCase(),
       fecha_inicio: this.finicio,
@@ -603,8 +610,8 @@ export class ProyectoComponent implements OnInit {
       comunidad: JSON.stringify(this.proyectoForm.value.comunidad), //Enviamos un objeto de comunidades
       alcance: JSON.stringify(this.proyectoForm.value.alcance) //Enviamos un objeto de alcances
     }
-
-    
+    // console.log(data);
+    // return;
     if (estaDentroLaCuenca) {
       // El punto está dentro del polígono
      

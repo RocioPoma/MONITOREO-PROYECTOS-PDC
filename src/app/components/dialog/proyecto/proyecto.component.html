@@ -251,9 +251,8 @@
                                 (selectionChange)="getLineaDeAccion($event.value)">
                                 <mat-option><ngx-mat-select-search [formControl]="searchLineaEstrategica"
                                         placeholderLabel="Buscar opción"></ngx-mat-select-search></mat-option>
-                                <mat-option *ngFor="let option of filterLineaEstrategica"
-                                    [value]="option.id_linea_estrategica"> {{option.id_linea_estrategica}}.-
-                                    {{ option.descripcion }}
+                                <mat-option *ngFor="let option of filterLineaEstrategica; let index = index"
+                                    [value]="option.id_linea_estrategica">{{index+1}}.- {{ option.descripcion }}
                                 </mat-option>
                                 <td mat-cell *matCellDef="let element; index as i "> {{i+1}} </td>
 
@@ -267,8 +266,8 @@
                                 (selectionChange)="getAccionEstrategica($event.value)">
                                 <mat-option><ngx-mat-select-search [formControl]="searchLineaDeAccion"
                                         placeholderLabel="Buscar opción"></ngx-mat-select-search></mat-option>
-                                <mat-option *ngFor="let option of filterLineaDeAccion" [value]="option.id_linea_accion">
-                                    {{ option.descripcion }}
+                                <mat-option *ngFor="let option of filterLineaDeAccion; let index = index" [value]="option.id_linea_accion">
+                                   {{indexLE}}.{{index+1}}.- {{ option.descripcion }}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -279,9 +278,9 @@
                             <mat-select formControlName="id_accion_estrategica">
                                 <mat-option><ngx-mat-select-search [formControl]="searchAccionEstrategica"
                                         placeholderLabel="Buscar opción"></ngx-mat-select-search></mat-option>
-                                <mat-option *ngFor="let option of filterAccionEstrategica"
+                                <mat-option *ngFor="let option of filterAccionEstrategica;let index =index"
                                     [value]="option.id_accion_estrategica">
-                                    {{ option.descripcion }}
+                                    {{indexLE}}.{{indexLA}}.{{index+1}}.- {{ option.descripcion }}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
