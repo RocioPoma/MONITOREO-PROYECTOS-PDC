@@ -49,6 +49,7 @@ export class ProyectoService {
     fd.append('comunidad', data.comunidad);
     fd.append("alcance", data.alcance);
     fd.append("documento", documento);
+    fd.append("ci", data.ci);
 
     return this.httpClient.post(this.url +
       "/proyecto/add/", fd);

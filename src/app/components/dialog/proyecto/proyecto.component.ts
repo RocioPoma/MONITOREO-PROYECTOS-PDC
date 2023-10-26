@@ -70,7 +70,7 @@ export class ProyectoComponent implements OnInit {
   filterLineaEstrategica: any[] = [];
   //-------selectedOptionControl = new FormControl();
   searchLineaEstrategica = new FormControl();
-  ciUser:any;
+  // ciUser:any;
   //-------Para filtrar LineaDeAccion
   filterLineaDeAccion: any[] = [];
   searchLineaDeAccion = new FormControl();
@@ -157,7 +157,6 @@ export class ProyectoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.ciUser = localStorage.getItem('ci') || null;
     this.getTipologia();
     this.getCategoria();
     this.getCuenca();
@@ -607,10 +606,11 @@ export class ProyectoComponent implements OnInit {
       id_cuenca: formData.id_cuenca,
       id_accion_estrategica: formData.id_accion_estrategica,
       estado: 'true',
+      ci:localStorage.getItem('ci'),
       comunidad: JSON.stringify(this.proyectoForm.value.comunidad), //Enviamos un objeto de comunidades
       alcance: JSON.stringify(this.proyectoForm.value.alcance) //Enviamos un objeto de alcances
     }
-    // console.log(data);
+    console.log(localStorage.getItem('ci'));
     // return;
     if (estaDentroLaCuenca) {
       // El punto está dentro del polígono
