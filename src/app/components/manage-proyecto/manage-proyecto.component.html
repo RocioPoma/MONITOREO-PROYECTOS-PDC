@@ -61,12 +61,18 @@
             <div class="table-wrapper">
                 <table mat-table [dataSource]="dataSource" matSort style="table-layout: auto; width: 100%;">
 
-                    <!-- ID Column -->
+                    <!-- Nro Column 
                     <ng-container matColumnDef="Nro" sticky>
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Nro </th>
                         <td class="td_btn" mat-cell *matCellDef="let element; index as i"
                             (click)="openEtapasProyecto(element)">
                             {{i+1}} </td>
+                    </ng-container>-->
+                    <ng-container matColumnDef="Nro">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> No.</th>
+                        <td class="td_btn" mat-cell *matCellDef="let element; let i = index">
+                            {{ dataSource.paginator.pageIndex * dataSource.paginator.pageSize + i + 1 }}
+                        </td>
                     </ng-container>
 
                     <!-- NombreProyecto Column -->
