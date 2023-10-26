@@ -84,8 +84,8 @@ export class ManageProyectoComponent {
   searchFilter: string = '';
   municipioFilter: string = '';
   categoriaFilter: string = '';
-  fechaInicio:Date;
-  fechaFin:Date;
+  fechaInicio: Date;
+  fechaFin: Date;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -97,7 +97,7 @@ export class ManageProyectoComponent {
     private MunicipioService: MunicipioService,
     private CategoriaService: CategoriaService,
     private comunidadService: ComunidadService,
-    private unidadesMedService:UnidadMedicionService,
+    private unidadesMedService: UnidadMedicionService,
     private dialog: MatDialog,
     private snackbarService: SnackbarService,
     private router: Router
@@ -143,7 +143,6 @@ export class ManageProyectoComponent {
     }
 
   }
-
 
   tableData() {
     this.ProyectoServices.getProyecto().subscribe((response: any) => {
@@ -256,21 +255,21 @@ export class ManageProyectoComponent {
     if (this.categoriaFilter) {
       this.applyCategoriaFilter(this.categoriaFilter);
     }
-    if(this.fechaInicio || this.fechaFin) {
-      this.fechaFin=null 
-      this.fechaInicio=null
+
+    if (this.fechaInicio || this.fechaFin) {
+      this.fechaFin = null
+      this.fechaInicio = null
     }
     //pdf
     //dar valor a variables para su impresion
-    //console.log(this.dataSource.filteredData);
+    console.log(this.dataSource.filteredData);
     this.infoFiltrada = this.dataSource.filteredData;
     this.tabla = this.infoFiltrada;
     //pdf
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
-  
-}
+  }
 
   applyCategoriaFilter(filterValue: string) {
     filterValue = filterValue.trim().toLowerCase();
@@ -280,37 +279,36 @@ export class ManageProyectoComponent {
     if (this.municipioFilter) {
       this.applyMunicipioFilter(this.municipioFilter);
     } else {
+      // Si no hay filtro de municipio activo, aplicar solo el filtro de categoría
       this.dataSource.filterPredicate = (data: any, filter: string) =>
         data.nom_categoria.trim().toLowerCase().includes(filter);
       this.dataSource.filter = filterValue;
-      // Si no hay filtro de municipio activo, aplicar solo el filtro de categoría
     }
-    if(this.fechaInicio || this.fechaFin) {
-      this.fechaFin=null 
-      this.fechaInicio=null
+
+    if (this.fechaInicio || this.fechaFin) {
+      this.fechaFin = null
+      this.fechaInicio = null
     }
     //pdf
     //dar valor a variables para su impresion
-    //console.log(this.dataSource.filteredData);
+    console.log(this.dataSource.filteredData);
     this.infoFiltrada = this.dataSource.filteredData;
-    this.tabla = this.infoFiltrada;
-    //pdf
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    this.dataSource.paginator.firstPage();
   }
+
+
   validarFechas() {
-    if(this.fechaInicio && this.fechaFin){
-      this.dataSource.filterPredicate = (data: any, filter: any) =>{
-        const fechaInicioProy= new Date(data.fecha_inicio);
-        return fechaInicioProy.getTime()>=filter.fechaInicioTime && fechaInicioProy.getTime()<=filter.fechaFinTime;
+    if (this.fechaInicio && this.fechaFin) {
+      this.dataSource.filterPredicate = (data: any, filter: any) => {
+        const fechaInicioProy = new Date(data.fecha_inicio);
+        return fechaInicioProy.getTime() >= filter.fechaInicioTime && fechaInicioProy.getTime() <= filter.fechaFinTime;
       }
-      this.dataSource.filter={fechaInicioTime:this.fechaInicio.getTime(),fechaFinTime:this.fechaFin.getTime()}
-      if (this.municipioFilter.length>0) {
-        this.municipioFilter='';
-      } 
-      if (this.categoriaFilter.length>0) {
-        this.categoriaFilter='';
+      this.dataSource.filter = { fechaInicioTime: this.fechaInicio.getTime(), fechaFinTime: this.fechaFin.getTime() }
+      if (this.municipioFilter.length > 0) {
+        this.municipioFilter = '';
+      }
+      if (this.categoriaFilter.length > 0) {
+        this.categoriaFilter = '';
       }
       this.infoFiltrada = this.dataSource.filteredData;
       this.tabla = this.infoFiltrada;
@@ -570,9 +568,9 @@ export class ManageProyectoComponent {
     XLSX.writeFile(wb, 'information.xlsx');
 
   }
-//------------------- OBTENEMOS COMUNIDAD
-  private _comunidades:any[] =[];
-  private _unidades:any[]= [];
+  //------------------- OBTENEMOS COMUNIDAD
+  private _comunidades: any[] = [];
+  private _unidades: any[] = [];
   getComunidades() {
     this.comunidadService.getComunidades().subscribe((response: any) => {
       this._comunidades = response;
@@ -588,7 +586,7 @@ export class ManageProyectoComponent {
 
     });
   }
-  
+
   //------------------- OBTENEMOS UNIDAD
   getUnidades() {
     this.unidadesMedService.getUnidad().subscribe((response: any) => {
@@ -619,10 +617,11 @@ export class ManageProyectoComponent {
 
       const coordenadasUTM = proj4("EPSG:4326", "EPSG:32720", [latitud, longitud]);
 
-      const comunidadesProyecto = this._comunidades.filter(comu=>item['comunidades'].includes(comu.id));
+      const comunidadesProyecto = this._comunidades.filter(comu => item['comunidades'].includes(comu.id));
       // coordenadasUTM es un array con [Este, Norte]
       const este = coordenadasUTM[0];
       const norte = coordenadasUTM[1];
+      console.log("Item",item);
       return {
         "ENTIDAD EJECUTORA": item["entidad_ejecutora"],
         "PROYECTO/ACCIÓN": item["nom_proyecto"],
@@ -634,7 +633,7 @@ export class ManageProyectoComponent {
         "AÑO DE EV.": añoActual,
         "DEPARTAMENTO": 'TARIJA',
         "MUNICIPIO": item["nombre_municipio"],
-        "CIUDAD/COMUNIDAD": comunidadesProyecto.map(com=>com.nombre).toString(),
+        "CIUDAD/COMUNIDAD": comunidadesProyecto.map(com => com.nombre).toString(),
         "ÁREA": item["area"],
         "COORDENADA X DEC.": item["coordenada_x"],
         "COORDENADA Y DEC.": item["coordenada_y"],
@@ -649,8 +648,8 @@ export class ManageProyectoComponent {
         "LÍNEA ESTRATÉGICA": item["linea_estrategica"],
         "ACCIÓN ESTRATÉGICA": item["accion_estrategica"],
         "INDICADOR": item["nombre_indicador"],
-        "ALCANCE PROYECTO": item["alcances"].length>1?item['alcances'][1].cantidad:item["alcances"][0].cantidad,
-        "UNIDAD MEDICION": item['alcances'].length>1?this._unidades.find(und=>und.id_unidad_medicion===item["alcances"][1].id_unidad_medicion).nom_unidad:this._unidades.find(und=>und.id_unidad_medicion===item["alcances"][0].id_unidad_medicion).nom_unidad,
+        "ALCANCE PROYECTO": item["alcances"].length > 1 ? item['alcances'][1].cantidad : item["alcances"][0].cantidad,
+        "UNIDAD MEDICION": item['alcances'].length > 1 ? this._unidades.find(und => und.id_unidad_medicion === item["alcances"][1].id_unidad_medicion).nom_unidad : this._unidades.find(und => und.id_unidad_medicion === item["alcances"][0].id_unidad_medicion).nom_unidad,
       };
     });
 
@@ -887,7 +886,7 @@ export class ManageProyectoComponent {
       this.tableData();
     })
   }
- 
+
 
 }
 

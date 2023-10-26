@@ -51,7 +51,7 @@ export class GestionusuarioComponent {
       password: [null, [Validators.required]],
       email: [null, [Validators.required, Validators.email]],
       
-      telefono: [null, [Validators.required, Validators.pattern(/^\d{6}$/)]],
+      telefono: [null, [Validators.pattern(/^\d{5}$/)]],
       celular: [null, [Validators.required, Validators.pattern(/^\d{8}$/)]],
       genero: [null, [Validators.required]],
       rol: [null, [Validators.required]],

@@ -19,7 +19,7 @@ export class ProyectoService {
 
   //----------------------API PARA LISTAR PROYECTOS ------------------------------
   getProyecto2(ci: string) {
-    return this.httpClient.get(this.url + "/proyecto//buscar/"+ ci)
+    return this.httpClient.get(this.url + "/proyecto/buscar/"+ ci)
   }
 
   //----------------------API PARA AGREGAR PROYECTO SIN DOCUMENTO ------------------------------ No se utilizo
