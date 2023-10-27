@@ -49,7 +49,7 @@ import { UnidadMedicionService } from 'src/app/services/unidad-medicion.service'
   //imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule],
 })
 export class ManageProyectoComponent {
-  displayedColumns: string[] = ['Nro', 'NombreProyecto', 'FechaInicio', 'FechaFin', 'NombreMunicipio', 'UltimaEtapa', 'NombreCategoria', 'NombreTipologia', 'documento', 'seguimiento', 'Acciones'];
+  displayedColumns: string[] = ['Nro', 'NombreProyecto', 'FechaInicio', 'FechaFin', 'Ult_Fecha_Mod','NombreMunicipio', 'UltimaEtapa', 'NombreCategoria', 'NombreTipologia', 'documento', 'seguimiento', 'Acciones'];
   dataSource: any;
   responseMessage: any;
   proyecto: any;
@@ -262,7 +262,6 @@ export class ManageProyectoComponent {
     }
     //pdf
     //dar valor a variables para su impresion
-    console.log(this.dataSource.filteredData);
     this.infoFiltrada = this.dataSource.filteredData;
     this.tabla = this.infoFiltrada;
     //pdf
@@ -291,7 +290,6 @@ export class ManageProyectoComponent {
     }
     //pdf
     //dar valor a variables para su impresion
-    console.log(this.dataSource.filteredData);
     this.infoFiltrada = this.dataSource.filteredData;
     this.dataSource.paginator.firstPage();
   }
@@ -630,6 +628,8 @@ export class ManageProyectoComponent {
         "ETAPA": item["ultima_etapa"],
         "FECHA INICIO": item["fecha_inicio_convert"],
         "FECHA FINAL": item["fecha_fin_convert"],
+        "FECHA REGISTRO": item["fecha_registro_convert"],
+        "FECHA ULTIMA MODIFICACION": item["fecha_modificacion_convert"],
         "AÑO DE EV.": añoActual,
         "DEPARTAMENTO": 'TARIJA',
         "MUNICIPIO": item["nombre_municipio"],
@@ -650,6 +650,7 @@ export class ManageProyectoComponent {
         "INDICADOR": item["nombre_indicador"],
         "ALCANCE PROYECTO": item["alcances"].length > 1 ? item['alcances'][1].cantidad : item["alcances"][0].cantidad,
         "UNIDAD MEDICION": item['alcances'].length > 1 ? this._unidades.find(und => und.id_unidad_medicion === item["alcances"][1].id_unidad_medicion).nom_unidad : this._unidades.find(und => und.id_unidad_medicion === item["alcances"][0].id_unidad_medicion).nom_unidad,
+      
       };
     });
 
@@ -685,6 +686,8 @@ export class ManageProyectoComponent {
       { wch: 20 }, //etapa
       { wch: 12 }, //fecha inicio
       { wch: 12 }, //fecha fin
+      { wch: 20 }, //fecha registro
+      { wch: 30 }, //fecha modificacion
       { wch: 12 }, //anio de evaluacion
       { wch: 15 }, // departamento
       { wch: 15 }, // municipio

@@ -33,6 +33,8 @@ import { environment } from 'src/environments/environment';
 //convertir los coordenadas
 import proj4 from 'proj4';
 import { CategoriaService } from 'src/app/services/categoria.service';
+import { ComunidadService } from 'src/app/services/comunidad.service';
+import { UnidadMedicionService } from 'src/app/services/unidad-medicion.service';
 
 
 @Component({
@@ -41,7 +43,7 @@ import { CategoriaService } from 'src/app/services/categoria.service';
   styleUrls: ['./basede-datos.component.scss']
 })
 export class BasedeDatosComponent {
-  displayedColumns: string[] = ['Nro', 'NombreProyecto', 'FechaInicio', 'FechaFin', 'NombreMunicipio', 'UltimaEtapa', 'NombreCategoria', 'NombreTipologia', 'documento'];
+  displayedColumns: string[] = ['Nro', 'NombreProyecto', 'FechaInicio', 'FechaFin','Ult_Fecha_Mod', 'NombreMunicipio', 'UltimaEtapa', 'NombreCategoria', 'NombreTipologia', 'documento'];
   dataSource: any;
   responseMessage: any;
   proyecto: any;
@@ -81,6 +83,8 @@ export class BasedeDatosComponent {
     private ProyectoServices: ProyectoService,
     private MunicipioService: MunicipioService,
     private CategoriaService:CategoriaService,
+    private comunidadService: ComunidadService,
+    private unidadesMedService: UnidadMedicionService,
     private dialog: MatDialog,
     private snackbarService: SnackbarService,
     private router: Router
@@ -94,7 +98,8 @@ export class BasedeDatosComponent {
     this.tableData();
     this.getMunicipio();
     this.getCategoria();
-
+    this.getComunidades();
+    this.getUnidades();
     //console.log("url: " + this.fileURL);
     //para usaurio de pdf    
     const nombreString = localStorage.getItem('nombre');
@@ -151,7 +156,35 @@ export class BasedeDatosComponent {
 
     });
   }
+  getComunidades() {
+    this.comunidadService.getComunidades().subscribe((response: any) => {
+      this._comunidades = response;
 
+    }, (error: any) => {
+      if (error.error?.message) {
+        this.responseMessage = error.error?.message;
+      }
+      else {
+        this.responseMessage = GlobalCostants.genericError;
+      }
+      this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+
+    });
+  }
+  getUnidades() {
+    this.unidadesMedService.getUnidad().subscribe((response: any) => {
+      this._unidades = response;
+    }, (error: any) => {
+      if (error.error?.message) {
+        this.responseMessage = error.error?.message;
+      }
+      else {
+        this.responseMessage = GlobalCostants.genericError;
+      }
+      this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+
+    });
+  }
     //------------------- OBTENEMOS CATEGORIA
     getCategoria() {
       this.CategoriaService.getCategoria().subscribe((response: any) => {
@@ -235,9 +268,9 @@ export class BasedeDatosComponent {
     this.infoFiltrada = this.dataSource.filteredData;
     this.tabla = this.infoFiltrada;
     //pdf
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    // if (this.dataSource.paginator) {
+    //   this.dataSource.paginator.firstPage();
+    // }
   }
   validarFechas() {
     if(this.fechaInicio && this.fechaFin){
@@ -261,6 +294,8 @@ export class BasedeDatosComponent {
     }
   }
 
+  private _comunidades: any[] = [];
+  private _unidades: any[] = [];
 
   openEtapasProyecto(proyecto: any) {
     this.proyecto = proyecto;
@@ -287,12 +322,15 @@ export class BasedeDatosComponent {
       // Coordenadas geográficas (latitud y longitud)
       const latitud = parseFloat(item.coordenada_y);
       const longitud = parseFloat(item.coordenada_x);
-
+      
+      const comunidadesProyecto = this._comunidades.filter(comu => item['comunidades'].includes(comu.id));
+      
       const coordenadasUTM = proj4("EPSG:4326", "EPSG:32720", [latitud, longitud]);
 
       // coordenadasUTM es un array con [Este, Norte]
       const este = coordenadasUTM[0];
       const norte = coordenadasUTM[1];
+      console.log('item',item)
       return {
         "ENTIDAD EJECUTORA": item["entidad_ejecutora"],
         "PROYECTO/ACCIÓN": item["nom_proyecto"],
@@ -301,10 +339,12 @@ export class BasedeDatosComponent {
         "ETAPA": item["ultima_etapa"],
         "FECHA INICIO": item["fecha_inicio_convert"],
         "FECHA FINAL": item["fecha_fin_convert"],
+        "FECHA REGISTRO": item["fecha_registro_convert"],
+        "FECHA ULTIMA MODIFICACION": item["fecha_modificacion_convert"],
         "AÑO DE EV.": añoActual,
         "DEPARTAMENTO": 'TARIJA',
         "MUNICIPIO": item["nombre_municipio"],
-        "CIUDAD/COMUNIDAD": item["nombre_comunidades"],
+        "CIUDAD/COMUNIDAD": comunidadesProyecto.map(com => com.nombre).toString(),
         "ÁREA": item["area"],
         "COORDENADA X DEC.": item["coordenada_x"],
         "COORDENADA Y DEC.": item["coordenada_y"],
@@ -312,13 +352,16 @@ export class BasedeDatosComponent {
         "ESTE - UTM": este,
         "NORTE - UTM": norte,
         "FUENTES FINANCIAMIENTO": item["fuentes_financiamiento"],
-        "TOTAL HAB.": item["cantidad"],
-        "MUJERES": item["mujeres"],
-        "HOMBRES": item["hombres"],
+        "TOTAL HAB.": item["alcances"][0].cantidad,
+        "MUJERES": item["alcances"][0].mujeres,
+        "HOMBRES": item["alcances"][0].hombres,
         "LÍNEA DE ACCIÓN": item["linea_de_accion"],
         "LÍNEA ESTRATÉGICA": item["linea_estrategica"],
         "ACCIÓN ESTRATÉGICA": item["accion_estrategica"],
         "INDICADOR": item["nombre_indicador"],
+        "ALCANCE PROYECTO": item["alcances"].length > 1 ? item['alcances'][1].cantidad : item["alcances"][0].cantidad,
+        "UNIDAD MEDICION": item['alcances'].length > 1 ? this._unidades.find(und => und.id_unidad_medicion === item["alcances"][1].id_unidad_medicion).nom_unidad : this._unidades.find(und => und.id_unidad_medicion === item["alcances"][0].id_unidad_medicion).nom_unidad,
+      
       };
     });
 
@@ -354,6 +397,8 @@ export class BasedeDatosComponent {
       { wch: 20 }, //etapa
       { wch: 12 }, //fecha inicio
       { wch: 12 }, //fecha fin
+      { wch: 20 }, //fecha registro
+      { wch: 30 }, //fecha modificacion
       { wch: 12 }, //anio de evaluacion
       { wch: 15 }, // departamento
       { wch: 15 }, // municipio
@@ -372,6 +417,8 @@ export class BasedeDatosComponent {
       { wch: 40 }, // linea estrategica
       { wch: 40 }, // accion estrategica
       { wch: 40 }, // Indicador
+      { wch: 20 }, // Alcance de proyecto
+      { wch: 20 }, // Unidad de medicion
       // Agregar más ancho de columna según sea necesario
     ];
 

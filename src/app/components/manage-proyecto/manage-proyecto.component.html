@@ -95,6 +95,10 @@
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> FechaFin </th>
                         <td mat-cell *matCellDef="let element"> {{element.fecha_fin_convert}} </td>
                     </ng-container>
+                    <ng-container matColumnDef="Ult_Fecha_Mod">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Ult. Fecha Mod. </th>
+                        <td mat-cell *matCellDef="let element"> {{element.fecha_modificacion_convert}} </td>
+                    </ng-container>
 
                     <!-- NombreMinicipio Column -->
                     <ng-container matColumnDef="NombreMunicipio">
