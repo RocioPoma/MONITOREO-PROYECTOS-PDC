@@ -33,6 +33,8 @@ import { environment } from 'src/environments/environment';
 //convertir los coordenadas
 import proj4 from 'proj4';
 import { CategoriaService } from 'src/app/services/categoria.service';
+import { UnidadMedicionService } from 'src/app/services/unidad-medicion.service';
+import { ComunidadService } from 'src/app/services/comunidad.service';
 
 
 @Component({
@@ -49,6 +51,8 @@ export class BasedeDatosComponent {
   categoria: any = [];
   openSeguimientosProyecto = false; //ABRIR LOS SEGUIMIENTOS DE ETAPAS DE PROYECTO
   apiResponse: any = []; //para filtrar con el select
+  _unidades:any[]=[];
+  _comunidades:any[]=[];
 
   //----url del servidor backend
   url = environment.apiUrl;
@@ -81,6 +85,8 @@ export class BasedeDatosComponent {
     private ProyectoServices: ProyectoService,
     private MunicipioService: MunicipioService,
     private CategoriaService:CategoriaService,
+    private unidadesMedService:UnidadMedicionService,
+    private comunidadService:ComunidadService,
     private dialog: MatDialog,
     private snackbarService: SnackbarService,
     private router: Router
@@ -111,6 +117,8 @@ export class BasedeDatosComponent {
     this.rol = rolString ? (rolString) : null;
     //console.log(this.rol);
     //------------------------------------
+    this.getComunidades();
+    this.getUnidades();
   }
 
 
@@ -273,12 +281,45 @@ export class BasedeDatosComponent {
       this.openSeguimientosProyecto = true;
     }
   }
+
+  //------------------- OBTENEMOS COMUNIDAD
+  getComunidades() {
+    this.comunidadService.getComunidades().subscribe((response: any) => {
+      this._comunidades = response;
+
+    }, (error: any) => {
+      if (error.error?.message) {
+        this.responseMessage = error.error?.message;
+      }
+      else {
+        this.responseMessage = GlobalCostants.genericError;
+      }
+      this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+
+    });
+  }
+
+  //------------------- OBTENEMOS UNIDAD
+  getUnidades() {
+    this.unidadesMedService.getUnidad().subscribe((response: any) => {
+      this._unidades = response;
+    }, (error: any) => {
+      if (error.error?.message) {
+        this.responseMessage = error.error?.message;
+      }
+      else {
+        this.responseMessage = GlobalCostants.genericError;
+      }
+      this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+
+    });
+  }
+
+
   //excel
   exportToExcel() {
     const fechaActual = new Date();
     const añoActual = fechaActual.getFullYear();
-
-    //console.log(this.dataSource.data);
 
     const dataForExcel = this.dataSource.filteredData.map(item => {
       // Definir proyecciones
@@ -290,6 +331,7 @@ export class BasedeDatosComponent {
 
       const coordenadasUTM = proj4("EPSG:4326", "EPSG:32720", [latitud, longitud]);
 
+      const comunidadesProyecto = this._comunidades.filter(comu => item['comunidades'].includes(comu.id));
       // coordenadasUTM es un array con [Este, Norte]
       const este = coordenadasUTM[0];
       const norte = coordenadasUTM[1];
@@ -304,7 +346,7 @@ export class BasedeDatosComponent {
         "AÑO DE EV.": añoActual,
         "DEPARTAMENTO": 'TARIJA',
         "MUNICIPIO": item["nombre_municipio"],
-        "CIUDAD/COMUNIDAD": item["nombre_comunidades"],
+        "CIUDAD/COMUNIDAD": comunidadesProyecto.map(com => com.nombre).toString(),
         "ÁREA": item["area"],
         "COORDENADA X DEC.": item["coordenada_x"],
         "COORDENADA Y DEC.": item["coordenada_y"],
@@ -312,13 +354,15 @@ export class BasedeDatosComponent {
         "ESTE - UTM": este,
         "NORTE - UTM": norte,
         "FUENTES FINANCIAMIENTO": item["fuentes_financiamiento"],
-        "TOTAL HAB.": item["cantidad"],
-        "MUJERES": item["mujeres"],
-        "HOMBRES": item["hombres"],
+        "TOTAL HAB.": item["alcances"][0].cantidad,
+        "MUJERES": item["alcances"][0].mujeres,
+        "HOMBRES": item["alcances"][0].hombres,
         "LÍNEA DE ACCIÓN": item["linea_de_accion"],
         "LÍNEA ESTRATÉGICA": item["linea_estrategica"],
         "ACCIÓN ESTRATÉGICA": item["accion_estrategica"],
         "INDICADOR": item["nombre_indicador"],
+        "ALCANCE PROYECTO": item["alcances"].length > 1 ? item['alcances'][1].cantidad : item["alcances"][0].cantidad,
+        "UNIDAD MEDICION": item['alcances'].length > 1 ? this._unidades.find(und => und.id_unidad_medicion === item["alcances"][1].id_unidad_medicion).nom_unidad : this._unidades.find(und => und.id_unidad_medicion === item["alcances"][0].id_unidad_medicion).nom_unidad,
       };
     });
 
@@ -333,11 +377,11 @@ export class BasedeDatosComponent {
     };
 
     // Combinar las celdas para el título
-    ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 23 } }];
-    ws['A1'] = { t: 's', v: 'TABLA DE DATOS DE PROYECTOS', s: titleCellStyle };
+    // ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 23 } }];
+    // ws['A1'] = { t: 's', v: 'TABLA DE DATOS DE PROYECTOS', s: titleCellStyle };
 
     // Agregar los datos a la hoja de cálculo
-    XLSX.utils.sheet_add_json(ws, dataForExcel, { origin: 'A2' });
+    XLSX.utils.sheet_add_json(ws, dataForExcel, { origin: 'A1' });
 
     // Aplicar el estilo de negrita a las celdas de encabezado y ajustar el ancho de las columnas
     const headerCellStyle = {
@@ -368,10 +412,12 @@ export class BasedeDatosComponent {
       { wch: 15 }, // total hab
       { wch: 12 }, //mujeres 
       { wch: 12 }, // hombres
-      { wch: 40 }, // Linea de accion
-      { wch: 40 }, // linea estrategica
-      { wch: 40 }, // accion estrategica
-      { wch: 40 }, // Indicador
+      { wch: 50 }, // Linea de accion
+      { wch: 50 }, // linea estrategica
+      { wch: 50 }, // accion estrategica
+      { wch: 50 }, // Indicador
+      { wch: 20 }, // Alcance de proyecto
+      { wch: 20 }, // Unidad de medicion
       // Agregar más ancho de columna según sea necesario
     ];
 
@@ -394,7 +440,6 @@ export class BasedeDatosComponent {
     // Opcional: Puedes volver a renderizar la MatTable para actualizar la vista
     this.table.renderRows();
   }
-
 
 
   //pdf
