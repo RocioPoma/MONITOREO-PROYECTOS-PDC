@@ -33,7 +33,8 @@ import { environment } from 'src/environments/environment';
 //convertir los coordenadas
 import proj4 from 'proj4';
 import { CategoriaService } from 'src/app/services/categoria.service';
-
+import { ComunidadService } from 'src/app/services/comunidad.service';
+import { UnidadMedicionService } from 'src/app/services/unidad-medicion.service';
 
 @Component({
   selector: 'app-basede-datos',
@@ -41,8 +42,8 @@ import { CategoriaService } from 'src/app/services/categoria.service';
   styleUrls: ['./basede-datos.component.scss']
 })
 export class BasedeDatosComponent {
-  displayedColumns: string[] = ['Nro', 'NombreProyecto', 'FechaInicio', 'FechaFin','Ult_Fecha_Mod', 'NombreMunicipio', 'UltimaEtapa', 'NombreCategoria', 'NombreTipologia', 'documento'];
-  dataSource: any;
+
+  displayedColumns: string[] = ['Nro', 'NombreProyecto', 'FechaInicio', 'FechaFin','Ult_Fecha_Mod', 'NombreMunicipio', 'UltimaEtapa', 'NombreCategoria', 'NombreTipologia', 'documento'];  dataSource: any;
   responseMessage: any;
   proyecto: any;
   municipios: any = [];
@@ -83,6 +84,8 @@ export class BasedeDatosComponent {
     private ProyectoServices: ProyectoService,
     private MunicipioService: MunicipioService,
     private CategoriaService:CategoriaService,
+    private comunidadService: ComunidadService,
+    private unidadesMedService: UnidadMedicionService,
     private dialog: MatDialog,
     private snackbarService: SnackbarService,
     private router: Router
@@ -96,6 +99,7 @@ export class BasedeDatosComponent {
     this.tableData();
     this.getMunicipio();
     this.getCategoria();
+
     this.getComunidades();
     this.getUnidades();
     //console.log("url: " + this.fileURL);
@@ -114,8 +118,6 @@ export class BasedeDatosComponent {
     this.rol = rolString ? (rolString) : null;
     //console.log(this.rol);
     //------------------------------------
-    this.getComunidades();
-    this.getUnidades();
   }
 
 
@@ -156,39 +158,41 @@ export class BasedeDatosComponent {
 
     });
   }
-  getComunidades() {
-    this.comunidadService.getComunidades().subscribe((response: any) => {
-      this._comunidades = response;
 
-    }, (error: any) => {
-      if (error.error?.message) {
-        this.responseMessage = error.error?.message;
-      }
-      else {
-        this.responseMessage = GlobalCostants.genericError;
-      }
-      this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
-
-    });
-  }
-  getUnidades() {
-    this.unidadesMedService.getUnidad().subscribe((response: any) => {
-      this._unidades = response;
-    }, (error: any) => {
-      if (error.error?.message) {
-        this.responseMessage = error.error?.message;
-      }
-      else {
-        this.responseMessage = GlobalCostants.genericError;
-      }
-      this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
-
-    });
-  }
     //------------------- OBTENEMOS CATEGORIA
     getCategoria() {
       this.CategoriaService.getCategoria().subscribe((response: any) => {
         this.categoria = response;
+      }, (error: any) => {
+        if (error.error?.message) {
+          this.responseMessage = error.error?.message;
+        }
+        else {
+          this.responseMessage = GlobalCostants.genericError;
+        }
+        this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+  
+      });
+    }
+
+    getComunidades() {
+      this.comunidadService.getComunidades().subscribe((response: any) => {
+        this._comunidades = response;
+  
+      }, (error: any) => {
+        if (error.error?.message) {
+          this.responseMessage = error.error?.message;
+        }
+        else {
+          this.responseMessage = GlobalCostants.genericError;
+        }
+        this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
+  
+      });
+    }
+    getUnidades() {
+      this.unidadesMedService.getUnidad().subscribe((response: any) => {
+        this._unidades = response;
       }, (error: any) => {
         if (error.error?.message) {
           this.responseMessage = error.error?.message;
@@ -268,9 +272,9 @@ export class BasedeDatosComponent {
     this.infoFiltrada = this.dataSource.filteredData;
     this.tabla = this.infoFiltrada;
     //pdf
-    // if (this.dataSource.paginator) {
-    //   this.dataSource.paginator.firstPage();
-    // }
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
   validarFechas() {
     if(this.fechaInicio && this.fechaFin){
@@ -294,8 +298,6 @@ export class BasedeDatosComponent {
     }
   }
 
-  private _comunidades: any[] = [];
-  private _unidades: any[] = [];
 
   openEtapasProyecto(proyecto: any) {
     this.proyecto = proyecto;
@@ -308,45 +310,12 @@ export class BasedeDatosComponent {
       this.openSeguimientosProyecto = true;
     }
   }
-
-  //------------------- OBTENEMOS COMUNIDAD
-  getComunidades() {
-    this.comunidadService.getComunidades().subscribe((response: any) => {
-      this._comunidades = response;
-
-    }, (error: any) => {
-      if (error.error?.message) {
-        this.responseMessage = error.error?.message;
-      }
-      else {
-        this.responseMessage = GlobalCostants.genericError;
-      }
-      this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
-
-    });
-  }
-
-  //------------------- OBTENEMOS UNIDAD
-  getUnidades() {
-    this.unidadesMedService.getUnidad().subscribe((response: any) => {
-      this._unidades = response;
-    }, (error: any) => {
-      if (error.error?.message) {
-        this.responseMessage = error.error?.message;
-      }
-      else {
-        this.responseMessage = GlobalCostants.genericError;
-      }
-      this.snackbarService.openSnackBar(this.responseMessage, GlobalCostants.error);
-
-    });
-  }
-
-
   //excel
   exportToExcel() {
     const fechaActual = new Date();
     const añoActual = fechaActual.getFullYear();
+
+    //console.log(this.dataSource.data);
 
     const dataForExcel = this.dataSource.filteredData.map(item => {
       // Definir proyecciones
@@ -355,16 +324,14 @@ export class BasedeDatosComponent {
       // Coordenadas geográficas (latitud y longitud)
       const latitud = parseFloat(item.coordenada_y);
       const longitud = parseFloat(item.coordenada_x);
-      
-      const comunidadesProyecto = this._comunidades.filter(comu => item['comunidades'].includes(comu.id));
-      
-      const coordenadasUTM = proj4("EPSG:4326", "EPSG:32720", [latitud, longitud]);
 
       const comunidadesProyecto = this._comunidades.filter(comu => item['comunidades'].includes(comu.id));
+
+      const coordenadasUTM = proj4("EPSG:4326", "EPSG:32720", [latitud, longitud]);
+
       // coordenadasUTM es un array con [Este, Norte]
       const este = coordenadasUTM[0];
       const norte = coordenadasUTM[1];
-      console.log('item',item)
       return {
         "ENTIDAD EJECUTORA": item["entidad_ejecutora"],
         "PROYECTO/ACCIÓN": item["nom_proyecto"],
@@ -393,6 +360,9 @@ export class BasedeDatosComponent {
         "LÍNEA ESTRATÉGICA": item["linea_estrategica"],
         "ACCIÓN ESTRATÉGICA": item["accion_estrategica"],
         "INDICADOR": item["nombre_indicador"],
+        "ALCANCE PROYECTO": item["alcances"].length > 1 ? item['alcances'][1].cantidad : item["alcances"][0].cantidad,
+        "UNIDAD MEDICION": item['alcances'].length > 1 ? this._unidades.find(und => und.id_unidad_medicion === item["alcances"][1].id_unidad_medicion).nom_unidad : this._unidades.find(und => und.id_unidad_medicion === item["alcances"][0].id_unidad_medicion).nom_unidad,
+     
       };
     });
 
@@ -407,11 +377,11 @@ export class BasedeDatosComponent {
     };
 
     // Combinar las celdas para el título
-    // ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 23 } }];
-    // ws['A1'] = { t: 's', v: 'TABLA DE DATOS DE PROYECTOS', s: titleCellStyle };
+    ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 23 } }];
+    ws['A1'] = { t: 's', v: 'TABLA DE DATOS DE PROYECTOS', s: titleCellStyle };
 
     // Agregar los datos a la hoja de cálculo
-    XLSX.utils.sheet_add_json(ws, dataForExcel, { origin: 'A1' });
+    XLSX.utils.sheet_add_json(ws, dataForExcel, { origin: 'A2' });
 
     // Aplicar el estilo de negrita a las celdas de encabezado y ajustar el ancho de las columnas
     const headerCellStyle = {
@@ -448,6 +418,8 @@ export class BasedeDatosComponent {
       { wch: 40 }, // linea estrategica
       { wch: 40 }, // accion estrategica
       { wch: 40 }, // Indicador
+      { wch: 20 }, // Alcance de proyecto
+      { wch: 20 }, // Unidad de medicion
       // Agregar más ancho de columna según sea necesario
     ];
 
@@ -470,6 +442,7 @@ export class BasedeDatosComponent {
     // Opcional: Puedes volver a renderizar la MatTable para actualizar la vista
     this.table.renderRows();
   }
+
 
 
   //pdf
