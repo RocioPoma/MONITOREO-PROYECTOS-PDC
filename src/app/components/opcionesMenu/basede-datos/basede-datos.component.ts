@@ -221,6 +221,7 @@ export class BasedeDatosComponent {
       this.dataSource.paginator.firstPage();
     }
   }
+  /*
   applyMunicipioFilter(filterValue: string) {
     filterValue = filterValue.trim().toLowerCase();
     this.dataSource.filterPredicate = (data: any, filter: string) =>
@@ -275,7 +276,78 @@ export class BasedeDatosComponent {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }*/
+
+  applyMunicipioFilter(filterValue: string) {
+    filterValue = filterValue.trim().toLowerCase();
+    this.municipioFilter = filterValue; // Almacenar el valor del filtro de municipio
+  
+    // Si también hay un filtro de categoría activo, aplicar ambos filtros
+    if (this.categoriaFilter) {
+      this.dataSource.filterPredicate = (data: any, filter: string) =>
+        data.nombre_municipio.trim().toLowerCase().includes(this.municipioFilter) &&
+        data.nom_categoria.trim().toLowerCase().includes(this.categoriaFilter);
+    } else {
+      this.dataSource.filterPredicate = (data: any, filter: string) =>
+        data.nombre_municipio.trim().toLowerCase().includes(this.municipioFilter);
+    }
+  
+    // Aplicar los filtros
+    this.dataSource.filter = filterValue;
+  
+    if(this.fechaInicio || this.fechaFin) {
+      this.fechaFin = null;
+      this.fechaInicio = null;
+    }
+  
+    //pdf
+    //dar valor a variables para su impresión
+    //console.log(this.dataSource.filteredData);
+    this.infoFiltrada = this.dataSource.filteredData;
+    this.tabla = this.infoFiltrada;
+    //pdf
+  
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
+  
+  applyCategoriaFilter(filterValue: string) {
+    filterValue = filterValue.trim().toLowerCase();
+    this.categoriaFilter = filterValue; // Almacenar el valor del filtro de categoría
+  
+    // Si también hay un filtro de municipio activo, aplicar ambos filtros
+    if (this.municipioFilter) {
+      this.dataSource.filterPredicate = (data: any, filter: string) =>
+        data.nombre_municipio.trim().toLowerCase().includes(this.municipioFilter) &&
+        data.nom_categoria.trim().toLowerCase().includes(this.categoriaFilter);
+    } else {
+      this.dataSource.filterPredicate = (data: any, filter: string) =>
+        data.nom_categoria.trim().toLowerCase().includes(this.categoriaFilter);
+    }
+  
+    // Aplicar los filtros
+    this.dataSource.filter = filterValue;
+  
+    if(this.fechaInicio || this.fechaFin) {
+      this.fechaFin = null;
+      this.fechaInicio = null;
+    }
+  
+    //pdf
+    //dar valor a variables para su impresión
+    //console.log(this.dataSource.filteredData);
+    this.infoFiltrada = this.dataSource.filteredData;
+    this.tabla = this.infoFiltrada;
+    //pdf
+  
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+  
+
+
   validarFechas() {
     if(this.fechaInicio && this.fechaFin){
       this.dataSource.filterPredicate = (data: any, filter: any) =>{
@@ -377,11 +449,11 @@ export class BasedeDatosComponent {
     };
 
     // Combinar las celdas para el título
-    ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 23 } }];
-    ws['A1'] = { t: 's', v: 'TABLA DE DATOS DE PROYECTOS', s: titleCellStyle };
+    //ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 23 } }];
+    //ws['A1'] = { t: 's', v: 'TABLA DE DATOS DE PROYECTOS', s: titleCellStyle };
 
     // Agregar los datos a la hoja de cálculo
-    XLSX.utils.sheet_add_json(ws, dataForExcel, { origin: 'A2' });
+    XLSX.utils.sheet_add_json(ws, dataForExcel, { origin: 'A1' });
 
     // Aplicar el estilo de negrita a las celdas de encabezado y ajustar el ancho de las columnas
     const headerCellStyle = {

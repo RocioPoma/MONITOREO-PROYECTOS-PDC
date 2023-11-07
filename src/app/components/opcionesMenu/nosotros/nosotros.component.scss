@@ -118,10 +118,11 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
+    
   }
   
   .pdf-item {
-    width: 32%;
+    width: 24%;
     box-sizing: border-box;
   }
   .pdf-item1 {
@@ -131,7 +132,7 @@
   
   .iframe {
     width: 100%;
-    height: 500px; // Altura fija para todos los iframes 
+    height: 400px; // Altura fija para todos los iframes 
     border: none;
   }
   .iframe1 {
