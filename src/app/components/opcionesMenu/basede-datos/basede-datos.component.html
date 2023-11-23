@@ -1,6 +1,21 @@
 <mat-card>
-    <div class="title">
-        <b><span class="color-text">GESTIÓN PROYECTOS/ACCIÓN</span></b>
+<!-- <div class="title">
+        <b><span class="color-text">GESTIÓN PROYECTOS/ACCIÓN </span></b>
+    </div>-->
+
+    <div class="container">
+        <div class="title">
+            <b><span class="color-text">GESTIÓN PROYECTOS/ACCIÓN</span></b>
+        </div>
+
+        <div class="icons">
+            <button mat-icon-button color="primary"  matTooltip="Reporte excel" (click)="exportToExcel()">
+                <mat-icon class="small-icon"><i class="fa fa-file-excel-o"></i></mat-icon>
+            </button>
+            <button mat-icon-button color="primary" matTooltip="Reporte pdf"  (click)="generateReport()">
+                <mat-icon class="small-icon"><i class="fa fa-file-pdf-o"></i></mat-icon>
+            </button>
+        </div>
     </div>
 
     <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutWrap="wrap" fxLayoutAlign="start center">
@@ -39,15 +54,14 @@
             <mat-datepicker #finPicker></mat-datepicker>
         </mat-form-field>
 
-        <div fxFlex="100%" fxFlex.gt-sm="33.33%"></div>
-
+<!--
         <button fxFlex.gt-sm="10%" mat-flat-button color="primary" class="padding"
             (click)=" exportToExcel()">Excel</button>
         <div fxFlex="100%" fxFlex.gt-sm="1.33%"></div>
         <button fxFlex.gt-sm="10%" mat-flat-button color="primary" class="padding"
             (click)="generateReport()">Reporte pdf</button>
         <div fxFlex="100%" fxFlex.gt-sm="1.33%"></div>
-
+-->
     </div>
 
     <div>
