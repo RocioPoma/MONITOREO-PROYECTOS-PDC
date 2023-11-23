@@ -123,16 +123,13 @@
                     <ng-container matColumnDef="documento">
                         <th mat-header-cell *matHeaderCellDef>Doc.</th>
                         <td mat-cell *matCellDef="let element">
-                            <button mat-icon-button color="accent" matTooltip="Seguimiento"
+                            <button mat-icon-button color="accent" matTooltip="Archivos"
                                 (click)="handleAddDoc(element)">
                                 <mat-icon>folder_copy</mat-icon>
                             </button>
                         </td>
                     </ng-container>
-
-
-
-
+                    
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
 
