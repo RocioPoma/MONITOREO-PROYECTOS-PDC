@@ -17,10 +17,9 @@
   </div>
 </div>
 
-<div class="container">
-
+<div class="container" *ngFor="let element of nosotros">
   <!-- Sección dividida en dos partes -->
-  <h2 class="green-text">¿Qué es el Sistema de Monitoreo?</h2>
+  <h2 class="green-text">¿Qué es el Sistema de Monitoreo?</h2> 
   <div class="split-section">
     <div class="left">
       <p style="text-align: justify;">
@@ -55,11 +54,11 @@
     </div>
     <!-- Derecha: Video de YouTube -->
     <div class="right">
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/jmoWvIiF44M?si=cgdjFIFbZWg1gURm"
+      <iframe width="560" height="315" [src]="linkVideo"
         title="YouTube video player" frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowfullscreen></iframe>
-      <p></p>
+      <p> </p>
       <p style="text-align: justify;">
         “Avanzar en una digitalización integral de la información y de los procesos de gestión es una de las
         líneas de acción del Gobierno Departamental comprometido con la actualización tecnológica y
@@ -90,48 +89,32 @@
     la digitalización integral de la información y los procesos de gestión.
   </p>
 
-
-
   <h2 class="green-text">Características del Sistema de Monitoreo</h2>
   <img src="../../../../assets/img/caracteristicas-sistema03.png" alt="Sistema Monitoreo PDC"
     class="img-caracteristicas" style="width: 1120px;" />
 
   <h2 class="green-text">Documentos sistema web - Monitoreo</h2>
-  <!--
-  <div class="pdf-container">
-    <div class="pdf-item1">
-      <iframe class="iframe1" src="../../../../assets/img/6113_PDC-Resumido1.pdf" frameborder="0"></iframe>
-      <p><a href="../../../../assets/img/6113_PDC-Resumido1.pdf" target="_blank" rel="noopener noreferrer">Sistema
-          Monitoreo PDCG</a></p>
-    </div>
-    <div class="pdf-item1">
-      <iframe class="iframe1" src="../../../../assets/img/DocumentacionPDC-v4_compressed.pdf" frameborder="0"></iframe>
-      <p><a href="../../../../assets/img/DocumentacionPDC-v4_compressed.pdf" target="_blank"
-          rel="noopener noreferrer">Doc.
-          Técnico Sis. Monitoreo</a></p>
-    </div>
-  </div>
--->
+
   <div class="pdf-container">
     <div class="pdf-item">
-      <iframe class="iframe" src="../../../../assets/documents/DocumentoGeneralPDCG.pdf" frameborder="0"></iframe>
-      <p><a href="../../../../assets/documents/DocumentoGeneralPDCG.pdf" target="_blank" rel="noopener noreferrer">Doc.
+      <iframe class="iframe" [src]="documentoGeneral" frameborder="0"></iframe>
+      <p><a [href]="documentoGeneral" target="_blank" rel="noopener noreferrer">Doc.
           Sistema de Monitoreo PDCG
         </a></p>
     </div>
     <div class="pdf-item">
-      <iframe class="iframe" src="../../../../assets/documents/IEEE830.pdf" frameborder="0"></iframe>
-      <p><a href="../../../../assets/documents/IEEE830.pdf" target="_blank" rel="noopener noreferrer">IEEE830</a>
+      <iframe class="iframe" [src]="iEEE830" frameborder="0"></iframe>
+      <p><a [href]="iEEE830" target="_blank" rel="noopener noreferrer">IEEE830</a>
       </p>
     </div>
     <div class="pdf-item">
-      <iframe class="iframe" src="../../../../assets/documents/ManualDeDesarrollo.pdf" frameborder="0"></iframe>
-      <p><a href="../../../../assets/documents/ManualDeDesarrollo.pdf" target="_blank" rel="noopener noreferrer">Manual
+      <iframe class="iframe" [src]="manualDesarrollo" frameborder="0"></iframe>
+      <p><a [href]="manualDesarrollo" target="_blank" rel="noopener noreferrer">Manual
           de desarrollo</a></p>
     </div>
     <div class="pdf-item">
-      <iframe class="iframe" src="../../../../assets/documents/ManualDeUsuario.pdf" frameborder="0"></iframe>
-      <p><a href="../../../../assets/documents/ManualDeUsuario.pdf" target="_blank" rel="noopener noreferrer">Manual
+      <iframe class="iframe" [src]="manualUsuario" frameborder="0"></iframe>
+      <p><a [href]="manualUsuario" target="_blank" rel="noopener noreferrer">Manual
           de usuario</a></p>
     </div>
   </div>
