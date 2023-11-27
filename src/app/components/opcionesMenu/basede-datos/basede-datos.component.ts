@@ -138,7 +138,7 @@ export class BasedeDatosComponent {
     })
 
     //llamar a logo y convertilo
-    Utils.getImageDataUrlFromLocalPath1('../../../assets/img/logo-mimonitor.png').then(
+    Utils.getImageDataUrlFromLocalPath1('../../../assets/img/logo_sihita.png').then(
       result => this.logoDataUrl = result
     )
   }
@@ -528,7 +528,7 @@ export class BasedeDatosComponent {
     const tableBody = [];
     for (let i = 0; i < this.tabla.length; i++) {
       const person = this.tabla[i];
-      tableBody.push([person.nom_proyecto, person.fecha_inicio_convert, person.fecha_fin_convert, person.nombre_municipio, person.ultima_etapa, person.nom_categoria]);
+      tableBody.push([person.nom_proyecto, person.fecha_inicio_convert, person.fecha_fin_convert, person.nombre_municipio, person.nom_cuenca, person.nom_categoria, person.nom_tipologia]);
     }
 
     //inicio de la documentacion
@@ -581,14 +581,14 @@ export class BasedeDatosComponent {
       },
       //contenido tablas e informacion
       content: [
-        'PROYECTOS/ACCIONES\n\n',
+        'Datos de Indicadores\n\n',
         {
 
           table: {
             headerRows: 1,
             widths: ['*', '*', '*', '*', '*', '*', '*'],
             body: [
-              ['Nombre_Proyecto', 'Fecha_inicio', 'Fecha_Fin', 'Municipio','Etapa', 'Categoria'],
+              ['Nombre_Proyecto', 'Fecha_inicio', 'Fecha_Fin', 'Municipio', 'Cuenca', 'Categoria', 'Topologia'],
               ...tableBody
             ]
           },

@@ -17,9 +17,10 @@
   </div>
 </div>
 
-<div class="container" *ngFor="let element of nosotros">
+<div class="container">
+
   <!-- Sección dividida en dos partes -->
-  <h2 class="green-text">¿Qué es el Sistema de Monitoreo?</h2> 
+  <h2 class="green-text">¿Qué es el Sistema de Monitoreo?</h2>
   <div class="split-section">
     <div class="left">
       <p style="text-align: justify;">
@@ -54,11 +55,11 @@
     </div>
     <!-- Derecha: Video de YouTube -->
     <div class="right">
-      <iframe width="560" height="315" [src]="linkVideo"
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/jmoWvIiF44M?si=cgdjFIFbZWg1gURm"
         title="YouTube video player" frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowfullscreen></iframe>
-      <p> </p>
+      <p></p>
       <p style="text-align: justify;">
         “Avanzar en una digitalización integral de la información y de los procesos de gestión es una de las
         líneas de acción del Gobierno Departamental comprometido con la actualización tecnológica y
@@ -89,134 +90,52 @@
     la digitalización integral de la información y los procesos de gestión.
   </p>
 
+
+
   <h2 class="green-text">Características del Sistema de Monitoreo</h2>
   <img src="../../../../assets/img/caracteristicas-sistema03.png" alt="Sistema Monitoreo PDC"
     class="img-caracteristicas" style="width: 1120px;" />
 
   <h2 class="green-text">Documentos sistema web - Monitoreo</h2>
-
+<!--
+  <div class="pdf-container">
+    <div class="pdf-item1">
+      <iframe class="iframe1" src="../../../../assets/img/6113_PDC-Resumido1.pdf" frameborder="0"></iframe>
+      <p><a href="../../../../assets/img/6113_PDC-Resumido1.pdf" target="_blank" rel="noopener noreferrer">Sistema
+          Monitoreo PDCG</a></p>
+    </div>
+    <div class="pdf-item1">
+      <iframe class="iframe1" src="../../../../assets/img/DocumentacionPDC-v4_compressed.pdf" frameborder="0"></iframe>
+      <p><a href="../../../../assets/img/DocumentacionPDC-v4_compressed.pdf" target="_blank"
+          rel="noopener noreferrer">Doc.
+          Técnico Sis. Monitoreo</a></p>
+    </div>
+  </div>
+-->
   <div class="pdf-container">
     <div class="pdf-item">
-      <iframe class="iframe" [src]="documentoGeneral" frameborder="0"></iframe>
-      <p><a [href]="documentoGeneral" target="_blank" rel="noopener noreferrer">Doc.
-          Sistema de Monitoreo PDCG
-        </a></p>
+      <iframe class="iframe" src="../../../../assets/documents/Documentación SM&E PDCG v15.pdf" frameborder="0"></iframe>
+      <p><a href="../../../../assets/documents/Documentación SM&E PDCG v15.pdf" target="_blank" rel="noopener noreferrer">Doc. Sistema
+          Monitoreo PDCG</a></p>
     </div>
     <div class="pdf-item">
-      <iframe class="iframe" [src]="iEEE830" frameborder="0"></iframe>
-      <p><a [href]="iEEE830" target="_blank" rel="noopener noreferrer">IEEE830</a>
+      <iframe class="iframe" src="../../../../assets/documents/IEEE830.pdf" frameborder="0"></iframe>
+      <p><a href="../../../../assets/documents/IEEE830.pdf" target="_blank" rel="noopener noreferrer">IEEE830</a>
       </p>
     </div>
     <div class="pdf-item">
-      <iframe class="iframe" [src]="manualDesarrollo" frameborder="0"></iframe>
-      <p><a [href]="manualDesarrollo" target="_blank" rel="noopener noreferrer">Manual
+      <iframe class="iframe" src="../../../../assets/documents/ManualDeDesarrollo.pdf" frameborder="0"></iframe>
+      <p><a href="../../../../assets/documents/ManualDeDesarrollo.pdf" target="_blank" rel="noopener noreferrer">Manual
           de desarrollo</a></p>
     </div>
     <div class="pdf-item">
-      <iframe class="iframe" [src]="manualUsuario" frameborder="0"></iframe>
-      <p><a [href]="manualUsuario" target="_blank" rel="noopener noreferrer">Manual
+      <iframe class="iframe" src="../../../../assets/documents/ManualDeUsuario.pdf" frameborder="0"></iframe>
+      <p><a href="../../../../assets/documents/ManualDeUsuario.pdf" target="_blank" rel="noopener noreferrer">Manual
           de usuario</a></p>
     </div>
   </div>
 </div>
 
-
-
-<!--
-<footer class="footer">
-    <div class="contact-left">
-      <div class="centered">
-        <mat-icon class="icon">location_on</mat-icon>
-        <p class="small-text">SEDEGIA - Carretera a Tomatitas Km 2.5 oficinas PERTT</p>
-      </div>
-      <div class="centered">
-        <mat-icon class="icon">phone</mat-icon>
-        <p class="small-text">Teléfono: <a href="tel:+6645098">66 45098</a></p>
-      </div>
-      <div class="centered">
-        <mat-icon class="icon">email</mat-icon>
-        <p class="small-text">Email: <a href="mailto:aguatarija@gmail.com">aguatarija@gmail.com</a></p>
-       <a href="mailto:aguatarija@gmail.com?Subject=Interesado%20en%20el%20curso">Contactar por correo</a>
-      </div>
-    </div>
-    <div class="contact-right">
-      <div class="centered">
-        <mat-icon class="icon">email</mat-icon>
-        <p class="small-text">Email: <a href="mailto:rocio.poma@giz.de">rocio.poma@giz.de</a></p>
-      </div>
-      <div class="centered">
-        <mat-icon class="icon">email</mat-icon>
-        <p class="small-text">Email: <a href="mailto:pomarocio05@gmail.com">pomarocio05@gmail.com</a></p>
-      </div>
-    </div>
-    <p class="copyright">© 2023 GIZ-PROCUENCA</p>
-  </footer>
--->
-<!--
-<footer class="footer">
-    <div class="contact-info">
-        <p>Contacto de información</p>
-      <a href="https://www.google.com/maps/place/SEDEGIA+Carretera+a+Tomatitas+Km+2.5+oficinas+PERTT" target="_blank">
-        <mat-icon aria-hidden="false" aria-label="Ubicación" class="icon">location_on</mat-icon>  SEDEGIA - Carretera a Tomatitas Km 2.5 oficinas PERTT
-      </a>
-      <a href="tel:6645098">
-        <mat-icon aria-hidden="false" aria-label="Teléfono" class="icon">phone</mat-icon>  66 45098
-      </a>
-      <a href="mailto:aguatarija@gmail.com">
-        <mat-icon aria-hidden="false" aria-label="Email" class="icon">email</mat-icon>  aguatarija@gmail.com
-      </a>
-    </div>
-    <div class="development-contact">
-      <p>Contacto de desarrollo</p>
-      <a href="mailto:rocio.poma@giz.de">
-        <mat-icon aria-hidden="false" aria-label="Email" class="icon">email</mat-icon>  rocio.poma@giz.de
-      </a>
-      <a href="mailto:pomarocio05@gmail.com">
-        <mat-icon aria-hidden="false" aria-label="Email" class="icon">email</mat-icon>  pomarocio05@gmail.com
-      </a>
-    </div>
-    <p class="copyright">&copy;  2023 GIZ-PROCUENCA</p>
-  </footer>
-
--->
-<!--
-<footer class="footer">
-    <div class="contact-columns">
-      <div class="contact-info">
-        <p>Contacto de información</p>
-        <a href="https://www.google.com/maps/place/SEDEGIA+Carretera+a+Tomatitas+Km+2.5+oficinas+PERTT" target="_blank">
-          <mat-icon aria-hidden="false" aria-label="Ubicación" class="icon">location_on</mat-icon> SEDEGIA - Carretera a Tomatitas Km 2.5 oficinas PERTT
-        </a>
-        <a href="tel:6645098">
-          <mat-icon aria-hidden="false" aria-label="Teléfono" class="icon">phone</mat-icon> 66 45098
-        </a>
-        <a href="mailto:aguatarija@gmail.com">
-          <mat-icon aria-hidden="false" aria-label="Email" class="icon">email</mat-icon> aguatarija@gmail.com
-        </a>
-      </div>
-      <div class="contact-social-icons">
-        <a href="URL_DE_FACEBOOK"><i class="fa fa-facebook"></i></a>
-        <a href="URL_DE_WHATSAPP"><i class="fa fa-whatsapp"></i></a>
-        <a href="URL_DE_INSTAGRAM"><i class="fa fa-instagram"></i></a>
-        <a href="URL_DE_LINKEDIN"><i class="fa fa-linkedin"></i></a>
-        <a href="URL_DE_TWITTER"><i class="fa fa-twitter"></i></a> 
-      </div>
-      <div class="development-contact">
-        <p>Contacto de desarrollo</p>
-        <div class="contact-icons">
-          <a href="mailto:rocio.poma@giz.de">
-            <mat-icon aria-hidden="false" aria-label="Email" class="icon">email</mat-icon> rocio.poma@giz.de
-          </a>
-          <a href="mailto:pomarocio05@gmail.com">
-            <mat-icon aria-hidden="false" aria-label="Email" class="icon">email</mat-icon> pomarocio05@gmail.com
-          </a>
-        </div>
-      </div>
-    </div>
-    <p class="copyright">© 2023 GIZ-PROCUENCA</p>
-  </footer>
-  
--->
 <footer class="footer">
   <div class="footer-column">
     <div class="contact-info">

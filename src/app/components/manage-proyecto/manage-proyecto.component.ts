@@ -785,7 +785,7 @@ export class ManageProyectoComponent {
     const tableBody = [];
     for (let i = 0; i < this.tabla.length; i++) {
       const person = this.tabla[i];
-      tableBody.push([person.nom_proyecto, person.fecha_inicio_convert, person.fecha_fin_convert, person.nombre_municipio, person.ultima_etapa, person.nom_categoria]);
+      tableBody.push([person.nom_proyecto, person.fecha_inicio_convert, person.fecha_fin_convert, person.nombre_municipio, person.nom_cuenca, person.nom_categoria, person.nom_tipologia]);
     }
 
     //inicio de la documentacion
@@ -845,7 +845,7 @@ export class ManageProyectoComponent {
             headerRows: 1,
             widths: ['*', '*', '*', '*', '*', '*', '*'],
             body: [
-              ['Nombre_Proyecto', 'Fecha_inicio', 'Fecha_Fin', 'Municipio', 'Etapa', 'Categoria'],
+              ['Nombre_Proyecto', 'Fecha_inicio', 'Fecha_Fin', 'Municipio', 'Cuenca', 'Categoria', 'Topologia'],
               ...tableBody
             ]
           },
