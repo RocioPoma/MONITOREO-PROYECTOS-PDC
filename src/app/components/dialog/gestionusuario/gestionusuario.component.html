@@ -66,8 +66,7 @@
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Celular</mat-label>
                     <input  matInput formControlName="celular" required maxlength="8">
-                    <mat-error >
-                        <span *ngIf="usuarioForm.controls.celular.touched && usuarioForm.controls.celular.invalid">Nro. Celular Incorrecto</span>
+                    <mat-error *ngIf="usuarioForm.controls.celular.touched && usuarioForm.controls.celular.invalid">
                         <span *ngIf="usuarioForm.controls.celular.errors.required">Este campo es obligatorio.</span>
                     </mat-error>
                 </mat-form-field>

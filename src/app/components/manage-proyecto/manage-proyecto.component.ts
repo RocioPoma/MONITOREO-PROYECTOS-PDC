@@ -49,7 +49,7 @@ import { UnidadMedicionService } from 'src/app/services/unidad-medicion.service'
   //imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule],
 })
 export class ManageProyectoComponent {
-  displayedColumns: string[] = ['Nro', 'NombreProyecto', 'FechaInicio', 'FechaFin', 'Ult_Fecha_Mod', 'NombreMunicipio', 'UltimaEtapa', 'NombreCategoria', 'NombreTipologia', 'documento', 'seguimiento', 'Acciones'];
+  displayedColumns: string[] = ['Nro', 'NombreProyecto', 'FechaInicio', 'FechaFin', 'Ult_Fecha_Mod','NombreMunicipio', 'UltimaEtapa', 'NombreCategoria', 'NombreTipologia', 'documento', 'seguimiento', 'Acciones'];
   dataSource: any;
   responseMessage: any;
   proyecto: any;
@@ -243,8 +243,6 @@ export class ManageProyectoComponent {
       this.dataSource.paginator.firstPage();
     }
   }
-
-  /*
   applyMunicipioFilter(filterValue: string) {
     filterValue = filterValue.trim().toLowerCase();
     this.dataSource.filterPredicate = (data: any, filter: string) =>
@@ -295,75 +293,6 @@ export class ManageProyectoComponent {
     this.infoFiltrada = this.dataSource.filteredData;
     this.dataSource.paginator.firstPage();
   }
- */
-  applyMunicipioFilter(filterValue: string) {
-    filterValue = filterValue.trim().toLowerCase();
-    this.municipioFilter = filterValue; // Almacenar el valor del filtro de municipio
-
-    // Si también hay un filtro de categoría activo, aplicar ambos filtros
-    if (this.categoriaFilter) {
-      this.dataSource.filterPredicate = (data: any, filter: string) =>
-        data.nombre_municipio.trim().toLowerCase().includes(this.municipioFilter) &&
-        data.nom_categoria.trim().toLowerCase().includes(this.categoriaFilter);
-    } else {
-      this.dataSource.filterPredicate = (data: any, filter: string) =>
-        data.nombre_municipio.trim().toLowerCase().includes(this.municipioFilter);
-    }
-
-    // Aplicar los filtros
-    this.dataSource.filter = filterValue;
-
-    if (this.fechaInicio || this.fechaFin) {
-      this.fechaFin = null;
-      this.fechaInicio = null;
-    }
-
-    //pdf
-    //dar valor a variables para su impresión
-    //console.log(this.dataSource.filteredData);
-    this.infoFiltrada = this.dataSource.filteredData;
-    this.tabla = this.infoFiltrada;
-    //pdf
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
-  applyCategoriaFilter(filterValue: string) {
-    filterValue = filterValue.trim().toLowerCase();
-    this.categoriaFilter = filterValue; // Almacenar el valor del filtro de categoría
-
-    // Si también hay un filtro de municipio activo, aplicar ambos filtros
-    if (this.municipioFilter) {
-      this.dataSource.filterPredicate = (data: any, filter: string) =>
-        data.nombre_municipio.trim().toLowerCase().includes(this.municipioFilter) &&
-        data.nom_categoria.trim().toLowerCase().includes(this.categoriaFilter);
-    } else {
-      this.dataSource.filterPredicate = (data: any, filter: string) =>
-        data.nom_categoria.trim().toLowerCase().includes(this.categoriaFilter);
-    }
-
-    // Aplicar los filtros
-    this.dataSource.filter = filterValue;
-
-    if (this.fechaInicio || this.fechaFin) {
-      this.fechaFin = null;
-      this.fechaInicio = null;
-    }
-
-    //pdf
-    //dar valor a variables para su impresión
-    //console.log(this.dataSource.filteredData);
-    this.infoFiltrada = this.dataSource.filteredData;
-    this.tabla = this.infoFiltrada;
-    //pdf
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
 
 
   validarFechas() {
@@ -488,12 +417,7 @@ export class ManageProyectoComponent {
       dialogRef.close();
     });
     const sub = dialogRef.componentInstance.onAddProyecto.subscribe((response) => {
-      if (this.rol === 'Operador') {
-        this.tableData2(this.ci);
-      } else {
-        this.tableData();
-      }
-
+      this.tableData();
     })
   }
 
@@ -511,11 +435,7 @@ export class ManageProyectoComponent {
       dialogRef.close();
     });
     const sub = dialogRef.componentInstance.onEditProyecto.subscribe((response) => {
-      if (this.rol === 'Operador') {
-        this.tableData2(this.ci);
-      } else {
-        this.tableData();
-      }
+      this.tableData();
     })
   }
 
@@ -533,11 +453,7 @@ export class ManageProyectoComponent {
       dialogRef.close();
     });
     const sub = dialogRef.componentInstance.onAddSeguimiento.subscribe((response) => {
-      if (this.rol === 'Operador') {
-        this.tableData2(this.ci);
-      } else {
-        this.tableData();
-      }
+      this.tableData();
     })
   }
 
@@ -556,11 +472,7 @@ export class ManageProyectoComponent {
 
   deleteProyecto(id_proyecto: any) {
     this.ProyectoServices.delete(id_proyecto).subscribe((response: any) => {
-      if (this.rol === 'Operador') {
-        this.tableData2(this.ci);
-      } else {
-        this.tableData();
-      }
+      this.tableData();
       this.responseMessage = response?.message;
       this.snackbarService.openSnackBar(this.responseMessage, "success");
     }, (error: any) => {
@@ -607,7 +519,53 @@ export class ManageProyectoComponent {
       this.openSeguimientosProyecto = true;
     }
   }
+  //excel
+  generateExcel() {
+    //zona
+    // Definir proyecciones
+    proj4.defs("EPSG:4326", "+proj=longlat +datum=WGS84 +no_defs");
+    proj4.defs("EPSG:32720", "+proj=utm +zone=20 +south +datum=WGS84 +units=m +no_defs");// Puedes cambiar el número de zona según tu ubicación
 
+
+    const fechaActual = new Date();
+    const añoActual = fechaActual.getFullYear();
+    //array para los datos que imprime  
+    const tableBody = [];
+
+    for (let i = 0; i < this.tabla.length; i++) {
+      const person = this.tabla[i];
+      // Coordenadas geográficas (latitud y longitud)
+      const latitud = parseFloat(person.coordenada_y); // Por ejemplo, París
+      const longitud = parseFloat(person.coordenada_x);
+
+      const coordenadasUTM = proj4("EPSG:4326", "EPSG:32720", [latitud, longitud]);
+
+      // coordenadasUTM es un array con [Este, Norte]
+      const este = coordenadasUTM[0];
+      const norte = coordenadasUTM[1];
+      ////console.log(este,norte);
+      tableBody.push([i + 1, person.linea_estrategica, i + 1, person.linea_de_accion, person.nom_proyecto, 'Tarija', person.nombre_municipio, '20S', este, norte, añoActual, person.ultima_etapa, person.fuentes_financiamiento]);
+    }
+
+    // Crear una hoja de cálculo de Excel
+    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
+
+    // Establecer estilos para aparentar centrado
+    ws['A1'] = { t: 's', v: 'Título de la tabla', s: { font: { bold: true }, alignment: { horizontal: 'center' } } };
+    // Combinar las celdas para el título
+    ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 12 } }];
+    const headers = ['Nº', 'Lineamientos Estrategicos', 'Nº', 'Linea de accion', 'Accion Especifica', 'Departamento', 'Municipio', 'Zona', 'Este', 'Norte', 'Gestion', 'Estado', 'Fuente de financiamiento'];
+    // Agregar los encabezados de columna en la segunda fila      
+    XLSX.utils.sheet_add_aoa(ws, [headers], { origin: 'A2' });
+    // Agregar los datos de tableBody a la hoja de cálculo
+    XLSX.utils.sheet_add_aoa(ws, tableBody, { origin: 'A3' });
+
+    // Crear un libro de Excel
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Datos'); // Asignar la hoja de cálculo al libro
+    XLSX.writeFile(wb, 'information.xlsx');
+
+  }
   //------------------- OBTENEMOS COMUNIDAD
   private _comunidades: any[] = [];
   private _unidades: any[] = [];
@@ -661,7 +619,7 @@ export class ManageProyectoComponent {
       // coordenadasUTM es un array con [Este, Norte]
       const este = coordenadasUTM[0];
       const norte = coordenadasUTM[1];
-
+      console.log("Item",item);
       return {
         "ENTIDAD EJECUTORA": item["entidad_ejecutora"],
         "PROYECTO/ACCIÓN": item["nom_proyecto"],
@@ -692,7 +650,7 @@ export class ManageProyectoComponent {
         "INDICADOR": item["nombre_indicador"],
         "ALCANCE PROYECTO": item["alcances"].length > 1 ? item['alcances'][1].cantidad : item["alcances"][0].cantidad,
         "UNIDAD MEDICION": item['alcances'].length > 1 ? this._unidades.find(und => und.id_unidad_medicion === item["alcances"][1].id_unidad_medicion).nom_unidad : this._unidades.find(und => und.id_unidad_medicion === item["alcances"][0].id_unidad_medicion).nom_unidad,
-
+      
       };
     });
 
@@ -928,18 +886,9 @@ export class ManageProyectoComponent {
       dialogRef.close();
     });
     const sub = dialogRef.componentInstance.onAddDocProyect.subscribe((response) => {
-      if (this.rol === 'Operador') {
-        this.tableData2(this.ci);
-      } else {
-        this.tableData();
-      }
+      this.tableData();
     })
   }
 
 
 }
-
-
-
-
-
